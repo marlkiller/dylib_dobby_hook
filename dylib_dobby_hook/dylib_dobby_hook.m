@@ -36,6 +36,8 @@ void init(){
 // INIT TEST END
 
 
+// TODO 判断是调试环境
+
 
 int (*_0x100050480Ori)();
 
