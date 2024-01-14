@@ -7,6 +7,7 @@
 
 #import "dylib_dobby_hook.h"
 #import "dobby.h"
+#import <mach-o/dyld.h>
 #import <Cocoa/Cocoa.h>
 
 @implementation dylib_dobby_hook
@@ -36,9 +37,32 @@ void init(){
 
 
 
-void AirBuddy() {
-    
+int (*_0x100050480Ori)();
+
+
+
+
+#if defined(__arm__)
+
+#elif defined(__x86_64__)
+
+int _0x100050480New() {
+    // register int r13 asm("r13"); //读取寄存器的值
+    NSLog(@"==== _0x100050480New called");
+    __asm
+    {   //内联汇编直接修改寄存器的值
+        mov byte ptr[r13+99h], 0
+    }
+    NSLog(@"==== _0x100050480New call end");
+    return _0x100050480Ori();
 }
+
+void AirBuddy() {
+    NSLog(@"The current app running environment is __x86_64__");
+    intptr_t _0x100050480 = _dyld_get_image_vmaddr_slide(0) + 0x100050480;
+    DobbyHook(_0x100050480, _0x100050480New, (void *)&_0x100050480Ori);
+}
+#endif
 
 + (void) load {
     

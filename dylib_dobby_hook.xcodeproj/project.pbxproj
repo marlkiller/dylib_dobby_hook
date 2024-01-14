@@ -336,6 +336,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
