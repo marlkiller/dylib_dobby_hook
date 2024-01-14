@@ -89,7 +89,7 @@ void AirBuddy() {
 
 用同样的方法, 我们用 hopper 或者 ida 找到 arm 下的目标函数。
 
-![]([img]https://66img.cc/images/2024/01/14/1b5f04c8c382a8afa.png[/img])
+![1](pic/1.png)
 
 可以看到 , 函数地址为: 0x1000553b8  
 并且由 x20+99h 来判断是否已注册, hook 代码如下:  
@@ -167,12 +167,14 @@ cp -R "${BUILT_PRODUCTS_DIR}/libdobby.dylib" ${app_bundle_framework}
 
 效果如下:
 ### x86_64
-![]([img]https://66img.cc/images/2024/01/14/x86.png[/img])
+![2](pic/2.png)
 
 ### arm  
 arm hook 的汇编代码怎么感觉看着有点奇怪 ??  
 
-![]([img]https://66img.cc/images/2024/01/14/arm.png[/img])
+![3](pic/3.png)
+
+
 
 
 
@@ -193,7 +195,6 @@ https://github.com/marlkiller/dylib_dobby_hook
 2. release:  build 后的成品
 3. script:  里面有个 hack.sh, 可以直接sudo sh 执行一键注入脚本
 4. tools: insert_dylib 开源注入工具
-
 
 
 
