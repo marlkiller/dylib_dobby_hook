@@ -57,7 +57,7 @@ int _0x1000553b8New() {
 
 void AirBuddy() {
     NSLog(@"The current app running environment is __arm64__");
-    intptr_t _0x1000553b8 = _dyld_get_image_vmaddr_slide(0) + 0x1000553b8;
+    intptr_t _0x1000553b8 =  + 0x1000553b8;
     DobbyHook(_0x1000553b8, _0x1000553b8New, (void *)&_0x1000553b8Ori);
     NSLog(@"_0x1000553b8 >> %p",_0x1000553b8);
     
