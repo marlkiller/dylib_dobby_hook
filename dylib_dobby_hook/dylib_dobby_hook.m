@@ -42,7 +42,11 @@ int (*_0x100050480Ori)();
 
 
 
-#if defined(__arm__)
+#if defined(__arm64__) || defined(__aarch64__)
+
+void AirBuddy() {
+    
+}
 
 #elif defined(__x86_64__)
 

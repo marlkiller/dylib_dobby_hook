@@ -1,11 +1,14 @@
+current_path=$PWD
+echo "当前路径：$current_path"
 
 app_name="AirBuddy"
 
-dylib_name="integration_hack"
+dylib_name="dylib_dobby_hook"
 prefix="lib"
 
-insert_dylib="/Users/voidm/Documents/develop/workSpace/xcode/macos/integration_hack/tools/insert_dylib"
+insert_dylib="${current_path}/../tools/insert_dylib"
 
+BUILT_PRODUCTS_DIR="/Users/artemis/Library/Developer/Xcode/DerivedData/dylib_dobby_hook-gzfcyfsevajikobdprwgxscpqtly/Build/Products/Release"
 
 app_bundle_path="/Applications/${app_name}.app/Contents/MacOS/"
 
@@ -23,8 +26,11 @@ then
     cp "$app_executable_path" "$app_executable_backup_path"
 fi
 
-cp -R "/Users/voidm/Library/Developer/Xcode/DerivedData/integration_hack-drxdrffvpcycxsfgqhstrfwogfwl/Build/Products/Debug/${prefix}${dylib_name}.dylib" ${app_bundle_framework}
 
+
+cp -R "${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib" ${app_bundle_framework}
+
+cp -R "${BUILT_PRODUCTS_DIR}/libdobby.dylib" ${app_bundle_framework}
 
 "${app_bundle_path}/insert_dylib" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
 

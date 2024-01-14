@@ -41,6 +41,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
+         BundleIdentifier = "codes.rambo.AirBuddy"
          FilePath = "/Applications/AirBuddy.app">
       </PathRunnable>
    </LaunchAction>
