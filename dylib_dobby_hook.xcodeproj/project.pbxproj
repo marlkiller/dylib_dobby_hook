@@ -133,11 +133,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 38350BFB2B53F73A00DD52B3 /* Build configuration list for PBXNativeTarget "dylib_dobby_hook" */;
 			buildPhases = (
+				38350C052B53F90300DD52B3 /* ShellScript */,
 				38350BEE2B53F73A00DD52B3 /* Headers */,
 				38350BEF2B53F73A00DD52B3 /* Sources */,
 				38350BF02B53F73A00DD52B3 /* Frameworks */,
 				38350C032B53F86A00DD52B3 /* CopyFiles */,
-				38350C052B53F90300DD52B3 /* ShellScript */,
 			);
 			buildRules = (
 			);
