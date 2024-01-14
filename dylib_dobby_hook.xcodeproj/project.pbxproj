@@ -9,12 +9,31 @@
 /* Begin PBXBuildFile section */
 		38350BF62B53F73A00DD52B3 /* dylib_dobby_hook.h in Headers */ = {isa = PBXBuildFile; fileRef = 38350BF52B53F73A00DD52B3 /* dylib_dobby_hook.h */; };
 		38350BF82B53F73A00DD52B3 /* dylib_dobby_hook.m in Sources */ = {isa = PBXBuildFile; fileRef = 38350BF72B53F73A00DD52B3 /* dylib_dobby_hook.m */; };
+		38350C002B53F77E00DD52B3 /* libdobby.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 38350BFF2B53F77E00DD52B3 /* libdobby.dylib */; };
+		38350C022B53F78900DD52B3 /* dobby.h in Headers */ = {isa = PBXBuildFile; fileRef = 38350C012B53F78900DD52B3 /* dobby.h */; };
+		38350C042B53F87200DD52B3 /* libdobby.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 38350BFF2B53F77E00DD52B3 /* libdobby.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		38350C032B53F86A00DD52B3 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				38350C042B53F87200DD52B3 /* libdobby.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		38350BF22B53F73A00DD52B3 /* libdylib_dobby_hook.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libdylib_dobby_hook.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		38350BF52B53F73A00DD52B3 /* dylib_dobby_hook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dylib_dobby_hook.h; sourceTree = "<group>"; };
 		38350BF72B53F73A00DD52B3 /* dylib_dobby_hook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = dylib_dobby_hook.m; sourceTree = "<group>"; };
+		38350BFF2B53F77E00DD52B3 /* libdobby.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libdobby.dylib; sourceTree = "<group>"; };
+		38350C012B53F78900DD52B3 /* dobby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dobby.h; sourceTree = "<group>"; };
+		38350C072B53F96100DD52B3 /* insert_dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = insert_dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -22,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38350C002B53F77E00DD52B3 /* libdobby.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -31,6 +51,8 @@
 		38350BE92B53F73A00DD52B3 = {
 			isa = PBXGroup;
 			children = (
+				38350C062B53F93D00DD52B3 /* tools */,
+				38350BFE2B53F76800DD52B3 /* libs */,
 				38350BF42B53F73A00DD52B3 /* dylib_dobby_hook */,
 				38350BF32B53F73A00DD52B3 /* Products */,
 			);
@@ -49,8 +71,25 @@
 			children = (
 				38350BF52B53F73A00DD52B3 /* dylib_dobby_hook.h */,
 				38350BF72B53F73A00DD52B3 /* dylib_dobby_hook.m */,
+				38350C012B53F78900DD52B3 /* dobby.h */,
 			);
 			path = dylib_dobby_hook;
+			sourceTree = "<group>";
+		};
+		38350BFE2B53F76800DD52B3 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				38350BFF2B53F77E00DD52B3 /* libdobby.dylib */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		38350C062B53F93D00DD52B3 /* tools */ = {
+			isa = PBXGroup;
+			children = (
+				38350C072B53F96100DD52B3 /* insert_dylib */,
+			);
+			path = tools;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -61,6 +100,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				38350BF62B53F73A00DD52B3 /* dylib_dobby_hook.h in Headers */,
+				38350C022B53F78900DD52B3 /* dobby.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +114,8 @@
 				38350BEE2B53F73A00DD52B3 /* Headers */,
 				38350BEF2B53F73A00DD52B3 /* Sources */,
 				38350BF02B53F73A00DD52B3 /* Frameworks */,
+				38350C032B53F86A00DD52B3 /* CopyFiles */,
+				38350C052B53F90300DD52B3 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -115,6 +157,26 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		38350C052B53F90300DD52B3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "app_name=\"AirBuddy\"\n\ndylib_name=\"${PRODUCT_NAME}\"\nprefix=\"lib\"\n\ninsert_dylib=\"${SRCROOT}/tools/insert_dylib\"\n\napp_bundle_path=\"/Applications/${app_name}.app/Contents/MacOS/\"\n\ncp -f \"${insert_dylib}\" \"${app_bundle_path}/\"   \n\napp_bundle_framework=\"/Applications/${app_name}.app/Contents/Frameworks\"\napp_executable_path=\"${app_bundle_path}/${app_name}\"\napp_executable_backup_path=\"${app_executable_path}_Backup\"\n\n\nif [ ! -f \"$app_executable_backup_path\" ]; \nthen\n    cp \"$app_executable_path\" \"$app_executable_backup_path\"\nfi\n\ncp -R \"${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib\" ${app_bundle_framework}\n\n\n\"${app_bundle_path}/insert_dylib\" --weak --all-yes \"@rpath/${prefix}${dylib_name}.dylib\" \"$app_executable_backup_path\" \"$app_executable_path\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		38350BEF2B53F73A00DD52B3 /* Sources */ = {
@@ -165,7 +227,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -180,6 +242,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = "";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -226,9 +289,10 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -250,6 +314,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
+				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = "@executable_path/";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libs",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -262,6 +331,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
+				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = "@executable_path/";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libs",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
