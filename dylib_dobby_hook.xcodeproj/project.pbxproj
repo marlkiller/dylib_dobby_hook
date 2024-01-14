@@ -35,6 +35,8 @@
 		38350C012B53F78900DD52B3 /* dobby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dobby.h; sourceTree = "<group>"; };
 		38350C072B53F96100DD52B3 /* insert_dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = insert_dylib; sourceTree = "<group>"; };
 		38350C092B54047F00DD52B3 /* hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = hack.sh; sourceTree = "<group>"; };
+		38350C0C2B5407DD00DD52B3 /* libdobby.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libdobby.dylib; sourceTree = "<group>"; };
+		38350C0D2B5407DD00DD52B3 /* libdylib_dobby_hook.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libdylib_dobby_hook.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +54,7 @@
 		38350BE92B53F73A00DD52B3 = {
 			isa = PBXGroup;
 			children = (
+				38350C0B2B5407CD00DD52B3 /* release */,
 				38350C082B54047F00DD52B3 /* script */,
 				38350C062B53F93D00DD52B3 /* tools */,
 				38350BFE2B53F76800DD52B3 /* libs */,
@@ -100,6 +103,15 @@
 				38350C092B54047F00DD52B3 /* hack.sh */,
 			);
 			path = script;
+			sourceTree = "<group>";
+		};
+		38350C0B2B5407CD00DD52B3 /* release */ = {
+			isa = PBXGroup;
+			children = (
+				38350C0C2B5407DD00DD52B3 /* libdobby.dylib */,
+				38350C0D2B5407DD00DD52B3 /* libdylib_dobby_hook.dylib */,
+			);
+			path = release;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
