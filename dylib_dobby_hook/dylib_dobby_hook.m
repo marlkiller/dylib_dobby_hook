@@ -40,10 +40,6 @@ void initTest(){
     
     
     // initTest();
-    
-    NSString *appName = [[NSBundle mainBundle] bundleIdentifier];
-    
-    
     NSAlert *alert = [[NSAlert alloc] init];
     [alert setMessageText:@"确认执行破解操作吗？"];
     [alert addButtonWithTitle:@"确认"];
@@ -51,7 +47,7 @@ void initTest(){
     NSInteger response = [alert runModal];
     
     if (response == NSAlertFirstButtonReturn) {
-        [Constant doHack:appName];
+        [Constant doHack];
     } else {
         return;
     }

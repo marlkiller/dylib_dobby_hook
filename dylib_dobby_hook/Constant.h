@@ -11,5 +11,5 @@
 + (BOOL)isDebuggerAttached;
 + (intptr_t)getBaseAddr:(uint32_t)index;
 + (NSArray<Class> *)getAllHackClasses;
-+ (void)doHack:(NSString *)currentAppName;
++ (void)doHack;
 @end

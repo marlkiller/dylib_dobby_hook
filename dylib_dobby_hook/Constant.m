@@ -14,26 +14,45 @@
 @implementation Constant
 
 static void __attribute__ ((constructor)) initialize(void){
-    NSLog(@"constant init");
+    NSLog(@"Constant init");    
+    NSBundle *app = [NSBundle mainBundle];
+    appName = [app bundleIdentifier];
+    appVersion = [app objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    appCFBundleVersion = [app objectForInfoDictionaryKey:@"CFBundleVersion"];
+    NSLog(@"AppName is [%s],Version is [%s], myAppCFBundleVersion is [%s].", appName.UTF8String, appVersion.UTF8String, appCFBundleVersion.UTF8String);
+    
 }
+
+/**
+ * App的唯一ID 用来过滤指定的App
+ */
+const NSString *appName;
+/**
+ * app的版本号
+ */
+const NSString *appVersion;
+/**
+ * 更精确的版本号 一般情况下不用到
+ */
+const NSString *appCFBundleVersion;
 
 
 + (BOOL)isDebuggerAttached {
     BOOL isDebugging = NO;
-        // 获取当前进程的信息
-        NSProcessInfo *processInfo = [NSProcessInfo processInfo];
-        // 获取进程的环境变量
-        NSDictionary *environment = [processInfo environment];
-        // 检查环境变量中是否有调试器相关的标志
-        if (environment != nil) {
-            // 根据环境变量中是否包含特定的调试器标志来判断是否处于调试模式
-            if (environment[@"DYLD_INSERT_LIBRARIES"] ||
-                environment[@"MallocStackLogging"] ||
-                environment[@"NSZombieEnabled"] ||
-                environment[@"__XDEBUGGER_PRESENT"] != nil) {
-                isDebugging = YES;
-            }
+    // 获取当前进程的信息
+    NSProcessInfo *processInfo = [NSProcessInfo processInfo];
+    // 获取进程的环境变量
+    NSDictionary *environment = [processInfo environment];
+    // 检查环境变量中是否有调试器相关的标志
+    if (environment != nil) {
+        // 根据环境变量中是否包含特定的调试器标志来判断是否处于调试模式
+        if (environment[@"DYLD_INSERT_LIBRARIES"] ||
+            environment[@"MallocStackLogging"] ||
+            environment[@"NSZombieEnabled"] ||
+            environment[@"__XDEBUGGER_PRESENT"] != nil) {
+            isDebugging = YES;
         }
+    }
     return isDebugging;
 }
 
@@ -42,11 +61,11 @@ static void __attribute__ ((constructor)) initialize(void){
     BOOL isDebugging = [Constant isDebuggerAttached];
     if(isDebugging){
         NSLog(@"The current app running with debugging");
-        #if defined(__arm64__) || defined(__aarch64__)
+#if defined(__arm64__) || defined(__aarch64__)
         // 不知道为什么
         // arm 环境下,如果是调试模式, 计算地址不需要 + _dyld_get_image_vmaddr_slide,否则会出错
         return 0;
-        #endif
+#endif
     }
     return _dyld_get_image_vmaddr_slide(index);
 }
@@ -76,13 +95,13 @@ static void __attribute__ ((constructor)) initialize(void){
 }
 
 
-+ (void)doHack:(NSString *)currentAppName {
++ (void)doHack {
     NSArray<Class> *personClasses = [Constant getAllHackClasses];
     
     for (Class class in personClasses) {
         id<HackProtocol> it = [[class alloc] init];
         NSString *appName = [it getAppName];
-        if ([appName isEqualToString:currentAppName]) {
+        if ([appName isEqualToString:appName]) {
             // TODO 执行其他操作 ,比如 checkVersion
             [it hack];
             break;

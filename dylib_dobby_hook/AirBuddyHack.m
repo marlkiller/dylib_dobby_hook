@@ -35,8 +35,8 @@ int _0x1000553b8New() {
     // r20 + 0x99 != 0x1
     NSLog(@"==== _0x1000553b8New called");
     __asm__ __volatile__(
-       "strb wzr, [x20, #0x99]"
-     );
+        "strb wzr, [x20, #0x99]"
+    );
     NSLog(@"==== _0x1000553b8New call end");
     return _0x1000553b8Ori();
 }
