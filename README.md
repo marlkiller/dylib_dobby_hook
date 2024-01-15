@@ -175,7 +175,161 @@ arm hook 的汇编代码怎么感觉看着有点奇怪 ??
 ![3](pic/3.png)
 
 
+## 代码优化
 
+基础代码已经完成, 为了兼容更多的 app 补丁, 我们对代码做一些重构优化。
+使用适配器模式来扩展  
+
+### 定义 Hack 接口
+接口定义几个方法, 比如教研app名称/版本号,以及执行 hack
+```
+@protocol HackProtocol
+
+- (NSString *)getAppName;
+- (BOOL)checkVersion;
+- (BOOL)hack;
+@end
+```
+
+### 定义实现类(已当前 Airbuddy 为例)
+
+```
+#import "HackProtocol.h"
+
+@interface AirBuddyHack : NSObject <HackProtocol>
+
+@end
+
+@implementation AirBuddyHack
+- (NSString *)getAppName {
+    return @"codes.rambo.AirBuddy";
+}
+
+- (BOOL)checkVersion {
+    return YES;
+}
+
+- (BOOL)hack {
+    [self hook];
+    return YES;
+}
+
+#if defined(__arm64__) || defined(__aarch64__)
+- (void)hook {
+    ...doSomething
+}
+#elif defined(__x86_64__)
+
+- (void)hook {
+    ...doSomething
+}
+#endif
+@end
+```
+### 定义一个全局的适配器工具类, 根据 appName 来获取对应的实现类,来执行 hack 操作
+```
+@implementation Constant
+
+static void __attribute__ ((constructor)) initialize(void){
+    NSLog(@"constant init");
+}
+
+
++ (BOOL)isDebuggerAttached {
+    BOOL isDebugging = NO;
+        // 获取当前进程的信息
+        NSProcessInfo *processInfo = [NSProcessInfo processInfo];
+        // 获取进程的环境变量
+        NSDictionary *environment = [processInfo environment];
+        // 检查环境变量中是否有调试器相关的标志
+        if (environment != nil) {
+            // 根据环境变量中是否包含特定的调试器标志来判断是否处于调试模式
+            if (environment[@"DYLD_INSERT_LIBRARIES"] ||
+                environment[@"MallocStackLogging"] ||
+                environment[@"NSZombieEnabled"] ||
+                environment[@"__XDEBUGGER_PRESENT"] != nil) {
+                isDebugging = YES;
+            }
+        }
+    return isDebugging;
+}
+
+
++ (intptr_t)getBaseAddr:(uint32_t)index{
+    BOOL isDebugging = [Constant isDebuggerAttached];
+    if(isDebugging){
+        NSLog(@"The current app running with debugging");
+        #if defined(__arm64__) || defined(__aarch64__)
+        // 不知道为什么
+        // arm 环境下,如果是调试模式, 计算地址不需要 + _dyld_get_image_vmaddr_slide,否则会出错
+        return 0;
+        #endif
+    }
+    return _dyld_get_image_vmaddr_slide(index);
+}
+
+
++ (NSArray<Class> *)getAllHackClasses {
+    NSMutableArray<Class> *hackClasses = [NSMutableArray array];
+   
+    int numClasses;
+    Class *classes = NULL;
+    numClasses = objc_getClassList(NULL, 0);
+   
+    if (numClasses > 0) {
+        classes = (__unsafe_unretained Class *)malloc(sizeof(Class) * numClasses);
+        numClasses = objc_getClassList(classes, numClasses);
+        
+        for (int i = 0; i < numClasses; i++) {
+            Class class = classes[i];
+            
+            if (class_conformsToProtocol(class, @protocol(HackProtocol))) {
+                [hackClasses addObject:class];
+            }
+        }
+        free(classes);
+    }
+    return hackClasses;
+}
+
+
++ (void)doHack:(NSString *)currentAppName {
+    NSArray<Class> *personClasses = [Constant getAllHackClasses];
+   
+    for (Class class in personClasses) {
+        id<HackProtocol> it = [[class alloc] init];
+        NSString *appName = [it getAppName];
+        if ([appName isEqualToString:currentAppName]) {
+            // TODO 执行其他操作 ,比如 checkVersion
+            [it hack];
+            break;
+        }
+    }
+}
+@end
+```
+### 最后在 dylib 入口处传入 appName
+
+```
++ (void) load {
+   
+    NSString *appName = [[NSBundle mainBundle] bundleIdentifier];
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText:@"确认执行破解操作吗？"];
+    [alert addButtonWithTitle:@"确认"];
+    [alert addButtonWithTitle:@"取消"];
+    NSInteger response = [alert runModal];
+    if (response == NSAlertFirstButtonReturn) {
+        [Constant doHack:appName];
+    } else {
+        return;
+    }
+}
+@end
+```
+
+至此,代码重构优化结束,如果补丁要支持新的 app ,只需要添加一个 HackProtocol 实现类即可,  
+对别的地方的代码, 零入侵.
 
 
 ## Ref
