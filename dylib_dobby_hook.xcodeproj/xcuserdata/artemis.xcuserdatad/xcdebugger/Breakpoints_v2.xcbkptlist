@@ -3,4 +3,86 @@
    uuid = "9523A9C1-ED28-4D3A-AEDA-9E5B5E995F8C"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "996C155B-5165-4414-8C4C-DA885EC8C5D4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "dylib_dobby_hook/Constant.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "+getAllHackClasses"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "213CCFCA-CA2A-463B-8688-81D9081C8375"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "dylib_dobby_hook/AirBuddyHack.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "-hack"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "213CCFCA-CA2A-463B-8688-81D9081C8375 - f923f70dc52ea00f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AirBuddyHack hack]"
+                  moduleName = "libdylib_dobby_hook.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artemis/Documents/work_space/mac/dylib_dobby_hook/dylib_dobby_hook/AirBuddyHack.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "72">
+               </Location>
+               <Location
+                  uuid = "213CCFCA-CA2A-463B-8688-81D9081C8375 - f923f70dc52ea00f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AirBuddyHack hack]"
+                  moduleName = "libdylib_dobby_hook.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/artemis/Documents/work_space/mac/dylib_dobby_hook/dylib_dobby_hook/AirBuddyHack.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "58">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C828FF98-3958-417A-A827-F2F3A72A147E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "dylib_dobby_hook/TablePlusHack.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "-hook"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

@@ -7,11 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3816BBB72B54FED80051CF39 /* MemoryUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 3816BBB62B54FED80051CF39 /* MemoryUtils.h */; };
+		3816BBB92B54FF090051CF39 /* MemoryUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3816BBB82B54FF090051CF39 /* MemoryUtils.m */; };
 		38350BF62B53F73A00DD52B3 /* dylib_dobby_hook.h in Headers */ = {isa = PBXBuildFile; fileRef = 38350BF52B53F73A00DD52B3 /* dylib_dobby_hook.h */; };
 		38350BF82B53F73A00DD52B3 /* dylib_dobby_hook.m in Sources */ = {isa = PBXBuildFile; fileRef = 38350BF72B53F73A00DD52B3 /* dylib_dobby_hook.m */; };
 		38350C002B53F77E00DD52B3 /* libdobby.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 38350BFF2B53F77E00DD52B3 /* libdobby.dylib */; };
 		38350C022B53F78900DD52B3 /* dobby.h in Headers */ = {isa = PBXBuildFile; fileRef = 38350C012B53F78900DD52B3 /* dobby.h */; };
 		38350C042B53F87200DD52B3 /* libdobby.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 38350BFF2B53F77E00DD52B3 /* libdobby.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		38B83E2F2B55058E00919735 /* TablePlusHack.h in Headers */ = {isa = PBXBuildFile; fileRef = 38B83E2E2B55058E00919735 /* TablePlusHack.h */; };
+		38B83E312B5505B300919735 /* TablePlusHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 38B83E302B5505B300919735 /* TablePlusHack.m */; };
 		38D1AC282B54C9C100E6CB9E /* Constant.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC272B54C9C100E6CB9E /* Constant.h */; };
 		38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC292B54CA4D00E6CB9E /* Constant.m */; };
 		38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */; };
@@ -33,6 +37,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3816BBB62B54FED80051CF39 /* MemoryUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryUtils.h; sourceTree = "<group>"; };
+		3816BBB82B54FF090051CF39 /* MemoryUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MemoryUtils.m; sourceTree = "<group>"; };
 		38350BF22B53F73A00DD52B3 /* libdylib_dobby_hook.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libdylib_dobby_hook.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		38350BF52B53F73A00DD52B3 /* dylib_dobby_hook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dylib_dobby_hook.h; sourceTree = "<group>"; };
 		38350BF72B53F73A00DD52B3 /* dylib_dobby_hook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = dylib_dobby_hook.m; sourceTree = "<group>"; };
@@ -42,6 +48,8 @@
 		38350C092B54047F00DD52B3 /* hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = hack.sh; sourceTree = "<group>"; };
 		38350C0C2B5407DD00DD52B3 /* libdobby.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libdobby.dylib; sourceTree = "<group>"; };
 		38350C0D2B5407DD00DD52B3 /* libdylib_dobby_hook.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libdylib_dobby_hook.dylib; sourceTree = "<group>"; };
+		38B83E2E2B55058E00919735 /* TablePlusHack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TablePlusHack.h; sourceTree = "<group>"; };
+		38B83E302B5505B300919735 /* TablePlusHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TablePlusHack.m; sourceTree = "<group>"; };
 		38D1AC272B54C9C100E6CB9E /* Constant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
 		38D1AC292B54CA4D00E6CB9E /* Constant.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constant.m; sourceTree = "<group>"; };
 		38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackProtocol.h; sourceTree = "<group>"; };
@@ -92,6 +100,10 @@
 				38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */,
 				38D1AC2F2B54D16100E6CB9E /* AirBuddyHack.h */,
 				38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */,
+				3816BBB62B54FED80051CF39 /* MemoryUtils.h */,
+				3816BBB82B54FF090051CF39 /* MemoryUtils.m */,
+				38B83E2E2B55058E00919735 /* TablePlusHack.h */,
+				38B83E302B5505B300919735 /* TablePlusHack.m */,
 			);
 			path = dylib_dobby_hook;
 			sourceTree = "<group>";
@@ -137,10 +149,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				38350BF62B53F73A00DD52B3 /* dylib_dobby_hook.h in Headers */,
+				3816BBB72B54FED80051CF39 /* MemoryUtils.h in Headers */,
 				38350C022B53F78900DD52B3 /* dobby.h in Headers */,
 				38D1AC282B54C9C100E6CB9E /* Constant.h in Headers */,
 				38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */,
 				38D1AC302B54D16100E6CB9E /* AirBuddyHack.h in Headers */,
+				38B83E2F2B55058E00919735 /* TablePlusHack.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,6 +240,8 @@
 			files = (
 				38D1AC322B54D1CC00E6CB9E /* AirBuddyHack.m in Sources */,
 				38350BF82B53F73A00DD52B3 /* dylib_dobby_hook.m in Sources */,
+				3816BBB92B54FF090051CF39 /* MemoryUtils.m in Sources */,
+				38B83E312B5505B300919735 /* TablePlusHack.m in Sources */,
 				38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

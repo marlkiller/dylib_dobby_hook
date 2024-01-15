@@ -9,6 +9,7 @@
 #import "AirBuddyHack.h"
 #import "Constant.h"
 #import "dobby.h"
+#import "MemoryUtils.h"
 
 @implementation AirBuddyHack
 
