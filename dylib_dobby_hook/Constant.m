@@ -15,14 +15,17 @@
 
 static void __attribute__ ((constructor)) initialize(void){
     NSLog(@"Constant init");    
-    NSBundle *app = [NSBundle mainBundle];
-    appName = [app bundleIdentifier];
-    appVersion = [app objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    appCFBundleVersion = [app objectForInfoDictionaryKey:@"CFBundleVersion"];
-    NSLog(@"AppName is [%s],Version is [%s], myAppCFBundleVersion is [%s].", appName.UTF8String, appVersion.UTF8String, appCFBundleVersion.UTF8String);
-    
-}
 
+}
++ (void)initialize {
+    if (self == [Constant class]) {
+        NSBundle *app = [NSBundle mainBundle];
+        appName = [app bundleIdentifier];
+        appVersion = [app objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+        appCFBundleVersion = [app objectForInfoDictionaryKey:@"CFBundleVersion"];
+        NSLog(@"AppName is [%s],Version is [%s], myAppCFBundleVersion is [%s].", appName.UTF8String, appVersion.UTF8String, appCFBundleVersion.UTF8String);
+    }
+}
 /**
  * App的唯一ID 用来过滤指定的App
  */
@@ -100,8 +103,8 @@ const NSString *appCFBundleVersion;
     
     for (Class class in personClasses) {
         id<HackProtocol> it = [[class alloc] init];
-        NSString *appName = [it getAppName];
-        if ([appName isEqualToString:appName]) {
+        NSString *currentAppName = [it getAppName];
+        if ([currentAppName isEqualToString:appName]) {
             // TODO 执行其他操作 ,比如 checkVersion
             [it hack];
             break;

@@ -15,7 +15,7 @@
 
 
 - (NSString *)getAppName {
-    return @"tale";
+    return @"com.tinyapp.TablePlus";
 }
 
 - (BOOL)checkVersion {
@@ -24,28 +24,18 @@
 }
 
 - (BOOL)hack {
-    [self hook];
+    
+    #if defined(__arm64__) || defined(__aarch64__)
+        
+    #elif defined(__x86_64__)
+        
+    #endif
+    
     return YES;
 }
 
 
 
-#if defined(__arm64__) || defined(__aarch64__)
-
-
-- (void)hook {
-    NSLog(@"The current app running environment is __arm64__");
-    
-}
-#elif defined(__x86_64__)
-
-- (void)hook {
-    NSLog(@"The current app running environment is __x86_64__");
-    NSLog(@"The current app running environment is __x86_64__");
-    
-   
-}
-#endif
 
 
 @end

@@ -41,8 +41,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         BundleIdentifier = "codes.rambo.AirBuddy"
-         FilePath = "/Applications/AirBuddy.app">
+         FilePath = "/Applications/TablePlus.app">
       </PathRunnable>
    </LaunchAction>
    <ProfileAction

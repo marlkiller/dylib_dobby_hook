@@ -7,7 +7,7 @@
 
 #import "dylib_dobby_hook.h"
 #import "dobby.h"
-#import "constant.h"
+#import "Constant.h"
 #import <Cocoa/Cocoa.h>
 
 @implementation dylib_dobby_hook
