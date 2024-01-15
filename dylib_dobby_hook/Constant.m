@@ -43,6 +43,8 @@ static void __attribute__ ((constructor)) initialize(void){
     if(isDebugging){
         NSLog(@"The current app running with debugging");
         #if defined(__arm64__) || defined(__aarch64__)
+        // 不知道为什么
+        // arm 环境下,如果是调试模式, 计算地址不需要 + _dyld_get_image_vmaddr_slide,否则会出错
         return 0;
         #endif
     }
