@@ -1,0 +1,15 @@
+//
+//  constant.h
+//  dylib_dobby_hook
+//
+//  Created by artemis on 2024/1/15.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface Constant : NSObject
++ (BOOL)isDebuggerAttached;
++ (intptr_t)getBaseAddr:(uint32_t)index;
++ (NSArray<Class> *)getAllHackClasses;
++ (void)doHack:(NSString *)currentAppName;
+@end
