@@ -104,7 +104,7 @@ const NSString *appCFBundleVersion;
     for (Class class in personClasses) {
         id<HackProtocol> it = [[class alloc] init];
         NSString *currentAppName = [it getAppName];
-        if ([currentAppName isEqualToString:appName]) {
+        if ([appName isEqualToString:currentAppName]) {
             // TODO 执行其他操作 ,比如 checkVersion
             [it hack];
             break;
