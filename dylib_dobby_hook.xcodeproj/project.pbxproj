@@ -21,6 +21,9 @@
 		38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */; };
 		38D1AC302B54D16100E6CB9E /* AirBuddyHack.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC2F2B54D16100E6CB9E /* AirBuddyHack.h */; };
 		38D1AC322B54D1CC00E6CB9E /* AirBuddyHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */; };
+		B5CB448B2B55742A004CEF38 /* LicenseModel.h in Headers */ = {isa = PBXBuildFile; fileRef = B5CB448A2B55742A004CEF38 /* LicenseModel.h */; };
+		B5F59EE92B56B6E400FCE1A4 /* Mapper.h in Headers */ = {isa = PBXBuildFile; fileRef = B5F59EE82B56B6E400FCE1A4 /* Mapper.h */; };
+		B5F59EEC2B56B70300FCE1A4 /* HPDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = B5F59EEB2B56B70300FCE1A4 /* HPDecoder.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -55,6 +58,9 @@
 		38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackProtocol.h; sourceTree = "<group>"; };
 		38D1AC2F2B54D16100E6CB9E /* AirBuddyHack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AirBuddyHack.h; sourceTree = "<group>"; };
 		38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AirBuddyHack.m; sourceTree = "<group>"; };
+		B5CB448A2B55742A004CEF38 /* LicenseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LicenseModel.h; sourceTree = "<group>"; };
+		B5F59EE82B56B6E400FCE1A4 /* Mapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mapper.h; sourceTree = "<group>"; };
+		B5F59EEB2B56B70300FCE1A4 /* HPDecoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HPDecoder.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +98,7 @@
 		38350BF42B53F73A00DD52B3 /* dylib_dobby_hook */ = {
 			isa = PBXGroup;
 			children = (
+				B5F59EEE2B56CF8B00FCE1A4 /* tableplus */,
 				38350BF52B53F73A00DD52B3 /* dylib_dobby_hook.h */,
 				38350BF72B53F73A00DD52B3 /* dylib_dobby_hook.m */,
 				38350C012B53F78900DD52B3 /* dobby.h */,
@@ -141,6 +148,16 @@
 			path = release;
 			sourceTree = "<group>";
 		};
+		B5F59EEE2B56CF8B00FCE1A4 /* tableplus */ = {
+			isa = PBXGroup;
+			children = (
+				B5CB448A2B55742A004CEF38 /* LicenseModel.h */,
+				B5F59EE82B56B6E400FCE1A4 /* Mapper.h */,
+				B5F59EEB2B56B70300FCE1A4 /* HPDecoder.h */,
+			);
+			path = tableplus;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -148,6 +165,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5F59EE92B56B6E400FCE1A4 /* Mapper.h in Headers */,
+				B5CB448B2B55742A004CEF38 /* LicenseModel.h in Headers */,
+				B5F59EEC2B56B70300FCE1A4 /* HPDecoder.h in Headers */,
 				38350BF62B53F73A00DD52B3 /* dylib_dobby_hook.h in Headers */,
 				3816BBB72B54FED80051CF39 /* MemoryUtils.h in Headers */,
 				38350C022B53F78900DD52B3 /* dobby.h in Headers */,
