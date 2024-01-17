@@ -37,7 +37,7 @@ id sub_100131360New(int arg0, int arg1, int arg2, int arg3){
     NSDictionary *propertyDictionary = @{
         @"sign": @"fuckSign",
         @"email": @"marlkiller@voidm.com",
-        @"deviceID": @"fuckDeviceId",
+        @"deviceID": @"88548e5a38eeee04e89c5621ba04bc7e",
         @"purchasedAt": @"2999-01-16",
         @"nextChargeAt": @(9999999999999), // Replace with the actual double value
         @"updatesAvailableUntil": @"2999-01-16" // Replace with the actual value
@@ -74,7 +74,7 @@ id sub_10014AF90New(int arg0, int arg1, int arg2, int arg3){
     NSDictionary *propertyDictionary = @{
         @"sign": @"fuckSign",
         @"email": @"marlkiller@voidm.com",
-        @"deviceID": @"fuckDeviceId",
+        @"deviceID": @"88548e5a38eeee04e89c5621ba04bc7e",
         @"purchasedAt": @"2999-01-16",
         @"nextChargeAt": @(9999999999999), // Replace with the actual double value
         @"updatesAvailableUntil": @"2999-01-16" // Replace with the actual value

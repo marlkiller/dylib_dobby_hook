@@ -3,4 +3,50 @@
    uuid = "9523A9C1-ED28-4D3A-AEDA-9E5B5E995F8C"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.AddressBreakpoint">
+         <BreakpointContent
+            uuid = "EAC19383-0C51-474A-AD64-1CFAF5200EA6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = "*0x100059e90">
+            <Locations>
+               <Location
+                  uuid = "EAC19383-0C51-474A-AD64-1CFAF5200EA6 - 9bed32870efed875"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "___lldb_unnamed_symbol4605"
+                  moduleName = "TablePlus"
+                  usesParentBreakpointCondition = "Yes"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.AddressBreakpoint">
+         <BreakpointContent
+            uuid = "E24E6188-C2DC-47DE-AA9A-FBFC278DF1B5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = "*0x100059e8a">
+            <Locations>
+               <Location
+                  uuid = "E24E6188-C2DC-47DE-AA9A-FBFC278DF1B5 - 9bed32870efed875"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "___lldb_unnamed_symbol4605"
+                  moduleName = "TablePlus"
+                  usesParentBreakpointCondition = "Yes"
+                  offsetFromSymbolStart = "26">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
