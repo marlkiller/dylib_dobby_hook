@@ -8,6 +8,6 @@
 @protocol HackProtocol
 
 - (NSString *)getAppName;
-- (BOOL)checkVersion;
+- (NSString *)getSupportAppVersion;
 - (BOOL)hack;
 @end

@@ -18,9 +18,9 @@
     return @"codes.rambo.AirBuddy";
 }
 
-- (BOOL)checkVersion {
+- (NSString *)getSupportAppVersion {
     // TODO
-    return YES;
+    return @"2.6.3";
 }
 
 - (BOOL)hack {

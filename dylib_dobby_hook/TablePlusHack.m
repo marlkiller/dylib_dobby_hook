@@ -20,9 +20,8 @@
     return @"com.tinyapp.TablePlus";
 }
 
-- (BOOL)checkVersion {
-    // TODO
-    return YES;
+- (NSString *)getSupportAppVersion {    
+    return @"5.8.2";
 }
 
 
@@ -30,11 +29,10 @@ const LicenseModel *rbx;
 
 
 #if defined(__arm64__) || defined(__aarch64__)
-    
-#elif defined(__x86_64__)
 
 
-id sub_10014AF90New(int arg0, int arg1, int arg2, int arg3){
+id sub_100131360New(int arg0, int arg1, int arg2, int arg3){
+    if (rbx==nil){
     LicenseModel *r12 = [[NSClassFromString(@"LicenseModel") alloc] init];
     NSDictionary *propertyDictionary = @{
         @"sign": @"fuckSign",
@@ -44,8 +42,44 @@ id sub_10014AF90New(int arg0, int arg1, int arg2, int arg3){
         @"nextChargeAt": @(9999999999999), // Replace with the actual double value
         @"updatesAvailableUntil": @"2999-01-16" // Replace with the actual value
     };
+    rbx = [r12 initWithDictionary:propertyDictionary];;
+    }
+    return rbx;
+}
+
+
+bool sub_100050ea0New(int arg0, int arg1, int arg2, int arg3, int arg4){
+    return 0x1;
+}
+
+int (*sub_100131360Ori)();
+
+int (*sub_100050ea0Ori)();
+
+- (BOOL)hack {
+    sub_100131360New(1,2,3,4);
+    intptr_t _sub_100131360 = [Constant getBaseAddr:0] + 0x100131360;
+    DobbyHook(_sub_100131360, sub_100131360New, (void *)&sub_100131360Ori);
+    intptr_t _sub_100050ea0 = [Constant getBaseAddr:0] + 0x100050ea0  ;
+    DobbyHook(_sub_100050ea0, sub_100050ea0New, (void *)&sub_100050ea0Ori);
+    return YES;
+}
+    
+#elif defined(__x86_64__)
+
+
+id sub_10014AF90New(int arg0, int arg1, int arg2, int arg3){
     if (rbx==nil){
-        rbx = [r12 initWithDictionary:propertyDictionary];;
+    LicenseModel *r12 = [[NSClassFromString(@"LicenseModel") alloc] init];
+    NSDictionary *propertyDictionary = @{
+        @"sign": @"fuckSign",
+        @"email": @"marlkiller@voidm.com",
+        @"deviceID": @"fuckDeviceId",
+        @"purchasedAt": @"2999-01-16",
+        @"nextChargeAt": @(9999999999999), // Replace with the actual double value
+        @"updatesAvailableUntil": @"2999-01-16" // Replace with the actual value
+    };
+    rbx = [r12 initWithDictionary:propertyDictionary];;
     }
     return rbx;
 }

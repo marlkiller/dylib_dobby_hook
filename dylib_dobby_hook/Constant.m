@@ -10,6 +10,7 @@
 #import <mach-o/dyld.h>
 #import <objc/runtime.h>
 #import "HackProtocol.h"
+#import <Cocoa/Cocoa.h>
 
 @implementation Constant
 
@@ -20,24 +21,24 @@ static void __attribute__ ((constructor)) initialize(void){
 + (void)initialize {
     if (self == [Constant class]) {
         NSBundle *app = [NSBundle mainBundle];
-        appName = [app bundleIdentifier];
-        appVersion = [app objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-        appCFBundleVersion = [app objectForInfoDictionaryKey:@"CFBundleVersion"];
-        NSLog(@"AppName is [%s],Version is [%s], myAppCFBundleVersion is [%s].", appName.UTF8String, appVersion.UTF8String, appCFBundleVersion.UTF8String);
+        currentAppName = [app bundleIdentifier];
+        currentAppVersion = [app objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+        currentAppCFBundleVersion = [app objectForInfoDictionaryKey:@"CFBundleVersion"];
+        NSLog(@"AppName is [%s],Version is [%s], myAppCFBundleVersion is [%s].", currentAppName.UTF8String, currentAppVersion.UTF8String, currentAppCFBundleVersion.UTF8String);
     }
 }
 /**
  * App的唯一ID 用来过滤指定的App
  */
-const NSString *appName;
+const NSString *currentAppName;
 /**
  * app的版本号
  */
-const NSString *appVersion;
+const NSString *currentAppVersion;
 /**
  * 更精确的版本号 一般情况下不用到
  */
-const NSString *appCFBundleVersion;
+const NSString *currentAppCFBundleVersion;
 
 
 + (BOOL)isDebuggerAttached {
@@ -64,11 +65,10 @@ const NSString *appCFBundleVersion;
     BOOL isDebugging = [Constant isDebuggerAttached];
     if(isDebugging){
         NSLog(@"The current app running with debugging");
-//#if defined(__arm64__) || defined(__aarch64__)
         // 不知道为什么
-        // arm 环境下,如果是调试模式, 计算地址不需要 + _dyld_get_image_vmaddr_slide,否则会出错
+        // 如果是调试模式, 计算地址不需要 + _dyld_get_image_vmaddr_slide,否则会出错
         return 0;
-//#endif
+
     }
     return _dyld_get_image_vmaddr_slide(index);
 }
@@ -103,12 +103,22 @@ const NSString *appCFBundleVersion;
     
     for (Class class in personClasses) {
         id<HackProtocol> it = [[class alloc] init];
-        NSString *currentAppName = [it getAppName];
-        if ([appName isEqualToString:currentAppName]) {
-            // TODO 执行其他操作 ,比如 checkVersion
+        if ([currentAppName isEqualToString:[it getAppName]]) {
+            if (![currentAppVersion hasPrefix:[it getSupportAppVersion]]){
+                NSAlert *alert = [[NSAlert alloc] init];
+                [alert addButtonWithTitle:@"OK"];
+                alert.messageText =  [NSString stringWithFormat:@"Unsupported current appVersion !!\nSuppert appVersion: [%s]\nCurrent appVersion: [%s]",[it getSupportAppVersion].UTF8String, currentAppVersion.UTF8String];;
+                [alert runModal];
+                return;
+            }            
             [it hack];
-            break;
+            return;
         }
     }
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert addButtonWithTitle:@"OK"];
+    alert.messageText =  [NSString stringWithFormat:@"Unsupported current app: [%s]", currentAppName.UTF8String];;
+    [alert runModal];
+    
 }
 @end

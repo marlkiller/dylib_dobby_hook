@@ -41,11 +41,10 @@ void initTest(){
     
     // initTest();
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:@"确认执行破解操作吗？"];
-    [alert addButtonWithTitle:@"确认"];
-    [alert addButtonWithTitle:@"取消"];
+    [alert setMessageText:@"Please confirm if the app has been backed up.\nIf there are any issues, please restore it yourself!"];
+    [alert addButtonWithTitle:@"Confirm"];
+    [alert addButtonWithTitle:@"Cancel"];
     NSInteger response = [alert runModal];
-    
     if (response == NSAlertFirstButtonReturn) {
         [Constant doHack];
     } else {
