@@ -34,11 +34,9 @@
 }
 
 
-+ (NSString *)readMachineCodeStringAtAddress:(uintptr_t)address {
++ (NSString *)readMachineCodeStringAtAddress:(uintptr_t)address length:(int)length {
     unsigned char *bytes = (unsigned char *)address;
     NSMutableString *codeString = [NSMutableString string];
-    size_t length = 100; // 默认长度为 100
-    
     for (NSUInteger i = 0; i < length; i++) {
         [codeString appendFormat:@"%02X ", bytes[i]];
     }
