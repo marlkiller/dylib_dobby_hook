@@ -22,7 +22,7 @@
 }
 
 - (NSString *)getSupportAppVersion {
-    return @"5.8.2";
+    return @"5.8.";
 }
 
 
@@ -162,7 +162,7 @@ int (*hook_device_id_ori)();
     //    000000010014afab         call       sub_100015360
     //    55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC 98 00 00 00 48 8D 3D F5 26 76 00 E8
     
-    NSString *searchMachineCode = @"55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC 98 00 00 00 48 8D 3D F5 26 76 00 E8";
+    NSString *searchMachineCode = @"55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC 98 00 00 00 48 8D 3D";
     int count = 1;
     NSArray *globalOffsets =[MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)searchMachineCode count:(int)count];
     uintptr_t globalOffset = [globalOffsets[0] unsignedIntegerValue];
