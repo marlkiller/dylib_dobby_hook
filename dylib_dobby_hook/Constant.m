@@ -12,6 +12,7 @@
 #import "HackProtocol.h"
 #import <Cocoa/Cocoa.h>
 #include <mach-o/arch.h>
+#include <sys/sysctl.h>
 
 
 @implementation Constant
@@ -26,32 +27,47 @@ static void __attribute__ ((constructor)) initialize(void){
         currentAppName = [app bundleIdentifier];
         currentAppVersion = [app objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
         currentAppCFBundleVersion = [app objectForInfoDictionaryKey:@"CFBundleVersion"];
-        NSLog(@"AppName is [%s],Version is [%s], myAppCFBundleVersion is [%s].", currentAppName.UTF8String, currentAppVersion.UTF8String, currentAppCFBundleVersion.UTF8String);
-        NSLog(@"AppName Architecture: %@", [Constant getSystemArchitecture]);
-        NSLog(@"AppName DEBUGGING : %d", [Constant isDebuggerAttached]);
+        NSLog(@">>>>>> AppName is [%s],Version is [%s], myAppCFBundleVersion is [%s].", currentAppName.UTF8String, currentAppVersion.UTF8String, currentAppCFBundleVersion.UTF8String);
+        NSLog(@">>>>>> AppName Architecture: %@", [Constant getSystemArchitecture]);
+        NSLog(@">>>>>> AppName DEBUGGING : %d", [Constant isDebuggerAttached]);
+        NSRange range = [[Constant getSystemArchitecture] rangeOfString:@"arm" options:NSCaseInsensitiveSearch];
+        isArm = range.location != NSNotFound;
+        
+        // 返回包的完整路径。
+        currentAppPath = [app bundlePath];
+        // 返回应用程序执行文件的路径。
+        // NSString *executablePath = [app executablePath];
+        // 根据资源文件名、文件类型和子目录返回资源的路径。
+        // NSString *resourcePath = [[NSBundle mainBundle] pathForResource:@"example" ofType:@"png" inDirectory:@"Images"];
+        // 返回本地化字符串。
+        // NSString *localizedString = [[NSBundle mainBundle] localizedStringForKey:@"Greeting" value:@"" table:@"Greetings"];
+        
     }
 }
-/**
- * App的唯一ID 用来过滤指定的App
- */
-const NSString *currentAppName;
-/**
- * app的版本号
- */
-const NSString *currentAppVersion;
-/**
- * 更精确的版本号 一般情况下不用到
- */
-const NSString *currentAppCFBundleVersion;
+
+NSString *currentAppPath;
+NSString *currentAppName;
+NSString *currentAppVersion;
+NSString *currentAppCFBundleVersion;
+bool isArm;
+
+
++ (BOOL)isArm {
+    return isArm;
+}
+
++ (NSString *)getCurrentAppPath {
+    return currentAppPath;
+}
 
 + (NSString *)getSystemArchitecture {
-    const NXArchInfo *archInfo = NXGetLocalArchInfo();
-
-    if (archInfo) {
-        return [NSString stringWithUTF8String:archInfo->name];
-    } else {
-        return nil;
-    }
+    size_t size;
+    sysctlbyname("hw.machine", NULL, &size, NULL, 0);
+    char *machine = malloc(size);
+    sysctlbyname("hw.machine", machine, &size, NULL, 0);
+    NSString *machineString = [NSString stringWithCString:machine encoding:NSUTF8StringEncoding];
+    free(machine);    
+    return machineString;
 }
 
 
@@ -72,19 +88,6 @@ const NSString *currentAppCFBundleVersion;
         }
     }
     return isDebugging;
-}
-
-
-+ (intptr_t)getBaseAddr:(uint32_t)index{
-    BOOL isDebugging = [Constant isDebuggerAttached];
-    if(isDebugging){
-        // NSLog(@"The current app running with debugging");
-        // 不知道为什么
-        // 如果是调试模式, 计算地址不需要 + _dyld_get_image_vmaddr_slide,否则会出错
-        return 0;
-
-    }
-    return _dyld_get_image_vmaddr_slide(index);
 }
 
 

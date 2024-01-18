@@ -18,4 +18,14 @@
 + (NSString *)readMachineCodeStringAtAddress:(uintptr_t)address length:(int)length;
 + (void)writeMachineCodeString:(NSString *)codeString toAddress:(uintptr_t)address;
 
+
++ (uintptr_t)getCurrentArchFileOffset: (NSString *) filePath;
+
++ (NSArray *)searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)searchMachineCode count:(int)count;
+
++ (uintptr_t)getPtrFromAddress:(uintptr_t)targetFunctionAddress;
++ (uintptr_t)getPtrFromAddress:(uint32_t)index targetFunctionAddress:(uintptr_t)targetFunctionAddress;
++ (uintptr_t)getPtrFromGlobalOffset:(uint32_t)index targetFunctionOffset:(uintptr_t)targetFunctionOffset;
++ (uintptr_t)getPtrFromGlobalOffset:(uint32_t)index targetFunctionOffset:(uintptr_t)targetFunctionOffset reduceOffset:(uintptr_t)reduceOffset;
+
 @end

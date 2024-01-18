@@ -8,9 +8,10 @@
 #import <Foundation/Foundation.h>
 
 @interface Constant : NSObject
++ (BOOL)isArm;
++ (NSString *)getCurrentAppPath;
 + (NSString *)getSystemArchitecture;
 + (BOOL)isDebuggerAttached;
-+ (intptr_t)getBaseAddr:(uint32_t)index;
 + (NSArray<Class> *)getAllHackClasses;
 + (void)doHack;
 @end

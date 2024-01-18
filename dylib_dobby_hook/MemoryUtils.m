@@ -7,8 +7,15 @@
 
 #import <Foundation/Foundation.h>
 #import "MemoryUtils.h"
+#import "Constant.h"
+#import "mach-o/fat.h"
+#import "mach-o/getsect.h"
+#import <mach-o/dyld.h>
+
 
 @implementation MemoryUtils
+
+const uintptr_t ARCH_FAT_SIZE = 0x100000000;
 
 + (NSString *)readStringAtAddress:(uintptr_t)address {
     const char *cString = (const char *)address;
@@ -56,5 +63,188 @@
         bytes[i] = (unsigned char)byteValue;
     }
 }
+
+
+NSData *machineCode2Bytes(NSString *hexString) {
+    NSMutableData *data = [NSMutableData new];
+    NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    hexString = [[hexString componentsSeparatedByCharactersInSet:whitespace] componentsJoinedByString:@""];
+
+    for (NSUInteger i = 0; i < [hexString length]; i += 2) {
+        NSString *byteString = [hexString substringWithRange:NSMakeRange(i, 2)];
+        if ([byteString isEqualToString:@"??"]) {
+            uint8_t byte = (uint8_t) 144;
+            [data appendBytes:&byte length:1];
+            continue;
+        }
+        NSScanner *scanner = [NSScanner scannerWithString:byteString];
+        unsigned int byteValue;
+        [scanner scanHexInt:&byteValue];
+        uint8_t byte = (uint8_t) byteValue;
+        [data appendBytes:&byte length:1];
+    }
+    return [data copy];
+}
+
+
+
+
+
++ (NSArray *)searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)searchMachineCode count:(int)count {
+    
+    NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:searchFilePath];    
+
+    NSMutableArray<NSNumber *> *offsets = [NSMutableArray array];
+    NSData *fileData = [fileHandle readDataToEndOfFile];
+    NSUInteger fileLength = [fileData length];
+
+    NSData *searchBytes = machineCode2Bytes(searchMachineCode);
+    NSUInteger searchLength = [searchBytes length];
+    NSUInteger searchIndex = 0;
+    NSUInteger matchCounter = 0;
+
+    for (NSUInteger i = 0; i < fileLength; i++) {
+        uint8_t currentByte = ((const uint8_t *) [fileData bytes])[i];
+
+        if (searchIndex < searchLength) {
+            uint8_t searchByte = ((const uint8_t *) [searchBytes bytes])[searchIndex];
+
+            if (searchByte == 0x90) {
+                // Wildcard byte, continue searching
+                searchIndex++;
+            } else if (currentByte == searchByte) {
+                // Matched byte, move to the next search index
+                searchIndex++;
+            } else {
+                // Mismatched byte, reset search index
+                searchIndex = 0;
+            }
+        } else {
+            // Reached the end of the search pattern, add offset to results
+            [offsets addObject:@(i - searchLength)];
+            searchIndex = 0;
+            matchCounter++;
+
+            if (matchCounter >= count) {
+                break;
+            }
+        }
+    }
+    [fileHandle closeFile];
+    return [offsets copy];
+}
+
+
+/**
+ * 从Mach-O中读取文件架构信息
+ * @param filePath 文件路径
+ * @return 返回文件中所有架构列表 只能分析FAT架构文件 Mach-O 64位文件解析不了 会死循环
+ */
+NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
+    NSMutableArray < NSDictionary * > *architecturesInfo = [NSMutableArray array];
+
+    NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
+    NSData *fileData = [fileHandle readDataOfLength:sizeof(struct fat_header)];
+
+    if (fileData) {
+        const struct fat_header *header = (const struct fat_header *) [fileData bytes];
+        uint32_t nfat_arch = OSSwapBigToHostInt32(header->nfat_arch);
+        for (uint32_t i = 0; i < nfat_arch; i++) {
+            NSData *archData = [fileHandle readDataOfLength:sizeof(struct fat_arch)];
+            const struct fat_arch *arch = (const struct fat_arch *) [archData bytes];
+
+            cpu_type_t cpuType = OSSwapBigToHostInt32(arch->cputype);
+            cpu_subtype_t cpuSubtype = OSSwapBigToHostInt32(arch->cpusubtype);
+            uint32_t offset = OSSwapBigToHostInt32(arch->offset);
+            uint32_t size = OSSwapBigToHostInt32(arch->size);
+
+            NSDictionary *archInfo = @{
+                    @"cpuType": @(cpuType),
+                    @"cpuSubtype": @(cpuSubtype),
+                    @"offset": @(offset),
+                    @"size": @(size)
+            };
+
+            [architecturesInfo addObject:archInfo];
+        }
+    }
+    [fileHandle closeFile];
+    return [architecturesInfo copy];
+}
+
+
+/**
+ * 获取当前文件相对内存地址偏移
+ */
++ (uintptr_t)getCurrentArchFileOffset: (NSString *) filePath {
+    const uint32_t desiredCpuType = [Constant isArm] ? CPU_TYPE_ARM64:CPU_TYPE_X86_64;
+    NSArray<NSDictionary *> *architecturesInfo = getArchitecturesInfoForFile(filePath);
+    for (NSDictionary *archInfo in architecturesInfo) {
+        cpu_type_t cpuType = [archInfo[@"cpuType"] unsignedIntValue];
+        uint32_t offset = [archInfo[@"offset"] unsignedIntValue];
+
+        if (cpuType == desiredCpuType) {
+            return offset;
+        } else
+            continue;
+    }
+    return 0;}
+
+
+
++ (uintptr_t)getPtrFromAddress:(uintptr_t)targetFunctionAddress {
+    return [self getPtrFromAddress:0 targetFunctionAddress:targetFunctionAddress];
+}
+
+/**
+ * _dyld_get_image_vmaddr_slide(0)：这是一个函数，用于获取当前加载的动态库的虚拟内存起始地址（slide）。Slide 是一个偏移量，表示动态库在虚拟内存中的偏移位置。
+ * 函数地址：这是你希望获取其内存地址的函数的地址。
+ + 函数地址：将函数的地址加到 slide 上，这样就可以得到该函数在内存中的实际地址。
+ */
++ (uintptr_t)getPtrFromAddress:(uint32_t)index targetFunctionAddress:(uintptr_t)targetFunctionAddress {
+
+    BOOL isDebugging = [Constant isDebuggerAttached];
+    intptr_t slide = 0;
+    if(!isDebugging){
+        // NSLog(@"The current app running with debugging");
+        // 不知道为什么
+        // 如果是调试模式, 计算地址不需要 + _dyld_get_image_vmaddr_slide,否则会出错
+        slide = _dyld_get_image_vmaddr_slide(index);
+
+    }
+    return slide + targetFunctionAddress;
+}
+
++ (uintptr_t)getPtrFromGlobalOffset:(uint32_t)index targetFunctionOffset:(uintptr_t)targetFunctionOffset {
+    return [self getPtrFromGlobalOffset:index targetFunctionOffset:targetFunctionOffset reduceOffset:0x4000];
+}
+
++ (uintptr_t)getPtrFromGlobalOffset:(uint32_t)index targetFunctionOffset:(uintptr_t)targetFunctionOffset reduceOffset:(uintptr_t)reduceOffset {
+    
+    // arm : 0x100000000 + 0xa91360 - 0x960000
+    // x86 : baseAddress + 0x14ef90 - 0x4000
+    uintptr_t result  = 0;
+    if ([Constant isArm]) {
+        if([Constant isDebuggerAttached]){
+            uintptr_t result = ARCH_FAT_SIZE+targetFunctionOffset-reduceOffset;
+            NSLog(@">>>>>>>>> 0x%lx + 0x%lx + 0x%lx = 0x%lx",ARCH_FAT_SIZE,targetFunctionOffset,reduceOffset,result);
+            return result;
+
+        }
+        result = _dyld_get_image_vmaddr_slide(index)+ARCH_FAT_SIZE+targetFunctionOffset-reduceOffset;
+        NSLog(@">>>>>>>>> 0x%lx + 0x%lx + 0x%lx + 0x%lx = 0x%lx ",_dyld_get_image_vmaddr_slide(index),ARCH_FAT_SIZE,targetFunctionOffset,reduceOffset,result);
+        return result;
+
+    }else {
+        const struct mach_header *header = _dyld_get_image_header(index);
+        uintptr_t baseAddress = (uintptr_t)header;
+        result = baseAddress + targetFunctionOffset - reduceOffset;
+        NSLog(@">>>>>>>>> 0x%lx + 0x%lx + 0x%lx = 0x%lx ",baseAddress,targetFunctionOffset,reduceOffset,result);
+        return result;
+
+    }
+    return result;
+}
+
 
 @end
