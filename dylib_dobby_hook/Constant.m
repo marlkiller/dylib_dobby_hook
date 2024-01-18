@@ -11,6 +11,8 @@
 #import <objc/runtime.h>
 #import "HackProtocol.h"
 #import <Cocoa/Cocoa.h>
+#include <mach-o/arch.h>
+
 
 @implementation Constant
 
@@ -25,6 +27,8 @@ static void __attribute__ ((constructor)) initialize(void){
         currentAppVersion = [app objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
         currentAppCFBundleVersion = [app objectForInfoDictionaryKey:@"CFBundleVersion"];
         NSLog(@"AppName is [%s],Version is [%s], myAppCFBundleVersion is [%s].", currentAppName.UTF8String, currentAppVersion.UTF8String, currentAppCFBundleVersion.UTF8String);
+        NSLog(@"AppName Architecture: %@", [Constant getSystemArchitecture]);
+        NSLog(@"AppName DEBUGGING : %d", [Constant isDebuggerAttached]);
     }
 }
 /**
@@ -39,6 +43,16 @@ const NSString *currentAppVersion;
  * 更精确的版本号 一般情况下不用到
  */
 const NSString *currentAppCFBundleVersion;
+
++ (NSString *)getSystemArchitecture {
+    const NXArchInfo *archInfo = NXGetLocalArchInfo();
+
+    if (archInfo) {
+        return [NSString stringWithUTF8String:archInfo->name];
+    } else {
+        return nil;
+    }
+}
 
 
 + (BOOL)isDebuggerAttached {
@@ -64,7 +78,7 @@ const NSString *currentAppCFBundleVersion;
 + (intptr_t)getBaseAddr:(uint32_t)index{
     BOOL isDebugging = [Constant isDebuggerAttached];
     if(isDebugging){
-        NSLog(@"The current app running with debugging");
+        // NSLog(@"The current app running with debugging");
         // 不知道为什么
         // 如果是调试模式, 计算地址不需要 + _dyld_get_image_vmaddr_slide,否则会出错
         return 0;

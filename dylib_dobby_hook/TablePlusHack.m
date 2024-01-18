@@ -37,7 +37,8 @@ id sub_100131360New(int arg0, int arg1, int arg2, int arg3){
         NSDictionary *propertyDictionary = @{
             @"sign": @"fuckSign",
             @"email": @"marlkiller@voidm.com",
-            @"deviceID": @"88548e5a38eeee04e89c5621ba04bc7e",
+            // @"deviceID": @"88548e5a38eeee04e89c5621ba04bc7e",
+            @"deviceID": @"",
             @"purchasedAt": @"2999-01-16",
             @"nextChargeAt": @(9999999999999), // Replace with the actual double value
             @"updatesAvailableUntil": @"2999-01-16" // Replace with the actual value
@@ -48,8 +49,22 @@ id sub_100131360New(int arg0, int arg1, int arg2, int arg3){
 }
 
 
-bool sub_100050ea0New(int arg0, int arg1, int arg2, int arg3, int arg4){
-    return 0x1;
+bool sub_100050ea0New(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t arg3, uint64_t arg4){
+    if (_rbx!=nil && _rbx.deviceID==@""){
+        
+        // r1 = *(int128_t *)(arg2 + 0x28);
+        uintptr_t *ptr = (uintptr_t *)(arg2 + 0x28);
+        void * addressPtr = (void *) *ptr;
+        // NSString * deviceId = [MemoryUtils readStringAtAddress:(addressPtr+0x20)];
+        // NSLog(@"deviceId: %@", deviceId);
+        // _rbx.deviceID =deviceId;
+        // 从地址中读取字符串 deviceID 数据
+        NSString *deviceId = [NSString stringWithCString:addressPtr+0x20 encoding:NSUTF8StringEncoding];
+        _rbx.deviceID =deviceId;
+        NSLog(@"deviceId: %@", deviceId);
+
+    }
+    return sub_100050ea0Ori(arg0,arg1,arg2,arg3,arg4);
 }
 
 int (*sub_100131360Ori)();
@@ -60,8 +75,8 @@ int (*sub_100050ea0Ori)();
     sub_100131360New(1,2,3,4);
     intptr_t _sub_100131360 = [Constant getBaseAddr:0] + 0x100131360;
     DobbyHook(_sub_100131360, sub_100131360New, (void *)&sub_100131360Ori);
-//    intptr_t _sub_100050ea0 = [Constant getBaseAddr:0] + 0x100050ea0  ;
-//    DobbyHook(_sub_100050ea0, sub_100050ea0New, (void *)&sub_100050ea0Ori);
+    intptr_t _sub_100050ea0 = [Constant getBaseAddr:0] + 0x100050ea0  ;
+    DobbyHook(_sub_100050ea0, sub_100050ea0New, (void *)&sub_100050ea0Ori);
     return YES;
 }
     
@@ -74,7 +89,7 @@ id sub_10014AF90New(int arg0, int arg1, int arg2, int arg3){
         NSDictionary *propertyDictionary = @{
             @"sign": @"fuckSign",
             @"email": @"marlkiller@voidm.com",
-//            @"deviceID": @"ee4f1d1890b4eb49a5a4d7f195ca8b67",
+            // @"deviceID": @"ee4f1d1890b4eb49a5a4d7f195ca8b67",
             @"deviceID": @"",
             @"purchasedAt": @"2999-01-16",
             @"nextChargeAt": @(9999999999999), // Replace with the actual double value
@@ -88,24 +103,35 @@ id sub_10014AF90New(int arg0, int arg1, int arg2, int arg3){
 
 bool sub_100059E70New(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t arg3, uint64_t arg4){
     if (_rbx!=nil && _rbx.deviceID==@""){
-        uint64_t _rsi = (arg2 + 0x28);
-        // NSLog(@"_rsi: %p", _rsi);
-        NSString * addressString = [MemoryUtils readMachineCodeStringAtAddress:(_rsi) length:(8)];
-        NSArray<NSString *> *byteStrings = [addressString componentsSeparatedByString:@" "];
-        NSMutableArray<NSString *> *reversedByteStrings = [NSMutableArray arrayWithCapacity:byteStrings.count];
-        // 将字节字符串倒序
-        for (NSInteger i = byteStrings.count - 1; i >= 0; i--) {
-            [reversedByteStrings addObject:byteStrings[i]];
-        }
-        // 连接倒序后的字节字符串
-        NSString *reversedAddressString = [reversedByteStrings componentsJoinedByString:@""];
-        // 将倒序后的地址字符串转换为实际地址值
-        unsigned long long address = strtoull([reversedAddressString UTF8String], NULL, 16);
-        void *addressPtr = (void *)address;
-        // NSLog(@"addressPtr: %p", addressPtr);
-        NSString * deviceId = [MemoryUtils readStringAtAddress:(addressPtr+0x20)];
-        NSLog(@"deviceId: %@", deviceId);
+        
+        // mov        rsi, qword [rdx+0x28] ; real device id
+                
+        // 地址要倒叙处理,垃圾写法
+        // uint64_t _rsi = (arg2 + 0x28);
+        // NSString * addressString = [MemoryUtils readMachineCodeStringAtAddress:(_rsi) length:(8)];
+        // NSArray<NSString *> *byteStrings = [addressString componentsSeparatedByString:@" "];
+        // NSMutableArray<NSString *> *reversedByteStrings = [NSMutableArray arrayWithCapacity:byteStrings.count];
+        // // 将字节字符串倒序
+        // for (NSInteger i = byteStrings.count - 1; i >= 0; i--) {
+        //     [reversedByteStrings addObject:byteStrings[i]];
+        // }
+        // // 连接倒序后的字节字符串
+        // NSString *reversedAddressString = [reversedByteStrings componentsJoinedByString:@""];
+        // // 将倒序后的地址字符串转换为实际地址值
+        // unsigned long long address = strtoull([reversedAddressString UTF8String], NULL, 16);
+        // void *addressPtr = (void *)address;
+        
+        
+        // 虽然看不明白, 但是这个写法短小精干
+        uintptr_t *ptr = (uintptr_t *)(arg2 + 0x28);
+        // NSLog(@"ptr: %#lx", ptr);
+        void * addressPtr = (void *) *ptr;
+        // NSString * deviceId = [MemoryUtils readStringAtAddress:(addressPtr+0x20)];
+        // NSLog(@"deviceId: %@", deviceId);
+        // _rbx.deviceID =deviceId;
+        NSString *deviceId = [NSString stringWithCString:addressPtr+0x20 encoding:NSUTF8StringEncoding];
         _rbx.deviceID =deviceId;
+        NSLog(@"deviceId: %@", deviceId);
     }
     return sub_100059E70Ori(arg0,arg1,arg2,arg3,arg4);
 }
