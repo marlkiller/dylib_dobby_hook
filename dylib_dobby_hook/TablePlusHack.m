@@ -105,6 +105,7 @@ bool sub_100059E70New(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t arg3
     if (_rbx!=nil && _rbx.deviceID==@""){
         
         // mov        rsi, qword [rdx+0x28] ; real device id
+        // rsi = *(arg2 + 0x28);
                 
         // 地址要倒叙处理,垃圾写法
         // uint64_t _rsi = (arg2 + 0x28);
@@ -123,6 +124,9 @@ bool sub_100059E70New(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t arg3
         
         
         // 虽然看不明白, 但是这个写法短小精干
+        // memory read ptr = 00 0f 3c 00 00 60 00 00,
+        // memory read *ptr *ptr+100 = deviceId
+        // addressPtr = 60 00 00 3c 0f 00
         uintptr_t *ptr = (uintptr_t *)(arg2 + 0x28);
         // NSLog(@"ptr: %#lx", ptr);
         void * addressPtr = (void *) *ptr;
