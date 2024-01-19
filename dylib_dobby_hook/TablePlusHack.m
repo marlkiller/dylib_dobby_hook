@@ -73,14 +73,14 @@ bool hook_device_id(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t arg3, 
         // memory read *ptr *ptr+100 = deviceId
         // addressPtr = 60 00 00 3c 0f 00
         uintptr_t *ptr = (uintptr_t *)(arg2 + 0x28);
-        // NSLog(@"ptr: %#lx", ptr);
+        // NSLog(@">>>>>> ptr: %#lx", ptr);
         void * addressPtr = (void *) *ptr;
         // NSString * deviceId = [MemoryUtils readStringAtAddress:(addressPtr+0x20)];
-        // NSLog(@"deviceId: %@", deviceId);
+        // NSLog(@">>>>>> deviceId: %@", deviceId);
         // _rbx.deviceID =deviceId;
         NSString *deviceId = [NSString stringWithCString:addressPtr+0x20 encoding:NSUTF8StringEncoding];
         _rbx.deviceID =deviceId;
-        NSLog(@"deviceId: %@", deviceId);
+        NSLog(@">>>>>> deviceId: %@", deviceId);
         
     }
     return hook_device_id_ori(arg0,arg1,arg2,arg3,arg4);

@@ -223,23 +223,24 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     
     // arm : 0x100000000 + 0xa91360 - 0x960000
     // x86 : baseAddress + 0x14ef90 - 0x4000
+    // local offset + reduceOffset = global offset
     uintptr_t result  = 0;
     if ([Constant isArm]) {
         if([Constant isDebuggerAttached]){
             uintptr_t result = ARCH_FAT_SIZE+targetFunctionOffset-reduceOffset;
-            NSLog(@">>>>>>>>> 0x%lx + 0x%lx + 0x%lx = 0x%lx",ARCH_FAT_SIZE,targetFunctionOffset,reduceOffset,result);
+            NSLog(@">>>>>> 0x%lx + 0x%lx - 0x%lx = 0x%lx",ARCH_FAT_SIZE,targetFunctionOffset,reduceOffset,result);
             return result;
 
         }
         result = _dyld_get_image_vmaddr_slide(index)+ARCH_FAT_SIZE+targetFunctionOffset-reduceOffset;
-        NSLog(@">>>>>>>>> 0x%lx + 0x%lx + 0x%lx + 0x%lx = 0x%lx ",_dyld_get_image_vmaddr_slide(index),ARCH_FAT_SIZE,targetFunctionOffset,reduceOffset,result);
+        NSLog(@">>>>>> 0x%lx + 0x%lx + 0x%lx - 0x%lx = 0x%lx ",_dyld_get_image_vmaddr_slide(index),ARCH_FAT_SIZE,targetFunctionOffset,reduceOffset,result);
         return result;
 
     }else {
         const struct mach_header *header = _dyld_get_image_header(index);
         uintptr_t baseAddress = (uintptr_t)header;
         result = baseAddress + targetFunctionOffset - reduceOffset;
-        NSLog(@">>>>>>>>> 0x%lx + 0x%lx + 0x%lx = 0x%lx ",baseAddress,targetFunctionOffset,reduceOffset,result);
+        NSLog(@">>>>>> 0x%lx + 0x%lx - 0x%lx = 0x%lx ",baseAddress,targetFunctionOffset,reduceOffset,result);
         return result;
 
     }

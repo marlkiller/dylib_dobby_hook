@@ -18,7 +18,7 @@
 @implementation Constant
 
 static void __attribute__ ((constructor)) initialize(void){
-    NSLog(@"Constant init");    
+    NSLog(@">>>>>> Constant init");    
 
 }
 + (void)initialize {
