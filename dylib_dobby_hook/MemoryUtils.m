@@ -11,6 +11,7 @@
 #import "mach-o/fat.h"
 #import "mach-o/getsect.h"
 #import <mach-o/dyld.h>
+#import <objc/runtime.h>
 
 
 @implementation MemoryUtils
@@ -249,6 +250,38 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
 
     }
     return result;
+}
+
++ (void)inspectObjectWithAddress:(void *)address {
+    id object = (__bridge id)address;
+    // LicenseModel *license = (__bridge LicenseModel *)addressPtr;
+    
+    // 获取对象的十六进制地址
+    uintptr_t ptrValue = (uintptr_t)address;
+    NSLog(@">>>>>> Address: 0x%lx", ptrValue);
+    
+    // 获取对象的类名
+    NSString *className = NSStringFromClass([object class]);
+    NSLog(@">>>>>> Class: %@", className);
+
+    // %@ 格式说明符将其作为对象进行输出。在此情况下，NSLog 将会调用对象的 description 方法来获取其字符串表示形式，并将其输出到控制台。
+    NSLog(@">>>>>> className.description: %@", address);
+    NSString *objectDescription = [object description];
+    NSLog(@">>>>>> Object Description: %@", objectDescription);
+
+    // 获取对象的属性与值
+    unsigned int count;
+    objc_property_t *properties = class_copyPropertyList([object class], &count);
+
+    for (unsigned int i = 0; i < count; i++) {
+        objc_property_t property = properties[i];
+        NSString *propertyName = [NSString stringWithUTF8String:property_getName(property)];
+
+        id propertyValue = [object valueForKey:propertyName];
+        NSLog(@">>>>>> Property: %@, Value: %@", propertyName, propertyValue);
+    }
+
+    free(properties);
 }
 
 

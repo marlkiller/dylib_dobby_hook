@@ -74,7 +74,9 @@ bool hook_device_id(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t arg3, 
         // addressPtr = 60 00 00 3c 0f 00
         uintptr_t *ptr = (uintptr_t *)(arg2 + 0x28);
         // NSLog(@">>>>>> ptr: %#lx", ptr);
+        // 将 ptr 指向的内存地址的值（即指针所指向的地址）赋值给 addressPtr
         void * addressPtr = (void *) *ptr;
+        // [MemoryUtils inspectObjectWithAddress:addressPtr]; // 打印对象
         // NSString * deviceId = [MemoryUtils readStringAtAddress:(addressPtr+0x20)];
         // NSLog(@">>>>>> deviceId: %@", deviceId);
         // _rbx.deviceID =deviceId;
