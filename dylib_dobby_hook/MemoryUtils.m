@@ -89,7 +89,10 @@ NSData *machineCode2Bytes(NSString *hexString) {
 
 
 
-
+/*
+ * 特征吗搜索
+ * ? 匹配所有
+ */
 + (NSArray *)searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)searchMachineCode count:(int)count {
     
     NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:searchFilePath];    
@@ -109,6 +112,7 @@ NSData *machineCode2Bytes(NSString *hexString) {
         if (searchIndex < searchLength) {
             uint8_t searchByte = ((const uint8_t *) [searchBytes bytes])[searchIndex];
 
+            // ?? nop: 0x90
             if (searchByte == 0x90) {
                 // Wildcard byte, continue searching
                 searchIndex++;

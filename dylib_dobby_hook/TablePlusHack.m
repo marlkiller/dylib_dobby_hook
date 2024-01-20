@@ -138,7 +138,6 @@ int (*hook_device_id_ori)();
                                               machineCode:(NSString *) @"F8 5F BC A9 F6 57 01 A9 F4 4F 02 A9 FD 7B 03 A9 FD C3 00 91 56 08 40 F9 36"
                                                     count:(int)1];
     globalOffset = [globalOffsets[0] unsignedIntegerValue];
-    fileOffset =[MemoryUtils getCurrentArchFileOffset: searchFilePath];
     intptr_t _hook_device_id = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
     DobbyHook((void *)_hook_device_id, (void *)hook_device_id, (void *)&hook_device_id_ori);
     
@@ -190,7 +189,6 @@ int (*hook_device_id_ori)();
                                               machineCode:(NSString *) @"55 48 89 E5 41 57 41 56 41 55 41 54 53 50 4C 8B 62 10 4D 85 E4 74"
                                                     count:(int)1];
     globalOffset = [globalOffsets[0] unsignedIntegerValue];
-    fileOffset =[MemoryUtils getCurrentArchFileOffset: searchFilePath];
     intptr_t _hook_device_id = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
     DobbyHook((void *)_hook_device_id, (void *)hook_device_id, (void *)&hook_device_id_ori);
     
