@@ -285,4 +285,43 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
 }
 
 
+/**
+ 替换对象方法 
+ hookMethod(objc_getClass("ViewController"), @selector(viewDidLoad), [self class], @selector(hook_viewDidLoad));
+
+ @param originalClass 原始类
+ @param originalSelector 原始类的方法
+ @param swizzledClass 替换类
+ @param swizzledSelector 替换类的方法
+ */
++ (void)hookMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
+    Method originalMethod = class_getInstanceMethod(originalClass, originalSelector);
+    Method swizzledMethod = class_getInstanceMethod(swizzledClass, swizzledSelector);
+    
+    if (originalMethod && swizzledMethod) {
+        method_exchangeImplementations(originalMethod, swizzledMethod);
+    } else {
+        NSLog(@"Failed to swizzle method.");
+    }
+}
+
+/**
+ 替换类方法
+ hookClassMethod(objc_getClass("MMComposeTextView"), @selector(preprocessTextAttributes:), [self class], @selector(hook_preprocessTextAttributes:));
+
+ @param originalClass 原始类
+ @param originalSelector 原始类的类方法
+ @param swizzledClass 替换类
+ @param swizzledSelector 替换类的类方法
+ */
++ (void)hookClassMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
+    Method originalMethod = class_getClassMethod(originalClass, originalSelector);
+    Method swizzledMethod = class_getClassMethod(swizzledClass, swizzledSelector);
+    
+    if (originalMethod && swizzledMethod) {
+        method_exchangeImplementations(originalMethod, swizzledMethod);
+    } else {
+        NSLog(@"Failed to swizzle class method.");
+    }
+}
 @end
