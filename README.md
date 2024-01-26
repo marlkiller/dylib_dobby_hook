@@ -8,6 +8,12 @@ xcode 开发 dylib , 基于跨平台的 dobby HOOK 框架来构建跨平台的�
 - insert_dylib
 - hopper | ida
 
+## Feat
+
+1. 跨平台 HOOK
+2. Xcode 集成开发调试环境
+3. 特征码搜索
+
 ## 项目搭建
 
 1. xcode 新建一个 MacOS > Library 项目
@@ -166,9 +172,6 @@ https://github.com/marlkiller/dylib_dobby_hook
 3. script:  里面有个 hack.sh, 可以直接sudo sh 执行一键注入脚本
 4. tools: insert_dylib 开源注入工具
 
-
-## TODO
-1. 集成<特征码>搜索
 
 
 
