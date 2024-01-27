@@ -66,10 +66,10 @@
     intptr_t freeTrialPtr = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
 
 
-    NSLog(@"%s",[MemoryUtils readMachineCodeStringAtAddress:freeTrialPtr length:4].UTF8String); // AA E3 40 39; ldrb       w10, [fp, arg_28]
+    NSLog(@">>>>>> Before %s",[MemoryUtils readMachineCodeStringAtAddress:freeTrialPtr length:4].UTF8String); // AA E3 40 39; ldrb       w10, [fp, arg_28]
     uint8_t freeTrialHex[4] = {0x2A,0x00,0x80,0x52};
     DobbyCodePatch((void*)freeTrialPtr,(uint8_t *)freeTrialHex,4);
-    NSLog(@"%s",[MemoryUtils readMachineCodeStringAtAddress:freeTrialPtr length:4].UTF8String); // 2A 00 80 52; mov w10, #1
+    NSLog(@">>>>>> After %s",[MemoryUtils readMachineCodeStringAtAddress:freeTrialPtr length:4].UTF8String); // 2A 00 80 52; mov w10, #1
 
 
     
@@ -96,11 +96,11 @@
     intptr_t freeTrialPtr = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
 
 
-    NSLog(@"%s",[MemoryUtils readMachineCodeStringAtAddress:freeTrialPtr length:2].UTF8String); // 24 01 and        al, 0x1
+    NSLog(@">>>>>> Before %s",[MemoryUtils readMachineCodeStringAtAddress:freeTrialPtr length:2].UTF8String); // 24 01 and        al, 0x1
     uint8_t freeTrialHex[2] = {0xB0,0x1};
     // uint8_t * freeTrialFlagPtr = freeTrialHex;
-    DobbyCodePatch((void*)0x100055175,(uint8_t *)freeTrialHex,2);
-    NSLog(@"%s",[MemoryUtils readMachineCodeStringAtAddress:freeTrialPtr length:2].UTF8String); // B0 01 mov        al, 0x1
+    DobbyCodePatch((void*)freeTrialPtr,(uint8_t *)freeTrialHex,2);
+    NSLog(@">>>>>> After %s",[MemoryUtils readMachineCodeStringAtAddress:freeTrialPtr length:2].UTF8String); // B0 01 mov        al, 0x1
 
     
 #endif
