@@ -26,7 +26,7 @@
 
 
 - (void)hk_showUnregistered{
-    NSLog(@"Swizzled showUnregistered method called");
+    NSLog(@">>>>>> Swizzled showUnregistered method called");
 }
 
 
@@ -44,15 +44,38 @@
            swizzledSelector:NSSelectorFromString(@"hk_showUnregistered")
     ];
     
+    uintptr_t fileOffset =[MemoryUtils getCurrentArchFileOffset: searchFilePath];
+
+    
     
 #if defined(__arm64__) || defined(__aarch64__)
     
+//    fun: -[DevUtils.Tool .cxx_destruct]
+//    000000010004bd28         sub        sp, sp, #0x20                               ;
+//    000000010004bd2c         stp        fp, lr, [sp, #0x10]
+//    000000010004bd30         add        fp, sp, #0x10
+//    000000010004bd34         ldp        x9, x8, [fp, arg_30]
+//    000000010004bd38         ldrb       w10, [fp, arg_28] ; >>>> mov w10, #1
+//    000000010004bd3c         ldp        x12, x11, [fp, arg_18]
+//    000000010004bd40         ldp        x14, x13, [fp, arg_8]
     
+    NSArray *globalOffsets =[MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath
+                                                      machineCode:(NSString *) @"AA E3 40 39"
+                                                            count:(int)1];
+    uintptr_t globalOffset = [globalOffsets[0] unsignedIntegerValue];
+    intptr_t freeTrialPtr = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
+
+
+    NSLog(@"%s",[MemoryUtils readMachineCodeStringAtAddress:freeTrialPtr length:4].UTF8String); // AA E3 40 39; ldrb       w10, [fp, arg_28]
+    uint8_t freeTrialHex[4] = {0x2A,0x00,0x80,0x52};
+    DobbyCodePatch((void*)freeTrialPtr,(uint8_t *)freeTrialHex,4);
+    NSLog(@"%s",[MemoryUtils readMachineCodeStringAtAddress:freeTrialPtr length:4].UTF8String); // 2A 00 80 52; mov w10, #1
+
+
     
     
 #elif defined(__x86_64__)
     
-    uintptr_t fileOffset =[MemoryUtils getCurrentArchFileOffset: searchFilePath];
     // fun: -[_TtC8DevUtils4Tool .cxx_destruct]
     //__text:00000001000550E0                 push    rbp
     //__text:00000001000550E1                 mov     rbp, rsp
