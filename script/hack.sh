@@ -8,7 +8,7 @@ prefix="lib"
 
 insert_dylib="${current_path}/../tools/insert_dylib"
 
-BUILT_PRODUCTS_DIR="${current_path}/../Release"
+BUILT_PRODUCTS_DIR="${current_path}/../release"
 
 app_bundle_path="/Applications/${app_name}.app/Contents/MacOS/"
 
