@@ -109,7 +109,10 @@ NSData *machineCode2Bytes(NSString *hexString) {
 
     for (NSUInteger i = 0; i < fileLength; i++) {
         uint8_t currentByte = ((const uint8_t *) [fileData bytes])[i];
-
+//        if (i>364908 && i<364930) {
+//            NSLog(@">>>>>> %d : %p",i,currentByte);
+//        }
+        
         if (searchIndex < searchLength) {
             uint8_t searchByte = ((const uint8_t *) [searchBytes bytes])[searchIndex];
 
@@ -286,8 +289,13 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
 
 
 /**
- 替换对象方法 
- hookMethod(objc_getClass("ViewController"), @selector(viewDidLoad), [self class], @selector(hook_viewDidLoad));
+ 替换对象方法 -[_TtC8DevUtils16WindowController showUnregistered]
+ [MemoryUtils hookMethod:
+             objc_getClass("_TtC8DevUtils16WindowController")
+             originalSelector:NSSelectorFromString(@"showUnregistered")
+             swizzledClass:[self class]
+             swizzledSelector:NSSelectorFromString(@"hk_showUnregistered")
+ ];
 
  @param originalClass 原始类
  @param originalSelector 原始类的方法

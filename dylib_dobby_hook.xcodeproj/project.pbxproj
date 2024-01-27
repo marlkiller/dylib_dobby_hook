@@ -21,6 +21,8 @@
 		38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */; };
 		38D1AC302B54D16100E6CB9E /* AirBuddyHack.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC2F2B54D16100E6CB9E /* AirBuddyHack.h */; };
 		38D1AC322B54D1CC00E6CB9E /* AirBuddyHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */; };
+		B554D7BA2B63F26200B7EFEA /* DevUtilsHack.h in Headers */ = {isa = PBXBuildFile; fileRef = B554D7B92B63F26200B7EFEA /* DevUtilsHack.h */; };
+		B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */; };
 		B5CB448B2B55742A004CEF38 /* LicenseModel.h in Headers */ = {isa = PBXBuildFile; fileRef = B5CB448A2B55742A004CEF38 /* LicenseModel.h */; };
 		B5F59EE92B56B6E400FCE1A4 /* Mapper.h in Headers */ = {isa = PBXBuildFile; fileRef = B5F59EE82B56B6E400FCE1A4 /* Mapper.h */; };
 		B5F59EEC2B56B70300FCE1A4 /* HPDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = B5F59EEB2B56B70300FCE1A4 /* HPDecoder.h */; };
@@ -58,6 +60,8 @@
 		38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackProtocol.h; sourceTree = "<group>"; };
 		38D1AC2F2B54D16100E6CB9E /* AirBuddyHack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AirBuddyHack.h; sourceTree = "<group>"; };
 		38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AirBuddyHack.m; sourceTree = "<group>"; };
+		B554D7B92B63F26200B7EFEA /* DevUtilsHack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DevUtilsHack.h; sourceTree = "<group>"; };
+		B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevUtilsHack.m; sourceTree = "<group>"; };
 		B5CB448A2B55742A004CEF38 /* LicenseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LicenseModel.h; sourceTree = "<group>"; };
 		B5F59EE82B56B6E400FCE1A4 /* Mapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mapper.h; sourceTree = "<group>"; };
 		B5F59EEB2B56B70300FCE1A4 /* HPDecoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HPDecoder.h; sourceTree = "<group>"; };
@@ -111,6 +115,8 @@
 				3816BBB82B54FF090051CF39 /* MemoryUtils.m */,
 				38B83E2E2B55058E00919735 /* TablePlusHack.h */,
 				38B83E302B5505B300919735 /* TablePlusHack.m */,
+				B554D7B92B63F26200B7EFEA /* DevUtilsHack.h */,
+				B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */,
 			);
 			path = dylib_dobby_hook;
 			sourceTree = "<group>";
@@ -173,6 +179,7 @@
 				38350C022B53F78900DD52B3 /* dobby.h in Headers */,
 				38D1AC282B54C9C100E6CB9E /* Constant.h in Headers */,
 				38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */,
+				B554D7BA2B63F26200B7EFEA /* DevUtilsHack.h in Headers */,
 				38D1AC302B54D16100E6CB9E /* AirBuddyHack.h in Headers */,
 				38B83E2F2B55058E00919735 /* TablePlusHack.h in Headers */,
 			);
@@ -249,7 +256,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "app_name=\"TablePlus\"\n\ndylib_name=\"${PRODUCT_NAME}\"\nprefix=\"lib\"\n\ninsert_dylib=\"${SRCROOT}/tools/insert_dylib\"\n\napp_bundle_path=\"/Applications/${app_name}.app/Contents/MacOS/\"\n\ncp -f \"${insert_dylib}\" \"${app_bundle_path}/\"   \n\napp_bundle_framework=\"/Applications/${app_name}.app/Contents/Frameworks\"\napp_executable_path=\"${app_bundle_path}/${app_name}\"\napp_executable_backup_path=\"${app_executable_path}_Backup\"\n\n\nif [ ! -f \"$app_executable_backup_path\" ]; \nthen\n    cp \"$app_executable_path\" \"$app_executable_backup_path\"\nfi\n\ncp -R \"${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib\" ${app_bundle_framework}\ncp -R \"${BUILT_PRODUCTS_DIR}/libdobby.dylib\" ${app_bundle_framework}\n\n\n\"${app_bundle_path}/insert_dylib\" --weak --all-yes \"@rpath/${prefix}${dylib_name}.dylib\" \"$app_executable_backup_path\" \"$app_executable_path\"\n";
+			shellScript = "app_name=\"DevUtils\"\n\ndylib_name=\"${PRODUCT_NAME}\"\nprefix=\"lib\"\n\ninsert_dylib=\"${SRCROOT}/tools/insert_dylib\"\n\napp_bundle_path=\"/Applications/${app_name}.app/Contents/MacOS/\"\n\ncp -f \"${insert_dylib}\" \"${app_bundle_path}/\"   \n\napp_bundle_framework=\"/Applications/${app_name}.app/Contents/Frameworks\"\napp_executable_path=\"${app_bundle_path}/${app_name}\"\napp_executable_backup_path=\"${app_executable_path}_Backup\"\n\n\nif [ ! -f \"$app_executable_backup_path\" ]; \nthen\n    cp \"$app_executable_path\" \"$app_executable_backup_path\"\nfi\n\ncp -R \"${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib\" ${app_bundle_framework}\ncp -R \"${BUILT_PRODUCTS_DIR}/libdobby.dylib\" ${app_bundle_framework}\n\n\n\"${app_bundle_path}/insert_dylib\" --weak --all-yes \"@rpath/${prefix}${dylib_name}.dylib\" \"$app_executable_backup_path\" \"$app_executable_path\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -260,6 +267,7 @@
 			files = (
 				38D1AC322B54D1CC00E6CB9E /* AirBuddyHack.m in Sources */,
 				38350BF82B53F73A00DD52B3 /* dylib_dobby_hook.m in Sources */,
+				B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */,
 				3816BBB92B54FF090051CF39 /* MemoryUtils.m in Sources */,
 				38B83E312B5505B300919735 /* TablePlusHack.m in Sources */,
 				38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */,

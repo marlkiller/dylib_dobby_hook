@@ -41,7 +41,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         FilePath = "/Applications/TablePlus.app">
+         FilePath = "/Applications/DevUtils.app">
       </PathRunnable>
    </LaunchAction>
    <ProfileAction
