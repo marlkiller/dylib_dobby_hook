@@ -290,7 +290,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
 
 /**
  替换对象方法 -[_TtC8DevUtils16WindowController showUnregistered]
- [MemoryUtils hookMethod:
+ [MemoryUtils hookInstanceMethod:
              objc_getClass("_TtC8DevUtils16WindowController")
              originalSelector:NSSelectorFromString(@"showUnregistered")
              swizzledClass:[self class]
@@ -302,7 +302,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
  @param swizzledClass 替换类
  @param swizzledSelector 替换类的方法
  */
-+ (void)hookMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
++ (void)hookInstanceMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
     Method originalMethod = class_getInstanceMethod(originalClass, originalSelector);
     Method swizzledMethod = class_getInstanceMethod(swizzledClass, swizzledSelector);
     

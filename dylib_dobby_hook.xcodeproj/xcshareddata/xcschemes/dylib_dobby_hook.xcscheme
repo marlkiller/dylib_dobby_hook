@@ -41,7 +41,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         FilePath = "/Applications/DevUtils.app">
+         FilePath = "/Applications/Navicat Premium.app">
       </PathRunnable>
    </LaunchAction>
    <ProfileAction

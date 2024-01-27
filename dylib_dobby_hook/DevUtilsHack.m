@@ -37,7 +37,7 @@
     NSString *searchFilePath = [[Constant getCurrentAppPath] stringByAppendingString:@"/Contents/MacOS/DevUtils"];
     
     
-    [MemoryUtils hookMethod:
+    [MemoryUtils hookInstanceMethod:
          objc_getClass("_TtC8DevUtils16WindowController")
            originalSelector:NSSelectorFromString(@"showUnregistered")
               swizzledClass:[self class]

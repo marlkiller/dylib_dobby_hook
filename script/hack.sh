@@ -1,7 +1,7 @@
 current_path=$PWD
 echo "当前路径：$current_path"
 
-app_name="AirBuddy"
+app_name="DevUtils"
 
 dylib_name="dylib_dobby_hook"
 prefix="lib"
