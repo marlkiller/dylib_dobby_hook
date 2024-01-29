@@ -4,6 +4,7 @@ echo "当前路径：$current_path"
 app_name="DevUtils"
 # The default is injected into the main program, if you need to customize, please edit the variable inject_bin, otherwise do not touch it
 # inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"
+# inject_bin="/Applications/${app_name}.app/Contents/MacOS//${app_name}"
 
 
 dylib_name="dylib_dobby_hook"
