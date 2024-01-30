@@ -26,7 +26,7 @@ int _cloudKitNew(int arg0, int arg1) {
 }
 
 - (int) hook_ubiquityIdentityToken {
-    NSLog(@"hook_ubiquityIdentityToken");
+    NSLog(@">>>>>> hook_ubiquityIdentityToken");
     return 0;
 }
 
@@ -49,7 +49,7 @@ int _cloudKitNew(int arg0, int arg1) {
     hookSubscription(searchFilePath, fileOffset);
     
 #elif defined(__x86_64__)
-    
+    // TODO Support __x86_64__
 #endif
     
     return YES;

@@ -14,7 +14,11 @@ insert_dylib="${current_path}/../tools/insert_dylib"
 BUILT_PRODUCTS_DIR="${current_path}/../release"
 
 app_bundle_path="/Applications/${app_name}.app/Contents/MacOS/"
-app_bundle_framework="/Applications/${app_name}.app/Contents/Frameworks"
+app_bundle_framework="/Applications/${app_name}.app/Contents/Frameworks/"
+
+if [ ! -d "$app_bundle_framework" ]; then
+  mkdir -p "$app_bundle_framework"
+fi
 
 if [ -n "$inject_bin" ]; then
     app_executable_path="$inject_bin"
