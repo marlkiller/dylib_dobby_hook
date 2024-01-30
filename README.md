@@ -12,6 +12,7 @@ xcode 开发 dylib , 基于跨平台的 dobby HOOK 框架来构建跨平台的�
 - hopper | ida
 
 目录结构 :
+
 1. dylib_dobby_hook: 源码
 2. libs:  项目依赖的开源 dobby 库
 3. release:  build 后的成品
@@ -24,13 +25,18 @@ xcode 开发 dylib , 基于跨平台的 dobby HOOK 框架来构建跨平台的�
 2. Xcode 集成开发调试环境
 3. 特征码搜索
 
-| App       | version | x86 | arm | Download                         |
-|-----------|---------|-----|-----|----------------------------------|
-| TablePlus | 5.*     | ✔   | ✔   | https://tableplus.com/           |
-| DevUtils  | 1.*     | ✔   | ✔   | https://devutils.com/            |
-| AirBuddy  | 2.6.3   | ✔   | ✔   | https://v2.airbuddy.app/download |
+| App             | version | x86 | arm | Download                         |
+|-----------------|---------|-----|-----|----------------------------------|
+| TablePlus       | 5.*     | ✔   | ✔   | https://tableplus.com/           |
+| DevUtils        | 1.*     | ✔   | ✔   | https://devutils.com/            |
+| AirBuddy        | 2.6.3   | ✔   | ✔   | https://v2.airbuddy.app/download |
+| Navicat Premium | 16.3.5  | ✔   | ✔   | App Store                        |
 
 
+###  Navicat Premium: 
+```shell
+inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"
+```
 
 ## Quick Start
 
@@ -41,7 +47,6 @@ xcode 开发 dylib , 基于跨平台的 dobby HOOK 框架来构建跨平台的�
 ### 0x0
 
 基础代码已经完成, 为了兼容更多的 app 补丁, 使用了适配器模式来进行扩展
-
 
 ### 0x1 定义实现类(以当前 TablePlus 为例)
 
@@ -74,8 +79,7 @@ xcode 开发 dylib , 基于跨平台的 dobby HOOK 框架来构建跨平台的�
 @end
 ```
 
-
-###  0x2 Build & 注入
+### 0x2 Build & 注入
 
 编译后, 会得到一个我们的 dylib 补丁  
 然后编写 shell 脚本,来注入
@@ -120,7 +124,6 @@ cp -f "${BUILT_PRODUCTS_DIR}/libdobby.dylib" "${app_bundle_framework}"
 
 "${app_bundle_path}/insert_dylib" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
 ```
-
 
 ## Ref
 
