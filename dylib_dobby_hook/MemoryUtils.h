@@ -21,6 +21,10 @@
 
 + (uintptr_t)getCurrentArchFileOffset: (NSString *) filePath;
 
+
++ (void)saveMachineCodeOffsetsToUserDefaults:(NSString *)searchMachineCode offsets:(NSArray<NSNumber *> *)offsets;
++ (NSArray<NSNumber *> *)loadMachineCodeOffsetsFromUserDefaults:(NSString *)searchMachineCode;
+
 + (NSArray *)searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)searchMachineCode count:(int)count;
 
 + (uintptr_t)getPtrFromAddress:(uintptr_t)targetFunctionAddress;

@@ -12,6 +12,7 @@
 
 @implementation dylib_dobby_hook
 
+const bool SHOW_ALARM = false;
 
 // INIT TEST START
 int sum(int a, int b) {
@@ -39,18 +40,30 @@ void initTest(){
 + (void) load {
     
     
-    // initTest();
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:@"Please confirm if the app has been backed up.\nIf there are any issues, please restore it yourself!"];
-    [alert addButtonWithTitle:@"Confirm"];
-    [alert addButtonWithTitle:@"Cancel"];
-    NSInteger response = [alert runModal];
-    if (response == NSAlertFirstButtonReturn) {
-        [Constant doHack];
-    } else {
-        return;
+    // initTest()
+    
+    
+    if ([Constant isFirstOpen]) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"Cracked By\n[marlkiller/dylib_dobby_hook]"];
+        [alert setInformativeText:@"仅供研究学习使用，请勿用于非法用途"];
+        [alert addButtonWithTitle:@"OK"];
+        [alert runModal];
     }
     
-    
+    if (SHOW_ALARM) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"Please confirm if the app has been backed up.\nIf there are any issues, please restore it yourself!"];
+        [alert addButtonWithTitle:@"Confirm"];
+        [alert addButtonWithTitle:@"Cancel"];
+        NSInteger response = [alert runModal];
+        if (response == NSAlertFirstButtonReturn) {
+            [Constant doHack];
+        } else {
+            return;
+        }
+    }else {
+        [Constant doHack];
+    }
 }
 @end

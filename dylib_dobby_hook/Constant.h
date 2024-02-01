@@ -8,8 +8,10 @@
 #import <Foundation/Foundation.h>
 
 @interface Constant : NSObject
++ (BOOL) isFirstOpen;
 + (BOOL)isArm;
 + (NSString *)getCurrentAppPath;
++ (NSString *)getCurrentAppVersion;
 + (NSString *)getSystemArchitecture;
 + (BOOL)isDebuggerAttached;
 + (NSArray<Class> *)getAllHackClasses;

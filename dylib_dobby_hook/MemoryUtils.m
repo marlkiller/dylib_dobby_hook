@@ -17,6 +17,9 @@
 @implementation MemoryUtils
 
 const uintptr_t ARCH_FAT_SIZE = 0x100000000;
+//TODO: 待验证~! 将偏移信息缓存起来,这样似乎比直接扫描程序快一些 ??
+const bool CACHE_MACHINE_CODE_OFFSETS = false;
+
 
 + (NSString *)readStringAtAddress:(uintptr_t)address {
     const char *cString = (const char *)address;
@@ -88,6 +91,19 @@ NSData *machineCode2Bytes(NSString *hexString) {
 }
 
 
++ (void)saveMachineCodeOffsetsToUserDefaults:(NSString *)searchMachineCode offsets:(NSArray<NSNumber *> *)offsets {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:offsets forKey:searchMachineCode];
+    [defaults synchronize];
+    NSLog(@">>>>>> Offset information saved to UserDefaults for machine code: %@", offsets);
+}
+
++ (NSArray<NSNumber *> *)loadMachineCodeOffsetsFromUserDefaults:(NSString *)searchMachineCode {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray<NSNumber *> *offsets = [defaults objectForKey:searchMachineCode];
+    NSLog(@">>>>>> Offset information loaded from UserDefaults for machine code: %@", offsets);
+    return offsets ?: nil;
+}
 
 
 /*
@@ -96,7 +112,15 @@ NSData *machineCode2Bytes(NSString *hexString) {
  */
 + (NSArray *)searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)searchMachineCode count:(int)count {
     
-    NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:searchFilePath];    
+    if (CACHE_MACHINE_CODE_OFFSETS) {
+            NSArray *cachedOffsets = [self loadMachineCodeOffsetsFromUserDefaults:searchMachineCode];
+            if (cachedOffsets) {
+                NSLog(@">>>>>> Read offsets from the cache：%@", cachedOffsets);
+                return [cachedOffsets copy];
+            }
+        }
+    
+    NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:searchFilePath];
 
     NSMutableArray<NSNumber *> *offsets = [NSMutableArray array];
     NSData *fileData = [fileHandle readDataToEndOfFile];
@@ -112,7 +136,6 @@ NSData *machineCode2Bytes(NSString *hexString) {
 //        if (i>364908 && i<364930) {
 //            NSLog(@">>>>>> %d : %p",i,currentByte);
 //        }
-        
         if (searchIndex < searchLength) {
             uint8_t searchByte = ((const uint8_t *) [searchBytes bytes])[searchIndex];
 
@@ -139,6 +162,9 @@ NSData *machineCode2Bytes(NSString *hexString) {
         }
     }
     [fileHandle closeFile];
+    if (CACHE_MACHINE_CODE_OFFSETS) {
+        [self saveMachineCodeOffsetsToUserDefaults :searchMachineCode offsets:offsets];
+    }
     return [offsets copy];
 }
 

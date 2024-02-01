@@ -21,6 +21,27 @@ static void __attribute__ ((constructor)) initialize(void){
     NSLog(@">>>>>> Constant init");    
 
 }
+
++ (BOOL) isFirstOpen {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; // 获取当前的版本号
+    NSString *storedVersion = [defaults objectForKey:@"appVersion"]; // 获取存储的版本号
+    
+//    NSString *appBundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+//    NSString *preferencesPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"Preferences"];
+//    NSString *plistFileName = [NSString stringWithFormat:@"%@.plist", appBundleIdentifier];
+//    NSString *plistFilePath = [preferencesPath stringByAppendingPathComponent:plistFileName];
+//    NSLog(@">>>>>> NSUserDefaults 存储的数据文件路径：%@", plistFilePath);
+
+    if (!storedVersion || ![storedVersion isEqualToString:currentVersion]) {
+        // 这是第一次打开，或者是升级后第一次打开，你可以做一些初始化的操作
+        [defaults setObject:currentVersion forKey:@"appVersion"]; // 更新版本号
+        [defaults synchronize]; // 同步到磁盘
+        return true;
+    }
+    return false;
+}
+
 + (void)initialize {
     if (self == [Constant class]) {
         NSBundle *app = [NSBundle mainBundle];
@@ -58,6 +79,9 @@ bool isArm;
 
 + (NSString *)getCurrentAppPath {
     return currentAppPath;
+}
++ (NSString *)getCurrentAppVersion {
+    return currentAppVersion;
 }
 
 + (NSString *)getSystemArchitecture {
