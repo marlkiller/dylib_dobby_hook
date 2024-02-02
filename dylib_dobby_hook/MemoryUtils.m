@@ -19,6 +19,7 @@
 const uintptr_t ARCH_FAT_SIZE = 0x100000000;
 //TODO: 待验证~! 将偏移信息缓存起来,这样似乎比直接扫描程序快一些 ??
 const bool CACHE_MACHINE_CODE_OFFSETS = false;
+NSString * CACHE_MACHINE_CODE_KEY = @"All-Offsets";
 
 
 + (NSString *)readStringAtAddress:(uintptr_t)address {
@@ -92,17 +93,45 @@ NSData *machineCode2Bytes(NSString *hexString) {
 
 
 + (void)saveMachineCodeOffsetsToUserDefaults:(NSString *)searchMachineCode offsets:(NSArray<NSNumber *> *)offsets {
+    NSString *appVersion = [Constant getCurrentAppVersion];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:offsets forKey:searchMachineCode];
+    
+    NSMutableDictionary *allOffsetsMap = [NSMutableDictionary dictionaryWithDictionary:[defaults objectForKey:CACHE_MACHINE_CODE_KEY]];
+    
+    // Make sure versionMap is mutable
+    NSMutableDictionary *versionMap = [allOffsetsMap objectForKey:appVersion];
+    if (!versionMap) {
+        versionMap = [NSMutableDictionary dictionary];
+        [allOffsetsMap setObject:versionMap forKey:appVersion];
+    }
+    
+    // Convert versionMap to mutable if needed
+    if (![versionMap isKindOfClass:[NSMutableDictionary class]]) {
+        versionMap = [versionMap mutableCopy];
+        [allOffsetsMap setObject:versionMap forKey:appVersion];
+    }
+    
+    [versionMap setObject:offsets forKey:searchMachineCode];
+    
+    [defaults setObject:allOffsetsMap forKey:CACHE_MACHINE_CODE_KEY];
     [defaults synchronize];
+    
     NSLog(@">>>>>> Offset information saved to UserDefaults for machine code: %@", offsets);
 }
 
 + (NSArray<NSNumber *> *)loadMachineCodeOffsetsFromUserDefaults:(NSString *)searchMachineCode {
+    NSString *appVersion = [Constant getCurrentAppVersion];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSArray<NSNumber *> *offsets = [defaults objectForKey:searchMachineCode];
-    NSLog(@">>>>>> Offset information loaded from UserDefaults for machine code: %@", offsets);
-    return offsets ?: nil;
+
+    NSDictionary *allOffsetsMap = [defaults objectForKey:CACHE_MACHINE_CODE_KEY];
+    NSDictionary *versionMap = [allOffsetsMap objectForKey:appVersion];
+
+    if (versionMap) {
+        NSArray<NSNumber *> *offsets = [versionMap objectForKey:searchMachineCode];
+        NSLog(@">>>>>> Offset information loaded from UserDefaults for machine code: %@", offsets);
+        return offsets ?: nil;
+    }
+    return nil;
 }
 
 
@@ -115,7 +144,6 @@ NSData *machineCode2Bytes(NSString *hexString) {
     if (CACHE_MACHINE_CODE_OFFSETS) {
             NSArray *cachedOffsets = [self loadMachineCodeOffsetsFromUserDefaults:searchMachineCode];
             if (cachedOffsets) {
-                NSLog(@">>>>>> Read offsets from the cache：%@", cachedOffsets);
                 return [cachedOffsets copy];
             }
         }
