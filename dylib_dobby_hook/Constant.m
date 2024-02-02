@@ -48,8 +48,8 @@ static void __attribute__ ((constructor)) initialize(void){
         currentAppVersion = [app objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
         currentAppCFBundleVersion = [app objectForInfoDictionaryKey:@"CFBundleVersion"];
         NSLog(@">>>>>> AppName is [%s],Version is [%s], myAppCFBundleVersion is [%s].", currentAppName.UTF8String, currentAppVersion.UTF8String, currentAppCFBundleVersion.UTF8String);
-        NSLog(@">>>>>> AppName Architecture: %@", [Constant getSystemArchitecture]);
-        NSLog(@">>>>>> AppName DEBUGGING : %d", [Constant isDebuggerAttached]);
+        NSLog(@">>>>>> App Architecture is: %@", [Constant getSystemArchitecture]);
+        NSLog(@">>>>>> App DebuggerAttached is: %d", [Constant isDebuggerAttached]);
         NSRange range = [[Constant getSystemArchitecture] rangeOfString:@"arm" options:NSCaseInsensitiveSearch];
         isArm = range.location != NSNotFound;
         

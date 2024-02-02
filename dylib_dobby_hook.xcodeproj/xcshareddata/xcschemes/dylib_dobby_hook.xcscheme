@@ -41,7 +41,8 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         FilePath = "/Applications/Paste.app">
+         BundleIdentifier = "com.tinyapp.TablePlus"
+         FilePath = "/Applications/TablePlus.app">
       </PathRunnable>
    </LaunchAction>
    <ProfileAction

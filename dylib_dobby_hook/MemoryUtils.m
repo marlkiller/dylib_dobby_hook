@@ -17,8 +17,13 @@
 @implementation MemoryUtils
 
 const uintptr_t ARCH_FAT_SIZE = 0x100000000;
+
 //TODO: 待验证~! 将偏移信息缓存起来,这样似乎比直接扫描程序快一些 ??
+#ifdef DEBUG
 const bool CACHE_MACHINE_CODE_OFFSETS = false;
+#else
+const bool CACHE_MACHINE_CODE_OFFSETS = true;
+#endif
 NSString * CACHE_MACHINE_CODE_KEY = @"All-Offsets";
 
 
