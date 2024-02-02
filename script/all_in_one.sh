@@ -1,11 +1,13 @@
 current_path=$PWD
-echo "当前路径：$current_path"
 
-app_name="DevUtils"
-# The default is injected into the main program, if you need to customize, please edit the variable inject_bin, otherwise do not touch it
-# inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"
-# inject_bin="/Applications/${app_name}.app/Contents/MacOS//${app_name}"
 
+# 参数1赋值给app_name
+app_name=$1
+if [ -n "$2" ]; then
+    inject_bin=$2
+fi
+
+echo ">>>>>> app_name is ${app_name}"
 
 dylib_name="dylib_dobby_hook"
 prefix="lib"
@@ -15,6 +17,7 @@ BUILT_PRODUCTS_DIR="${current_path}/../release"
 
 app_bundle_path="/Applications/${app_name}.app/Contents/MacOS"
 app_bundle_framework="/Applications/${app_name}.app/Contents/Frameworks/"
+echo ">>>>>> app_bundle_framework is ${app_bundle_framework}"
 
 if [ ! -d "$app_bundle_framework" ]; then
   mkdir -p "$app_bundle_framework"
@@ -26,6 +29,7 @@ else
     app_executable_path="${app_bundle_path}/${app_name}"
 fi
 app_executable_backup_path="${app_executable_path}_Backup"
+echo ">>>>>> app_executable_path is ${app_executable_path}"
 
 
 cp -f "${insert_dylib}" "${app_bundle_path}/"
@@ -41,5 +45,6 @@ cp -f "${BUILT_PRODUCTS_DIR}/libdobby.dylib" "${app_bundle_framework}"
 
 "${app_bundle_path}/insert_dylib" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
 
+echo ">>>>>> hack [${app_name}] completed"
 
 

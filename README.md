@@ -16,7 +16,9 @@ xcode 开发 dylib , 基于跨平台的 dobby HOOK 框架来构建跨平台的�
 1. dylib_dobby_hook: 源码
 2. libs:  项目依赖的开源 dobby 库
 3. release:  build 后的成品
-4. script:  里面有个 hack.sh, 可以直接 `sudo sh hach.sh` 执行一键注入脚本
+4. script:  
+   - hack.sh 自定义注入脚本 `sudo sh hack.sh`
+   - auto_hack.sh 妹妹全自动注入脚本 `sudo sh auto_hack.sh`
 5. tools: insert_dylib 开源注入工具
 
 ## Feat
