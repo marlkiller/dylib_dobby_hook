@@ -1,11 +1,13 @@
 current_path=$PWD
 
+# TODO 判断参数数量
 
 # 参数1赋值给app_name
 app_name=$1
 if [ -n "$2" ]; then
     inject_bin=$2
 fi
+# TODO 判断参数数量
 
 echo ">>>>>> app_name is ${app_name}"
 

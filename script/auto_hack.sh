@@ -1,3 +1,5 @@
+# TODO 判断是否已经注入过
+
 hack_app() {
     app_name="$1"
     app_path="$2"

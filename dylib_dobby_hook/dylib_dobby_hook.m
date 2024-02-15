@@ -53,7 +53,8 @@ void initTest(){
     
     if (SHOW_ALARM) {
         NSAlert *alert = [[NSAlert alloc] init];
-        [alert setMessageText:@"Please confirm if the app has been backed up.\nIf there are any issues, please restore it yourself!"];
+        [alert setMessageText:@"FBI warning"];
+        [alert setInformativeText:@"Please confirm if the app has been backed up.\nIf there are any issues, please restore it yourself!"];
         [alert addButtonWithTitle:@"Confirm"];
         [alert addButtonWithTitle:@"Cancel"];
         NSInteger response = [alert runModal];
