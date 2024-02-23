@@ -43,6 +43,15 @@ inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/V
 
 ## Quick Start
 
+```
+git clone https://github.com/marlkiller/dylib_dobby_hook.git 
+cd script 
+sudo sh auto_hack.sh
+```
+
+
+## Develop
+
 关键 hook 函数,可以参考帖子(以 TabpePlus 该软件为例) :
 [https://www.52pojie.cn/thread-1739112-1-1.html  
 ](https://www.52pojie.cn/thread-1881366-1-1.html)
