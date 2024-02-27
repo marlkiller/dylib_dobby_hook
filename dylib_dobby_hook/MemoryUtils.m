@@ -161,39 +161,29 @@ NSData *machineCode2Bytes(NSString *hexString) {
 
     NSData *searchBytes = machineCode2Bytes(searchMachineCode);
     NSUInteger searchLength = [searchBytes length];
-    NSUInteger searchIndex = 0;
     NSUInteger matchCounter = 0;
-
-    for (NSUInteger i = 0; i < fileLength; i++) {
-        uint8_t currentByte = ((const uint8_t *) [fileData bytes])[i];
-//        if (i>364908 && i<364930) {
-//            NSLog(@">>>>>> %d : %p",i,currentByte);
-//        }
-        if (searchIndex < searchLength) {
-            uint8_t searchByte = ((const uint8_t *) [searchBytes bytes])[searchIndex];
-
-            // ?? nop: 0x90
-            if (searchByte == 0x90) {
-                // Wildcard byte, continue searching
-                searchIndex++;
-            } else if (currentByte == searchByte) {
-                // Matched byte, move to the next search index
-                searchIndex++;
-            } else {
-                // Mismatched byte, reset search index
-                searchIndex = 0;
-            }
-        } else {
-            // Reached the end of the search pattern, add offset to results
-            [offsets addObject:@(i - searchLength)];
-            searchIndex = 0;
-            matchCounter++;
-
-            if (matchCounter >= count) {
-                break;
-            }
-        }
-    }
+    
+    for (NSUInteger i = 0; i < fileLength - searchLength + 1; i++) {
+         BOOL isMatch = YES;
+         for (NSUInteger j = 0; j < searchLength; j++) {
+             uint8_t fileByte = ((const uint8_t *)[fileData bytes])[i + j];
+             // if (i>364908 && i<364930) {
+             //     NSLog(@">>>>>> %d : %p",i,fileByte);
+             // }
+             uint8_t searchByte = ((const uint8_t *)[searchBytes bytes])[j];
+             if (searchByte != 0x90 && fileByte != searchByte) {
+                 isMatch = NO;
+                 break;
+             }
+         }
+         if (isMatch) {
+             [offsets addObject:@(i)];
+             matchCounter++;
+             if (matchCounter >= count) {
+                 break;
+             }
+         }
+     }
     [fileHandle closeFile];
     if (CACHE_MACHINE_CODE_OFFSETS) {
         [self saveMachineCodeOffsetsToUserDefaults :searchMachineCode offsets:offsets];
