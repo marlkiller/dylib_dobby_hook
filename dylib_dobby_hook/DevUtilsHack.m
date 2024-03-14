@@ -6,11 +6,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DevUtilsHack.h"
 #import "Constant.h"
 #import "dobby.h"
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
+#import "HackProtocol.h"
+
+@interface DevUtilsHack : NSObject <HackProtocol>
+
+@end
 
 @implementation DevUtilsHack
 

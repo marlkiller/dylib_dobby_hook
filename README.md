@@ -27,13 +27,14 @@ xcode 开发 dylib , 基于跨平台的 dobby HOOK 框架来构建跨平台的�
 2. Xcode 集成开发调试环境
 3. 特征码搜索
 
-| App             | version | x86 | arm | Download                         | Author              |
-|-----------------|---------|-----|-----|----------------------------------|---------------------|
-| TablePlus       | 5.*     | ✔   | ✔   | https://tableplus.com/           |                     |
-| DevUtils        | 1.*     | ✔   | ✔   | https://devutils.com/            |                     |
-| AirBuddy        | 2.6.3   | ✔   | ✔   | https://v2.airbuddy.app/download |                     |
-| Navicat Premium | 16.*    | ✔   | ✔   | App Store                        | QiuChenlyOpenSource |
-| Paste           | 4.1.3   | ✘   | ✔   | App Store                        | LeeeMooo            |
+| App             | version | x86 | arm | Download                             | Author              |
+|-----------------|---------|-----|-----|--------------------------------------|---------------------|
+| TablePlus       | 5.*     | ✔   | ✔   | https://tableplus.com/               |                     |
+| DevUtils        | 1.*     | ✔   | ✔   | https://devutils.com/                |                     |
+| AirBuddy        | 2.6.3   | ✔   | ✔   | https://v2.airbuddy.app/download     |                     |
+| Navicat Premium | 16.*    | ✔   | ✔   | App Store                            | QiuChenlyOpenSource |
+| Paste           | 4.1.3   | ✘   | ✔   | App Store                            | LeeeMooo            |
+| Transmit        | 5.*     | ✔   | ✔   | https://panic.com/transmit/#download |                     |
 
 ### Navicat Premium:
 

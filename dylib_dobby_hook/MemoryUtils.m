@@ -304,6 +304,23 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     return result;
 }
 
+
++ (int)indexForImageWithName:(NSString *)imageName {
+    uint32_t imageCount = _dyld_image_count();
+    for (uint32_t i = 0; i < imageCount; i++) {
+        const char* currentImageName = _dyld_get_image_name(i);
+        NSString *currentImageNameString = [NSString stringWithUTF8String:currentImageName];
+        
+        if ([currentImageNameString.lastPathComponent isEqualToString:imageName]) {
+            NSLog(@">>>>>> indexForImageWithName: %@ -> %d", imageName,i);
+            return i;
+        }
+    }
+    
+    return -1; // 如果找不到匹配的图像，返回-1
+}
+
+
 + (void)inspectObjectWithAddress:(void *)address {
     id object = (__bridge id)address;
     // LicenseModel *license = (__bridge LicenseModel *)addressPtr;

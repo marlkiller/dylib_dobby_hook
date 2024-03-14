@@ -6,13 +6,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TablePlusHack.h"
 #import "Constant.h"
 #import "dobby.h"
 #import "MemoryUtils.h"
 #import "tableplus/LicenseModel.h"
 #import <objc/runtime.h>
 #include <mach-o/dyld.h>
+#import "HackProtocol.h"
+
+@interface TablePlusHack : NSObject <HackProtocol>
+
+@end
 
 @implementation TablePlusHack
 
@@ -47,6 +51,14 @@ id hook_license(int arg0, int arg1, int arg2, int arg3){
 
 
 bool hook_device_id(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t arg3, uint64_t arg4){
+    //
+    // Interceptor.attach(Module.findExportByName(null, 'CC_MD5')
+    // ifconfig en0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'
+    // system_profiler SPHardwareDataType | grep Serial
+    // deviceID = md5(mac+Serial)
+    // 3c:06:30:30:7d:35C02G64QMQ05D
+    // 88548E5A38EEEE04E89C5621BA04BC7E
+    
     if (_rbx!=nil && _rbx.deviceID==@""){
         
         // arm: r1 = *(int128_t *)(arg2 + 0x28);

@@ -6,11 +6,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AirBuddyHack.h"
 #import "Constant.h"
 #import "dobby.h"
 #import "MemoryUtils.h"
+#import "HackProtocol.h"
 
+@interface AirBuddyHack : NSObject <HackProtocol>
+
+@end
 @implementation AirBuddyHack
 
 

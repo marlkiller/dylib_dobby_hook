@@ -41,8 +41,8 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         BundleIdentifier = "com.tinyapp.TablePlus"
-         FilePath = "/Applications/TablePlus.app">
+         BundleIdentifier = "com.panic.Transmit"
+         FilePath = "/Applications/Transmit.app">
       </PathRunnable>
    </LaunchAction>
    <ProfileAction

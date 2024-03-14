@@ -8,11 +8,16 @@
 #import "dylib_dobby_hook.h"
 #import "dobby.h"
 #import "Constant.h"
+#import "MemoryUtils.h"
 #import <Cocoa/Cocoa.h>
 
 @implementation dylib_dobby_hook
 
+#ifdef DEBUG
+const bool SHOW_ALARM = true;
+#else
 const bool SHOW_ALARM = false;
+#endif
 
 // INIT TEST START
 int sum(int a, int b) {
@@ -41,7 +46,6 @@ void initTest(){
     
     
     // initTest()
-    
     
     if ([Constant isFirstOpen]) {
         NSAlert *alert = [[NSAlert alloc] init];

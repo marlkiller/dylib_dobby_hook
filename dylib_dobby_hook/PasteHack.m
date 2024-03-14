@@ -1,9 +1,13 @@
 #import <Foundation/Foundation.h>
-#import "PasteHack.h"
 #import "Constant.h"
 #import "dobby.h"
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
+#import "HackProtocol.h"
+
+@interface PasteHack : NSObject <HackProtocol>
+
+@end
 
 @implementation PasteHack
 
