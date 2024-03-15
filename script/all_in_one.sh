@@ -1,7 +1,5 @@
 current_path=$PWD
 
-# TODO 判断参数数量
-
 # 参数1赋值给app_name
 app_name=$1
 if [ -n "$2" ]; then
@@ -14,6 +12,16 @@ echo ">>>>>> app_name is ${app_name}"
 dylib_name="dylib_dobby_hook"
 prefix="lib"
 insert_dylib="${current_path}/../tools/insert_dylib"
+
+# 判断是否已经注入过，如果已经存在 libdylib_dobby_hook.dylib，则返回 0，表示已经注入过
+check_dylib_exist() {
+    local app_path="$1"
+    if otool -L "$app_path" | grep -q "${dylib_name}"; then
+        return 0
+    fi
+    return 1
+}
+
 
 BUILT_PRODUCTS_DIR="${current_path}/../release"
 
@@ -30,6 +38,19 @@ if [ -n "$inject_bin" ]; then
 else
     app_executable_path="${app_bundle_path}/${app_name}"
 fi
+
+
+
+
+if check_dylib_exist "$app_executable_path"; then
+    read -p "目标程序 [${app_executable_path}] 已经注入过, 是否覆盖？ (Y/N): " user_input
+    if [ "$user_input" != "Y" ] && [ "$user_input" != "y" ]; then
+        echo ">>>>>> ignore [${app_name}]"
+        exit 0
+    fi
+fi
+
+
 app_executable_backup_path="${app_executable_path}_Backup"
 echo ">>>>>> app_executable_path is ${app_executable_path}"
 
