@@ -107,6 +107,43 @@ int hook_TRTrialStatus(void){
     int imageIndex = [MemoryUtils indexForImageWithName:@"Transmit"];
     intptr_t _hook_TRTrialStatus = [MemoryUtils getPtrFromGlobalOffset:imageIndex targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
     DobbyHook((void *)_hook_TRTrialStatus, (void *)hook_TRTrialStatus, (void *)&hook_TRTrialStatus_ori);
+    
+    
+    // license info
+//    __text:000000010002FAFB ; void __cdecl -[TransmitDelegate showLicense:](TransmitDelegate *self, SEL, id)
+//    rax = [NSUserDefaults standardUserDefaults];
+//    r15 = [[rax stringForKey:@"RegistrationUsername"] retain];
+//    rax = [r14 licenseWindowController];
+//    rax = [rax retain];
+//    [rax setName:r15];
+//    [rax release];
+//    [r15 release];
+//    [rbx release];
+//    rax = [NSUserDefaults standardUserDefaults];
+//    rax = [rax retain];
+//    var_30 = [[rax stringForKey:@"RegistrationDate"] retain];
+//    [rax release];
+//    if (var_30 != 0x0) {
+//            r12 = objc_alloc_init(@class(NSDateFormatter));
+//            rax = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+//            rax = [rax retain];
+//            [r12 setTimeZone:rax];
+//            [rax release];
+//            [r12 setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+//            rbx = [[r12 dateFromString:var_30] retain];
+//            rax = [r14 licenseWindowController];
+//            rax = [rax retain];
+//            [rax setRegistrationDate:rbx];
+//            [rax release];
+//            [rbx release];
+//            [r12 release];
+//    }
+    
+    NSUserDefaults *defaults  = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:@"marlkiller@voidm.com" forKey:@"RegistrationUsername"];
+    [defaults setObject:@"2099-04-11 13:30:45 GMT" forKey:@"RegistrationDate"];
+    [defaults synchronize];
+    
     return YES;
 }
 @end
