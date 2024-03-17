@@ -54,6 +54,12 @@ int hook_TRTrialStatus(void){
     return 9999;
 };
 
+- (void)hk_terminateExpiredTrialTimerDidFire:(id)arg1  {
+    NSLog(@">>>>>> Swizzled hk_terminateExpiredTrialTimerDidFire method called");
+    NSLog(@">>>>>> self.className : %@", self.className);
+}
+
+
 - (BOOL)hack {
     
     
@@ -81,6 +87,14 @@ int hook_TRTrialStatus(void){
                 originalSelector:NSSelectorFromString(@"startUpdater")
                 swizzledClass:[self class]
                 swizzledSelector:NSSelectorFromString(@"hk_startUpdater")
+
+    ];
+    
+    [MemoryUtils hookInstanceMethod:
+                objc_getClass("TransmitDelegate")
+                originalSelector:NSSelectorFromString(@"terminateExpiredTrialTimerDidFire:")
+                swizzledClass:[self class]
+                swizzledSelector:NSSelectorFromString(@"hk_terminateExpiredTrialTimerDidFire:")
 
     ];
         
