@@ -41,8 +41,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         BundleIdentifier = "com.panic.Transmit"
-         FilePath = "/Applications/Transmit.app">
+         FilePath = "/Applications/AnyGo.app">
       </PathRunnable>
    </LaunchAction>
    <ProfileAction

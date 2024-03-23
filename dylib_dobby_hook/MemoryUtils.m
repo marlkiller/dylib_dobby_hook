@@ -375,14 +375,18 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     if (originalMethod && swizzledMethod) {
         method_exchangeImplementations(originalMethod, swizzledMethod);
     } else {
-        NSLog(@"Failed to swizzle method.");
+        NSLog(@">>>>>> Failed to swizzle method.");
     }
 }
 
 /**
  替换类方法
- hookClassMethod(objc_getClass("MMComposeTextView"), @selector(preprocessTextAttributes:), [self class], @selector(hook_preprocessTextAttributes:));
-
+ [MemoryUtils hookClassMethod:
+             objc_getClass("GlobalFunction")
+             originalSelector:NSSelectorFromString(@"isInChina")
+             swizzledClass:[self class]
+             swizzledSelector:@selector(hk_isInChina)
+ ];
  @param originalClass 原始类
  @param originalSelector 原始类的类方法
  @param swizzledClass 替换类
@@ -395,7 +399,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     if (originalMethod && swizzledMethod) {
         method_exchangeImplementations(originalMethod, swizzledMethod);
     } else {
-        NSLog(@"Failed to swizzle class method.");
+        NSLog(@">>>>>> Failed to swizzle class method.");
     }
 }
 @end
