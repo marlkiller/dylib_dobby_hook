@@ -127,8 +127,9 @@ int (*hook_device_id_ori)();
     
     
     
+    //  objc_cls_ref_LicenseModel
     NSArray *globalOffsets =[MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath
-                                                      machineCode:(NSString *) @"FC 6F BA A9 FA 67 01 A9 F8 5F 02 A9 F6 57 03 A9 F4 4F 04 A9 FD 7B 05 A9 FD 43 01 91 FF 03 02 D1 ?? 38"
+                                                      machineCode:(NSString *) @"FC 6F BA A9 FA 67 01 A9 F8 5F 02 A9 F6 57 03 A9 F4 4F 04 A9 FD 7B 05 A9 FD 43 01 91 FF 03 02 D1 ?? ?? 00 90 00 ?? ?? 91 ?? ?? FB 97"
                                                             count:(int)1];
     uintptr_t globalOffset = [globalOffsets[0] unsignedIntegerValue];
     uintptr_t fileOffset =[MemoryUtils getCurrentArchFileOffset: searchFilePath];
