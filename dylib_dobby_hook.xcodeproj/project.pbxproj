@@ -20,7 +20,6 @@
 		38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC292B54CA4D00E6CB9E /* Constant.m */; };
 		38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */; };
 		38D1AC322B54D1CC00E6CB9E /* AirBuddyHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */; };
-		B549D9502BA6F35700FB691C /* AnyGoHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B549D94F2BA6F35700FB691C /* AnyGoHack.m */; };
 		B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */; };
 		B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */; };
 		B5CB448B2B55742A004CEF38 /* LicenseModel.h in Headers */ = {isa = PBXBuildFile; fileRef = B5CB448A2B55742A004CEF38 /* LicenseModel.h */; };
@@ -62,7 +61,6 @@
 		38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AirBuddyHack.m; sourceTree = "<group>"; };
 		38E793632B6C7AB8005677AA /* all_in_one.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = all_in_one.sh; sourceTree = "<group>"; };
 		38E793642B6C7FB6005677AA /* auto_hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = auto_hack.sh; sourceTree = "<group>"; };
-		B549D94F2BA6F35700FB691C /* AnyGoHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnyGoHack.m; sourceTree = "<group>"; };
 		B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavicatPremiumHack.m; sourceTree = "<group>"; };
 		B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevUtilsHack.m; sourceTree = "<group>"; };
 		B5CB448A2B55742A004CEF38 /* LicenseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LicenseModel.h; sourceTree = "<group>"; };
@@ -121,7 +119,6 @@
 				38B83E302B5505B300919735 /* TablePlusHack.m */,
 				B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */,
 				B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */,
-				B549D94F2BA6F35700FB691C /* AnyGoHack.m */,
 			);
 			path = dylib_dobby_hook;
 			sourceTree = "<group>";
@@ -275,7 +272,6 @@
 				B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */,
 				B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */,
 				3816BBB92B54FF090051CF39 /* MemoryUtils.m in Sources */,
-				B549D9502BA6F35700FB691C /* AnyGoHack.m in Sources */,
 				38B83E312B5505B300919735 /* TablePlusHack.m in Sources */,
 				38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */,
 				B5FE3B862BA2A571001AE437 /* TransmitHack.m in Sources */,
