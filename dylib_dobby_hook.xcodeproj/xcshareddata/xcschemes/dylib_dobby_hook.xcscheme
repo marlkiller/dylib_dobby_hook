@@ -41,7 +41,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         FilePath = "/Applications/AnyGo.app">
+         FilePath = "/Applications/Permute 3.app">
       </PathRunnable>
    </LaunchAction>
    <ProfileAction

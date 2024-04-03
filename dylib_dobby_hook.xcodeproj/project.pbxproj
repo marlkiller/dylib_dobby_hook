@@ -20,6 +20,7 @@
 		38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC292B54CA4D00E6CB9E /* Constant.m */; };
 		38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */; };
 		38D1AC322B54D1CC00E6CB9E /* AirBuddyHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */; };
+		B50E935E2BBD024F0073FEAA /* PaddleBaseHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */; };
 		B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */; };
 		B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */; };
 		B5CB448B2B55742A004CEF38 /* LicenseModel.h in Headers */ = {isa = PBXBuildFile; fileRef = B5CB448A2B55742A004CEF38 /* LicenseModel.h */; };
@@ -61,6 +62,7 @@
 		38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AirBuddyHack.m; sourceTree = "<group>"; };
 		38E793632B6C7AB8005677AA /* all_in_one.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = all_in_one.sh; sourceTree = "<group>"; };
 		38E793642B6C7FB6005677AA /* auto_hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = auto_hack.sh; sourceTree = "<group>"; };
+		B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaddleBaseHack.m; sourceTree = "<group>"; };
 		B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavicatPremiumHack.m; sourceTree = "<group>"; };
 		B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevUtilsHack.m; sourceTree = "<group>"; };
 		B5CB448A2B55742A004CEF38 /* LicenseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LicenseModel.h; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				38B83E302B5505B300919735 /* TablePlusHack.m */,
 				B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */,
 				B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */,
+				B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */,
 			);
 			path = dylib_dobby_hook;
 			sourceTree = "<group>";
@@ -257,7 +260,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Apps downloaded from AppStore require root permission to execute\nroot_password=\"\"\n\napp_name=\"AnyGo\"  \n# The default is injected into the main program, if you need to customize, please edit the variable inject_bin, otherwise do not touch it\n# inject_bin=\"/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE\"\n# inject_bin=\"/Applications/${app_name}.app/Contents/MacOS//${app_name}\"\n\n\ndylib_name=\"${PRODUCT_NAME}\"\nprefix=\"lib\"\ninsert_dylib=\"${SRCROOT}/tools/insert_dylib\"\n\napp_bundle_path=\"/Applications/${app_name}.app/Contents/MacOS\"\napp_bundle_framework=\"/Applications/${app_name}.app/Contents/Frameworks/\"\n\nif [ -n \"$inject_bin\" ]; then\n    app_executable_path=\"$inject_bin\"\nelse\n    app_executable_path=\"${app_bundle_path}/${app_name}\"\nfi\napp_executable_backup_path=\"${app_executable_path}_Backup\"\n\n\nif [ -w \"/Applications/${app_name}.app\" ]; then\n    echo \"Have the directory write permission\"\nelse\n    echo \"No write permission for the directory\"    \n    echo \"$root_password\" | sudo -S chmod -R 777 \"/Applications/${app_name}.app\"\nfi\n\nif [ ! -d \"$app_bundle_framework\" ]; then\n  mkdir -p \"$app_bundle_framework\"\nfi\n\n\ncp -f \"${insert_dylib}\" \"${app_bundle_path}/\" \nif [ ! -f \"$app_executable_backup_path\" ]; \nthen\n    cp \"$app_executable_path\" \"$app_executable_backup_path\"\nfi\n\ncp -f \"${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib\" \"${app_bundle_framework}\"\n\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    cp -f \"${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib\" \"${SRCROOT}/release/${prefix}${dylib_name}.dylib\"\nfi\n\ncp -f \"${BUILT_PRODUCTS_DIR}/libdobby.dylib\" \"${app_bundle_framework}\"\n\"${app_bundle_path}/insert_dylib\" --weak --all-yes \"@rpath/${prefix}${dylib_name}.dylib\" \"$app_executable_backup_path\" \"$app_executable_path\"\n";
+			shellScript = "# Apps downloaded from AppStore require root permission to execute\nroot_password=\"\"\n\napp_name=\"Permute 3\"  \n# The default is injected into the main program, if you need to customize, please edit the variable inject_bin, otherwise do not touch it\n# inject_bin=\"/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE\"\n# inject_bin=\"/Applications/${app_name}.app/Contents/MacOS//${app_name}\"\n\n\ndylib_name=\"${PRODUCT_NAME}\"\nprefix=\"lib\"\ninsert_dylib=\"${SRCROOT}/tools/insert_dylib\"\n\napp_bundle_path=\"/Applications/${app_name}.app/Contents/MacOS\"\napp_bundle_framework=\"/Applications/${app_name}.app/Contents/Frameworks/\"\n\nif [ -n \"$inject_bin\" ]; then\n    app_executable_path=\"$inject_bin\"\nelse\n    app_executable_path=\"${app_bundle_path}/${app_name}\"\nfi\napp_executable_backup_path=\"${app_executable_path}_Backup\"\n\n\nif [ -w \"/Applications/${app_name}.app\" ]; then\n    echo \"Have the directory write permission\"\nelse\n    echo \"No write permission for the directory\"    \n    echo \"$root_password\" | sudo -S chmod -R 777 \"/Applications/${app_name}.app\"\nfi\n\nif [ ! -d \"$app_bundle_framework\" ]; then\n  mkdir -p \"$app_bundle_framework\"\nfi\n\n\ncp -f \"${insert_dylib}\" \"${app_bundle_path}/\" \nif [ ! -f \"$app_executable_backup_path\" ]; \nthen\n    cp \"$app_executable_path\" \"$app_executable_backup_path\"\nfi\n\ncp -f \"${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib\" \"${app_bundle_framework}\"\n\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    cp -f \"${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib\" \"${SRCROOT}/release/${prefix}${dylib_name}.dylib\"\nfi\n\ncp -f \"${BUILT_PRODUCTS_DIR}/libdobby.dylib\" \"${app_bundle_framework}\"\n\"${app_bundle_path}/insert_dylib\" --weak --all-yes \"@rpath/${prefix}${dylib_name}.dylib\" \"$app_executable_backup_path\" \"$app_executable_path\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -266,6 +269,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B50E935E2BBD024F0073FEAA /* PaddleBaseHack.m in Sources */,
 				38D1AC322B54D1CC00E6CB9E /* AirBuddyHack.m in Sources */,
 				38350BF82B53F73A00DD52B3 /* dylib_dobby_hook.m in Sources */,
 				382A25862B6918DF0083F28C /* PasteHack.m in Sources */,

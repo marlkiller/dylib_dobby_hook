@@ -143,8 +143,9 @@ bool isArm;
     
     for (Class class in personClasses) {
         id<HackProtocol> it = [[class alloc] init];
-        if ([currentAppName isEqualToString:[it getAppName]]) {
-            if (![currentAppVersion hasPrefix:[it getSupportAppVersion]]){
+        if ([currentAppName hasPrefix:[it getAppName]]) {
+            NSString *supportAppVersion = [it getSupportAppVersion];
+            if (supportAppVersion!=nil && supportAppVersion.length>0 && ![currentAppVersion hasPrefix:supportAppVersion]){
                 NSAlert *alert = [[NSAlert alloc] init];
                 [alert addButtonWithTitle:@"OK"];
                 alert.messageText =  [NSString stringWithFormat:@"Unsupported current appVersion !!\nSuppert appVersion: [%s]\nCurrent appVersion: [%s]",[it getSupportAppVersion].UTF8String, currentAppVersion.UTF8String];;

@@ -12,6 +12,7 @@
 #import "mach-o/getsect.h"
 #import <mach-o/dyld.h>
 #import <objc/runtime.h>
+#import <AppKit/AppKit.h>
 
 
 @implementation MemoryUtils
@@ -376,6 +377,18 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         method_exchangeImplementations(originalMethod, swizzledMethod);
     } else {
         NSLog(@">>>>>> Failed to swizzle method.");
+        NSString *message = [NSString stringWithFormat:@"originalClass:%@, originalSelector:%@, originalMethod:%p\n"
+                                                        "swizzledClass:%@, swizzledSelector:%@, swizzledMethod:%p\n",
+                                                        NSStringFromClass(originalClass),
+                                                        NSStringFromSelector(originalSelector),
+                                                        originalMethod,
+                                                        NSStringFromClass(swizzledClass),
+                                                        NSStringFromSelector(swizzledSelector),
+                                                        swizzledMethod];
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setInformativeText:message];
+        [alert addButtonWithTitle:@"OK"];
+        [alert runModal];
     }
 }
 
@@ -400,6 +413,18 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         method_exchangeImplementations(originalMethod, swizzledMethod);
     } else {
         NSLog(@">>>>>> Failed to swizzle class method.");
+        NSString *message = [NSString stringWithFormat:@"originalClass:%@, originalSelector:%@, originalMethod:%p\n"
+                                                        "swizzledClass:%@, swizzledSelector:%@, swizzledMethod:%p\n",
+                                                        NSStringFromClass(originalClass),
+                                                        NSStringFromSelector(originalSelector),
+                                                        originalMethod,
+                                                        NSStringFromClass(swizzledClass),
+                                                        NSStringFromSelector(swizzledSelector),
+                                                        swizzledMethod];
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setInformativeText:message];
+        [alert addButtonWithTitle:@"OK"];
+        [alert runModal];
     }
 }
 @end
