@@ -84,7 +84,7 @@
     NSLog(@">>>>>> called hook_licenseCode");
     NSUUID *uuid = [NSUUID UUID];
     return [uuid UUIDString];
-    return @"B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C";
+//    return @"B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C";
 }
 
 - (NSString *) hook_activationEmail{
