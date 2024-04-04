@@ -55,9 +55,50 @@
     return @9;
 }
 
+
+- (BOOL) hook_isLicensed{
+    NSLog(@">>>>>> called hook_isLicensed");
+    return YES;
+}
+
+- (BOOL) hook_activated{
+    NSLog(@">>>>>> called hook_activated");
+    return YES;
+}
+
+
+- (NSDate *) hook_activationDate{
+    NSLog(@">>>>>> called hook_activationDate");
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    [components setYear:2099];
+    [components setMonth:1]; // January
+    [components setDay:1];
+    [components setHour:0];
+    [components setMinute:0];
+    [components setSecond:0];
+    NSDate *date = [calendar dateFromComponents:components];
+    return date;
+}
+- (NSString *) hook_licenseCode{
+    NSLog(@">>>>>> called hook_licenseCode");
+    NSUUID *uuid = [NSUUID UUID];
+    return [uuid UUIDString];
+    return @"B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C";
+}
+
+- (NSString *) hook_activationEmail{
+    NSLog(@">>>>>> called hook_activationEmail");
+    return @"marlkiller@voidm.com";
+}
+
+- (void) hook_verifyActivationDetailsWithCompletion:(id) arg1{
+    NSLog(@">>>>>> called hook_verifyActivationDetailsWithCompletion");
+    return;
+}
+
 - (BOOL)hack {
 //    license eg: B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C
-    
     
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //        // 在这里执行你的代码
@@ -79,7 +120,7 @@
 //                if ([viewController isKindOfClass:viewControllerClass]) {
 //                    NSLog(@"Window is associated with view controller: %@", viewController);
 //                    // 隐藏窗口
-//                    [window orderOut:nil];
+//                    // [window orderOut:nil];
 //                    // 或者销毁窗口
 //                    // [window close];
 //                }
@@ -91,44 +132,84 @@
 //    });
     
     
-    // -[_TtC9Licensing27CMLicensingWindowController windowDidLoad]:        // -[Licensing.CMLicensingWindowController windowDidLoad]
+//    boom 爆破
+//    // -[_TtC9Licensing27CMLicensingWindowController windowDidLoad]:        // -[Licensing.CMLicensingWindowController windowDidLoad]
+//    [MemoryUtils hookInstanceMethod:
+//         objc_getClass("Licensing.CMLicensingWindowController")
+//                   originalSelector:NSSelectorFromString(@"windowDidLoad")
+//                      swizzledClass:[self class]
+//                   swizzledSelector:NSSelectorFromString(@"hook_windowDidLoad")
+//    ];
+//    //  viewDidLoad
+//    [MemoryUtils hookInstanceMethod:
+//         objc_getClass("Licensing.CMLicensingViewController")
+//                   originalSelector:NSSelectorFromString(@"viewDidLoad")
+//                      swizzledClass:[self class]
+//                   swizzledSelector:NSSelectorFromString(@"hook_viewDidLoad")
+//    ];
+//    
+//    [MemoryUtils hookInstanceMethod:
+//         objc_getClass("PADProduct")
+//                   originalSelector:NSSelectorFromString(@"trialLength")
+//                      swizzledClass:[self class]
+//                   swizzledSelector:NSSelectorFromString(@"hook_trialLength2")
+//     
+//    ];
+//    //    trialDaysRemaining
+//    [MemoryUtils hookInstanceMethod:
+//         objc_getClass("PADProduct")
+//                   originalSelector:NSSelectorFromString(@"trialDaysRemaining")
+//                      swizzledClass:[self class]
+//                   swizzledSelector:NSSelectorFromString(@"hook_trialDaysRemaining")
+//     
+//    ];
+    
+    
+    
+    
+//    license HOOK
+//    -[PADProduct activated]:
     [MemoryUtils hookInstanceMethod:
-         objc_getClass("Licensing.CMLicensingWindowController")
-                   originalSelector:NSSelectorFromString(@"windowDidLoad")
+         objc_getClass("PADProduct")
+                   originalSelector:NSSelectorFromString(@"activated")
                       swizzledClass:[self class]
-                   swizzledSelector:NSSelectorFromString(@"hook_windowDidLoad")
-    ];
-    //  viewDidLoad
-    [MemoryUtils hookInstanceMethod:
-         objc_getClass("Licensing.CMLicensingViewController")
-                   originalSelector:NSSelectorFromString(@"viewDidLoad")
-                      swizzledClass:[self class]
-                   swizzledSelector:NSSelectorFromString(@"hook_viewDidLoad")
+                   swizzledSelector:NSSelectorFromString(@"hook_activated")
+
     ];
     
     [MemoryUtils hookInstanceMethod:
          objc_getClass("PADProduct")
-                   originalSelector:NSSelectorFromString(@"trialLength")
+                   originalSelector:NSSelectorFromString(@"activationDate")
                       swizzledClass:[self class]
-                   swizzledSelector:NSSelectorFromString(@"hook_trialLength2")
-     
+                   swizzledSelector:NSSelectorFromString(@"hook_activationDate")
+
     ];
-    //    trialDaysRemaining
     [MemoryUtils hookInstanceMethod:
          objc_getClass("PADProduct")
-                   originalSelector:NSSelectorFromString(@"trialDaysRemaining")
+                   originalSelector:NSSelectorFromString(@"licenseCode")
                       swizzledClass:[self class]
-                   swizzledSelector:NSSelectorFromString(@"hook_trialDaysRemaining")
-     
+                   swizzledSelector:NSSelectorFromString(@"hook_licenseCode")
+
+    ];
+    [MemoryUtils hookInstanceMethod:
+         objc_getClass("PADProduct")
+                   originalSelector:NSSelectorFromString(@"activationEmail")
+                      swizzledClass:[self class]
+                   swizzledSelector:NSSelectorFromString(@"hook_activationEmail")
+
+    ];
+    [MemoryUtils hookInstanceMethod:
+         objc_getClass("PADProduct")
+                   originalSelector:NSSelectorFromString(@"verifyActivationDetailsWithCompletion:")
+                      swizzledClass:[self class]
+                   swizzledSelector:NSSelectorFromString(@"hook_verifyActivationDetailsWithCompletion:")
+
     ];
     
-    
-    //    // Licensing.CMLicensing.numberOfTrialDays.getter
-    
-        
-    //    // 反射创建类实例
+//            // Licensing.CMLicensing.numberOfTrialDays.getter
+//            // 反射创建类实例
 //            Class Dcls=NSClassFromString(@"Licensing.CMLicensingViewController");
-////            id dobj=[[Dcls alloc] init];
+//            id dobj=[[Dcls alloc] init];
 //        
 //            // 反射创建无类实例(也叫类对象)
 //            Class currentClass=objc_getMetaClass("Licensing.CMLicensingViewController");
