@@ -28,6 +28,6 @@ hack_app "Paste"
 hack_app "Navicat Premium" "/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"
 hack_app "Transmit"
 hack_app "AnyGo"
-hack_app "Downie 4"
-hack_app "Permute 3"
+hack_app "Downie 4" "/Applications/Permute 3.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"
+hack_app "Permute 3" "/Applications/Permute 3.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"
 
