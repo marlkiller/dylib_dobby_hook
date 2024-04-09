@@ -35,9 +35,10 @@ xcode 开发 dylib , 基于跨平台的 dobby HOOK 框架来构建跨平台的�
 | Navicat Premium | 16.*    | ✔   | ✔   | App Store                                   | inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"         | QiuChenlyOpenSource |
 | Paste           | 4.1.3   | ✘   | ✔   | App Store                                   |                                                                                                       | LeeeMooo            |
 | Transmit        | 5.*     | ✔   | ✔   | https://panic.com/transmit/#download        |                                                                                                       |                     |
-| <s>AnyGo<s>     | 7.*     | ✔   | ✔   | https://itoolab.com/gps-location-changer/   | DMCA !! 不可抗拒因素,暂时不支持了...!!                                                                            |                     |
+| <s>AnyGo<s>     | 7.*     | ✔   | ✔   | https://itoolab.com/gps-location-changer/   | DMCA !!                                                                                               |                     |
 | Downie          | 4.*     | ✔   | ✔   | https://software.charliemonroe.net/downie/  | inject_bin="/Applications/Permute 3.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing" |                     |
 | Permute         | 3.*     | ✔   | ✔   | https://software.charliemonroe.net/permute/ | inject_bin="/Applications/Downie 4.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"  |                     |
+| ProxyMan        | 5.*     | ✔   | ✔   | https://proxyman.io/                        | inject_bin="/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend"    |                     |
 
 ## Quick Start
 

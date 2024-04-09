@@ -1,0 +1,20 @@
+{
+  "surge": {
+    "patch": {
+      "/Applications/Surge.app/Contents/Library/LaunchServices/com.nssurge.surge-mac.helper": {
+        "x86": {
+          "55 48 89 E5 41 57 41 56 41 55 41 54 53 48 83 EC 58 48 89 FB 4C 8D 7D C0 49 C7 07 00 00 00 00 48 8B .. .. .. .. .. 48 8B 53 20 48 8B .. .. .. .. .. 4C 8B .. .. .. .. .. 41 FF D6": "6A 01 58 C3"
+        },
+        "arm":{
+
+        }
+      }
+    },
+    "clear_certificate":[
+        "/Applications/Surge.app/Contents/Library/LaunchServices/com.nssurge.surge-mac.helper"
+    ]
+  }
+}
+
+
+

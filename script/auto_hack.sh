@@ -30,4 +30,5 @@ hack_app "Transmit"
 hack_app "AnyGo"
 hack_app "Downie 4" "/Applications/Permute 3.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"
 hack_app "Permute 3" "/Applications/Permute 3.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"
+hack_app "Proxyman" "/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend"
 

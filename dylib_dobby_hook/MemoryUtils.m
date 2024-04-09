@@ -146,7 +146,8 @@ NSData *machineCode2Bytes(NSString *hexString) {
  * ? 匹配所有
  */
 + (NSArray *)searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)searchMachineCode count:(int)count {
-    
+    searchMachineCode = [searchMachineCode stringByReplacingOccurrencesOfString:@"." withString:@"?"];
+
     if (CACHE_MACHINE_CODE_OFFSETS) {
             NSArray *cachedOffsets = [self loadMachineCodeOffsetsFromUserDefaults:searchMachineCode];
             if (cachedOffsets) {
@@ -196,38 +197,55 @@ NSData *machineCode2Bytes(NSString *hexString) {
 /**
  * 从Mach-O中读取文件架构信息
  * @param filePath 文件路径
- * @return 返回文件中所有架构列表 只能分析FAT架构文件 Mach-O 64位文件解析不了 会死循环
+ * @return 返回文件中所有架构列表以及偏移量
  */
 NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     NSMutableArray < NSDictionary * > *architecturesInfo = [NSMutableArray array];
-
-    NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
-    NSData *fileData = [fileHandle readDataOfLength:sizeof(struct fat_header)];
-
-    if (fileData) {
-        const struct fat_header *header = (const struct fat_header *) [fileData bytes];
-        uint32_t nfat_arch = OSSwapBigToHostInt32(header->nfat_arch);
+    
+    NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+    if (fileData == nil) {
+        NSLog(@">>>>>> Failed to read file data.");
+        return nil;
+    }
+    const uint32_t magic = *(const uint32_t *)fileData.bytes;
+    if (magic == FAT_MAGIC || magic == FAT_CIGAM) {
+        NSLog(@">>>>>> is FAT");
+        struct fat_header *fatHeader = (struct fat_header *)fileData.bytes;
+        uint32_t nfat_arch = OSSwapBigToHostInt32(fatHeader->nfat_arch);
+        struct fat_arch *fatArchs = (struct fat_arch *)(fileData.bytes + sizeof(struct fat_header));
+        
         for (uint32_t i = 0; i < nfat_arch; i++) {
-            NSData *archData = [fileHandle readDataOfLength:sizeof(struct fat_arch)];
-            const struct fat_arch *arch = (const struct fat_arch *) [archData bytes];
-
-            cpu_type_t cpuType = OSSwapBigToHostInt32(arch->cputype);
-            cpu_subtype_t cpuSubtype = OSSwapBigToHostInt32(arch->cpusubtype);
-            uint32_t offset = OSSwapBigToHostInt32(arch->offset);
-            uint32_t size = OSSwapBigToHostInt32(arch->size);
-
+            cpu_type_t cpuType = OSSwapBigToHostInt32(fatArchs[i].cputype);
+            cpu_subtype_t cpuSubtype = OSSwapBigToHostInt32(fatArchs[i].cpusubtype);
+            uint32_t offset = OSSwapBigToHostInt32(fatArchs[i].offset);
+            uint32_t size = OSSwapBigToHostInt32(fatArchs[i].size);
             NSDictionary *archInfo = @{
                     @"cpuType": @(cpuType),
                     @"cpuSubtype": @(cpuSubtype),
                     @"offset": @(offset),
                     @"size": @(size)
             };
-
             [architecturesInfo addObject:archInfo];
         }
+    }else {
+        NSLog(@">>>>>> is not FAT");
+        // magic == MH_MAGIC_64 || magic == MH_CIGAM_64)
+        // /* Constant for the magic field of the mach_header (32-bit architectures) */
+        // #define    MH_MAGIC    0xfeedface    /* the mach magic number */
+        // #define    MH_CIGAM    0xcefaedfe    /* NXSwapInt(MH_MAGIC) */
+        struct mach_header *header = (struct mach_header *)fileData.bytes;
+        cpu_type_t cpuType = header->cputype;
+        cpu_subtype_t cpuSubtype = header->cpusubtype;
+
+        NSDictionary *archInfo = @{
+           @"cpuType": @(cpuType),
+           @"cpuSubtype": @(cpuSubtype),
+           @"offset": @0,
+           @"size": @0
+        };
+        [architecturesInfo addObject:archInfo];
     }
-    [fileHandle closeFile];
-    return [architecturesInfo copy];
+    return architecturesInfo;
 }
 
 
