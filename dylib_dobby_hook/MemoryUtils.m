@@ -64,15 +64,37 @@ NSString * CACHE_MACHINE_CODE_KEY = @"All-Offsets";
 
 + (void)writeMachineCodeString:(NSString *)codeString toAddress:(uintptr_t)address {
     NSString *trimmedCodeString = [codeString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    NSArray<NSString *> *byteStrings = [trimmedCodeString componentsSeparatedByString:@" "];
-    
-    unsigned char *bytes = (unsigned char *)address;
-    for (NSUInteger i = 0; i < byteStrings.count; i++) {
-        NSScanner *scanner = [NSScanner scannerWithString:byteStrings[i]];
-        unsigned int byteValue;
-        [scanner scanHexInt:&byteValue];
-        bytes[i] = (unsigned char)byteValue;
-    }
+        NSArray<NSString *> *byteStrings = [trimmedCodeString componentsSeparatedByString:@" "];
+        
+        size_t pageSize = (size_t)sysconf(_SC_PAGESIZE);
+        uintptr_t pageStart = address & ~(pageSize - 1);
+        
+        mach_port_t selfTask = mach_task_self();
+        kern_return_t kr;
+
+        // 更改页的内存保护
+        kr = mach_vm_protect(selfTask, (mach_vm_address_t)pageStart, pageSize, FALSE, VM_PROT_READ | VM_PROT_WRITE | VM_PROT_COPY);
+        if (kr != KERN_SUCCESS) {
+            // 错误处理
+            NSLog(@"xxxxxxxxxxxxxxxxerr");
+            return;
+        }
+        
+        unsigned char *bytes = (unsigned char *)address;
+        for (NSUInteger i = 0; i < byteStrings.count; i++) {
+            NSScanner *scanner = [NSScanner scannerWithString:byteStrings[i]];
+            unsigned int byteValue;
+            [scanner scanHexInt:&byteValue];
+            bytes[i] = (unsigned char)byteValue;
+        }
+         
+        // 恢复页的内存保护
+        kr = mach_vm_protect(selfTask, (mach_vm_address_t)pageStart, pageSize, FALSE, VM_PROT_READ | VM_PROT_EXECUTE);
+        if (kr != KERN_SUCCESS) {
+            // 错误处理
+            return;
+        }
+        
 }
 
 
