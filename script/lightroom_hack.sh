@@ -2,17 +2,13 @@ current_path=$PWD
 echo "当前路径：$current_path"
 
 app_name="Adobe Lightroom"
-# The default is injected into the main program, if you need to customize, please edit the variable inject_bin, otherwise do not touch it
-# inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"
-# inject_bin="/Applications/${app_name}.app/Contents/MacOS//${app_name}"
-#/Applications/Adobe Lightroom CC/Adobe Lightroom.app/Contents/MacOS/Adobe Lightroom
 
 dylib_name="dylib_dobby_hook"
 prefix="lib"
 insert_dylib="${current_path}/../tools/insert_dylib"
 
 BUILT_PRODUCTS_DIR="${current_path}/../release"
-//lightroom路径多一个AdobeLightroomCC
+# lightroom路径多一个AdobeLightroomCC
 app_bundle_path="/Applications/Adobe Lightroom CC/${app_name}.app/Contents/MacOS"
 app_bundle_framework="/Applications/Adobe Lightroom CC/${app_name}.app/Contents/Frameworks/"
 

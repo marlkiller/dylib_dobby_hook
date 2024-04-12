@@ -22,22 +22,6 @@
 
 @implementation LightRoomHack
 
-//
-//
-//// 定义一个原始的 ptrace 函数指针
-//typedef int (*ptrace_ptr_t)(int _request,pid_t _pid, caddr_t _addr,int _data);
-//ptrace_ptr_t orig_ptrace = NULL;
-//
-//// 自定义的 ptrace 函数
-//int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data) {
-//    if(_request != 31){
-//        // 如果请求不是 PT_DENY_ATTACH，则调用原始的 ptrace 函数
-//        return orig_ptrace(_request,_pid,_addr,_data);
-//    }
-//    NSLog(@">>>>>> ptrace request is PT_DENY_ATTACH");
-//    // 拒绝调试
-//    return 0;
-//}
 
 
 - (NSString *)getAppName {
@@ -53,16 +37,13 @@
 
 - (BOOL)hack {
     
-    // 程序使用ptrace来进行动态调试保护，使得执行lldb的时候出现Process xxxx exited with status = 45 (0x0000002d)错误。
-    // 使用 DobbyHook 替换 ptrace函数。
-    //    DobbyHook((void *)ptrace, (void *)my_ptrace, (void **)&orig_ptrace);
-    // https://www.xwjack.com/2017/11/15/Reverse/
     NSString *searchFilePath = [[Constant getCurrentAppPath] stringByAppendingString:@"/Contents/MacOS/Adobe Lightroom"];
     // 获取文件中指定CPU架构段的偏移量
     uintptr_t fileOffset =[MemoryUtils getCurrentArchFileOffset: searchFilePath];
     
 #if defined(__arm64__) || defined(__aarch64__)
-    NSString *get_licenseType = @"";
+    // TODO
+    return false;
 #elif defined(__x86_64__)
     NSString *get_licenseType =@"55 48 89 E5 41 57 41 56 41 54 53 48 83 EC .. .. .. F6 48 8B 07 48 8B 40 10 44 8B 78 08 .. .. .. 10 8B 58 30 48 8D 35 C1 69 1C 00 48 8D 7D C8 E8 83 F8 FF FF";
 

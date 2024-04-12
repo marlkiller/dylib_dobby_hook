@@ -21,6 +21,7 @@
 		38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */; };
 		38D1AC322B54D1CC00E6CB9E /* AirBuddyHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */; };
 		B50E935E2BBD024F0073FEAA /* PaddleBaseHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */; };
+		B5270BA22BC8D6AA00E732F6 /* LightRoomHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5270BA12BC8D6AA00E732F6 /* LightRoomHack.m */; };
 		B546A6582BC4F0CD0012338D /* ProxyManHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B546A6572BC4F0CD0012338D /* ProxyManHack.m */; };
 		B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */; };
 		B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */; };
@@ -68,6 +69,8 @@
 		38E793632B6C7AB8005677AA /* all_in_one.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = all_in_one.sh; sourceTree = "<group>"; };
 		38E793642B6C7FB6005677AA /* auto_hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = auto_hack.sh; sourceTree = "<group>"; };
 		B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaddleBaseHack.m; sourceTree = "<group>"; };
+		B5270BA12BC8D6AA00E732F6 /* LightRoomHack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightRoomHack.m; sourceTree = "<group>"; };
+		B5270BA32BC8D73300E732F6 /* lightroom_hack.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = lightroom_hack.sh; sourceTree = "<group>"; };
 		B546A6572BC4F0CD0012338D /* ProxyManHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProxyManHack.m; sourceTree = "<group>"; };
 		B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavicatPremiumHack.m; sourceTree = "<group>"; };
 		B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevUtilsHack.m; sourceTree = "<group>"; };
@@ -116,6 +119,7 @@
 		38350BF42B53F73A00DD52B3 /* dylib_dobby_hook */ = {
 			isa = PBXGroup;
 			children = (
+				B5270BA12BC8D6AA00E732F6 /* LightRoomHack.m */,
 				B5FE3B842BA2A571001AE437 /* TransmitHack.m */,
 				382A25842B6918DF0083F28C /* PasteHack.m */,
 				B5F59EEE2B56CF8B00FCE1A4 /* tableplus */,
@@ -160,6 +164,7 @@
 		38350C082B54047F00DD52B3 /* script */ = {
 			isa = PBXGroup;
 			children = (
+				B5270BA32BC8D73300E732F6 /* lightroom_hack.sh */,
 				38350C092B54047F00DD52B3 /* hack.sh */,
 				38E793632B6C7AB8005677AA /* all_in_one.sh */,
 				38E793642B6C7FB6005677AA /* auto_hack.sh */,
@@ -295,6 +300,7 @@
 				B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */,
 				3816BBB92B54FF090051CF39 /* MemoryUtils.m in Sources */,
 				38B83E312B5505B300919735 /* TablePlusHack.m in Sources */,
+				B5270BA22BC8D6AA00E732F6 /* LightRoomHack.m in Sources */,
 				B5FECEAE2BC4FC29008916D6 /* common_ret.c in Sources */,
 				38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */,
 				B5CFAB542BBEE615003E25C9 /* SurgeHack.m in Sources */,
