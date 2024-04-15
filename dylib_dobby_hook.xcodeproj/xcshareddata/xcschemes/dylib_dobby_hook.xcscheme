@@ -41,7 +41,8 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         FilePath = "/Applications/Permute 3.app">
+         BundleIdentifier = "com.proxyman.NSProxy"
+         FilePath = "/Applications/Proxyman.app">
       </PathRunnable>
    </LaunchAction>
    <ProfileAction

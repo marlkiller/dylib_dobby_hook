@@ -43,7 +43,7 @@
     
 #if defined(__arm64__) || defined(__aarch64__)
     // TODO
-    return false;
+    NSString *get_licenseType =@"";
 #elif defined(__x86_64__)
     NSString *get_licenseType =@"55 48 89 E5 41 57 41 56 41 54 53 48 83 EC .. .. .. F6 48 8B 07 48 8B 40 10 44 8B 78 08 .. .. .. 10 8B 58 30 48 8D 35 C1 69 1C 00 48 8D 7D C8 E8 83 F8 FF FF";
 
