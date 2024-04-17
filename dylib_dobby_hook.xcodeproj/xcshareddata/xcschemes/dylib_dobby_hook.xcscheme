@@ -41,8 +41,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         BundleIdentifier = "com.proxyman.NSProxy"
-         FilePath = "/Applications/Proxyman.app">
+         FilePath = "/Applications/Movist Pro.app">
       </PathRunnable>
    </LaunchAction>
    <ProfileAction

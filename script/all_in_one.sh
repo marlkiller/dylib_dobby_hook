@@ -43,13 +43,16 @@ fi
 
 
 if check_dylib_exist "$app_executable_path"; then
-    read -p "目标程序 [${app_executable_path}] 已经注入过, 是否覆盖？ (Y/N): " user_input
-    if [ "$user_input" != "Y" ] && [ "$user_input" != "y" ]; then
-        echo ">>>>>> ignore [${app_name}]"
-        exit 0
-    fi
+    echo ">>>>>> 目标程序 [${app_executable_path}] 已经注入过, 即将覆盖"
 fi
 
+# if check_dylib_exist "$app_executable_path"; then
+#     read -p "目标程序 [${app_executable_path}] 已经注入过, 是否覆盖？ (Y/N): " user_input
+#     if [ "$user_input" != "Y" ] && [ "$user_input" != "y" ]; then
+#         echo ">>>>>> ignore [${app_name}]"
+#         exit 0
+#     fi
+# fi
 
 app_executable_backup_path="${app_executable_path}_Backup"
 echo ">>>>>> app_executable_path is ${app_executable_path}"

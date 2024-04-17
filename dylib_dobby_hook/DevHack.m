@@ -75,7 +75,6 @@
     Method originalMethod = class_getInstanceMethod(WinControllerClass, viewDidLoadSeletor);
     // 获取 viewDidLoad 方法的函数地址
     IMP originalMethodIMP = method_getImplementation(originalMethod);
-    IMP viewDidLoadImp = [WinControllerClass instanceMethodForSelector:viewDidLoadSeletor];
     methodPointer = (MethodPointer)originalMethodIMP;
     
 //    [MemoryUtils hookInstanceMethod:
@@ -123,9 +122,13 @@
     NSLog(@">>>>>> _intAddMethodCodePt %ld",_intAddMethodCodePt);
     // 将函数地址转换为函数指针类型
     CRetAddMethodPointer retAddMethod = (CRetAddMethodPointer)_intAddMethodCodePt;
-      // 调用函数
+    // 调用函数
     int ret2 = retAddMethod(1,2);
     NSLog(@">>>>>> retAddMethod ret %d",ret2);
+    
+    // 使用 void * 类型作为通用指针
+    // void *functionAddress = (void *)_intAddMethodCodePt;
+    // int result = ((int (*)(int, int))functionAddress)(10, 20);
 
     
 //    ret1();
@@ -138,16 +141,19 @@ typedef int (*CRetAddMethodPointer)(int a,int b);
 
 
 
-
-
-
-
 typedef void (*MethodPointer)(id, SEL);
 MethodPointer methodPointer = NULL;
 
 // 通过 swizzled 来 hook viewDidLoad
 - (void)hk_viewDidLoad {
     //    在这里实现你的逻辑
+    // Hook 前 获取 IMP KD_MD5IMPGlobal
+    // IMP KD_MD5IMPGlobal = nil;
+    // Class NSStringClz = NSClassFromString(@"NSString");
+    // SEL KD_MD5Seleter = NSSelectorFromString(@"KD_MD5");
+    // Method KD_MD5lMethod = class_getInstanceMethod(NSStringClz, KD_MD5Seleter);
+    // IMP KD_MD5IMP = method_getImplementation(KD_MD5lMethod);
+    // NSString *ret = ((NSString *(*)(id, SEL))KD_MD5IMP)(self, @selector(KD_MD5));
     NSLog(@">>>>>> my_viewDidLoad is called with self: %@ and selector: %@", self, NSStringFromSelector(_cmd));
     methodPointer(self,_cmd);
 }
@@ -161,4 +167,43 @@ void my_viewDidLoad(id self, SEL _cmd) {
     NSLog(@">>>>>> viewDidAppear is hooked!");
     ((void(*)(id, SEL))viewDidLoadImp_ori)(self, _cmd);
 }
+
+
+//// 调用类方法
+//Class SGEEventCenterClass = NSClassFromString(@"SGEEventCenter");
+//if (SGEEventCenterClass) {
+//    SEL selector = NSSelectorFromString(@"raiseEvent:content:type:");
+//    if ([SGEEventCenterClass respondsToSelector:selector]) {
+//        NSMethodSignature *methodSignature = [SGEEventCenterClass methodSignatureForSelector:selector];
+//        if (methodSignature) {
+//            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+//            // 如果是调用实例方法,需要 set target 一个实例对象
+//            // [invocation setTarget:[[SGEEventCenterClass alloc] init]];
+//            [invocation setTarget:SGEEventCenterClass];
+//            [invocation setSelector:selector];
+//            NSString *param1 = @"5";
+//            NSString *param2 = @"自定义消息5";
+//            NSInteger param3 = 0;
+//            [invocation setArgument:&param1 atIndex:2];
+//            [invocation setArgument:&param2 atIndex:3];
+//            [invocation setArgument:&param3 atIndex:4];
+//            [invocation invoke];
+//        }
+//    }
+//}
+
+//// 调用类方法
+////    Class cls = NSClassFromString(@"SGMEnterpriseSettings");
+////    [cls setUserID:@"this is user id"];
+//
+//// 调用实例方法
+//id ret = [[NSClassFromString(@"SGMEnterpriseSettings") alloc] init];
+//// 函数有 多个参数
+////    [ret performSelector:@selector(setUserID:andAnotherParam:)
+////                   withObject:@"this is user id"
+////                   withObject:@"this is another param"];
+//// id ret = class_createInstance(objc_getClass("SGMEnterpriseSettings"), 0);
+//[ret performSelector:NSSelectorFromString(@"setUserID:") withObject:@"this is user id"];
+//[ret performSelector:NSSelectorFromString(@"setCompanyName:") withObject:@"this is cp name"];
+//[ret performSelector:NSSelectorFromString(@"setCompanyID:") withObject:@"this is cp id"];
 @end

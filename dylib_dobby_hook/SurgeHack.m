@@ -13,6 +13,8 @@
 #include <mach-o/dyld.h>
 #import "HackProtocol.h"
 #include <sys/ptrace.h>
+#import <objc/message.h>
+#import "common_ret.h"
 
 
 
@@ -22,23 +24,6 @@
 
 
 @implementation SurgeHack
-
-
-
-// 定义一个原始的 ptrace 函数指针
-typedef int (*ptrace_ptr_t)(int _request,pid_t _pid, caddr_t _addr,int _data);
-ptrace_ptr_t orig_ptrace = NULL;
-
-// 自定义的 ptrace 函数
-int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data) {
-    if(_request != 31){
-        // 如果请求不是 PT_DENY_ATTACH，则调用原始的 ptrace 函数
-        return orig_ptrace(_request,_pid,_addr,_data);
-    }
-    NSLog(@">>>>>> ptrace request is PT_DENY_ATTACH");
-    // 拒绝调试
-    return 0;
-}
 
 
 - (NSString *)getAppName {
@@ -56,7 +41,7 @@ int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data) {
     
     // 程序使用ptrace来进行动态调试保护，使得执行lldb的时候出现Process xxxx exited with status = 45 (0x0000002d)错误。
     // 使用 DobbyHook 替换 ptrace函数。
-    DobbyHook((void *)ptrace, (void *)my_ptrace, (void **)&orig_ptrace);
+    DobbyHook((void *)ptrace, (void *)my_ptrace, (void *)&orig_ptrace);
     
     // https://www.xwjack.com/2017/11/15/Reverse/
     
@@ -65,109 +50,123 @@ int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data) {
     
     
     // NSURL['+ URLWithString:']
-    //    Class NSURLControllerClass = NSClassFromString(@"NSURL");
-    //    SEL urlWithStringSeletor = NSSelectorFromString(@"URLWithString:");
-    //    Method urlWithStringSeletorMethod = class_getClassMethod(NSURL.class, urlWithStringSeletor);
-    //    // 获取 viewDidLoad 方法的函数地址
-    //    IMP urlWithStringSeletorIMP = method_getImplementation(urlWithStringSeletorMethod);
-    //    methodPointer2 = (MethodPointer2)urlWithStringSeletorIMP;
-    //
-    //    [MemoryUtils hookClassMethod:
-    //         NSURLControllerClass
-    //                originalSelector:urlWithStringSeletor
-    //                      swizzledClass:[self class]
-    //                   swizzledSelector:NSSelectorFromString(@"hk_URLWithString:")
-    //    ];
-    
-    
-    //     NSDictionary['- objectForKeyedSubscript:']
-    Class NSDictionaryClass = NSClassFromString(@"NSDictionary");
-    SEL objectForKeyedSubscriptSeletor = NSSelectorFromString(@"objectForKeyedSubscript:");
-    Method urlWithStringSeletorMethod = class_getInstanceMethod(NSDictionaryClass, objectForKeyedSubscriptSeletor);
-    IMP objectForKeyedSubscriptIMP = method_getImplementation(urlWithStringSeletorMethod);
-    objectForKeyedSubscriptPointer = (ObjectForKeyedSubscriptPointer)objectForKeyedSubscriptIMP;
-    [MemoryUtils hookInstanceMethod:
-                   NSDictionaryClass
-                   originalSelector:objectForKeyedSubscriptSeletor
-                   swizzledClass:[self class]
-                   swizzledSelector:NSSelectorFromString(@"hk_objectForKeyedSubscript:")
-    ];
+    Class NSURLControllerClass = NSClassFromString(@"NSURL");
+    SEL urlWithStringSeletor = NSSelectorFromString(@"URLWithString:");
+    Method urlWithStringSeletorMethod = class_getClassMethod(NSURL.class, urlWithStringSeletor);
+    // 获取 viewDidLoad 方法的函数地址
+    IMP urlWithStringSeletorIMP = method_getImplementation(urlWithStringSeletorMethod);
+    urlWithStringPointer = (URLWithStringPointer)urlWithStringSeletorIMP;
 
-    
-    // 获取 license type?
-    // 0000000100343dd4 WindowController.updateLabels
-    // rax = sub_1001b2aba()
-    // 55 48 89 E5 8B 05 E4 B3 68 00 5D C3
-    NSArray *sub_1001b2abaOffsets =[MemoryUtils searchMachineCodeOffsets:
-                                   searchFilePath
-                                   machineCode:@"55 48 89 E5 8B 05 E4 B3 68 00 5D C3"
-                                   count:(int)1
+    [MemoryUtils hookClassMethod:
+         NSURLControllerClass
+                originalSelector:urlWithStringSeletor
+                      swizzledClass:[self class]
+                   swizzledSelector:NSSelectorFromString(@"hk_URLWithString:")
     ];
-    intptr_t _sub_1001b2aba = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)[sub_1001b2abaOffsets[0] unsignedIntegerValue] reduceOffset:(uintptr_t)fileOffset];
-    DobbyHook((void *)_sub_1001b2aba, (void *)hook_sub_1001b2aba, (void *)&sub_1001b2aba_ori);
     
     
-    // 似乎是验证某签名的? rax = *(int32_t *)dword_100842390 == 0x1 ? 0x1 : 0x0;
-    // sub_1001b3189 ret 1
-    // 55 48 89 E5 41 57 41 56 41 55 41 54 53 48 83 EC 28 48 89 FB 4C 8B 35 94 B3 56 00
-    
-    NSArray *sub_1001b3189Offsets =[MemoryUtils searchMachineCodeOffsets:
-                                   searchFilePath
-                                   machineCode:@"55 48 89 E5 41 57 41 56 41 55 41 54 53 48 83 EC 28 48 89 FB 4C 8B 35 94 B3 56 00"
-                                   count:(int)1
-    ];
-    intptr_t _sub_1001b3189 = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)[sub_1001b3189Offsets[0] unsignedIntegerValue] reduceOffset:(uintptr_t)fileOffset];
-    DobbyHook((void *)_sub_1001b3189, (void *)hook_sub_1001b3189, (void *)&sub__1001b3189_ori);
-    
-    
-//    NSLog(@">>>>>> %d",[MemoryUtils readIntAtAddress:0x100842390]);
-//    [MemoryUtils writeInt:1 toAddress:0x100842390];
-//    NSLog(@">>>>>> %d",[MemoryUtils readIntAtAddress:0x100842390]);
-    
-    
-    // -[SGMLicenseViewController reload]:    
+    // -[SGMLicenseViewController reload]:
     [MemoryUtils hookInstanceMethod:
-                   NSClassFromString(@"SGMEnterprise")
+         NSClassFromString(@"SGMEnterprise")
                    originalSelector:NSSelectorFromString(@"settings")
-                   swizzledClass:[self class]
+                      swizzledClass:[self class]
                    swizzledSelector:NSSelectorFromString(@"hk_settings")
     ];
     
     
-    // 消息日志推送
-    // +[SGEEventCenter raiseEvent:content:type:]:
-//    Method raiseEventMethod = class_getClassMethod(NSClassFromString(@"SGEEventCenter"), NSSelectorFromString(@"raiseEvent:content:type:"));
-//    IMP raiseEventMethodIMP = method_getImplementation(raiseEventMethod);
-//    raiseEventMethodPointer = (RaiseEventMethodPointer)raiseEventMethodIMP;
-//  
-//    [MemoryUtils hookClassMethod:
-//                   NSClassFromString(@"SGEEventCenter")
-//                   originalSelector:NSSelectorFromString(@"raiseEvent:content:type:")
-//                   swizzledClass:[self class]
-//                   swizzledSelector:NSSelectorFromString(@"hk_raiseEvent:content:type:")
-//    ];
+    // hook getxattr com.nssurge.surge-mac
+    DobbyHook((void *)0x1001a08fb, (void *)hook_sub_1001a08fb, nil);
+    
+    // hook get deviceid >> 0x1001b3324
+    // DobbyHook((void *)0x1001b3324, (void *)hook_sub_1001a08fb, nil);
+
+    // -[NSData KD_JSONObject]:
+    Class nsDataClass = NSClassFromString(@"NSData");
+    SEL KD_JSONObjectSeleter = NSSelectorFromString(@"KD_JSONObject");
+    Method kd_JSONObjectSeleterOriginalMethod = class_getInstanceMethod(nsDataClass, KD_JSONObjectSeleter);
+    // 获取 KD_JSONObject 方法的函数地址
+    IMP originalMethodIMP = method_getImplementation(kd_JSONObjectSeleterOriginalMethod);
+    kd_JSONObjectPointer = (KD_JSONObjectPointer)originalMethodIMP;
     
     [MemoryUtils hookInstanceMethod:
-                       NSClassFromString(@"SGCloudKit")
-                       originalSelector:NSSelectorFromString(@"init")
-                       swizzledClass:[self class]
-                       swizzledSelector:NSSelectorFromString(@"hk_init")
-        ];
+         NSClassFromString(@"NSData")
+                   originalSelector:NSSelectorFromString(@"KD_JSONObject")
+                      swizzledClass:[self class]
+                   swizzledSelector:NSSelectorFromString(@"hook_KD_JSONObject")
+    ];
+    
+    
+    // (r12)(rdi, @selector(KD_MD5), @"/");  -[NSString KD_MD5] // void sub_1001b3365(void * _block)
+    Class NSStringClz = NSClassFromString(@"NSString");
+    SEL KD_MD5Seleter = NSSelectorFromString(@"KD_MD5");
+    Method KD_MD5lMethod = class_getInstanceMethod(NSStringClz, KD_MD5Seleter);
+    IMP KD_MD5IMP = method_getImplementation(KD_MD5lMethod);
+    KD_MD5IMPGlobal = method_getImplementation(KD_MD5lMethod);
+    kd_MD5Pointer = (KD_MD5Pointer)KD_MD5IMP;
+    [MemoryUtils hookInstanceMethod:
+         NSClassFromString(@"NSString")
+                   originalSelector:NSSelectorFromString(@"KD_MD5")
+                      swizzledClass:[self class]
+                   swizzledSelector:NSSelectorFromString(@"hook_KD_MD5")
+    ];
+    
+    // 0x1001b304c         mov        dword [dword_10083dea8], 0x4                ; dword_10083dea8
+//    NSLog(@">>>>>> Before %s",[MemoryUtils readMachineCodeStringAtAddress:0x1001b304c length:4].UTF8String);
+//    uint8_t nopx10[10] = {0x90,0x90,0x90,0x90,0x90,0x90,0x90,0x90,0x90,0x90};
+//    DobbyCodePatch((void*)0x1001b304c,(uint8_t *)nopx10,10);
+//    NSLog(@">>>>>> After %s",[MemoryUtils readMachineCodeStringAtAddress:0x1001b304c length:4].UTF8String); // 2A 00 80 52; mov w10, #1
+
+
+    
+    // -[NSDictionary objectForKeyedSubscript:]:
+    Class NSDictionaryClass = NSClassFromString(@"__NSDictionaryI");
+    SEL objectForKeyedSubscriptSeleter = NSSelectorFromString(@"objectForKeyedSubscript:");
+    Method objectForKeyedSubscriptMethod = class_getInstanceMethod(NSDictionaryClass, objectForKeyedSubscriptSeleter);
+    IMP objectForKeyedSubscriptImp = method_getImplementation(objectForKeyedSubscriptMethod);
+    objectForKeyedSubscriptPointer = (ObjectForKeyedSubscriptPointer)objectForKeyedSubscriptImp;
+    
     
     [MemoryUtils hookInstanceMethod:
-                       NSClassFromString(@"SGPonteManager")
-                       originalSelector:NSSelectorFromString(@"updatePonteDeviceListWithCompletionHandler:")
-                       swizzledClass:[self class]
-                       swizzledSelector:NSSelectorFromString(@"hk_updatePonteDeviceListWithCompletionHandler:")
-        ];
+         NSClassFromString(@"__NSDictionaryI")
+                   originalSelector:NSSelectorFromString(@"objectForKeyedSubscript:")
+                      swizzledClass:[self class]
+                   swizzledSelector:NSSelectorFromString(@"hook_objectForKeyedSubscript:")
+    ];
+    
+    
+    //  -[SGCloudKit init]
+    [MemoryUtils hookInstanceMethod:
+         NSClassFromString(@"SGCloudKit")
+                   originalSelector:NSSelectorFromString(@"init")
+                      swizzledClass:[self class]
+                   swizzledSelector:NSSelectorFromString(@"hook_init")
+    ];
+    // -[SGPonteManager updatePonteDeviceListWithCompletionHandler:]+57
+
+    [MemoryUtils hookInstanceMethod:
+         NSClassFromString(@"SGPonteManager")
+                   originalSelector:NSSelectorFromString(@"updatePonteDeviceListWithCompletionHandler:")
+                      swizzledClass:[self class]
+                   swizzledSelector:NSSelectorFromString(@"hook_updatePonteDeviceListWithCompletionHandler")
+    ];
+    
+    
+    
+//     sub_10019f124  int sub_10019f124(int arg0, int arg1)
+        
+//    DobbyHook((void *)0x10019f124, (void *)hook_sub_10019f124, (void *)&sub_10019f124_ori);
+
+    // 10019f466
+    DobbyHook((void *)0x10019f466, (void *)hook_sub_10019f466, (void *)&sub_10019f466_ori);
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         // raiseEventMethodPointer(NSClassFromString(@"SGEEventCenter"), NSSelectorFromString(@"raiseEvent:content:type:"),@"3",@"自定义消息3",0);
         Method raiseEventMethod = class_getClassMethod(NSClassFromString(@"SGEEventCenter"), NSSelectorFromString(@"raiseEvent:content:type:"));
-        IMP raiseEventMethodIMP = method_getImplementation(raiseEventMethod);        
+        IMP raiseEventMethodIMP = method_getImplementation(raiseEventMethod);
         // 定义函数指针
-         void (*func)(id, SEL, NSString *, NSString *, NSInteger) = (void (*)(id, SEL, NSString *, NSString *, NSInteger))raiseEventMethodIMP;
+        void (*func)(id, SEL, NSString *, NSString *, NSInteger) = (void (*)(id, SEL, NSString *, NSString *, NSInteger))raiseEventMethodIMP;
         // 调用方法
-         func(NSClassFromString(@"SGEEventCenter"), NSSelectorFromString(@"raiseEvent:content:type:"), @"4", @"自定义消息4", 0);
+        func(NSClassFromString(@"SGEEventCenter"), NSSelectorFromString(@"raiseEvent:content:type:"), @"4", @"自定义消息4", 0);
         
         // 调用类方法
         Class SGEEventCenterClass = NSClassFromString(@"SGEEventCenter");
@@ -177,6 +176,8 @@ int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data) {
                 NSMethodSignature *methodSignature = [SGEEventCenterClass methodSignatureForSelector:selector];
                 if (methodSignature) {
                     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+                    // 如果是调用实例方法,需要 set target 一个实例对象
+                    // [invocation setTarget:[[SGEEventCenterClass alloc] init]];
                     [invocation setTarget:SGEEventCenterClass];
                     [invocation setSelector:selector];
                     NSString *param1 = @"5";
@@ -189,26 +190,155 @@ int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data) {
                 }
             }
         }
-
-
-
+        
+        
+        
     });
-
+    
     return YES;
 }
 
-- (void) hk_updatePonteDeviceListWithCompletionHandler:id{
-    NSLog(@">>>>>> hk_updatePonteDeviceListWithCompletionHandler");
+
+intptr_t (*sub_10019f466_ori)(uint64_t arg1);
+
+
+intptr_t hook_sub_10019f466(uint64_t arg1){
+ 
+    NSDictionary *dict0 =  @{@"policy": @"eyJkZXZpY2VJRCI6ImNlMjUwMGU5NDQ2NTBhZDdmNmUyZjU4MDI2OGU1NDU0IiwidHlwZSI6InRyaWFsIiwiZXhwaXJlc09uRGF0ZSI6MTY4ODc5MDUzNSwiaXNzdWVEYXRlIjoxNjg3NjAyNTY0LCJwIjoiZTJSQkRtVmJaei95NEl1c0YyWk5sdz09IiwicHJvZHVjdCI6IlNVUkdFTUFDNSJ9",
+                             @"sign": @"xd+JgOMOH39bh5jz2PopPqzlreVs92ufvnxLiKn6\/ZSSbtYF24LVgjl1y8g2+yQYLVIesT6k8T5FDcg+Opd98HF4e3A9x2zJQjpvHuCBsIu4UBXojWshKqyvs8SJEbRqarJjymFcefUMDPVKX3G+Zc26fMSCYR04N5Dn6DkYbcNaYFsNn6XWuKjECehyod5UXM8WzFw7xufqoEaBB4NqOFZ7lazDHf5cSBzDFyT1r0wQaN4\/L3WMJBqs74LWS0QXSUlW6yeNt9TUcBF3HSAQFuBSIIPNUKLdyn44Nic7VWocEausfuORhHejuRdt+VmyBiFfwgSjeo9bRYVOZVxrxQ=="};
+
+    intptr_t ret =sub_10019f466_ori(dict0);
+    
+    return ret;
 }
-//typedef id (*RaiseEventMethodPointer)(id, SEL,id, id,id);
-//RaiseEventMethodPointer raiseEventMethodPointer = NULL;
+
+
 //
-//+(void)hk_raiseEvent:(id)arg2 content:(id)arg3 type:(id)arg4 {
-//     raiseEventMethodPointer(self,_cmd,arg2,arg3,arg4);
+//intptr_t (*sub_10019f124_ori)(uint64_t arg1,uint64_t arg2);
+//
+//
+//intptr_t hook_sub_10019f124(uint64_t arg1,uint64_t arg2){
+//    // arg1    intptr_t    0x00006000016c4c80
+//    // arg2    intptr_t    0x0000000101241727
+//    
+////    rdi = *(r14 + 0x28);
+////        if (rdi == 0x0) goto loc_10019f3a6;
+//
+//    uintptr_t *ptr = (uintptr_t *)(arg1 + 0x28);
+//    void * addressPtr = (void *) *ptr;
+//    // __NSDictionary0
+//    
+////    NSMutableDictionary *dict = (__bridge NSMutableDictionary *)addressPtr;
+////    NSString *key = @"newKey";
+////    NSString *value = @"newValue";
+////    [dict setObject:value forKey:key];
+////    NSLog(@"Modified Dictionary: %@", dict);
+//    
+//    intptr_t ret =sub_10019f124_ori(arg1,arg2);
+//    
+//    return ret;
 //}
 
+
+- (void)hook_updatePonteDeviceListWithCompletionHandler{
+    NSLog(@">>>>>> hook_updatePonteDeviceListWithCompletionHandler");
+}
+- (void)hook_init{
+    NSLog(@">>>>>> hook_init");
+}
+IMP KD_MD5IMPGlobal = nil;
+
+
+typedef id (*KD_MD5Pointer)(id, SEL);
+KD_MD5Pointer kd_MD5Pointer = NULL;
+- (NSString*)hook_KD_MD5{
+    
+//    NSString *result = ((NSString *(*)(id, SEL))[self methodForSelector:@selector(KD_MD5)])(self, @selector(KD_MD5));
+
+    NSString *ret = ((NSString *(*)(id, SEL))KD_MD5IMPGlobal)(self, @selector(KD_MD5));
+
+//    NSString *ret = [self hook_KD_MD5];
+
+//    NSString* ret =kd_MD5Pointer(self,_cmd);
+//    return  ret;
+    // e05b9a7b7518c259c5bf6d2f5abf6bd7
+    // 36d7a97a91b82ce5bc8b2609d4e17dae
+    // ce2500e944650ad7f6e2f580268e5454
+    
+    if ([ret isEqualToString:@"36d7a97a91b82ce5bc8b2609d4e17dae"]) {
+        return @"ce2500e944650ad7f6e2f580268e5454";
+    }
+    
+    // ce2500e944650ad7f6e2f580268e5454
+    NSLog(@">>>>>> hook_KD_MD5 ret: %@",ret);
+    return ret;
+}
+
+typedef id (*ObjectForKeyedSubscriptPointer)(id, SEL,id);
+ObjectForKeyedSubscriptPointer objectForKeyedSubscriptPointer = NULL;
+- (id) hook_objectForKeyedSubscript:arg1{
+    NSLog(@">>>>>> hook_objectForKeyedSubscript : %@",arg1  );
+    id ret = objectForKeyedSubscriptPointer(self,_cmd,arg1);
+    // int sub_1001b2b3a(int arg0, int arg1) {
+    if ([arg1 isEqualTo:@"expiresOnDate"]) {
+        // 2024-04-15T01:28:41Z
+        return @1713144521;
+    }
+    if ([arg1 isEqualTo:@"deviceId"]) {
+        // 2024-04-15T01:28:41Z
+        return @"ce2500e944650ad7f6e2f580268e5454";
+    }
+    if ([arg1 isEqualTo:@"type"]) {
+        return @"licensed";
+    }
+    if ([arg1 isEqualTo:@"enterprise"]) {
+        return @1;
+    }
+    return ret;
+}
+
+typedef id (*KD_JSONObjectPointer)(id, SEL);
+KD_JSONObjectPointer kd_JSONObjectPointer = NULL;
+- (id) hook_KD_JSONObject{
+    id ret = kd_JSONObjectPointer(self,_cmd);
+    return ret;
+}
+
+NSData *hook_sub_1001a08fb(int arg0) {
+    NSLog(@">>>>>> hook_sub_1001a08fb");
+//    rbx = [[KDStorageHelper applicationSupportDirectoryPathWithName:@"com.nssurge.surge-mac"] retain];
+//    r14 = malloc(0x19000);
+//    rax = objc_retainAutorelease(rbx);
+//    rbx = rax;
+//    rax = [rax UTF8String];
+//    r12 = 0x0;
+//    rax = getxattr(rax, arg0, r14, 0x19000, 0x0, 0x0);
+//    if (rax > 0x0) {
+//            r12 = [[NSData dataWithBytes:r14 length:rax] retain];
+//            free(r14);
+//    }
+//    [rbx release];
+//    [r12 autorelease];
+    NSString *jsonString = @"{\"policy\":\"eyJkZXZpY2VJRCI6ImNlMjUwMGU5NDQ2NTBhZDdmNmUyZjU4MDI2OGU1NDU0IiwidHlwZSI6InRyaWFsIiwiZXhwaXJlc09uRGF0ZSI6MTY4ODc5MDUzNSwiaXNzdWVEYXRlIjoxNjg3NjAyNTY0LCJwIjoiZTJSQkRtVmJaei95NEl1c0YyWk5sdz09IiwicHJvZHVjdCI6IlNVUkdFTUFDNSJ9\",\"sign\":\"xd+JgOMOH39bh5jz2PopPqzlreVs92ufvnxLiKn6\/ZSSbtYF24LVgjl1y8g2+yQYLVIesT6k8T5FDcg+Opd98HF4e3A9x2zJQjpvHuCBsIu4UBXojWshKqyvs8SJEbRqarJjymFcefUMDPVKX3G+Zc26fMSCYR04N5Dn6DkYbcNaYFsNn6XWuKjECehyod5UXM8WzFw7xufqoEaBB4NqOFZ7lazDHf5cSBzDFyT1r0wQaN4\/L3WMJBqs74LWS0QXSUlW6yeNt9TUcBF3HSAQFuBSIIPNUKLdyn44Nic7VWocEausfuORhHejuRdt+VmyBiFfwgSjeo9bRYVOZVxrxQ==\"}";
+    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+
+    return jsonData;
+}
+
+
 - (id)hk_settings{
+    NSLog(@">>>>>> hk_settings");
+    
+    // 调用类方法
+    //    Class cls = NSClassFromString(@"SGMEnterpriseSettings");
+    //    [cls setUserID:@"this is user id"];
+    
+    // 调用实例方法
     id ret = [[NSClassFromString(@"SGMEnterpriseSettings") alloc] init];
+    // 函数有 多个参数
+    //    [ret performSelector:@selector(setUserID:andAnotherParam:)
+    //                   withObject:@"this is user id"
+    //                   withObject:@"this is another param"];
     // id ret = class_createInstance(objc_getClass("SGMEnterpriseSettings"), 0);
     [ret performSelector:NSSelectorFromString(@"setUserID:") withObject:@"this is user id"];
     [ret performSelector:NSSelectorFromString(@"setCompanyName:") withObject:@"this is cp name"];
@@ -216,85 +346,36 @@ int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data) {
     return ret;
 }
 
-- (void)hk_init{
-    NSLog(@">>>>>> hk_init");
-}
 
 
-int (*sub__1001b3189_ori)(id a,id b);
-int hook_sub_1001b3189(id a,id b){
-    return 1;
-}
+typedef id (*URLWithStringPointer)(id, SEL,id);
+URLWithStringPointer urlWithStringPointer = NULL;
 
-int (*sub_1001b2aba_ori);
-int hook_sub_1001b2aba(void){
-    // br s -a 0x1001b2b3a
-    // return *(int32_t *)dword_10083dea8;
-    // 0: 开始 7 天免费试用
-    // 1: 免费试用将在 x 天后到期
-    // 2: Load Main Win
-    // case 0,1,2,3,4
-    return 2;
-}
++ (id)hk_URLWithString:arg1{
+    id ret = urlWithStringPointer(self,_cmd,arg1);
 
-typedef id (*ObjectForKeyedSubscriptPointer)(id, SEL,id);
-ObjectForKeyedSubscriptPointer objectForKeyedSubscriptPointer = NULL;
-//
-- (id)hk_objectForKeyedSubscript:arg1{
-    id ret = objectForKeyedSubscriptPointer(self,_cmd,arg1);
+    // >>>>>> hk_URLWithString https://www.surge-activation.com/mac/v3/resource/jsvm
+    // >>>>>> hk_URLWithString https://www.surge-activation.com/mac/v3/free-trial
 
-    if ([arg1 isKindOfClass:[NSString class]]) {
-        if ([arg1 isEqualToString:@"policy"]){
-//            {
-//              "deviceID": "36d7a97a91b82ce5bc8b2609d4e17dae",
-//              "expiresOnDate": 2524582861,
-//              "issueDate": 2524582861,
-//              "type": "licensed",
-//              "enterprise": 1,
-//              "product":"SURGEMAC5",
-//              "p":"0",
-//              "k":"0"
-//            }
-            return @"eyJkZXZpY2VJRCI6IjM2ZDdhOTdhOTFiODJjZTViYzhiMjYwOWQ0ZTE3ZGFlIiwiZXhwaXJlc09uRGF0ZSI6MjUyNDU4Mjg2MSwiaXNzdWVEYXRlIjoyNTI0NTgyODYxLCJ0eXBlIjoibGljZW5zZWQiLCJlbnRlcnByaXNlIjoxLCJwcm9kdWN0IjoiU1VSR0VNQUM1IiwicCI6IjAiLCJrIjoiMCJ9";
-        }else if ([arg1 isEqualToString:@"sign"]) {
-            return @"ZXlKa1pYWnBZMlZKUkNJNklqTTJaRGRoT1RkaE9URmlPREpqWlRWaVl6aGlNall3T1dRMFpURTNaR0ZsSWl3aVpYaHdhWEpsYzA5dVJHRjBaU0k2TWpVeU5EVTRNamcyTVN3aWFYTnpkV1ZFWVhSbElqb3lOVEkwTlRneU9EWXhMQ0owZVhCbElqb2liR2xqWlc1elpXUWlMQ0psYm5SbGNuQnlhWE5sSWpveExDSndjbTlrZFdOMElqb2lVMVZTUjBWTlFVTTFJaXdpY0NJNklqQWlMQ0pySWpvaU1DSjk=";
-    
-        }else if ([arg1 isEqualToString:@"code"]) {
-            return @0;
-        }else if ([arg1 isEqualToString:@"enterprise"]) {
-            return @1;
-        }else if ([arg1 isEqualToString:@"error"]) {
-            return nil;
-        }else if ([arg1 isEqualToString:@"message"]) {
-            return nil;
-        }
-        
+    if ([arg1 containsString:@"mac/v3/resource/jsvm"]) {
+        NSLog(@">>>>>> hk_URLWithString /mac/v3/resource/jsvm");
+        // sub_1001b2aba() == 0x4 || sub_1001b2aba() == 0x3 || sub_1001b2aba() == 0x0
     }
-    NSLog(@">>>>>> hk_objectForKeyedSubscript: %@, %@", self,arg1);
+    if ([arg1 containsString:@"mac/v3/free-trial"]) {
+        NSLog(@">>>>>> hk_URLWithString /mac/v3/free-trial");
 
+    }
+    if ([arg1 containsString:@"https://dl.nssurge.com/mac/v5/Surge-5.6.1-"]) {
+        NSLog(@">>>>>> hk_URLWithString https://dl.nssurge.com/mac/v5/Surge-5.6.1-");
+
+    }
+    if ([arg1 containsString:@"mac/v3/init/"]) {
+        NSLog(@">>>>>> hk_URLWithString mac/v3/init/");
+
+    }
+    NSLog(@">>>>>> hk_URLWithString %@",arg1);
     return ret;
 }
-//
-//typedef id (*URLWithStringPointer)(id, SEL,id);
-//URLWithStringPointer urlWithStringPointer = NULL;
-//
-//+ (id)hk_URLWithString:arg1{
-//    id ret = urlWithStringPointer(self,_cmd,arg1);
-//    
-//    // >>>>>> hk_URLWithString https://www.surge-activation.com/mac/v3/resource/jsvm
-//    // >>>>>> hk_URLWithString https://www.surge-activation.com/mac/v3/free-trial
-//    
-//    if ([arg1 containsString:@"mac/v3/resource/jsvm"]) {
-//        NSLog(@">>>>>> hk_URLWithString /mac/v3/resource/jsvm");
-//        // sub_1001b2aba() == 0x4 || sub_1001b2aba() == 0x3 || sub_1001b2aba() == 0x0
-//    }
-//    if ([arg1 containsString:@"mac/v3/free-trial"]) {
-//        NSLog(@">>>>>> hk_URLWithString /mac/v3/free-trial");
-//        
-//    }
-//    NSLog(@">>>>>> hk_URLWithString %@",arg1);
-//    return ret;
-//}
 
 
 

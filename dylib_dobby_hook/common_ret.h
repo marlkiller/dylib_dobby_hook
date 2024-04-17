@@ -9,7 +9,19 @@
 #define common_ret_h
 
 #include <stdio.h>
-int ret1 ();
-int ret0 ();
+
+int ret1 (void);
+int ret0 (void);
+
+// ptrace hook 相关
+// ptrace 函数指针
+typedef int (*ptrace_ptr_t)(int _request, pid_t _pid, caddr_t _addr, int _data);
+int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data);
+extern ptrace_ptr_t orig_ptrace;
+
+
+// 声明全局的邮件地址
+extern char *global_email_address;
+
 
 #endif /* common_ret_h */

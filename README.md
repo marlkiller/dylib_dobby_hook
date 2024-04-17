@@ -27,18 +27,19 @@ xcode 开发 dylib , 基于跨平台的 dobby HOOK 框架来构建跨平台的�
 2. Xcode 集成开发调试环境
 3. 特征码搜索
 
-| App             | version | x86 | arm | Download                                    | remark                                                                                                | Author              |
-|-----------------|---------|-----|-----|---------------------------------------------|-------------------------------------------------------------------------------------------------------|---------------------|
-| TablePlus       | 5.*     | ✔   | ✔   | https://tableplus.com/                      |                                                                                                       |                     |
-| DevUtils        | 1.*     | ✔   | ✔   | https://devutils.com/                       |                                                                                                       |                     |
-| AirBuddy        | 2.6.3   | ✔   | ✔   | https://v2.airbuddy.app/download            |                                                                                                       |                     |
-| Navicat Premium | 16.*    | ✔   | ✔   | App Store                                   | inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"         | QiuChenlyOpenSource |
-| Paste           | 4.1.3   | ✘   | ✔   | App Store                                   |                                                                                                       | LeeeMooo            |
-| Transmit        | 5.*     | ✔   | ✔   | https://panic.com/transmit/#download        |                                                                                                       |                     |
-| <s>AnyGo<s>     | 7.*     | ✔   | ✔   | https://itoolab.com/gps-location-changer/   | DMCA !!                                                                                               |                     |
-| Downie          | 4.*     | ✔   | ✔   | https://software.charliemonroe.net/downie/  | inject_bin="/Applications/Permute 3.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing" |                     |
-| Permute         | 3.*     | ✔   | ✔   | https://software.charliemonroe.net/permute/ | inject_bin="/Applications/Downie 4.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"  |                     |
-| ProxyMan        | 5.*     | ✔   | ✔   | https://proxyman.io/                        | inject_bin="/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend"    |                     |
+| App             | version | x86 | arm | Download                                    | remark                                                                                                     | Author              |
+|-----------------|---------|-----|-----|---------------------------------------------|------------------------------------------------------------------------------------------------------------|---------------------|
+| TablePlus       | 5.*     | ✔   | ✔   | https://tableplus.com/                      |                                                                                                            |                     |
+| DevUtils        | 1.*     | ✔   | ✔   | https://devutils.com/                       |                                                                                                            |                     |
+| AirBuddy        | 2.*     | ✔   | ✔   | https://v2.airbuddy.app/download            | inject_bin="/Applications/AirBuddy.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"         |                     |
+| Navicat Premium | 16.*    | ✔   | ✔   | App Store                                   | inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"              | QiuChenlyOpenSource |
+| Paste           | 4.1.3   | ✘   | ✔   | App Store                                   |                                                                                                            | LeeeMooo            |
+| Transmit        | 5.*     | ✔   | ✔   | https://panic.com/transmit/#download        |                                                                                                            |                     |
+| <s>AnyGo<s>     | 7.*     | ✔   | ✔   | https://itoolab.com/gps-location-changer/   | DMCA !!                                                                                                    |                     |
+| Downie          | 4.*     | ✔   | ✔   | https://software.charliemonroe.net/downie/  | inject_bin="/Applications/Permute 3.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"      |                     |
+| Permute         | 3.*     | ✔   | ✔   | https://software.charliemonroe.net/permute/ | inject_bin="/Applications/Downie 4.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"       |                     |
+| ProxyMan        | 5.*     | ✔   | ✔   | https://proxyman.io/                        | inject_bin="/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend"         |                     |
+| Movist Pro      | 2.*     | ✔   | ✔   | https://movistprime.com/                    | inject_bin="/Applications/Movist Pro.app/Contents/Frameworks/MediaKeyTap.framework/Versions/A/MediaKeyTap" |                     |
 
 ## Quick Start
 
