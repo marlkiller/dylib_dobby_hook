@@ -42,7 +42,7 @@
     
 
 #if defined(__arm64__) || defined(__aarch64__)
-    NSString *sub_0x10001af90Code = @"F4 4F BE A9 FD 7B 01 A9 FD 43 00 91 F3 03 01 AA E1 03 00 AA .. .. 00 90 42 C0 20 91 48 80 5F F8 08 11 40 F9 E0 03 13 AA 00 01 3F D6 E0 03 13 AA FD 7B 41 A9 F4 4F C2 A8 C0 03 5F D6";
+    NSString *sub_0x10001af90Code = @"F4 4F BE A9 FD 7B 01 A9 FD 43 00 91 F3 03 01 AA E1 03 00 AA .. .. 00 90 42 .. .. 91 48 80 5F F8 08 11 40 F9 E0 03 13 AA 00 01 3F D6 E0 03 13 AA FD 7B 41 A9 F4 4F C2 A8 C0 03 5F D6";
     NSString *remainingDaysCode = @".. .. .. 94 F4 03 00 AA F5 03 01 AA E0 83 01 91 .. .. .. 94 28 00 80 52 89 FE 7F D3 BF 02 00 72 34 01 88 1A";
 #elif defined(__x86_64__)
     NSString *sub_0x10001af90Code = @"55 48 89 E5 53 50 48 89 F3 48 89 FE 48 8D .. .. .. .. .. 48 8B 42 F8 48 89 DF FF 50 20 48 89 D8 48 83 C4 08 5B 5D C3";

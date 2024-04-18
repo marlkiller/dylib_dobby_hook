@@ -41,7 +41,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         FilePath = "/Applications/Movist Pro.app">
+         FilePath = "/Applications/Proxyman.app">
       </PathRunnable>
    </LaunchAction>
    <ProfileAction
