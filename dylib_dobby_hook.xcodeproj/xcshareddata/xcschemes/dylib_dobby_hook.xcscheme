@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1520"
+   LastUpgradeVersion = "1530"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -41,7 +41,8 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         FilePath = "/Applications/Proxyman.app">
+         BundleIdentifier = "com.voidm.mac-app-dev-swift"
+         FilePath = "/Applications/mac_app_dev_swift.app">
       </PathRunnable>
    </LaunchAction>
    <ProfileAction

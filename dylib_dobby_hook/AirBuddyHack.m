@@ -35,7 +35,31 @@
 void (*sub_10005ad20_ori)(void);
 void hook_sub_10005ad20(void){
     NSLog(@">>>>>> hook_sub_10005bf30 is called");
-
+//    
+//    // cmp        byte [r13+0x99], 0x1
+//    // (lldb) po 0x00006000008eeda0
+//    // AirBuddy.LicenseStatusViewModel
+//    uint64_t registerValue;
+//#if defined(__arm64__) || defined(__aarch64__)
+//    asm("mov %0, x20" : "=r" (registerValue)); // 获取 x20 寄存器的值
+//#elif defined(__x86_64__)
+////    asm("mov %0, r13" : "=r" (registerValue));// x32 ??
+//    asm("movq %%r13, %0" : "=r" (registerValue));// 获取 r13 寄存器的值
+//#endif
+//    // 操作 寄存器+0x99 偏移
+//    uint8_t *addressToCompare = (uint8_t *)(registerValue + 0x99);
+//    uint8_t byteValue = *addressToCompare;
+//    NSLog(@">>>>>> byteValue :%d",byteValue);
+//    *addressToCompare = 0;
+//    byteValue = *addressToCompare;
+//    NSLog(@">>>>>> byteValue :%d",byteValue);
+//    // 转为 id 类型
+//    uint8_t *obj = (uint8_t *)(registerValue);
+//    id objId = (__bridge id)(void *)obj;
+//    NSLog(@">>>>>> objId %@",objId);
+//    [MemoryUtils inspectObjectWithAddress:(void *)obj];
+//    [MemoryUtils listAllPropertiesMethodsAndVariables:[objId class]];
+//
     
 #if defined(__arm64__) || defined(__aarch64__)
     __asm__ __volatile__(
@@ -80,6 +104,25 @@ void hook_sub_10005ad20(void){
 #if defined(__arm64__) || defined(__aarch64__)
     NSString *sub_10005ad20_hex = @"F8 5F BC A9 F6 57 01 A9 F4 4F 02 A9 FD 7B 03 A9 FD C3 00 91 95 DA 48 A9 97 62 42 39 88 66 42 39 1F 05 00 71";
     
+    
+    //    0000000100009718         mov        x0, #0x1f                                   ; CODE XREF=EntryPoint+128
+    //    000000010000971c         mov        x1, #0x0
+    //    0000000100009720         mov        x2, #0x0
+    //    0000000100009724         mov        x3, #0x0
+    //    0000000100009728         mov        x16, #0x1a
+    //    000000010000972c         svc        #0x80
+    //    0000000100009730         ret
+    //    E0 03 80 D2 01 00 80 D2 02 00 80 D2 03 00 80 D2 50 03 80 D2 01 10 00 D4 C0 03 5F D6
+    NSArray *ptrace_offsets =[MemoryUtils searchMachineCodeOffsets:
+                                   searchFilePath
+                                   machineCode:@"01 10 00 D4"
+                                   count:(int)1
+    ];
+    intptr_t ptraceptr = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)[ptrace_offsets[0] unsignedIntegerValue] reduceOffset:(uintptr_t)fileOffset];
+    // patch svc #0x80 with  >>>> nop:0x1F, 0x20, 0x03, 0xD5
+    uint8_t nop4[4] = {0x1F, 0x20,0x03, 0xD5};
+    DobbyCodePatch((void *)ptraceptr, nop4, 4);
+    
 #elif defined(__x86_64__)
     NSString *sub_10005ad20_hex = @"55 48 89 E5 41 57 41 56 41 54 53 48 83 EC 10 4D 8B A5 .. .. .. ..";
 #endif
@@ -98,6 +141,8 @@ void hook_sub_10005ad20(void){
     // AMSkipOnboarding
     NSUserDefaults *defaults  = [NSUserDefaults standardUserDefaults];
     [defaults setBool:true forKey:@"AMSkipOnboarding"];
+    [defaults synchronize];
+
 //    boolForKeyImp = method_getImplementation(class_getInstanceMethod(NSClassFromString(@"NSUserDefaults"), NSSelectorFromString(@"boolForKey:")));
 //    [MemoryUtils hookInstanceMethod:
 //                objc_getClass("NSUserDefaults")

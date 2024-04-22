@@ -45,8 +45,8 @@
     
     // https://www.xwjack.com/2017/11/15/Reverse/
     
-    NSString *searchFilePath = [[Constant getCurrentAppPath] stringByAppendingString:@"/Contents/MacOS/Surge"];
-    uintptr_t fileOffset =[MemoryUtils getCurrentArchFileOffset: searchFilePath];
+    // NSString *searchFilePath = [[Constant getCurrentAppPath] stringByAppendingString:@"/Contents/MacOS/Surge"];
+    // uintptr_t fileOffset =[MemoryUtils getCurrentArchFileOffset: searchFilePath];
     
     
     // NSURL['+ URLWithString:']
@@ -199,13 +199,15 @@
 }
 
 
-intptr_t (*sub_10019f466_ori)(uint64_t arg1);
+intptr_t (*sub_10019f466_ori)(id arg1);
 
 
 intptr_t hook_sub_10019f466(uint64_t arg1){
  
-    NSDictionary *dict0 =  @{@"policy": @"eyJkZXZpY2VJRCI6ImNlMjUwMGU5NDQ2NTBhZDdmNmUyZjU4MDI2OGU1NDU0IiwidHlwZSI6InRyaWFsIiwiZXhwaXJlc09uRGF0ZSI6MTY4ODc5MDUzNSwiaXNzdWVEYXRlIjoxNjg3NjAyNTY0LCJwIjoiZTJSQkRtVmJaei95NEl1c0YyWk5sdz09IiwicHJvZHVjdCI6IlNVUkdFTUFDNSJ9",
-                             @"sign": @"xd+JgOMOH39bh5jz2PopPqzlreVs92ufvnxLiKn6\/ZSSbtYF24LVgjl1y8g2+yQYLVIesT6k8T5FDcg+Opd98HF4e3A9x2zJQjpvHuCBsIu4UBXojWshKqyvs8SJEbRqarJjymFcefUMDPVKX3G+Zc26fMSCYR04N5Dn6DkYbcNaYFsNn6XWuKjECehyod5UXM8WzFw7xufqoEaBB4NqOFZ7lazDHf5cSBzDFyT1r0wQaN4\/L3WMJBqs74LWS0QXSUlW6yeNt9TUcBF3HSAQFuBSIIPNUKLdyn44Nic7VWocEausfuORhHejuRdt+VmyBiFfwgSjeo9bRYVOZVxrxQ=="};
+    NSDictionary *dict0 =  @{
+        @"policy": @"x",
+        @"sign": @"x"
+    };
 
     intptr_t ret =sub_10019f466_ori(dict0);
     
@@ -255,7 +257,7 @@ KD_MD5Pointer kd_MD5Pointer = NULL;
     
 //    NSString *result = ((NSString *(*)(id, SEL))[self methodForSelector:@selector(KD_MD5)])(self, @selector(KD_MD5));
 
-    NSString *ret = ((NSString *(*)(id, SEL))KD_MD5IMPGlobal)(self, @selector(KD_MD5));
+    NSString *ret = ((NSString *(*)(id, SEL))KD_MD5IMPGlobal)(self, NSSelectorFromString(@"KD_MD5"));
 
 //    NSString *ret = [self hook_KD_MD5];
 
@@ -319,7 +321,7 @@ NSData *hook_sub_1001a08fb(int arg0) {
 //    }
 //    [rbx release];
 //    [r12 autorelease];
-    NSString *jsonString = @"{\"policy\":\"eyJkZXZpY2VJRCI6ImNlMjUwMGU5NDQ2NTBhZDdmNmUyZjU4MDI2OGU1NDU0IiwidHlwZSI6InRyaWFsIiwiZXhwaXJlc09uRGF0ZSI6MTY4ODc5MDUzNSwiaXNzdWVEYXRlIjoxNjg3NjAyNTY0LCJwIjoiZTJSQkRtVmJaei95NEl1c0YyWk5sdz09IiwicHJvZHVjdCI6IlNVUkdFTUFDNSJ9\",\"sign\":\"xd+JgOMOH39bh5jz2PopPqzlreVs92ufvnxLiKn6\/ZSSbtYF24LVgjl1y8g2+yQYLVIesT6k8T5FDcg+Opd98HF4e3A9x2zJQjpvHuCBsIu4UBXojWshKqyvs8SJEbRqarJjymFcefUMDPVKX3G+Zc26fMSCYR04N5Dn6DkYbcNaYFsNn6XWuKjECehyod5UXM8WzFw7xufqoEaBB4NqOFZ7lazDHf5cSBzDFyT1r0wQaN4\/L3WMJBqs74LWS0QXSUlW6yeNt9TUcBF3HSAQFuBSIIPNUKLdyn44Nic7VWocEausfuORhHejuRdt+VmyBiFfwgSjeo9bRYVOZVxrxQ==\"}";
+    NSString *jsonString = @"{}";
     NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
 
     return jsonData;
@@ -340,9 +342,9 @@ NSData *hook_sub_1001a08fb(int arg0) {
     //                   withObject:@"this is user id"
     //                   withObject:@"this is another param"];
     // id ret = class_createInstance(objc_getClass("SGMEnterpriseSettings"), 0);
-    [ret performSelector:NSSelectorFromString(@"setUserID:") withObject:@"this is user id"];
-    [ret performSelector:NSSelectorFromString(@"setCompanyName:") withObject:@"this is cp name"];
-    [ret performSelector:NSSelectorFromString(@"setCompanyID:") withObject:@"this is cp id"];
+    // [ret performSelector:NSSelectorFromString(@"setUserID:") withObject:@"this is user id"];
+    // [ret performSelector:NSSelectorFromString(@"setCompanyName:") withObject:@"this is cp name"];
+    // [ret performSelector:NSSelectorFromString(@"setCompanyID:") withObject:@"this is cp id"];
     return ret;
 }
 

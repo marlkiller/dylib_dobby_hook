@@ -6,11 +6,18 @@
 //
 
 #include "common_ret.h"
+int ret2 (void){
+    return 2;
+}
 int ret1 (void){
     return 1;
 }
 int ret0 (void){
     return 0;
+}
+
+void nop(void){
+    
 }
 
 ptrace_ptr_t orig_ptrace = NULL;

@@ -12,8 +12,8 @@
 + (NSString *)readStringAtAddress:(uintptr_t)address;
 + (void)writeString:(NSString *)string toAddress:(uintptr_t)address;
 
-+ (int)readIntAtAddress:(uintptr_t)address;
-+ (void)writeInt:(int)value toAddress:(uintptr_t)address;
++ (int)readIntAtAddress:(void *)address;
++ (void)writeInt:(int)value toAddress:(void *)address;
 
 + (NSString *)readMachineCodeStringAtAddress:(uintptr_t)address length:(int)length;
 + (void)writeMachineCodeString:(NSString *)codeString toAddress:(uintptr_t)address;
@@ -34,8 +34,9 @@
 
 + (int)indexForImageWithName:(NSString *)imageName;
 
-
++ (void)listAllPropertiesMethodsAndVariables:(Class) cls;
 + (void)inspectObjectWithAddress:(void *)address;
++ (void)exAlart:(NSString *)title message:(NSString *)message;
 
 + (void)hookInstanceMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector;
 + (void)hookClassMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector;

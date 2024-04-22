@@ -28,9 +28,17 @@
 
 - (BOOL)hack {
         
-    id paddleBaseHackClz = [[NSClassFromString(@"PaddleBaseHack") alloc] init];
-    [paddleBaseHackClz performSelector:NSSelectorFromString(@"hack")];
 
+    id paddleBaseHackClz = [[NSClassFromString(@"PaddleBaseHack") alloc] init];
+    SEL selector = NSSelectorFromString(@"hack");
+    if ([paddleBaseHackClz respondsToSelector:selector]) {
+        NSMethodSignature *methodSignature = [paddleBaseHackClz methodSignatureForSelector:selector];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+        [invocation setSelector:selector];
+        [invocation invokeWithTarget:paddleBaseHackClz];
+    } else {
+        NSLog(@">>>>>> Error: paddleBaseHackClz does not respond to selector 'hack'");
+    }
     return YES;
 }
 @end

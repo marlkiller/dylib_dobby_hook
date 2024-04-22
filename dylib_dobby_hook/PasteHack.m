@@ -20,7 +20,7 @@
     return @"4.1.3";
 }
 
-int (*validSubscriptionOri)();
+int (*validSubscriptionOri)(void);
 
 int validSubscriptionNew(int arg0, int arg1) {
     return 1;
@@ -67,7 +67,7 @@ void hookSubscription(NSString *searchFilePath, uintptr_t fileOffset) {
     uintptr_t globalOffset = [globalOffsets[0] unsignedIntegerValue];
     
     intptr_t validSubscription = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
-    DobbyHook(validSubscription, validSubscriptionNew, (void *)&validSubscriptionOri);
+    DobbyHook((void *)validSubscription, (void *)validSubscriptionNew, (void *)&validSubscriptionOri);
 }
 
 @end

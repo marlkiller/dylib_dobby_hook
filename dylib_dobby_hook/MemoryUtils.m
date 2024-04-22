@@ -40,13 +40,13 @@ NSString * CACHE_MACHINE_CODE_KEY = @"All-Offsets";
     memcpy((void *)address, cString, length);
 }
 
-+ (int)readIntAtAddress:(uintptr_t)address {
++ (int)readIntAtAddress:(void *)address {
     int *intPtr = (int *)address;
     int value = *intPtr;
     return value;
 }
 
-+ (void)writeInt:(int)value toAddress:(uintptr_t)address {
++ (void)writeInt:(int)value toAddress:(void *)address {
     int *intPtr = (int *)address;
     *intPtr = value;
 }
@@ -209,6 +209,15 @@ NSData *machineCode2Bytes(NSString *hexString) {
          }
      }
     [fileHandle closeFile];
+    
+    if (matchCounter==0) {
+        NSString *message = [NSString stringWithFormat:@"searchFilePath: %@ \rmachineCode: %@",
+                                                searchFilePath,
+                                                searchMachineCode];
+        
+        [self exAlart:@"特征吗匹配 异常 ??!!" message:message];
+        return offsets;
+    }
     if (CACHE_MACHINE_CODE_OFFSETS) {
         [self saveMachineCodeOffsetsToUserDefaults :searchMachineCode offsets:offsets];
     }
@@ -362,6 +371,50 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
 }
 
 
++ (void) listAllPropertiesMethodsAndVariables:(Class) cls {
+    // 获取类的属性列表
+    unsigned int propertyCount;
+    objc_property_t *properties = class_copyPropertyList(cls, &propertyCount);
+    NSLog(@"Properties for class %@", NSStringFromClass(cls));
+    for (unsigned int i = 0; i < propertyCount; i++) {
+        objc_property_t property = properties[i];
+        const char *propertyName = property_getName(property);
+        NSLog(@"- %@", [NSString stringWithUTF8String:propertyName]);
+    }
+    free(properties);
+    
+    // 获取类的实例变量列表
+    unsigned int ivarCount;
+    Ivar *ivars = class_copyIvarList(cls, &ivarCount);
+    NSLog(@"Instance Variables for class %@", NSStringFromClass(cls));
+    for (unsigned int i = 0; i < ivarCount; i++) {
+        Ivar ivar = ivars[i];
+        const char *ivarName = ivar_getName(ivar);
+        NSLog(@"- %s", ivarName);
+    }
+    free(ivars);
+    
+    // 获取类的实例方法列表
+    unsigned int instanceMethodCount;
+    Method *instanceMethods = class_copyMethodList(cls, &instanceMethodCount);
+    NSLog(@"Instance Methods for class %@", NSStringFromClass(cls));
+    for (unsigned int i = 0; i < instanceMethodCount; i++) {
+        Method method = instanceMethods[i];
+        NSLog(@"- %@", NSStringFromSelector(method_getName(method)));
+    }
+    free(instanceMethods);
+    
+    // 获取类的方法列表
+    unsigned int methodCount;
+    Method *methods = class_copyMethodList(object_getClass(cls), &methodCount);
+    NSLog(@"Class Methods for class %@", NSStringFromClass(cls));
+    for (unsigned int i = 0; i < methodCount; i++) {
+        Method method = methods[i];
+        NSLog(@"+ %@", NSStringFromSelector(method_getName(method)));
+    }
+    free(methods);
+}
+
 + (void)inspectObjectWithAddress:(void *)address {
     id object = (__bridge id)address;
     // LicenseModel *license = (__bridge LicenseModel *)addressPtr;
@@ -395,6 +448,46 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
 }
 
 
++ (void)exAlart:(NSString *)title message:(NSString *)message {
+    
+    
+    message = [NSString stringWithFormat:@"App: %@\rVersion: %@ %@\r\r%@",
+               [Constant getCurrentAppPath],
+               [Constant getSystemArchitecture],
+               [Constant getCurrentAppVersion],
+               message];
+    
+    
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setInformativeText:message];
+    [alert setMessageText:title];
+    [alert addButtonWithTitle:@"OK"];    
+    [alert addButtonWithTitle:@"Commit Issue"];
+    [alert addButtonWithTitle:@"Exit!!"];
+    NSDictionary *attributes = @{
+        NSFontAttributeName: [NSFont systemFontOfSize:12.0]
+    };
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:message attributes:attributes];
+    CGFloat textWidth = [attributedString size].width;
+    alert.accessoryView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, textWidth, 0)];
+    NSImage *image = [NSImage imageNamed:NSImageNameCaution];
+    [alert setIcon:image];
+    NSInteger response = [alert runModal];
+    // Handle button clicks
+    if (response == NSAlertFirstButtonReturn) {
+        // OK button clicked
+    }  else if (response == NSAlertSecondButtonReturn) {
+        // 提交 Issue button clicked
+        NSString *urlString = @"https://github.com/marlkiller/dylib_dobby_hook/issues/new";
+        NSURL *url = [NSURL URLWithString:urlString];
+        NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
+        [workspace openURL:url];
+    }else if (response == NSAlertThirdButtonReturn) {
+        // 提交 Issue button clicked
+        exit(0);
+    }
+}
+
 /**
  替换对象方法 -[_TtC8DevUtils16WindowController showUnregistered]
  [MemoryUtils hookInstanceMethod:
@@ -417,18 +510,15 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         method_exchangeImplementations(originalMethod, swizzledMethod);
     } else {
         NSLog(@">>>>>> Failed to swizzle method.");
-        NSString *message = [NSString stringWithFormat:@"originalClass:%@, originalSelector:%@, originalMethod:%p\n"
-                                                        "swizzledClass:%@, swizzledSelector:%@, swizzledMethod:%p\n",
+        NSString *message = [NSString stringWithFormat:@"originalClass: %@, originalSelector: %@, originalMethod:%p\r"
+                                                        "swizzledClass: %@, swizzledSelector: %@, swizzledMethod:%p",
                                                         NSStringFromClass(originalClass),
                                                         NSStringFromSelector(originalSelector),
                                                         originalMethod,
                                                         NSStringFromClass(swizzledClass),
                                                         NSStringFromSelector(swizzledSelector),
                                                         swizzledMethod];
-        NSAlert *alert = [[NSAlert alloc] init];
-        [alert setInformativeText:message];
-        [alert addButtonWithTitle:@"OK"];
-        [alert runModal];
+        [self exAlart:@"hookInstanceMethod 异常 ??!!" message:message];
     }
 }
 
@@ -453,18 +543,15 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         method_exchangeImplementations(originalMethod, swizzledMethod);
     } else {
         NSLog(@">>>>>> Failed to swizzle class method.");
-        NSString *message = [NSString stringWithFormat:@"originalClass:%@, originalSelector:%@, originalMethod:%p\n"
-                                                        "swizzledClass:%@, swizzledSelector:%@, swizzledMethod:%p\n",
+        NSString *message = [NSString stringWithFormat:@"originalClass: %@, originalSelector: %@, originalMethod: %p\r"
+                                                        "swizzledClass: %@, swizzledSelector: %@, swizzledMethod: %p",
                                                         NSStringFromClass(originalClass),
                                                         NSStringFromSelector(originalSelector),
                                                         originalMethod,
                                                         NSStringFromClass(swizzledClass),
                                                         NSStringFromSelector(swizzledSelector),
                                                         swizzledMethod];
-        NSAlert *alert = [[NSAlert alloc] init];
-        [alert setInformativeText:message];
-        [alert addButtonWithTitle:@"OK"];
-        [alert runModal];
+        [self exAlart:@"hookClassMethod 异常 ??!!" message:message];
     }
 }
 @end

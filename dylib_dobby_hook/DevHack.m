@@ -15,24 +15,80 @@
 #include <sys/ptrace.h>
 #import <AppKit/AppKit.h>
 #import "common_ret.h"
+#import <Cocoa/Cocoa.h>
 
+
+
+@interface MyWindow : NSWindow
+@end
+@implementation MyWindow
+- (instancetype)initWithContentRect:(NSRect)contentRect styleMask:(NSWindowStyleMask)styleMask backing:(NSBackingStoreType)backingStoreType defer:(BOOL)flag {
+    // 指定窗口大小
+    contentRect = NSMakeRect(0, 0, 800, 600);
+    // 窗口标题栏
+    styleMask |= NSWindowStyleMaskTitled;
+    self = [super initWithContentRect:contentRect styleMask:styleMask backing:backingStoreType defer:flag];
+    if (self) {
+        // 设置窗口为透明
+        self.backgroundColor = [NSColor clearColor];
+        self.opaque = NO;
+        // 设置鼠标穿透
+        self.ignoresMouseEvents = NO;
+        // 设置窗口级别为最高级别
+        self.level = NSStatusWindowLevel;
+    }
+    return self;
+}
+- (BOOL)canBecomeKeyWindow {
+    return NO;
+}
+
+@end
+
+@interface MyView : NSView
+@property (nonatomic, assign) NSPoint pointA;
+@property (nonatomic, assign) NSPoint pointB;
+@property (nonatomic, assign) BOOL isLine;
+@end
+@implementation MyView
+- (void)drawRect:(NSRect)dirtyRect {
+    NSBezierPath *path = [NSBezierPath bezierPath];
+    if (self.isLine) {
+        // 绘制线条
+        [path moveToPoint:self.pointA];
+        [path lineToPoint:self.pointB];
+    } else {
+        // 绘制矩形
+        NSRect rect = NSMakeRect(self.pointA.x, self.pointA.y, self.pointB.x - self.pointA.x, self.pointB.y - self.pointA.y);
+        [path appendBezierPathWithRect:rect];
+    }
+    // 设置绘制的颜色
+    [[NSColor redColor] setStroke];
+    // 设置线条的宽度
+    [path setLineWidth:2.0];
+    // 绘制路径
+    [path stroke];
+}
+@end
 
 
 @interface DevHack : NSObject <HackProtocol>
 
+//+ (NSWindow *)myWindow;
 @end
 
 @implementation DevHack
 
+static NSWindow *myWindow = nil;
 
 + (void)load {
     
 }
 
-
 - (NSString *)getAppName {
     // >>>>>> AppName is [com.voidm.mac-app-dev-swift],Version is [1.0], myAppCFBundleVersion is [1].
-    return @"com.voidm.mac-app-dev-";
+    // >>>>>> AppName is [com.morecats.Minesweeper],Version is [2.1.2], myAppCFBundleVersion is [9].
+    return @"com.voidm.mac-app-dev-swift";
 }
 
 - (NSString *)getSupportAppVersion {
@@ -41,24 +97,84 @@
 
 
 // 菜单点击事件
-+ (void)clickEvent2:(id)sender {
-    NSLog(@">>>>> clickEvent");
-    exit(0);
++ (void)mem_event:(id)sender {
+    NSLog(@">>>>> mem_event");
+    // [[Minesweeper+815D8] + 40]
+    // mov        rbx, qword [qword_1000815d0]
+    // mov        qword [rbx+0x40], rcx
+    
+    // 读写内存
+    uintptr_t *ptr = (void *)0x1000815d0; // 读取基址的内容,转为指针
+    void * addressPtr = (void *) *ptr;
+    [MemoryUtils readIntAtAddress:(addressPtr+0x40)];
+    [MemoryUtils writeInt:(int)1 toAddress:(addressPtr+0x40)];
+    
+    // 读写内存
+//    uintptr_t *ret2 = (uintptr_t *)(addressPtr + 0x40);
+//    uintptr_t value = *ret2;
+//    NSLog(@">>>>>> byteValue :%lu",value);
+//    *ret2 = 1;
+//    value = *ret2;
+//    NSLog(@">>>>>> byteValue :%lu",value);
+    
+    NSLog(@">>>>>> mem_event over");
+
+}
+
++ (void)draw_event:(id)sender {
+    NSLog(@">>>>> draw_event");
+      
+    // 创建一个 NSApplication 实例
+    if (myWindow==nil) {
+        NSApplication *application = [NSApplication sharedApplication];
+        // 创建一个 NSWindow 实例
+        NSRect windowRect = NSMakeRect(0, 0, NSScreen.mainScreen.frame.size.width, NSScreen.mainScreen.frame.size.height);
+        myWindow = [[MyWindow alloc] initWithContentRect:windowRect styleMask:NSWindowStyleMaskBorderless backing:NSBackingStoreBuffered defer:NO];
+        // 创建一个 MyView 实例，并将其添加到窗口中
+        MyView *line = [[MyView alloc] initWithFrame:myWindow.contentView.bounds];
+        // 设置绘制参数
+        line.pointA = NSMakePoint(50, 50);
+        line.pointB = NSMakePoint(200, 200);
+        line.isLine = YES;
+        [myWindow.contentView addSubview:line];
+        // 创建一个 MyView 实例，并将其添加到窗口中
+        MyView *rect = [[MyView alloc] initWithFrame:myWindow.contentView.bounds];
+        // 设置绘制参数
+        rect.pointA = NSMakePoint(300, 300);
+        rect.pointB = NSMakePoint(400, 500);
+        rect.isLine = NO;
+        [myWindow.contentView addSubview:rect];
+        // 显示窗口
+        [myWindow makeKeyAndOrderFront:nil];
+        
+        // TODO 这里 MACOS 似乎没办法 HOOK 窗口的循环消息, 动态绘制矩形后面看看能否借助 IMGUI 来实现
+        
+        // 运行主事件循环
+        [application run];
+    }else {
+        if ([myWindow isVisible]) {
+           [myWindow orderOut:nil];
+        } else {
+           [myWindow makeKeyAndOrderFront:nil];
+           // [NSApp activateIgnoringOtherApps:YES];
+        }
+    }
+    NSLog(@">>>>>> draw_event over");
 }
 
 - (BOOL)hack {
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         // 在这里执行你的代码
-        NSLog(@">>>>>> 代码延迟执行了 5 秒");
+        NSLog(@">>>>>> 代码延迟执行了 1 秒");
         NSLog(@">>>>>> 添加自定义菜单");
         
         NSMenu *mainMenu = [NSApplication sharedApplication].mainMenu;
         // 创建一个与独立的菜单项
         NSMenuItem *newMenuItem = [[NSMenuItem alloc] initWithTitle:@"menu_new" action:nil keyEquivalent:@""];
-        NSMenuItem *subMenuItem1 = [[NSMenuItem alloc] initWithTitle:@"menu_new_1" action:NSSelectorFromString(@"clickEvent2:") keyEquivalent:@""];
+        NSMenuItem *subMenuItem1 = [[NSMenuItem alloc] initWithTitle:@"mem_event" action:NSSelectorFromString(@"mem_event:") keyEquivalent:@""];
         [subMenuItem1 setTarget:self.class];
-        NSMenuItem *subMenuItem2 = [[NSMenuItem alloc] initWithTitle:@"menu_new_2" action:@selector(clickEvent2:) keyEquivalent:@""];
+        NSMenuItem *subMenuItem2 = [[NSMenuItem alloc] initWithTitle:@"draw_event" action:@selector(draw_event:) keyEquivalent:@""];
         [subMenuItem2 setTarget:DevHack.class];
         // 创建一个子菜单并将子菜单项添加进去
         NSMenu *newMenu = [[NSMenu alloc] initWithTitle:@"New Menu [HOOK]"];
@@ -70,13 +186,13 @@
     });
     
         
-    Class WinControllerClass = NSClassFromString(@"mac_app_dev_swift.ViewController");
-    SEL viewDidLoadSeletor = NSSelectorFromString(@"viewDidLoad");
-    Method originalMethod = class_getInstanceMethod(WinControllerClass, viewDidLoadSeletor);
-    // 获取 viewDidLoad 方法的函数地址
-    IMP originalMethodIMP = method_getImplementation(originalMethod);
-    methodPointer = (MethodPointer)originalMethodIMP;
-    
+//    Class WinControllerClass = NSClassFromString(@"mac_app_dev_swift.ViewController");
+//    SEL viewDidLoadSeletor = NSSelectorFromString(@"viewDidLoad");
+//    Method originalMethod = class_getInstanceMethod(WinControllerClass, viewDidLoadSeletor);
+//    // 获取 viewDidLoad 方法的函数地址
+//    originalMethodIMP = method_getImplementation(originalMethod);
+//    methodPointer = (MethodPointer)originalMethodIMP;
+//    
 //    [MemoryUtils hookInstanceMethod:
 //         objc_getClass("mac_app_dev_swift.ViewController")
 //                   originalSelector:NSSelectorFromString(@"viewDidLoad")
@@ -85,53 +201,51 @@
 //    ];
     
         
-//    DobbyHook((void *)viewDidLoadImp, (void *)my_viewDidLoad, (void *)&viewDidLoadImp_ori);
-    
-    
-    
-    NSString *searchFilePath = [[Constant getCurrentAppPath] stringByAppendingString:@"/Contents/MacOS/mac_app_dev_swift"];
-    uintptr_t fileOffset =[MemoryUtils getCurrentArchFileOffset: searchFilePath];
-    int imageIndex = [MemoryUtils indexForImageWithName:@"mac_app_dev_swift"];
-    
-    // printHello()
-    NSString *printHelloCode = @"55 48 89 E5 48 8D 3D ?? ?? ?? ?? B0 00 E8 4C 2B 00 00 5D C3";
-    uintptr_t globalOffset = [[MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)printHelloCode count:(int)1][0] unsignedIntegerValue];
-    intptr_t _printHelloPt = [MemoryUtils getPtrFromGlobalOffset:imageIndex targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
-    NSLog(@">>>>>> _printHelloPt %ld",_printHelloPt);
-    // 将函数地址转换为函数指针类型
-    CPrintHelloPointer printHelloFun = (CPrintHelloPointer)_printHelloPt;
-      // 调用函数
-    printHelloFun();
-    
-    
-    // int printOne()
-    NSString *intRetOneCode = @"55 48 89 E5 48 8D 3D ?? ?? ?? ?? B0 00 E8 2C 2B 00 00 B8 01 00 00 00 5D C3";
-    globalOffset = [[MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)intRetOneCode count:(int)1][0] unsignedIntegerValue];
-    intptr_t _intRetOneCodePt = [MemoryUtils getPtrFromGlobalOffset:imageIndex targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
-    NSLog(@">>>>>> _intRetOneCodePt %ld",_intRetOneCodePt);
-    // 将函数地址转换为函数指针类型
-    CRetOnePointer retOneFun = (CRetOnePointer)_intRetOneCodePt;
-      // 调用函数
-    int ret = retOneFun();
-    NSLog(@">>>>>> retOneFun ret %d",ret);
-    
-    // int addMethod(int, int)
-    NSString *intAddMethodCode = @"55 48 89 E5 48 83 EC 10 89 7D FC 89 75 F8 48 8D 3D ?? ?? ?? ?? B0 00 E8 02 2B 00 00 8B 45 FC 03 45 F8 48 83 C4 10 5D C3";
-    globalOffset = [[MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)intAddMethodCode count:(int)1][0] unsignedIntegerValue];
-    intptr_t _intAddMethodCodePt = [MemoryUtils getPtrFromGlobalOffset:imageIndex targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
-    NSLog(@">>>>>> _intAddMethodCodePt %ld",_intAddMethodCodePt);
-    // 将函数地址转换为函数指针类型
-    CRetAddMethodPointer retAddMethod = (CRetAddMethodPointer)_intAddMethodCodePt;
-    // 调用函数
-    int ret2 = retAddMethod(1,2);
-    NSLog(@">>>>>> retAddMethod ret %d",ret2);
-    
-    // 使用 void * 类型作为通用指针
-    // void *functionAddress = (void *)_intAddMethodCodePt;
-    // int result = ((int (*)(int, int))functionAddress)(10, 20);
-
-    
-//    ret1();
+////    DobbyHook((void *)viewDidLoadImp, (void *)my_viewDidLoad, (void *)&viewDidLoadImp_ori);
+//    
+//    
+//    
+//    NSString *searchFilePath = [[Constant getCurrentAppPath] stringByAppendingString:@"/Contents/MacOS/mac_app_dev_swift"];
+//    uintptr_t fileOffset =[MemoryUtils getCurrentArchFileOffset: searchFilePath];
+//    int imageIndex = [MemoryUtils indexForImageWithName:@"mac_app_dev_swift"];
+//    
+//    // printHello()
+//    NSString *printHelloCode = @"55 48 89 E5 48 8D 3D ?? ?? ?? ?? B0 00 E8 4C 2B 00 00 5D C3";
+//    uintptr_t globalOffset = [[MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)printHelloCode count:(int)1][0] unsignedIntegerValue];
+//    intptr_t _printHelloPt = [MemoryUtils getPtrFromGlobalOffset:imageIndex targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
+//    NSLog(@">>>>>> _printHelloPt %ld",_printHelloPt);
+//    // 将函数地址转换为函数指针类型
+//    CPrintHelloPointer printHelloFun = (CPrintHelloPointer)_printHelloPt;
+//      // 调用函数
+//    printHelloFun();
+//    
+//    
+//    // int printOne()
+//    NSString *intRetOneCode = @"55 48 89 E5 48 8D 3D ?? ?? ?? ?? B0 00 E8 2C 2B 00 00 B8 01 00 00 00 5D C3";
+//    globalOffset = [[MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)intRetOneCode count:(int)1][0] unsignedIntegerValue];
+//    intptr_t _intRetOneCodePt = [MemoryUtils getPtrFromGlobalOffset:imageIndex targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
+//    NSLog(@">>>>>> _intRetOneCodePt %ld",_intRetOneCodePt);
+//    // 将函数地址转换为函数指针类型
+//    CRetOnePointer retOneFun = (CRetOnePointer)_intRetOneCodePt;
+//      // 调用函数
+//    int ret = retOneFun();
+//    NSLog(@">>>>>> retOneFun ret %d",ret);
+//    
+//    // int addMethod(int, int)
+//    NSString *intAddMethodCode = @"55 48 89 E5 48 83 EC 10 89 7D FC 89 75 F8 48 8D 3D ?? ?? ?? ?? B0 00 E8 02 2B 00 00 8B 45 FC 03 45 F8 48 83 C4 10 5D C3";
+//    globalOffset = [[MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)intAddMethodCode count:(int)1][0] unsignedIntegerValue];
+//    intptr_t _intAddMethodCodePt = [MemoryUtils getPtrFromGlobalOffset:imageIndex targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
+//    NSLog(@">>>>>> _intAddMethodCodePt %ld",_intAddMethodCodePt);
+//    // 将函数地址转换为函数指针类型
+//    CRetAddMethodPointer retAddMethod = (CRetAddMethodPointer)_intAddMethodCodePt;
+//    // 调用函数
+//    int ret2 = retAddMethod(1,2);
+//    NSLog(@">>>>>> retAddMethod ret %d",ret2);
+//    
+//    // 使用 void * 类型作为通用指针
+//    // void *functionAddress = (void *)_intAddMethodCodePt;
+//    // int result = ((int (*)(int, int))functionAddress)(10, 20);
+////    ret1();
 
     return YES;
 }
@@ -143,19 +257,13 @@ typedef int (*CRetAddMethodPointer)(int a,int b);
 
 typedef void (*MethodPointer)(id, SEL);
 MethodPointer methodPointer = NULL;
-
+IMP originalMethodIMP = nil;
 // 通过 swizzled 来 hook viewDidLoad
 - (void)hk_viewDidLoad {
-    //    在这里实现你的逻辑
-    // Hook 前 获取 IMP KD_MD5IMPGlobal
-    // IMP KD_MD5IMPGlobal = nil;
-    // Class NSStringClz = NSClassFromString(@"NSString");
-    // SEL KD_MD5Seleter = NSSelectorFromString(@"KD_MD5");
-    // Method KD_MD5lMethod = class_getInstanceMethod(NSStringClz, KD_MD5Seleter);
-    // IMP KD_MD5IMP = method_getImplementation(KD_MD5lMethod);
     // NSString *ret = ((NSString *(*)(id, SEL))KD_MD5IMP)(self, @selector(KD_MD5));
     NSLog(@">>>>>> my_viewDidLoad is called with self: %@ and selector: %@", self, NSStringFromSelector(_cmd));
-    methodPointer(self,_cmd);
+    ((void *(*)(id, SEL))originalMethodIMP)(self, _cmd);
+    // methodPointer(self,_cmd);
 }
 
 

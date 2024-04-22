@@ -30,7 +30,7 @@ static int (*sum_p)(int a, int b);
 int mySum(int a,int b){
     return a - b;
 }
-void initTest(){
+void initTest(void){
     
     NSLog(@"before %d", sum(1, 2));
     NSLog(@"%s", DobbyGetVersion());

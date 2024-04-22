@@ -59,7 +59,7 @@ bool hook_device_id(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t arg3, 
     // 3c:06:30:30:7d:35C02G64QMQ05D
     // 88548E5A38EEEE04E89C5621BA04BC7E
     
-    if (_rbx!=nil && _rbx.deviceID==@""){
+    if (_rbx!=nil && [_rbx.deviceID isEqual:@""]){
         
         // arm: r1 = *(int128_t *)(arg2 + 0x28);
         // x86: mov  rsi, qword [rdx+0x28] ; real device id ; rsi = *(arg2 + 0x28);
@@ -100,9 +100,9 @@ bool hook_device_id(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t arg3, 
     return hook_device_id_ori(arg0,arg1,arg2,arg3,arg4);
 }
 
-int (*hook_license_ori)();
+int (*hook_license_ori)(void);
 
-int (*hook_device_id_ori)();
+int (*hook_device_id_ori)(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t arg3, uint64_t arg4);
 
 
 - (BOOL)hack {
@@ -129,7 +129,7 @@ int (*hook_device_id_ori)();
     
     //  objc_cls_ref_LicenseModel
     NSArray *globalOffsets =[MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath
-                                                      machineCode:(NSString *) @"FC 6F BA A9 FA 67 01 A9 F8 5F 02 A9 F6 57 03 A9 F4 4F 04 A9 FD 7B 05 A9 FD 43 01 91 FF 03 02 D1 ?? ?? 00 90 00 ?? ?? 91 ?? ?? FB 97"
+                                                      machineCode:(NSString *) @"FC 6F BA A9 FA 67 01 A9 F8 5F 02 A9 F6 57 03 A9 F4 4F 04 A9 FD 7B 05 A9 FD 43 01 91 FF 03 02 D1 68 32 00 F0 .. .. .. .. .. .. .. .."
                                                             count:(int)1];
     uintptr_t globalOffset = [globalOffsets[0] unsignedIntegerValue];
     uintptr_t fileOffset =[MemoryUtils getCurrentArchFileOffset: searchFilePath];
@@ -176,7 +176,7 @@ int (*hook_device_id_ori)();
     //    000000010014afab         call       sub_100015360
     //    55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC 98 00 00 00 48 8D 3D F5 26 76 00 E8
     
-    NSString *searchMachineCode = @"55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC 98 00 00 00 48 8D 3D";
+    NSString *searchMachineCode = @"55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC .. .. .. .. 48 8B 05 .. .. .. .. 48 8B 00 48 89 45 .. 48 8D 3D .. .. .. .. E8 .. .. .. ..";
     int count = 1;
     NSArray *globalOffsets =[MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)searchMachineCode count:(int)count];
     uintptr_t globalOffset = [globalOffsets[0] unsignedIntegerValue];
