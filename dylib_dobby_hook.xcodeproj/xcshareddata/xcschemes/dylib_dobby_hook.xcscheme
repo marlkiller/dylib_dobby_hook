@@ -41,8 +41,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         BundleIdentifier = "com.voidm.mac-app-dev-swift"
-         FilePath = "/Applications/mac_app_dev_swift.app">
+         FilePath = "/Applications/TablePlus.app">
       </PathRunnable>
    </LaunchAction>
    <ProfileAction

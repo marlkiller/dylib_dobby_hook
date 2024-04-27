@@ -26,7 +26,7 @@
 }
 
 - (NSString *)getSupportAppVersion {
-    return @"5.";
+    return @"6.";
 }
 
 
@@ -114,22 +114,29 @@ int (*hook_device_id_ori)(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t 
     
     
     
-    //    0000000100131360         stp        x28, x27, [sp, #-0x60]!                     ; CODE XREF=sub_100131978+1360, sub_1002bbfcc+8
-    //    0000000100131364         stp        x26, x25, [sp, #0x10]
-    //    0000000100131368         stp        x24, x23, [sp, #0x20]
-    //    000000010013136c         stp        x22, x21, [sp, #0x30]
-    //    0000000100131370         stp        x20, x19, [sp, #0x40]
-    //    0000000100131374         stp        fp, lr, [sp, #0x50]
-    //    0000000100131378         add        fp, sp, #0x50
-    //    000000010013137c         sub        sp, sp, #0x80
-    //    0000000100131380         adrp       x0, #0x10083d000
-    //    FC 6F BA A9 FA 67 01 A9 F8 5F 02 A9 F6 57 03 A9 F4 4F 04 A9 FD 7B 05 A9 FD 43 01 91 FF 03 02 D1 60
+
+//    000000010013ca50         stp        x28, x27, [sp, #-0x60]!                     ; CODE XREF=sub_10013d2c4+1360, sub_1002cc010+8
+//    000000010013ca54         stp        x26, x25, [sp, #0x10]
+//    000000010013ca58         stp        x24, x23, [sp, #0x20]
+//    000000010013ca5c         stp        x22, x21, [sp, #0x30]
+//    000000010013ca60         stp        x20, x19, [sp, #0x40]
+//    000000010013ca64         stp        fp, lr, [sp, #0x50]
+//    000000010013ca68         add        fp, sp, #0x50
+//    000000010013ca6c         sub        sp, sp, #0x70
+//    000000010013ca70         adrp       x0, #0x10087a000                            ; 0x10087aeb0@PAGE
+//    000000010013ca74         add        x0, x0, #0xeb0                              ; 0x10087aeb0@PAGEOFF, argument #1 for method sub_10001310c, qword_10087aeb0
+//    000000010013ca78         bl         sub_10001310c                               ; sub_10001310c
+//    000000010013ca7c         ldur       x8, [x0, #-0x8]                             ; qword_10087aea8
+//    000000010013ca80         ldr        x8, [x8, #0x40]
+//    000000010013ca84         mov        x9, sp
+//    000000010013ca88         add        x8, x8, #0xf
+//    000000010013ca8c         and        x8, x8, #0xfffffffffffffff0
+//    000000010013ca90         sub        x24, x9, x8
     
-    
-    
+//    FC 6F BA A9 FA 67 01 A9 F8 5F 02 A9 F6 57 03 A9 F4 4F 04 A9 FD 7B 05 A9 FD 43 01 91 FF C3 01 D1 E0 39 00 D0 00 C0 3A 91 A5 59 FB 97 08 80 5F F8 08 21 40 F9 E9 03 00 91 08 3D 00 91 08 ED 7C 92 38 01 08 CB
     //  objc_cls_ref_LicenseModel
     NSArray *globalOffsets =[MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath
-                                                      machineCode:(NSString *) @"FC 6F BA A9 FA 67 01 A9 F8 5F 02 A9 F6 57 03 A9 F4 4F 04 A9 FD 7B 05 A9 FD 43 01 91 FF 03 02 D1 68 32 00 F0 .. .. .. .. .. .. .. .."
+                                                      machineCode:(NSString *) @"FC 6F BA A9 FA 67 01 A9 F8 5F 02 A9 F6 57 03 A9 F4 4F 04 A9 FD 7B 05 A9 FD 43 01 91 FF .. .. D1 .. .. 00 .. .. .. .. .. .. .. .. .. .. .. 5F F8 .. .. 40 F9 E9 03 00 91 08 3D 00 91 08 ED 7C 92 38 01 08 CB"
                                                             count:(int)1];
     uintptr_t globalOffset = [globalOffsets[0] unsignedIntegerValue];
     uintptr_t fileOffset =[MemoryUtils getCurrentArchFileOffset: searchFilePath];
@@ -176,7 +183,7 @@ int (*hook_device_id_ori)(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t 
     //    000000010014afab         call       sub_100015360
     //    55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC 98 00 00 00 48 8D 3D F5 26 76 00 E8
     
-    NSString *searchMachineCode = @"55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC .. .. .. .. 48 8B 05 .. .. .. .. 48 8B 00 48 89 45 .. 48 8D 3D .. .. .. .. E8 .. .. .. ..";
+    NSString *searchMachineCode = @"55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC .. .. .. .. 48 8D 3D .. .. .. .. E8 .. .. .. .. 48 8B 40 .. 48 8B 40 .. 48 89 E3 48 83 C0 .. 48 83 E0 .. 48 29 C3 48 89 DC 31 FF E8 .. .. .. ..";
     int count = 1;
     NSArray *globalOffsets =[MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)searchMachineCode count:(int)count];
     uintptr_t globalOffset = [globalOffsets[0] unsignedIntegerValue];

@@ -29,7 +29,7 @@ xcode 开发 dylib , 基于跨平台的 dobby HOOK 框架来构建跨平台的�
 
 | App             | version | x86 | arm | Download                                    | remark                                                                                                     | Author              |
 |-----------------|---------|-----|-----|---------------------------------------------|------------------------------------------------------------------------------------------------------------|---------------------|
-| TablePlus       | 5.*     | ✔   | ✔   | https://tableplus.com/                      |                                                                                                            |                     |
+| TablePlus       | 6.*     | ✔   | ✔   | https://tableplus.com/                      |                                                                                                            |                     |
 | DevUtils        | 1.*     | ✔   | ✔   | https://devutils.com/                       |                                                                                                            |                     |
 | AirBuddy        | 2.*     | ✔   | ✔   | https://v2.airbuddy.app/download            | inject_bin="/Applications/AirBuddy.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"         |                     |
 | Navicat Premium | 16.*    | ✔   | ✔   | App Store                                   | inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"              | QiuChenlyOpenSource |
