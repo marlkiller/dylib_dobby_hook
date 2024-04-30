@@ -48,46 +48,47 @@ git clone https://github.com/marlkiller/dylib_dobby_hook.git
 cd script 
 sudo sh auto_hack.sh
 ```
-
 ## Develop
-
-关键 hook 函数,可以参考帖子(以 TabpePlus 该软件为例) :
-[https://www.52pojie.cn/thread-1739112-1-1.html  
-](https://www.52pojie.cn/thread-1881366-1-1.html)
 
 ### 0x0
 
 基础代码已经完成, 为了兼容更多的 app 补丁, 使用了适配器模式来进行扩展
 
-### 0x1 定义实现类(以当前 TablePlus 为例)
+### 0x1 定义实现类(以当前 XXX 为例)
 
 ```objective-c
+
 #import <Foundation/Foundation.h>
-#import "TablePlusHack.h"
 #import <objc/runtime.h>
+#import "HackProtocol.h"
 
-@implementation TablePlusHack
 
+@interface XXXHack : NSObject <HackProtocol>
+
+@end
+
+@implementation XXXHack
 
 - (NSString *)getAppName {
-    return @"com.tinyapp.TablePlus";
+    return @"com.dev.xxx";
 }
 
-- (NSString *)getSupportAppVersion {    
-    return @"5.8.2";
+- (NSString *)getSupportAppVersion {
+    return @"1.0";
 }
+
 
 - (BOOL)hack {
-    
+        
 #if defined(__arm64__) || defined(__aarch64__)
     // do arm something..
 #elif defined(__x86_64__)
     // do x86 something..
 #endif
-    
     return YES;
 }
 @end
+
 ```
 
 ### 0x2 Build & 注入
