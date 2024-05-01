@@ -12,6 +12,7 @@
 #import <objc/runtime.h>
 #include <mach-o/dyld.h>
 #import "HackProtocol.h"
+#import "common_ret.h"
 
 @interface TransmitHack : NSObject <HackProtocol>
 
@@ -140,7 +141,7 @@ int hook_TRTrialStatus(void){
 //    }
     
     NSUserDefaults *defaults  = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:@"marlkiller@voidm.com" forKey:@"RegistrationUsername"];
+    [defaults setObject:[NSString stringWithCString:global_email_address encoding:NSUTF8StringEncoding] forKey:@"RegistrationUsername"];
     [defaults setObject:@"2099-04-11 13:30:45 GMT" forKey:@"RegistrationDate"];
     [defaults synchronize];
     

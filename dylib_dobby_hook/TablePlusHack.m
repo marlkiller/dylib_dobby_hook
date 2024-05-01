@@ -13,6 +13,7 @@
 #import <objc/runtime.h>
 #include <mach-o/dyld.h>
 #import "HackProtocol.h"
+#import "common_ret.h"
 
 @interface TablePlusHack : NSObject <HackProtocol>
 
@@ -37,7 +38,7 @@ id hook_license(int arg0, int arg1, int arg2, int arg3){
         LicenseModel *r12 = [[NSClassFromString(@"LicenseModel") alloc] init];
         NSDictionary *propertyDictionary = @{
             @"sign": @"fuckSign",
-            @"email": @"marlkiller@voidm.com",
+            @"email": [NSString stringWithCString:global_email_address encoding:NSUTF8StringEncoding],
             // @"deviceID": @"88548e5a38eeee04e89c5621ba04bc7e",
             @"deviceID": @"",
             @"purchasedAt": @"2999-01-16",

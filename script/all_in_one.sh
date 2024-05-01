@@ -58,8 +58,10 @@ app_executable_backup_path="${app_executable_path}_Backup"
 echo ">>>>>> app_executable_path is ${app_executable_path}"
 
 
-cp -f "${insert_dylib}" "${app_bundle_path}/"
-if [ ! -f "$app_executable_backup_path" ]; 
+cp -f "${insert_dylib}" "${app_bundle_path}/insert_dylib"
+
+
+if [ ! -f "$app_executable_backup_path" ];
 then
     cp "$app_executable_path" "$app_executable_backup_path"
 fi
@@ -70,6 +72,8 @@ cp -f "${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib" "${app_bundle_framewo
 cp -f "${BUILT_PRODUCTS_DIR}/libdobby.dylib" "${app_bundle_framework}"
 
 "${app_bundle_path}/insert_dylib" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
+
+rm -rf "${app_bundle_path}/insert_dylib"
 
 echo ">>>>>> hack [${app_name}] completed"
 

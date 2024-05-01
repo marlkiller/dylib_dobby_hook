@@ -4,6 +4,7 @@
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
 #import "HackProtocol.h"
+#import "common_ret.h"
 
 @interface PasteHack : NSObject <HackProtocol>
 
@@ -22,12 +23,12 @@
 
 int (*validSubscriptionOri)(void);
 
-int validSubscriptionNew(int arg0, int arg1) {
-    return 1;
-}
-int _cloudKitNew(int arg0, int arg1) {
-    return 1;
-}
+//int validSubscriptionNew(int arg0, int arg1) {
+//    return 1;
+//}
+//int _cloudKitNew(int arg0, int arg1) {
+//    return 1;
+//}
 
 - (int) hook_ubiquityIdentityToken {
     NSLog(@">>>>>> hook_ubiquityIdentityToken");
@@ -43,7 +44,7 @@ int _cloudKitNew(int arg0, int arg1) {
     //    DobbyHook(validSubscription, validSubscriptionNew, (void *)&validSubscriptionOri);
     // hook cloudkit
     //    intptr_t _cloudKit = [MemoryUtils getPtrFromAddress:0x1002b7a68];
-    //    DobbyHook(_cloudKit, _cloudKitNew, (void *)&_cloudKitOri);
+    //    DobbyHook(_cloudKit, ret1, (void *)&_cloudKitOri);
     
     [MemoryUtils hookInstanceMethod:objc_getClass("NSFileManager") originalSelector:NSSelectorFromString(@"ubiquityIdentityToken") swizzledClass:[self class] swizzledSelector:NSSelectorFromString(@"hook_ubiquityIdentityToken")];
     
@@ -67,7 +68,7 @@ void hookSubscription(NSString *searchFilePath, uintptr_t fileOffset) {
     uintptr_t globalOffset = [globalOffsets[0] unsignedIntegerValue];
     
     intptr_t validSubscription = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
-    DobbyHook((void *)validSubscription, (void *)validSubscriptionNew, (void *)&validSubscriptionOri);
+    DobbyHook((void *)validSubscription, (void *)ret1, (void *)&validSubscriptionOri);
 }
 
 @end

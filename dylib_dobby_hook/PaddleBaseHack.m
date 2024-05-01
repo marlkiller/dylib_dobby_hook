@@ -13,6 +13,7 @@
 #include <mach-o/dyld.h>
 #import <Cocoa/Cocoa.h>
 #import "HackProtocol.h"
+#import "common_ret.h"
 
 @interface PaddleBaseHack : NSObject <HackProtocol>
 
@@ -89,7 +90,7 @@
 
 - (NSString *) hook_activationEmail{
     NSLog(@">>>>>> called hook_activationEmail");
-    return @"marlkiller@voidm.com";
+    return [NSString stringWithCString:global_email_address encoding:NSUTF8StringEncoding];
 }
 
 - (void) hook_verifyActivationDetailsWithCompletion:(id) arg1{
