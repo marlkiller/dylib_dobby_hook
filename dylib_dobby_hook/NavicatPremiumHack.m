@@ -23,18 +23,18 @@
 }
 
 - (NSString *)getSupportAppVersion {
-    return @"16.3.5";
+    return @"16.3";
 }
 
 
-- (int)hk_productSubscriptionStillHaveTrialPeriod{
-    NSLog(@">>>>>> Swizzled hk_productSubscriptionStillHaveTrialPeriod method called");
-    return 0;
-}
-- (int)hk_isProductSubscriptionStillValid{
-    NSLog(@">>>>>> Swizzled hk_isProductSubscriptionStillValid method called");
-    return 1;
-}
+//- (int)hk_productSubscriptionStillHaveTrialPeriod{
+//    NSLog(@">>>>>> Swizzled hk_productSubscriptionStillHaveTrialPeriod method called");
+//    return 0;
+//}
+//- (int)hk_isProductSubscriptionStillValid{
+//    NSLog(@">>>>>> Swizzled hk_isProductSubscriptionStillValid method called");
+//    return 1;
+//}
 + (void)hk_validate{
     NSLog(@">>>>>> Swizzled hk_validate method called");
 }
@@ -118,7 +118,7 @@
                 objc_getClass("IAPHelper")
                 originalSelector:NSSelectorFromString(@"isProductSubscriptionStillValid")
                 swizzledClass:[self class]
-                swizzledSelector:NSSelectorFromString(@"hk_isProductSubscriptionStillValid")
+                swizzledSelector: @selector(ret1)
     ];
     
     [MemoryUtils hookClassMethod:

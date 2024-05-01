@@ -57,15 +57,15 @@
 }
 
 
-- (BOOL) hook_isLicensed{
-    NSLog(@">>>>>> called hook_isLicensed");
-    return YES;
-}
-
-- (BOOL) hook_activated{
-    NSLog(@">>>>>> called hook_activated");
-    return YES;
-}
+//- (BOOL) hook_isLicensed{
+//    NSLog(@">>>>>> called hook_isLicensed");
+//    return YES;
+//}
+//
+//- (BOOL) hook_activated{
+//    NSLog(@">>>>>> called hook_activated");
+//    return YES;
+//}
 
 
 - (NSDate *) hook_activationDate{
@@ -169,12 +169,12 @@
     
     
 //    license HOOK
-//    -[PADProduct activated]:
+//    -[PADProduct activated]:    
     [MemoryUtils hookInstanceMethod:
          objc_getClass("PADProduct")
                    originalSelector:NSSelectorFromString(@"activated")
                       swizzledClass:[self class]
-                   swizzledSelector:NSSelectorFromString(@"hook_activated")
+                   swizzledSelector:@selector(ret1)
 
     ];
     

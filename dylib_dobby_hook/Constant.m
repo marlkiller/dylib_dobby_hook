@@ -142,6 +142,10 @@ bool isArm;
     NSArray<Class> *personClasses = [Constant getAllHackClasses];
     
     for (Class class in personClasses) {
+        
+        if ([class isEqualTo:NSObject.class]) {
+            continue;;
+        }
         id<HackProtocol> it = [[class alloc] init];
         if ([currentAppName hasPrefix:[it getAppName]]) {
             NSString *supportAppVersion = [it getSupportAppVersion];

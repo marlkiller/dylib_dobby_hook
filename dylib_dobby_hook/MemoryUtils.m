@@ -289,13 +289,13 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     for (NSDictionary *archInfo in architecturesInfo) {
         cpu_type_t cpuType = [archInfo[@"cpuType"] unsignedIntValue];
         uint32_t offset = [archInfo[@"offset"] unsignedIntValue];
-
         if (cpuType == desiredCpuType) {
             return offset;
         } else
             continue;
     }
-    return 0;}
+    return 0;
+}
 
 
 
