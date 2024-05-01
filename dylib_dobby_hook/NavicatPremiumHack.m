@@ -35,9 +35,9 @@
 //    NSLog(@">>>>>> Swizzled hk_isProductSubscriptionStillValid method called");
 //    return 1;
 //}
-+ (void)hk_validate{
-    NSLog(@">>>>>> Swizzled hk_validate method called");
-}
+//+ (void)hk_validate{
+//    NSLog(@">>>>>> Swizzled hk_validate method called");
+//}
 
 
 - (BOOL)hack {
@@ -125,7 +125,7 @@
                 objc_getClass("AppStoreReceiptValidation")
                 originalSelector:NSSelectorFromString(@"validate")
                 swizzledClass:[self class]
-                swizzledSelector:NSSelectorFromString(@"hk_validate")
+                swizzledSelector:@selector(ret)
     ];
     
     

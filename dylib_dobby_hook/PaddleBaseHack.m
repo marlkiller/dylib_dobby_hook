@@ -93,10 +93,10 @@
     return [NSString stringWithCString:global_email_address encoding:NSUTF8StringEncoding];
 }
 
-- (void) hook_verifyActivationDetailsWithCompletion:(id) arg1{
-    NSLog(@">>>>>> called hook_verifyActivationDetailsWithCompletion");
-    return;
-}
+//- (void) hook_verifyActivationDetailsWithCompletion:(id) arg1{
+//    NSLog(@">>>>>> called hook_verifyActivationDetailsWithCompletion");
+//    return;
+//}
 
 - (BOOL)hack {
 //    license eg: B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C
@@ -203,7 +203,7 @@
          objc_getClass("PADProduct")
                    originalSelector:NSSelectorFromString(@"verifyActivationDetailsWithCompletion:")
                       swizzledClass:[self class]
-                   swizzledSelector:NSSelectorFromString(@"hook_verifyActivationDetailsWithCompletion:")
+                   swizzledSelector:@selector(ret)
 
     ];
     
