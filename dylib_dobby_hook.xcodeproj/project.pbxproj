@@ -26,7 +26,6 @@
 		B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */; };
 		B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */; };
 		B5CB448B2B55742A004CEF38 /* LicenseModel.h in Headers */ = {isa = PBXBuildFile; fileRef = B5CB448A2B55742A004CEF38 /* LicenseModel.h */; };
-		B5CFAB542BBEE615003E25C9 /* SurgeHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CFAB532BBEE615003E25C9 /* SurgeHack.m */; };
 		B5D2ED3F2BC0252D0030CBCA /* DevHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D2ED3E2BC0252D0030CBCA /* DevHack.m */; };
 		B5F59EE92B56B6E400FCE1A4 /* Mapper.h in Headers */ = {isa = PBXBuildFile; fileRef = B5F59EE82B56B6E400FCE1A4 /* Mapper.h */; };
 		B5F59EEC2B56B70300FCE1A4 /* HPDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = B5F59EEB2B56B70300FCE1A4 /* HPDecoder.h */; };
@@ -74,7 +73,6 @@
 		B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavicatPremiumHack.m; sourceTree = "<group>"; };
 		B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevUtilsHack.m; sourceTree = "<group>"; };
 		B5CB448A2B55742A004CEF38 /* LicenseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LicenseModel.h; sourceTree = "<group>"; };
-		B5CFAB532BBEE615003E25C9 /* SurgeHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeHack.m; sourceTree = "<group>"; };
 		B5D2ED3E2BC0252D0030CBCA /* DevHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevHack.m; sourceTree = "<group>"; };
 		B5F59EE82B56B6E400FCE1A4 /* Mapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mapper.h; sourceTree = "<group>"; };
 		B5F59EEB2B56B70300FCE1A4 /* HPDecoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HPDecoder.h; sourceTree = "<group>"; };
@@ -134,7 +132,6 @@
 				B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */,
 				B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */,
 				B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */,
-				B5CFAB532BBEE615003E25C9 /* SurgeHack.m */,
 				B5D2ED3E2BC0252D0030CBCA /* DevHack.m */,
 				B546A6572BC4F0CD0012338D /* ProxyManHack.m */,
 				B5FECEAB2BC4FC29008916D6 /* common_ret.h */,
@@ -301,7 +298,6 @@
 				38B83E312B5505B300919735 /* TablePlusHack.m in Sources */,
 				B5FECEAE2BC4FC29008916D6 /* common_ret.c in Sources */,
 				38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */,
-				B5CFAB542BBEE615003E25C9 /* SurgeHack.m in Sources */,
 				B502BD5D2BCFB35200DAD97F /* MovistProHack.m in Sources */,
 				B5FE3B862BA2A571001AE437 /* TransmitHack.m in Sources */,
 			);
