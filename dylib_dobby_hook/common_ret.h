@@ -13,7 +13,7 @@
 int ret2 (void);
 int ret1 (void);
 int ret0 (void);
-void nop(void);
+void ret(void);
 
 // ptrace hook 相关
 // ptrace 函数指针

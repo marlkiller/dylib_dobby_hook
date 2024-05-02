@@ -16,7 +16,7 @@ int ret0 (void){
     return 0;
 }
 
-void nop(void){
+void ret(void){
     
 }
 

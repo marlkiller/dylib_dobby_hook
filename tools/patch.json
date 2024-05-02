@@ -1,5 +1,5 @@
 {
-  "surge": {
+  "Surge": {
     "patch": {
       "/Applications/Surge.app/Contents/Library/LaunchServices/com.nssurge.surge-mac.helper": {
         "x86": {
