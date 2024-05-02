@@ -12,6 +12,7 @@ hack_app() {
     echo "=========================================================="
     app_name="$1"
     app_path="$2"
+    script_after="$3"
     
     if [ -d "/Applications/${app_name}.app" ]; then
     
@@ -26,6 +27,10 @@ hack_app() {
         if [ "$user_input" = "Y" ] || [ "$user_input" = "y" ]; then
             echo ">>>>>> hack [${app_name}] starting"
             sh all_in_one.sh "$app_name" "$app_path"
+            
+            if [ -n "$script_after" ]; then
+              sudo sh "$script_after"
+            fi
         else
             echo ">>>>>> ignore [${app_name}]"
         fi
