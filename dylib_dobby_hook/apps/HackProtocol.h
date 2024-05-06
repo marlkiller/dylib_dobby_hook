@@ -16,6 +16,7 @@
 @interface NSObject (HackProtocolDefaults) <HackProtocol>
 - (void)ret;
 - (void)ret_;
+- (void)ret__;
 
 - (int)ret1;
 - (int)ret0;
@@ -32,6 +33,10 @@
 - (void)ret_ {
     NSLog(@">>>>>> called -ret_");
 }
+- (void)ret__ {
+    NSLog(@">>>>>> called -ret__");
+}
+
 - (int)ret1 {
     NSLog(@">>>>>> called -ret1");
     return 1;

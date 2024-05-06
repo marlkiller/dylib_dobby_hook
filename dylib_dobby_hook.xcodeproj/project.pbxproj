@@ -25,10 +25,13 @@
 		B546A6582BC4F0CD0012338D /* ProxyManHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B546A6572BC4F0CD0012338D /* ProxyManHack.m */; };
 		B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */; };
 		B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */; };
-		B5CB448B2B55742A004CEF38 /* LicenseModel.h in Headers */ = {isa = PBXBuildFile; fileRef = B5CB448A2B55742A004CEF38 /* LicenseModel.h */; };
+		B580D3CA2BE3579300979568 /* LightRoomHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B580D3C72BE3579300979568 /* LightRoomHack.m */; };
+		B58160172BE88569001DDB9B /* encryp_utils.m in Sources */ = {isa = PBXBuildFile; fileRef = B58160112BE88569001DDB9B /* encryp_utils.m */; };
+		B58160182BE88569001DDB9B /* HPDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = B58160122BE88569001DDB9B /* HPDecoder.h */; };
+		B58160192BE88569001DDB9B /* LicenseModel.h in Headers */ = {isa = PBXBuildFile; fileRef = B58160132BE88569001DDB9B /* LicenseModel.h */; };
+		B581601A2BE88569001DDB9B /* Mapper.h in Headers */ = {isa = PBXBuildFile; fileRef = B58160142BE88569001DDB9B /* Mapper.h */; };
+		B581601B2BE88569001DDB9B /* encryp_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = B58160162BE88569001DDB9B /* encryp_utils.h */; };
 		B5D2ED3F2BC0252D0030CBCA /* DevHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D2ED3E2BC0252D0030CBCA /* DevHack.m */; };
-		B5F59EE92B56B6E400FCE1A4 /* Mapper.h in Headers */ = {isa = PBXBuildFile; fileRef = B5F59EE82B56B6E400FCE1A4 /* Mapper.h */; };
-		B5F59EEC2B56B70300FCE1A4 /* HPDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = B5F59EEB2B56B70300FCE1A4 /* HPDecoder.h */; };
 		B5FE3B862BA2A571001AE437 /* TransmitHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FE3B842BA2A571001AE437 /* TransmitHack.m */; };
 		B5FECEAD2BC4FC29008916D6 /* common_ret.h in Headers */ = {isa = PBXBuildFile; fileRef = B5FECEAB2BC4FC29008916D6 /* common_ret.h */; };
 		B5FECEAE2BC4FC29008916D6 /* common_ret.c in Sources */ = {isa = PBXBuildFile; fileRef = B5FECEAC2BC4FC29008916D6 /* common_ret.c */; };
@@ -72,10 +75,13 @@
 		B546A6572BC4F0CD0012338D /* ProxyManHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProxyManHack.m; sourceTree = "<group>"; };
 		B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavicatPremiumHack.m; sourceTree = "<group>"; };
 		B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevUtilsHack.m; sourceTree = "<group>"; };
-		B5CB448A2B55742A004CEF38 /* LicenseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LicenseModel.h; sourceTree = "<group>"; };
+		B580D3C72BE3579300979568 /* LightRoomHack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightRoomHack.m; sourceTree = "<group>"; };
+		B58160112BE88569001DDB9B /* encryp_utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = encryp_utils.m; sourceTree = "<group>"; };
+		B58160122BE88569001DDB9B /* HPDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPDecoder.h; sourceTree = "<group>"; };
+		B58160132BE88569001DDB9B /* LicenseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicenseModel.h; sourceTree = "<group>"; };
+		B58160142BE88569001DDB9B /* Mapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mapper.h; sourceTree = "<group>"; };
+		B58160162BE88569001DDB9B /* encryp_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = encryp_utils.h; sourceTree = "<group>"; };
 		B5D2ED3E2BC0252D0030CBCA /* DevHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevHack.m; sourceTree = "<group>"; };
-		B5F59EE82B56B6E400FCE1A4 /* Mapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mapper.h; sourceTree = "<group>"; };
-		B5F59EEB2B56B70300FCE1A4 /* HPDecoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HPDecoder.h; sourceTree = "<group>"; };
 		B5FE3B842BA2A571001AE437 /* TransmitHack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransmitHack.m; sourceTree = "<group>"; };
 		B5FECEAB2BC4FC29008916D6 /* common_ret.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common_ret.h; sourceTree = "<group>"; };
 		B5FECEAC2BC4FC29008916D6 /* common_ret.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = common_ret.c; sourceTree = "<group>"; };
@@ -116,27 +122,11 @@
 		38350BF42B53F73A00DD52B3 /* dylib_dobby_hook */ = {
 			isa = PBXGroup;
 			children = (
-				B5FE3B842BA2A571001AE437 /* TransmitHack.m */,
-				382A25842B6918DF0083F28C /* PasteHack.m */,
-				B5F59EEE2B56CF8B00FCE1A4 /* tableplus */,
+				B581601D2BE894A2001DDB9B /* utils */,
+				B581601C2BE8949B001DDB9B /* apps */,
 				38350BF52B53F73A00DD52B3 /* dylib_dobby_hook.h */,
 				38350BF72B53F73A00DD52B3 /* dylib_dobby_hook.m */,
 				38350C012B53F78900DD52B3 /* dobby.h */,
-				38D1AC272B54C9C100E6CB9E /* Constant.h */,
-				38D1AC292B54CA4D00E6CB9E /* Constant.m */,
-				38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */,
-				38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */,
-				3816BBB62B54FED80051CF39 /* MemoryUtils.h */,
-				3816BBB82B54FF090051CF39 /* MemoryUtils.m */,
-				38B83E302B5505B300919735 /* TablePlusHack.m */,
-				B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */,
-				B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */,
-				B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */,
-				B5D2ED3E2BC0252D0030CBCA /* DevHack.m */,
-				B546A6572BC4F0CD0012338D /* ProxyManHack.m */,
-				B5FECEAB2BC4FC29008916D6 /* common_ret.h */,
-				B5FECEAC2BC4FC29008916D6 /* common_ret.c */,
-				B502BD5C2BCFB35200DAD97F /* MovistProHack.m */,
 			);
 			path = dylib_dobby_hook;
 			sourceTree = "<group>";
@@ -176,14 +166,49 @@
 			path = release;
 			sourceTree = "<group>";
 		};
-		B5F59EEE2B56CF8B00FCE1A4 /* tableplus */ = {
+		B58160152BE88569001DDB9B /* tableplus */ = {
 			isa = PBXGroup;
 			children = (
-				B5CB448A2B55742A004CEF38 /* LicenseModel.h */,
-				B5F59EE82B56B6E400FCE1A4 /* Mapper.h */,
-				B5F59EEB2B56B70300FCE1A4 /* HPDecoder.h */,
+				B58160122BE88569001DDB9B /* HPDecoder.h */,
+				B58160132BE88569001DDB9B /* LicenseModel.h */,
+				B58160142BE88569001DDB9B /* Mapper.h */,
 			);
 			path = tableplus;
+			sourceTree = "<group>";
+		};
+		B581601C2BE8949B001DDB9B /* apps */ = {
+			isa = PBXGroup;
+			children = (
+				B58160152BE88569001DDB9B /* tableplus */,
+				38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */,
+				38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */,
+				B580D3C72BE3579300979568 /* LightRoomHack.m */,
+				B5FE3B842BA2A571001AE437 /* TransmitHack.m */,
+				382A25842B6918DF0083F28C /* PasteHack.m */,
+				38B83E302B5505B300919735 /* TablePlusHack.m */,
+				B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */,
+				B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */,
+				B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */,
+				B5D2ED3E2BC0252D0030CBCA /* DevHack.m */,
+				B546A6572BC4F0CD0012338D /* ProxyManHack.m */,
+				B502BD5C2BCFB35200DAD97F /* MovistProHack.m */,
+			);
+			path = apps;
+			sourceTree = "<group>";
+		};
+		B581601D2BE894A2001DDB9B /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				38D1AC272B54C9C100E6CB9E /* Constant.h */,
+				38D1AC292B54CA4D00E6CB9E /* Constant.m */,
+				B58160162BE88569001DDB9B /* encryp_utils.h */,
+				B58160112BE88569001DDB9B /* encryp_utils.m */,
+				3816BBB62B54FED80051CF39 /* MemoryUtils.h */,
+				3816BBB82B54FF090051CF39 /* MemoryUtils.m */,
+				B5FECEAB2BC4FC29008916D6 /* common_ret.h */,
+				B5FECEAC2BC4FC29008916D6 /* common_ret.c */,
+			);
+			path = utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -193,13 +218,14 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5F59EE92B56B6E400FCE1A4 /* Mapper.h in Headers */,
+				B58160192BE88569001DDB9B /* LicenseModel.h in Headers */,
 				B5FECEAD2BC4FC29008916D6 /* common_ret.h in Headers */,
-				B5CB448B2B55742A004CEF38 /* LicenseModel.h in Headers */,
-				B5F59EEC2B56B70300FCE1A4 /* HPDecoder.h in Headers */,
+				B581601A2BE88569001DDB9B /* Mapper.h in Headers */,
+				B581601B2BE88569001DDB9B /* encryp_utils.h in Headers */,
 				38350BF62B53F73A00DD52B3 /* dylib_dobby_hook.h in Headers */,
 				3816BBB72B54FED80051CF39 /* MemoryUtils.h in Headers */,
 				38350C022B53F78900DD52B3 /* dobby.h in Headers */,
+				B58160182BE88569001DDB9B /* HPDecoder.h in Headers */,
 				38D1AC282B54C9C100E6CB9E /* Constant.h in Headers */,
 				38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */,
 			);
@@ -277,7 +303,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Apps downloaded from AppStore require root permission to execute\nroot_password=\"\"\n\napp_name=\"TablePlus\"  \n# The default is injected into the main program, if you need to customize, please edit the variable inject_bin, otherwise do not touch it\n# inject_bin=\"/Applications/AirBuddy.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove\"\n# inject_bin=\"/Applications/Surge.app/Contents/Frameworks/MMMarkdown.framework/Versions/A/MMMarkdown \"\n\n\ndylib_name=\"${PRODUCT_NAME}\"\nprefix=\"lib\"\ninsert_dylib=\"${SRCROOT}/tools/insert_dylib\"\n\napp_bundle_path=\"/Applications/${app_name}.app/Contents/MacOS\"\napp_bundle_framework=\"/Applications/${app_name}.app/Contents/Frameworks/\"\n\nif [ -n \"$inject_bin\" ]; then\n    app_executable_path=\"$inject_bin\"\nelse\n    app_executable_path=\"${app_bundle_path}/${app_name}\"\nfi\napp_executable_backup_path=\"${app_executable_path}_Backup\"\n\n\nif [ -w \"/Applications/${app_name}.app\" ]; then\n    echo \"Have the directory write permission\"\nelse\n    echo \"No write permission for the directory\"    \n    echo \"$root_password\" | sudo -S chmod -R 777 \"/Applications/${app_name}.app\"\nfi\n\nif [ ! -d \"$app_bundle_framework\" ]; then\n  mkdir -p \"$app_bundle_framework\"\nfi\n\n\ncp -f \"${insert_dylib}\" \"${app_bundle_path}/insert_dylib\"\nif [ ! -f \"${app_bundle_path}/insert_dylib\" ]; then\n    cp -f \"${insert_dylib}\" \"${app_bundle_path}/insert_dylib\"\nfi\n\n\nif [ ! -f \"$app_executable_backup_path\" ]; \nthen\n    cp \"$app_executable_path\" \"$app_executable_backup_path\"\nfi\n\ncp -f \"${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib\" \"${app_bundle_framework}\"\n\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    cp -f \"${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib\" \"${SRCROOT}/release/${prefix}${dylib_name}.dylib\"\nfi\n\ncp -f \"${BUILT_PRODUCTS_DIR}/libdobby.dylib\" \"${app_bundle_framework}\"\n\n\"${app_bundle_path}/insert_dylib\" --weak --all-yes \"@rpath/${prefix}${dylib_name}.dylib\" \"$app_executable_backup_path\" \"$app_executable_path\"\n\n";
+			shellScript = "# Apps downloaded from AppStore require root permission to execute\nroot_password=\"\"\n\napp_name=\"TablePlus\"  \n# The default is injected into the main program, if you need to customize, please edit the variable inject_bin, otherwise do not touch it\n# inject_bin=\"/Applications/AirBuddy.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove\"\n# inject_bin=\"/Applications/Surge.app/Contents/Frameworks/MMMarkdown.framework/Versions/A/MMMarkdown\"\n\n\ndylib_name=\"${PRODUCT_NAME}\"\nprefix=\"lib\"\ninsert_dylib=\"${SRCROOT}/tools/insert_dylib\"\n\napp_bundle_path=\"/Applications/${app_name}.app/Contents/MacOS\"\napp_bundle_framework=\"/Applications/${app_name}.app/Contents/Frameworks/\"\n\nif [ -n \"$inject_bin\" ]; then\n    app_executable_path=\"$inject_bin\"\nelse\n    app_executable_path=\"${app_bundle_path}/${app_name}\"\nfi\napp_executable_backup_path=\"${app_executable_path}_Backup\"\n\n\nif [ -w \"/Applications/${app_name}.app\" ]; then\n    echo \"Have the directory write permission\"\nelse\n    echo \"No write permission for the directory\"    \n    echo \"$root_password\" | sudo -S chmod -R 777 \"/Applications/${app_name}.app\"\nfi\n\nif [ ! -d \"$app_bundle_framework\" ]; then\n  mkdir -p \"$app_bundle_framework\"\nfi\n\n\ncp -f \"${insert_dylib}\" \"${app_bundle_path}/insert_dylib\"\nif [ ! -f \"${app_bundle_path}/insert_dylib\" ]; then\n    cp -f \"${insert_dylib}\" \"${app_bundle_path}/insert_dylib\"\nfi\n\n\nif [ ! -f \"$app_executable_backup_path\" ]; \nthen\n    cp \"$app_executable_path\" \"$app_executable_backup_path\"\nfi\n\ncp -f \"${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib\" \"${app_bundle_framework}\"\n\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\n    cp -f \"${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib\" \"${SRCROOT}/release/${prefix}${dylib_name}.dylib\"\nfi\n\ncp -f \"${BUILT_PRODUCTS_DIR}/libdobby.dylib\" \"${app_bundle_framework}\"\n\n\"${app_bundle_path}/insert_dylib\" --weak --all-yes \"@rpath/${prefix}${dylib_name}.dylib\" \"$app_executable_backup_path\" \"$app_executable_path\"\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -290,12 +316,14 @@
 				38D1AC322B54D1CC00E6CB9E /* AirBuddyHack.m in Sources */,
 				B5D2ED3F2BC0252D0030CBCA /* DevHack.m in Sources */,
 				B546A6582BC4F0CD0012338D /* ProxyManHack.m in Sources */,
+				B58160172BE88569001DDB9B /* encryp_utils.m in Sources */,
 				38350BF82B53F73A00DD52B3 /* dylib_dobby_hook.m in Sources */,
 				382A25862B6918DF0083F28C /* PasteHack.m in Sources */,
 				B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */,
 				B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */,
 				3816BBB92B54FF090051CF39 /* MemoryUtils.m in Sources */,
 				38B83E312B5505B300919735 /* TablePlusHack.m in Sources */,
+				B580D3CA2BE3579300979568 /* LightRoomHack.m in Sources */,
 				B5FECEAE2BC4FC29008916D6 /* common_ret.c in Sources */,
 				38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */,
 				B502BD5D2BCFB35200DAD97F /* MovistProHack.m in Sources */,

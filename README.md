@@ -40,6 +40,7 @@ xcode 开发 dylib , 基于跨平台的 dobby HOOK 框架来构建跨平台的�
 | Permute         | 3.*     | ✔   | ✔   | https://software.charliemonroe.net/permute/ | inject_bin="/Applications/Downie 4.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"       |                     |
 | ProxyMan        | 5.*     | ✔   | ✔   | https://proxyman.io/                        | inject_bin="/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend"         |                     |
 | Movist Pro      | 2.*     | ✔   | ✔   | https://movistprime.com/                    | inject_bin="/Applications/Movist Pro.app/Contents/Frameworks/MediaKeyTap.framework/Versions/A/MediaKeyTap" |                     |
+| <s>Surge<s>     | 4.7.*   | ✔   | ✔   | https://nssurge.com/                        | DMCA !!                                                                                                    |                     |
 
 ## Quick Start
 
@@ -48,6 +49,7 @@ git clone https://github.com/marlkiller/dylib_dobby_hook.git
 cd script 
 sudo sh auto_hack.sh
 ```
+
 ## Develop
 
 ### 0x0

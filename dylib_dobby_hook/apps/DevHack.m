@@ -272,6 +272,9 @@ int (*viewDidLoadImp_ori)(void);
 void my_viewDidLoad(id self, SEL _cmd) {
     // self：指向当前对象实例的指针。在实例方法中，self 指向调用该方法的对象实例。在类方法中，self 指向类本身。
     // _cmd：当前方法的选择器，即方法名。_cmd 在编译时会被转换成一个 SEL 类型的参数
+    // int (*hook_device_id_ori)(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t arg3, uint64_t arg4);
+    // return hook_device_id_ori(arg0,arg1,arg2,arg3,arg4);
+
     NSLog(@">>>>>> viewDidAppear is hooked!");
     ((void(*)(id, SEL))viewDidLoadImp_ori)(self, _cmd);
 }

@@ -7,12 +7,15 @@
 
 #include "common_ret.h"
 int ret2 (void){
+    printf(">>>>>> ret2");
     return 2;
 }
 int ret1 (void){
+    printf(">>>>>> ret1");
     return 1;
 }
 int ret0 (void){
+    printf(">>>>>> ret0");
     return 0;
 }
 

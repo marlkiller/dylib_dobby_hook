@@ -29,7 +29,7 @@ hack_app() {
             sh all_in_one.sh "$app_name" "$app_path"
             
             if [ -n "$script_after" ]; then
-              sudo sh "$script_after"
+              sh "$script_after"
             fi
         else
             echo ">>>>>> ignore [${app_name}]"
@@ -52,4 +52,6 @@ hack_app "Permute 3" "/Applications/Permute 3.app/Contents/Frameworks/Licensing.
 hack_app "Proxyman" "/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend"
 hack_app "Movist Pro" "/Applications/Movist Pro.app/Contents/Frameworks/MediaKeyTap.framework/Versions/A/MediaKeyTap"
 hack_app "AirBuddy" "/Applications/AirBuddy.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
+
+
 
