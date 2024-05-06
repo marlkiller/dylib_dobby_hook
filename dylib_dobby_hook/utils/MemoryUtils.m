@@ -13,6 +13,7 @@
 #import <mach-o/dyld.h>
 #import <objc/runtime.h>
 #import <AppKit/AppKit.h>
+#include <mach/mach_vm.h>
 
 
 @implementation MemoryUtils

@@ -66,10 +66,13 @@ void hook_sub_10005ad20(void){
         "strb wzr, [x20, #0x99]"
     );
 #elif defined(__x86_64__)
-    __asm
-        {
-            mov byte ptr[r13+99h], 0
-        }
+//    __asm
+//        {
+//            mov byte ptr[r13+99h], 0
+//        }
+    __asm__ (
+         "movb $0, 0x99(%r13)"
+    );
 #endif
     return sub_10005ad20_ori();
 }

@@ -6,7 +6,7 @@ xcode 开发 dylib , 基于跨平台的 dobby HOOK 框架来构建跨平台的�
 开发环境:
 
 - MacOS (关闭 SIP)
-- xcode 15.2
+- xcode 15.2 | clion
 - dobby
 - insert_dylib
 - hopper | ida

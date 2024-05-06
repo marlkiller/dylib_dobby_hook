@@ -7,7 +7,7 @@
 
 #ifndef common_ret_h
 #define common_ret_h
-
+#include <sys/types.h>
 #include <stdio.h>
 
 int ret2 (void);
