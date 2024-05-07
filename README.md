@@ -35,12 +35,12 @@ xcode 开发 dylib , 基于跨平台的 dobby HOOK 框架来构建跨平台的�
 | Navicat Premium | 16.*    | ✔   | ✔   | App Store                                   | inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"              | QiuChenlyOpenSource |
 | Paste           | 4.1.3   | ✘   | ✔   | App Store                                   |                                                                                                            | LeeeMooo            |
 | Transmit        | 5.*     | ✔   | ✔   | https://panic.com/transmit/#download        |                                                                                                            |                     |
-| <s>AnyGo<s>     | 7.*     | ✔   | ✔   | https://itoolab.com/gps-location-changer/   | DMCA !!                                                                                                    |                     |
+| AnyGo           | 7.*     | ✔   | ✔   | https://itoolab.com/gps-location-changer/   |                                                                                                            |                     |
 | Downie          | 4.*     | ✔   | ✔   | https://software.charliemonroe.net/downie/  | inject_bin="/Applications/Permute 3.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"      |                     |
 | Permute         | 3.*     | ✔   | ✔   | https://software.charliemonroe.net/permute/ | inject_bin="/Applications/Downie 4.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"       |                     |
 | ProxyMan        | 5.*     | ✔   | ✔   | https://proxyman.io/                        | inject_bin="/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend"         |                     |
 | Movist Pro      | 2.*     | ✔   | ✔   | https://movistprime.com/                    | inject_bin="/Applications/Movist Pro.app/Contents/Frameworks/MediaKeyTap.framework/Versions/A/MediaKeyTap" |                     |
-| <s>Surge<s>     | 4.7.*   | ✔   | ✔   | https://nssurge.com/                        | DMCA !!                                                                                                    |                     |
+| Surge           | 4.7.*   | ✔   | ✔   | https://nssurge.com/                        | inject_bin="/Applications/Surge.app/Contents/Frameworks/MMMarkdown.framework/Versions/A/MMMarkdown"        |                     |
 
 ## Quick Start
 
@@ -103,20 +103,23 @@ current_path=$PWD
 echo "当前路径：$current_path"
 
 app_name="DevUtils"
-
-# 默认注入到主程序中，如果需要自定义，请编辑 inject_bin 变量，否则不要碰它
+# The default is injected into the main program, if you need to customize, please edit the variable inject_bin, otherwise do not touch it
 # inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"
 # inject_bin="/Applications/${app_name}.app/Contents/MacOS//${app_name}"
 
-# release dylib
 dylib_name="dylib_dobby_hook"
 prefix="lib"
 insert_dylib="${current_path}/../tools/insert_dylib"
+chmod a+x ${insert_dylib}
 
 BUILT_PRODUCTS_DIR="${current_path}/../release"
 
-app_bundle_path="/Applications/${app_name}.app/Contents/MacOS/"
-app_bundle_framework="/Applications/${app_name}.app/Contents/Frameworks"
+app_bundle_path="/Applications/${app_name}.app/Contents/MacOS"
+app_bundle_framework="/Applications/${app_name}.app/Contents/Frameworks/"
+
+if [ ! -d "$app_bundle_framework" ]; then
+  mkdir -p "$app_bundle_framework"
+fi
 
 if [ -n "$inject_bin" ]; then
     app_executable_path="$inject_bin"
@@ -125,18 +128,19 @@ else
 fi
 app_executable_backup_path="${app_executable_path}_Backup"
 
-# 注入前,备份程序
-cp -f "${insert_dylib}" "${app_bundle_path}/"
-if [ ! -f "$app_executable_backup_path" ]; 
+# 备份注入程序
+if [ ! -f "$app_executable_backup_path" ];
 then
     cp "$app_executable_path" "$app_executable_backup_path"
 fi
 
-# 复制 dylib 到目标程序下,执行注入
+
+# copy dylib
 cp -f "${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib" "${app_bundle_framework}"
 cp -f "${BUILT_PRODUCTS_DIR}/libdobby.dylib" "${app_bundle_framework}"
 
-"${app_bundle_path}/insert_dylib" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
+# dylib 注入
+"${insert_dylib}" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
 ```
 
 ## Ref

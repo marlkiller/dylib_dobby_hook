@@ -43,7 +43,7 @@ sudo /usr/libexec/PlistBuddy -c 'Print SMPrivilegedExecutables' /Applications/Su
 echo "codesign.."
 sudo codesign -f -s - --all-architectures --deep "$surge_path"
 sudo codesign -f -s - --all-architectures --deep "$surge_helper_path"
-python3 "$SMJobBlessUtil" check "$surge_path"
+# python3 "$SMJobBlessUtil" check "$surge_path"
 
 # echo "codesign.."
 # sudo codesign -f -s - --all-architectures --deep "$surge_path"

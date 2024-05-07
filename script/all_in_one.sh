@@ -13,6 +13,8 @@ dylib_name="dylib_dobby_hook"
 prefix="lib"
 insert_dylib="${current_path}/../tools/insert_dylib"
 
+chmod a+x ${insert_dylib}
+
 # 判断是否已经注入过，如果已经存在 libdylib_dobby_hook.dylib，则返回 0，表示已经注入过
 check_dylib_exist() {
     local app_path="$1"
@@ -57,10 +59,6 @@ fi
 app_executable_backup_path="${app_executable_path}_Backup"
 echo ">>>>>> app_executable_path is ${app_executable_path}"
 
-
-cp -f "${insert_dylib}" "${app_bundle_path}/insert_dylib"
-
-
 if [ ! -f "$app_executable_backup_path" ];
 then
     cp "$app_executable_path" "$app_executable_backup_path"
@@ -71,9 +69,7 @@ fi
 cp -f "${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib" "${app_bundle_framework}"
 cp -f "${BUILT_PRODUCTS_DIR}/libdobby.dylib" "${app_bundle_framework}"
 
-"${app_bundle_path}/insert_dylib" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
-
-rm -rf "${app_bundle_path}/insert_dylib"
+"${insert_dylib}" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
 
 echo ">>>>>> hack [${app_name}] completed"
 

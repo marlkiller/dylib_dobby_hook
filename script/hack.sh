@@ -6,10 +6,10 @@ app_name="DevUtils"
 # inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"
 # inject_bin="/Applications/${app_name}.app/Contents/MacOS//${app_name}"
 
-
 dylib_name="dylib_dobby_hook"
 prefix="lib"
 insert_dylib="${current_path}/../tools/insert_dylib"
+chmod a+x ${insert_dylib}
 
 BUILT_PRODUCTS_DIR="${current_path}/../release"
 
@@ -28,9 +28,6 @@ fi
 app_executable_backup_path="${app_executable_path}_Backup"
 
 
-cp -f "${insert_dylib}" "${app_bundle_path}/insert_dylib"
-
-
 if [ ! -f "$app_executable_backup_path" ];
 then
     cp "$app_executable_path" "$app_executable_backup_path"
@@ -41,7 +38,6 @@ fi
 cp -f "${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib" "${app_bundle_framework}"
 cp -f "${BUILT_PRODUCTS_DIR}/libdobby.dylib" "${app_bundle_framework}"
 
-"${app_bundle_path}/insert_dylib" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
+"${insert_dylib}" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
 
-rm -rf "${app_bundle_path}/insert_dylib"
 
