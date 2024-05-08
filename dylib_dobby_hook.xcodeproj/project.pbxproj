@@ -34,7 +34,7 @@
 		B5D2ED3F2BC0252D0030CBCA /* DevHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D2ED3E2BC0252D0030CBCA /* DevHack.m */; };
 		B5FE3B862BA2A571001AE437 /* TransmitHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FE3B842BA2A571001AE437 /* TransmitHack.m */; };
 		B5FECEAD2BC4FC29008916D6 /* common_ret.h in Headers */ = {isa = PBXBuildFile; fileRef = B5FECEAB2BC4FC29008916D6 /* common_ret.h */; };
-		B5FECEAE2BC4FC29008916D6 /* common_ret.c in Sources */ = {isa = PBXBuildFile; fileRef = B5FECEAC2BC4FC29008916D6 /* common_ret.c */; };
+		B5FECEAE2BC4FC29008916D6 /* common_ret.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FECEAC2BC4FC29008916D6 /* common_ret.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -62,7 +62,6 @@
 		38350C072B53F96100DD52B3 /* insert_dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = insert_dylib; sourceTree = "<group>"; };
 		38350C092B54047F00DD52B3 /* hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = hack.sh; sourceTree = "<group>"; };
 		38350C0C2B5407DD00DD52B3 /* libdobby.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libdobby.dylib; sourceTree = "<group>"; };
-		38350C0D2B5407DD00DD52B3 /* libdylib_dobby_hook.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libdylib_dobby_hook.dylib; sourceTree = "<group>"; };
 		38B83E302B5505B300919735 /* TablePlusHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TablePlusHack.m; sourceTree = "<group>"; };
 		38D1AC272B54C9C100E6CB9E /* Constant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
 		38D1AC292B54CA4D00E6CB9E /* Constant.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constant.m; sourceTree = "<group>"; };
@@ -75,6 +74,8 @@
 		B546A6572BC4F0CD0012338D /* ProxyManHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProxyManHack.m; sourceTree = "<group>"; };
 		B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavicatPremiumHack.m; sourceTree = "<group>"; };
 		B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevUtilsHack.m; sourceTree = "<group>"; };
+		B56968C62BEA4E2A0022FAC6 /* libdylib_dobby_hook.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libdylib_dobby_hook.dylib; sourceTree = "<group>"; };
+		B56968C72BEA4E4D0022FAC6 /* cmake_debugger.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = cmake_debugger.sh; sourceTree = "<group>"; };
 		B580D3C72BE3579300979568 /* LightRoomHack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightRoomHack.m; sourceTree = "<group>"; };
 		B58160112BE88569001DDB9B /* encryp_utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = encryp_utils.m; sourceTree = "<group>"; };
 		B58160122BE88569001DDB9B /* HPDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPDecoder.h; sourceTree = "<group>"; };
@@ -84,7 +85,7 @@
 		B5D2ED3E2BC0252D0030CBCA /* DevHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevHack.m; sourceTree = "<group>"; };
 		B5FE3B842BA2A571001AE437 /* TransmitHack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransmitHack.m; sourceTree = "<group>"; };
 		B5FECEAB2BC4FC29008916D6 /* common_ret.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common_ret.h; sourceTree = "<group>"; };
-		B5FECEAC2BC4FC29008916D6 /* common_ret.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = common_ret.c; sourceTree = "<group>"; };
+		B5FECEAC2BC4FC29008916D6 /* common_ret.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = common_ret.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +151,7 @@
 		38350C082B54047F00DD52B3 /* script */ = {
 			isa = PBXGroup;
 			children = (
+				B56968C72BEA4E4D0022FAC6 /* cmake_debugger.sh */,
 				38350C092B54047F00DD52B3 /* hack.sh */,
 				38E793632B6C7AB8005677AA /* all_in_one.sh */,
 				38E793642B6C7FB6005677AA /* auto_hack.sh */,
@@ -160,8 +162,8 @@
 		38350C0B2B5407CD00DD52B3 /* release */ = {
 			isa = PBXGroup;
 			children = (
+				B56968C62BEA4E2A0022FAC6 /* libdylib_dobby_hook.dylib */,
 				38350C0C2B5407DD00DD52B3 /* libdobby.dylib */,
-				38350C0D2B5407DD00DD52B3 /* libdylib_dobby_hook.dylib */,
 			);
 			path = release;
 			sourceTree = "<group>";
@@ -179,7 +181,6 @@
 		B581601C2BE8949B001DDB9B /* apps */ = {
 			isa = PBXGroup;
 			children = (
-				B58160152BE88569001DDB9B /* tableplus */,
 				38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */,
 				38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */,
 				B580D3C72BE3579300979568 /* LightRoomHack.m */,
@@ -192,6 +193,7 @@
 				B5D2ED3E2BC0252D0030CBCA /* DevHack.m */,
 				B546A6572BC4F0CD0012338D /* ProxyManHack.m */,
 				B502BD5C2BCFB35200DAD97F /* MovistProHack.m */,
+				B58160152BE88569001DDB9B /* tableplus */,
 			);
 			path = apps;
 			sourceTree = "<group>";
@@ -206,7 +208,7 @@
 				3816BBB62B54FED80051CF39 /* MemoryUtils.h */,
 				3816BBB82B54FF090051CF39 /* MemoryUtils.m */,
 				B5FECEAB2BC4FC29008916D6 /* common_ret.h */,
-				B5FECEAC2BC4FC29008916D6 /* common_ret.c */,
+				B5FECEAC2BC4FC29008916D6 /* common_ret.m */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -324,7 +326,7 @@
 				3816BBB92B54FF090051CF39 /* MemoryUtils.m in Sources */,
 				38B83E312B5505B300919735 /* TablePlusHack.m in Sources */,
 				B580D3CA2BE3579300979568 /* LightRoomHack.m in Sources */,
-				B5FECEAE2BC4FC29008916D6 /* common_ret.c in Sources */,
+				B5FECEAE2BC4FC29008916D6 /* common_ret.m in Sources */,
 				38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */,
 				B502BD5D2BCFB35200DAD97F /* MovistProHack.m in Sources */,
 				B5FE3B862BA2A571001AE437 /* TransmitHack.m in Sources */,

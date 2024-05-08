@@ -1,7 +1,7 @@
 current_path=$PWD
 
-app_name="iMazing"
-inject_bin="/Applications/iMazing.app/Contents/Frameworks/GPod.framework/Versions/A/GPod"
+app_name="DevUtils"
+#inject_bin="/Applications/iMazing.app/Contents/Frameworks/GPod.framework/Versions/A/GPod"
 
 echo ">>>>>> app_name is ${app_name}"
 

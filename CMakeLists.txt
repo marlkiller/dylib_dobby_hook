@@ -30,6 +30,8 @@ set(LINK_OPTION
 set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15")
 
+file(GLOB Main ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/*.m)
+file(GLOB MainHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/*.h)
 
 file(GLOB Utils
         ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/utils/*.m
@@ -50,7 +52,10 @@ include_directories(
 )
 
 add_library(${PROJECT_NAME} SHARED
-        ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/dylib_dobby_hook.m
+        ${Main}
+        ${MainHeader}
+        ${UtilsHeader}
+        ${AppsHeader}
         ${Utils}
         ${Apps}
 )
@@ -90,6 +95,6 @@ elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
 else ()
 endif ()
 
-# 如果想 DEBUG Live 调试, 在先执行 cmake_debugger.sh 脚本,
-# 将 install 后的 dylib link 到 app
+# 如果想 DEBUG Live 调试, 得先执行 cmake_debugger.sh 脚本;
+# 将 install 后的 dylib link 到 app;
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_SOURCE_DIR}/release)

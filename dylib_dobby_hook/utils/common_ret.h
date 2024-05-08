@@ -21,6 +21,11 @@ typedef int (*ptrace_ptr_t)(int _request, pid_t _pid, caddr_t _addr, int _data);
 int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data);
 extern ptrace_ptr_t orig_ptrace;
 
+// TODO
+// 1. hook SecCode
+// 2, hook nop
+// 3. hook svc80
+// 4. dlopen/dlclose/sysctl....
 
 // 声明全局的邮件地址
 extern char *global_email_address;

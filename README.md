@@ -1,7 +1,6 @@
 ## About
 
-xcode 开发 dylib , 基于跨平台的 dobby HOOK 框架来构建跨平台的通杀补丁.  
-你妈再也不用担心你只能跑 Rosetta 了..
+该项目是一个 macOS dylib 项目，集成了 Dobby Hook 框架，旨在通过使用 Dobby Hook 框架对软件进行辅助增强。
 
 开发环境:
 
