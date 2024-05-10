@@ -18,6 +18,41 @@
 #import <CommonCrypto/CommonCryptor.h>
 
 @implementation EncryptionUtils
+
++ (NSString *)generateTablePlusDeviceId{
+
+//    mac=$(ifconfig en0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}')
+//    Serial=$(system_profiler SPHardwareDataType | grep Serial | awk '{print $4}')
+//    deviceID=$(echo -n "${mac}${Serial}" | md5)
+//    echo $deviceID
+
+    CWWiFiClient *wifiClient = [CWWiFiClient sharedWiFiClient];
+    CWInterface *wifiInterface = [wifiClient interface];
+    NSString *hardwareAddress = [wifiInterface hardwareAddress];
+    // f0:18:98:1b:24:20
+
+    NSString *serialNumber = nil;
+
+    io_service_t platformExpert = IOServiceGetMatchingService(kIOMainPortDefault,
+                                                              IOServiceMatching("IOPlatformExpertDevice"));
+
+    if (platformExpert) {
+        CFTypeRef serialNumberAsCFString =
+                IORegistryEntryCreateCFProperty(platformExpert,
+                                                CFSTR(kIOPlatformSerialNumberKey),
+                                                kCFAllocatorDefault, 0);
+        if (serialNumberAsCFString) {
+            // C02X51AJJG5J
+            serialNumber = CFBridgingRelease(serialNumberAsCFString);
+        }
+        IOObjectRelease(platformExpert);
+    }else{
+        return nil;
+    }
+    // ee4f1d1890b4eb49a5a4d7f195ca8b67
+    return [self calculateMD5:[hardwareAddress stringByAppendingString:serialNumber]];
+}
+
 + (NSString *)generateSurgeDeviceId{
     
     NSMutableArray *rbx = [NSMutableArray array];

@@ -5,7 +5,6 @@ app_name=$1
 if [ -n "$2" ]; then
     inject_bin=$2
 fi
-# TODO 判断参数数量
 
 echo ">>>>>> app_name is ${app_name}"
 

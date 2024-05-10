@@ -4,7 +4,7 @@
 
 开发环境:
 
-- MacOS (关闭 SIP)
+- MacOS (关闭 SIP & 允许任何来源)
 - xcode 15.2 | clion
 - dobby
 - insert_dylib
@@ -23,7 +23,7 @@
 ## Feat
 
 1. 跨平台 HOOK
-2. Xcode 集成开发调试环境
+2. Xcode|Clion 集成开发调试环境
 3. 特征码搜索
 
 | App             | version | x86 | arm | Download                                    | remark                                                                                                     | Author              |

@@ -12,6 +12,7 @@
 + (BOOL)isArm;
 + (NSString *)getCurrentAppPath;
 + (NSString *)getCurrentAppVersion;
++ (NSString *)getCurrentAppCFBundleVersion;
 + (NSString *)getSystemArchitecture;
 + (BOOL)isDebuggerAttached;
 + (NSArray<Class> *)getAllHackClasses;

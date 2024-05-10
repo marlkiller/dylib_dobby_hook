@@ -10,6 +10,8 @@
 
 @interface EncryptionUtils : NSObject
 
++ (NSString *)generateTablePlusDeviceId;
+
 + (NSString *)generateSurgeDeviceId;
 + (NSString *)calculateMD5:(NSString *) input;
 

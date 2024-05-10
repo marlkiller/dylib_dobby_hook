@@ -142,6 +142,7 @@ void hook_sub_10005ad20(void){
 
    
     // AMSkipOnboarding
+    // defaults write codes.rambo.AirBuddy hasCompletedOnboarding -bool YES
     NSUserDefaults *defaults  = [NSUserDefaults standardUserDefaults];
     [defaults setBool:true forKey:@"AMSkipOnboarding"];
     [defaults synchronize];

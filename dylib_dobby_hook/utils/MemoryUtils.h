@@ -41,5 +41,6 @@
 + (void)hookInstanceMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector;
 + (void)hookClassMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector;
 
-
++ (id)getInstanceIvar:(Class)cls ivarName:(const char *)ivarName;
++ (void)setInstanceIvar:(Class)slf ivarName:(const char *)ivarName value:(id)value;
 @end

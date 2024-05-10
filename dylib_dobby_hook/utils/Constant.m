@@ -50,6 +50,12 @@ static void __attribute__ ((constructor)) initialize(void){
         NSLog(@">>>>>> AppName is [%s],Version is [%s], myAppCFBundleVersion is [%s].", currentAppName.UTF8String, currentAppVersion.UTF8String, currentAppCFBundleVersion.UTF8String);
         NSLog(@">>>>>> App Architecture is: %@", [Constant getSystemArchitecture]);
         NSLog(@">>>>>> App DebuggerAttached is: %d", [Constant isDebuggerAttached]);
+        NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"Info" ofType:@"plist"];
+        NSLog(@">>>>>> plistPath is %@", plistPath);
+        NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+
+        NSString *NSUserDefaultsPath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"Preferences/%@.plist", bundleIdentifier]];
+        NSLog(@">>>>>> NSUserDefaultsPath is %@", NSUserDefaultsPath);
         NSRange range = [[Constant getSystemArchitecture] rangeOfString:@"arm" options:NSCaseInsensitiveSearch];
         isArm = range.location != NSNotFound;
         
@@ -82,7 +88,11 @@ bool isArm;
 + (NSString *)getCurrentAppVersion {
     return currentAppVersion;
 }
-
+// currentAppVersion 有时会影响计算偏移位置,
+// 所以 cache 偏移用这个 currentAppCFBundleVersion
++ (NSString *)getCurrentAppCFBundleVersion {
+    return currentAppCFBundleVersion;
+}
 + (NSString *)getSystemArchitecture {
     size_t size;
     sysctlbyname("hw.machine", NULL, &size, NULL, 0);

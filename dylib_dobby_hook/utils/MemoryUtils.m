@@ -20,7 +20,6 @@
 
 const uintptr_t ARCH_FAT_SIZE = 0x100000000;
 
-//TODO: 待验证~! 将偏移信息缓存起来,这样似乎比直接扫描程序快一些 ??
 #ifdef DEBUG
 const bool CACHE_MACHINE_CODE_OFFSETS = false;
 #else
@@ -122,7 +121,7 @@ NSData *machineCode2Bytes(NSString *hexString) {
 
 
 + (void)saveMachineCodeOffsetsToUserDefaults:(NSString *)searchMachineCode offsets:(NSArray<NSNumber *> *)offsets {
-    NSString *appVersion = [Constant getCurrentAppVersion];
+    NSString *appVersion = [Constant getCurrentAppCFBundleVersion];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     NSMutableDictionary *allOffsetsMap = [NSMutableDictionary dictionaryWithDictionary:[defaults objectForKey:CACHE_MACHINE_CODE_KEY]];
@@ -149,7 +148,7 @@ NSData *machineCode2Bytes(NSString *hexString) {
 }
 
 + (NSArray<NSNumber *> *)loadMachineCodeOffsetsFromUserDefaults:(NSString *)searchMachineCode {
-    NSString *appVersion = [Constant getCurrentAppVersion];
+    NSString *appVersion = [Constant getCurrentAppCFBundleVersion];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     NSDictionary *allOffsetsMap = [defaults objectForKey:CACHE_MACHINE_CODE_KEY];
@@ -555,4 +554,24 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         [self exAlart:@"hookClassMethod 异常 ??!!" message:message];
     }
 }
+
+/**
+ * 获取Object C类中的Ivar 一般用在函数hook上 但是还想调用内部成员的情况下
+ * @param slf 直接传self
+ * @param ivarName 变量名称 self->ivarName 或者 [self appInstance]这种
+ * @return 返回id包装类 可以自由转为任意对象或者直接调用
+ */
++ (id) getInstanceIvar:(Class)slf ivarName:(const char *)ivarName {
+    Class cls = object_getClass(slf);
+    Ivar v = class_getInstanceVariable(cls, ivarName);
+    id ret = object_getIvar(slf, v);
+    return ret;
+}
+
++ (void) setInstanceIvar:(Class)slf ivarName:(const char *)ivarName value:(id)value {
+    Class cls = object_getClass(slf);
+    Ivar v = class_getInstanceVariable(cls, ivarName);
+    object_setIvar(slf, v, value);
+}
+
 @end

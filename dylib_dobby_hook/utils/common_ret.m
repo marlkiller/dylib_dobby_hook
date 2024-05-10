@@ -29,7 +29,7 @@ int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data) {
         // 如果请求不是 PT_DENY_ATTACH，则调用原始的 ptrace 函数
         return orig_ptrace(_request,_pid,_addr,_data);
     }
-    printf(">>>>>> [AntiAntiDebug] - ptrace request is PT_DENY_ATTACH");
+    printf(">>>>>> [AntiAntiDebug] - ptrace request is PT_DENY_ATTACH\n");
     // 拒绝调试
     return 0;
 }
