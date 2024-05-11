@@ -40,6 +40,7 @@
 | ProxyMan        | 5.2     | ✔   | ✔   | https://proxyman.io/                        | inject_bin="/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend"         |                     |
 | Movist Pro      | 2.*     | ✔   | ✔   | https://movistprime.com/                    | inject_bin="/Applications/Movist Pro.app/Contents/Frameworks/MediaKeyTap.framework/Versions/A/MediaKeyTap" |                     |
 | <s>Surge<s>     | 4.7.1   | ✔   | ✔   | https://nssurge.com/                        | DMCA                                                                                                       |                     |
+| Infuse          | 7.7.*   | ✔   | ✔   | App Store                                   | inject_bin="/Applications/Infuse.app/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator" |                     |
 
 ## Quick Start
 
@@ -71,22 +72,24 @@ sudo sh auto_hack.sh
 @implementation XXXHack
 
 - (NSString *)getAppName {
-    return @"com.dev.xxx";
+return @"com.dev.xxx";
 }
 
 - (NSString *)getSupportAppVersion {
-    return @"1.0";
+return @"1.0";
 }
 
 
 - (BOOL)hack {
-        
-#if defined(__arm64__) || defined(__aarch64__)
-    // do arm something..
-#elif defined(__x86_64__)
-    // do x86 something..
+
+#if
+defined(__arm64__) || defined(__aarch64__)
+// do arm something..
+#elif
+defined(__x86_64__)
+// do x86 something..
 #endif
-    return YES;
+return YES;
 }
 @end
 

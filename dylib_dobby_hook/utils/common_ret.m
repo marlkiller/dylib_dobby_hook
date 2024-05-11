@@ -7,20 +7,20 @@
 
 #include "common_ret.h"
 int ret2 (void){
-    printf(">>>>>> ret2");
+    printf(">>>>>> ret2\n");
     return 2;
 }
 int ret1 (void){
-    printf(">>>>>> ret1");
+    printf(">>>>>> ret1\n");
     return 1;
 }
 int ret0 (void){
-    printf(">>>>>> ret0");
+    printf(">>>>>> ret0\n");
     return 0;
 }
 
 void ret(void){
-    
+    printf(">>>>>> ret\n");
 }
 
 ptrace_ptr_t orig_ptrace = NULL;

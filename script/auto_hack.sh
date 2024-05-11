@@ -52,6 +52,7 @@ hack_app "Permute 3" "/Applications/Permute 3.app/Contents/Frameworks/Licensing.
 hack_app "Proxyman" "/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend"
 hack_app "Movist Pro" "/Applications/Movist Pro.app/Contents/Frameworks/MediaKeyTap.framework/Versions/A/MediaKeyTap"
 hack_app "AirBuddy" "/Applications/AirBuddy.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
+hack_app "Infuse" "/Applications/Infuse.app/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator"
 
 
 

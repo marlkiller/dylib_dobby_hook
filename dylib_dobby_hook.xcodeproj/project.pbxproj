@@ -32,6 +32,7 @@
 		B581601A2BE88569001DDB9B /* Mapper.h in Headers */ = {isa = PBXBuildFile; fileRef = B58160142BE88569001DDB9B /* Mapper.h */; };
 		B581601B2BE88569001DDB9B /* encryp_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = B58160162BE88569001DDB9B /* encryp_utils.h */; };
 		B5D2ED3F2BC0252D0030CBCA /* DevHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D2ED3E2BC0252D0030CBCA /* DevHack.m */; };
+		B5F06B1D2BEF591E0079E68D /* InfuseHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F06B1C2BEF591E0079E68D /* InfuseHack.m */; };
 		B5FE3B862BA2A571001AE437 /* TransmitHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FE3B842BA2A571001AE437 /* TransmitHack.m */; };
 		B5FECEAD2BC4FC29008916D6 /* common_ret.h in Headers */ = {isa = PBXBuildFile; fileRef = B5FECEAB2BC4FC29008916D6 /* common_ret.h */; };
 		B5FECEAE2BC4FC29008916D6 /* common_ret.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FECEAC2BC4FC29008916D6 /* common_ret.m */; };
@@ -83,6 +84,7 @@
 		B58160142BE88569001DDB9B /* Mapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mapper.h; sourceTree = "<group>"; };
 		B58160162BE88569001DDB9B /* encryp_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = encryp_utils.h; sourceTree = "<group>"; };
 		B5D2ED3E2BC0252D0030CBCA /* DevHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevHack.m; sourceTree = "<group>"; };
+		B5F06B1C2BEF591E0079E68D /* InfuseHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfuseHack.m; sourceTree = "<group>"; };
 		B5FE3B842BA2A571001AE437 /* TransmitHack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransmitHack.m; sourceTree = "<group>"; };
 		B5FECEAB2BC4FC29008916D6 /* common_ret.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common_ret.h; sourceTree = "<group>"; };
 		B5FECEAC2BC4FC29008916D6 /* common_ret.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = common_ret.m; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 		B581601C2BE8949B001DDB9B /* apps */ = {
 			isa = PBXGroup;
 			children = (
+				B5F06B1C2BEF591E0079E68D /* InfuseHack.m */,
 				38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */,
 				38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */,
 				B580D3C72BE3579300979568 /* LightRoomHack.m */,
@@ -322,6 +325,7 @@
 				38350BF82B53F73A00DD52B3 /* dylib_dobby_hook.m in Sources */,
 				382A25862B6918DF0083F28C /* PasteHack.m in Sources */,
 				B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */,
+				B5F06B1D2BEF591E0079E68D /* InfuseHack.m in Sources */,
 				B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */,
 				3816BBB92B54FF090051CF39 /* MemoryUtils.m in Sources */,
 				38B83E312B5505B300919735 /* TablePlusHack.m in Sources */,
