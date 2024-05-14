@@ -39,7 +39,7 @@
 | Permute         | 3.*     | ✔   | ✔   | https://software.charliemonroe.net/permute/ | inject_bin="/Applications/Downie 4.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"       |                     |
 | ProxyMan        | 5.2     | ✔   | ✔   | https://proxyman.io/                        | inject_bin="/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend"         |                     |
 | Movist Pro      | 2.*     | ✔   | ✔   | https://movistprime.com/                    | inject_bin="/Applications/Movist Pro.app/Contents/Frameworks/MediaKeyTap.framework/Versions/A/MediaKeyTap" |                     |
-| <s>Surge<s>     | 4.7.1   | ✔   | ✔   | https://nssurge.com/                        | DMCA                                                                                                       |                     |
+| <s>Surge<s>     | 5.7.*   | ✔   | ✔   | https://nssurge.com/                        | DMCA                                                                                                       |                     |
 | Infuse          | 7.7.*   | ✔   | ✔   | App Store                                   | inject_bin="/Applications/Infuse.app/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator" |                     |
 
 ## Quick Start
