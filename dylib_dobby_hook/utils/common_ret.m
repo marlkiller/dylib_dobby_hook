@@ -35,4 +35,4 @@ int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data) {
 }
 
 
-char *global_email_address = "marlkller@voidm.com";
+char *global_email_address = "K'ed by: marlkller@voidm.com";

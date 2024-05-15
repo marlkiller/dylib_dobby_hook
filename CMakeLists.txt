@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.5)
 
 project(dylib_dobby_hook)
 
@@ -10,9 +10,9 @@ enable_language(OBJCXX)
 
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++20")
 
 set(COMPILE_OPTION
         -Wno-int-conversion
@@ -28,7 +28,7 @@ set(LINK_OPTION
 )
 
 set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
-set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15")
+set(CMAKE_OSX_DEPLOYMENT_TARGET "14.2")
 
 file(GLOB Main ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/*.m)
 file(GLOB MainHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/*.h)
@@ -64,7 +64,7 @@ add_library(${PROJECT_NAME} SHARED
 # 去掉lib前缀
 #set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
 target_compile_options(${PROJECT_NAME} PRIVATE ${COMPILE_OPTION})
 
