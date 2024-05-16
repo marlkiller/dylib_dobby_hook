@@ -317,4 +317,26 @@ void my_viewDidLoad(id self, SEL _cmd) {
 //[ret performSelector:NSSelectorFromString(@"setUserID:") withObject:@"this is user id"];
 //[ret performSelector:NSSelectorFromString(@"setCompanyName:") withObject:@"this is cp name"];
 //[ret performSelector:NSSelectorFromString(@"setCompanyID:") withObject:@"this is cp id"];
+
+// FUCK 指针 START
+void fuckPoint(void){
+        
+    // 一级指针:
+    // 0x123: 1
+    intptr_t *a = (void *)0x123;
+    int aValue = (int)*a;
+    
+    // 获取变量的指针
+    intptr_t* addressOfA =(void *) &aValue;
+    
+    // 二级指针:
+    // 0x123: 0x456
+    // 0x456: 2
+    intptr_t* a2 = (void *)0x123;
+    intptr_t* b2 = (void *)*a2;
+    int value = (int)*b2;
+
+}
+// FUCK 指针 END
+
 @end
