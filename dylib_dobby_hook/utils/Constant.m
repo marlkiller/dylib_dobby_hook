@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Constant.h"
+#import "dobby.h"
 #import <mach-o/dyld.h>
 #import <objc/runtime.h>
 #import "HackProtocol.h"
@@ -38,6 +39,9 @@ static void __attribute__ ((constructor)) initialize(void){
 
 + (void)initialize {
     if (self == [Constant class]) {
+        NSLog(@">>>>>> Constant initialize");
+        NSLog(@">>>>>> DobbyGetVersion: %s", DobbyGetVersion());
+
         NSBundle *app = [NSBundle mainBundle];
         currentAppName = [app bundleIdentifier];
         currentAppVersion = [app objectForInfoDictionaryKey:@"CFBundleShortVersionString"];

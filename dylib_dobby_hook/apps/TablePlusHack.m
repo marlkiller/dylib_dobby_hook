@@ -9,6 +9,7 @@
 #import "Constant.h"
 #import "dobby.h"
 #import "MemoryUtils.h"
+#import "encryp_utils.h"
 #import "tableplus/LicenseModel.h"
 #import <objc/runtime.h>
 #include <mach-o/dyld.h>
@@ -20,6 +21,9 @@
 @end
 
 @implementation TablePlusHack
+
+static IMP urlWithStringSeletorIMP;
+static IMP NSURLSessionClassIMP;
 
 
 - (NSString *)getAppName {
@@ -36,11 +40,13 @@ const LicenseModel *_rbx;
 id hook_license(int arg0, int arg1, int arg2, int arg3){
     if (_rbx==nil){
         LicenseModel *r12 = [[NSClassFromString(@"LicenseModel") alloc] init];
+        NSString *deviceId = [EncryptionUtils generateTablePlusDeviceId];
+        NSLog(@">>>>>> deviceId: %@",deviceId);
+        // rax_12.b = rax_11 s>= 0x32
         NSDictionary *propertyDictionary = @{
-            @"sign": @"fuckSign",
+            @"sign": @"12345678901234567890123456789012345678901234567890",
             @"email": [NSString stringWithCString:global_email_address encoding:NSUTF8StringEncoding],
-            // @"deviceID": @"88548e5a38eeee04e89c5621ba04bc7e",
-            @"deviceID": @"",
+            @"deviceID": deviceId,
             @"purchasedAt": @"2999-01-16",
             @"nextChargeAt": @(9999999999999), // Replace with the actual double value
             @"updatesAvailableUntil": @"2999-01-16" // Replace with the actual value
@@ -146,30 +152,7 @@ int (*hook_device_id_ori)(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t 
     
     intptr_t _hook_license = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
     DobbyHook((void *)_hook_license, (void *)hook_license, (void *)&hook_license_ori);
-    
-    //    0000000100050ea0         stp        x24, x23, [sp, #-0x40]!
-    //    0000000100050ea4         stp        x22, x21, [sp, #0x10]
-    //    0000000100050ea8         stp        x20, x19, [sp, #0x20]
-    //    0000000100050eac         stp        fp, lr, [sp, #0x30]
-    //    0000000100050eb0         add        fp, sp, #0x30
-    //    0000000100050eb4         ldr        x22, [x2, #0x10]
-    //    0000000100050eb8         cbz        x22, loc_100050efc
-    //    F8 5F BC A9 F6 57 01 A9 F4 4F 02 A9 FD 7B 03 A9 FD C3 00 91 56 08 40 F9 36
-    
-    
-    globalOffsets = [MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath
-                                              machineCode:(NSString *) @"F8 5F BC A9 F6 57 01 A9 F4 4F 02 A9 FD 7B 03 A9 FD C3 00 91 56 08 40 F9 36"
-                                                    count:(int)1];
-    globalOffset = [globalOffsets[0] unsignedIntegerValue];
-    intptr_t _hook_device_id = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
-    DobbyHook((void *)_hook_device_id, (void *)hook_device_id, (void *)&hook_device_id_ori);
-    
-    
-    //    intptr_t _hook_license = [MemoryUtils getPtrFromAddress:0x100131360];
-    //    DobbyHook((void *)_hook_license, (void *)hook_license, (void *)&hook_license_ori);
-    //    intptr_t _hook_device_id = [MemoryUtils getPtrFromAddress:0x100050ea0];;
-    //    DobbyHook((void *)_hook_device_id,(void *) hook_device_id, (void *)&hook_device_id_ori);
-    
+   
 #elif defined(__x86_64__)
     
     //    000000010014af90         push       rbp                                         ; CODE XREF=sub_10014b5d0+1351, sub_1002fa1f0+4
@@ -192,35 +175,35 @@ int (*hook_device_id_ori)(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t 
     
     intptr_t _hook_license = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
     DobbyHook((void *)_hook_license, (void *)hook_license, (void *)&hook_license_ori);
-    
-    //    0000000100059e70         push       rbp                                         ;
-    //    0000000100059e71         mov        rbp, rsp
-    //    0000000100059e74         push       r15
-    //    0000000100059e76         push       r14
-    //    0000000100059e78         push       r13
-    //    0000000100059e7a         push       r12
-    //    0000000100059e7c         push       rbx
-    //    0000000100059e7d         push       rax
-    //    0000000100059e7e         mov        r12, qword [rdx+0x10]
-    //    0000000100059e82         test       r12, r12
-    //    55 48 89 E5 41 57 41 56 41 55 41 54 53 50 4C 8B 62 10 4D 85 E4 74
+   
+#endif
     
     hook_license(1,2,3,4);
     
-    
-    globalOffsets = [MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath
-                                              machineCode:(NSString *) @"55 48 89 E5 41 57 41 56 41 55 41 54 53 50 4C 8B 62 10 4D 85 E4 74"
-                                                    count:(int)1];
-    globalOffset = [globalOffsets[0] unsignedIntegerValue];
-    intptr_t _hook_device_id = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
-    DobbyHook((void *)_hook_device_id, (void *)hook_device_id, (void *)&hook_device_id_ori);
-    
-    //    intptr_t _hook_license = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
-    //    DobbyHook(_hook_license, hook_license, (void *)&hook_license_ori);
-    //    intptr_t _hook_device_id = [MemoryUtils getPtrFromAddress:0x100059E70];
-    //    DobbyHook(_hook_device_id, hook_device_id, (void *)&hook_device_id_ori);
-#endif
+    Class NSURLControllerClass = NSClassFromString(@"NSURL");
+    SEL urlWithStringSeletor = NSSelectorFromString(@"URLWithString:");
+    Method urlWithStringSeletorMethod = class_getClassMethod(NSURL.class, urlWithStringSeletor);
+    urlWithStringSeletorIMP = method_getImplementation(urlWithStringSeletorMethod);
+    [MemoryUtils hookClassMethod:
+         NSURLControllerClass
+                originalSelector:urlWithStringSeletor
+                   swizzledClass:[self class]
+                swizzledSelector:NSSelectorFromString(@"hk_URLWithString:")
+    ];
     
     return YES;
+}
+
+
+
++ (id)hk_URLWithString:arg1{
+    
+    if ([arg1 hasPrefix:@"https://"] && [arg1 containsString:@"tableplus"]) {
+        NSLog(@">>>>>> hk_URLWithString Intercept requests %@",arg1);
+        // TODO: 优雅 hook 请求? 参考 Surge
+        arg1 =  @"https://127.0.0.1";
+    }
+    id ret = ((id(*)(id, SEL,id))urlWithStringSeletorIMP)(self, _cmd,arg1);
+    return ret;
 }
 @end

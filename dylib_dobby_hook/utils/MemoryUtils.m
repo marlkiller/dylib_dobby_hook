@@ -489,7 +489,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
 }
 
 /**
- 替换对象方法 -[_TtC8DevUtils16WindowController showUnregistered]
+ 交换对象方法 -[_TtC8DevUtils16WindowController showUnregistered]
  [MemoryUtils hookInstanceMethod:
              objc_getClass("_TtC8DevUtils16WindowController")
              originalSelector:NSSelectorFromString(@"showUnregistered")
@@ -523,7 +523,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
 }
 
 /**
- 替换类方法
+ 交换类方法
  [MemoryUtils hookClassMethod:
              objc_getClass("GlobalFunction")
              originalSelector:NSSelectorFromString(@"isInChina")
@@ -552,6 +552,77 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
                                                         NSStringFromSelector(swizzledSelector),
                                                         swizzledMethod];
         [self exAlart:@"hookClassMethod 异常 ??!!" message:message];
+    }
+}
+
+/**
+ 替换对象方法 -[_TtC8DevUtils16WindowController showUnregistered]
+ [MemoryUtils hookInstanceMethod:
+             objc_getClass("_TtC8DevUtils16WindowController")
+             originalSelector:NSSelectorFromString(@"showUnregistered")
+             swizzledClass:[self class]
+             swizzledSelector:NSSelectorFromString(@"hk_showUnregistered")
+ ];
+
+ @param originalClass 原始类
+ @param originalSelector 原始类的方法
+ @param swizzledClass 替换类
+ @param swizzledSelector 替换类的方法
+ */
++ (void)replaceInstanceMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
+    Method originalMethod = class_getInstanceMethod(originalClass, originalSelector);
+    IMP swizzledImplementation = class_getMethodImplementation(swizzledClass, swizzledSelector);
+    const char *types = method_getTypeEncoding(originalMethod);
+    
+    if (originalMethod && swizzledImplementation) {
+        // 替换对象方法
+        class_replaceMethod(originalClass, originalSelector, swizzledImplementation, types);
+    } else {
+        NSLog(@">>>>>> Failed to replace instance method.");
+        NSString *message = [NSString stringWithFormat:@"originalClass: %@, originalSelector: %@, originalMethod: %p\r"
+                                                        "swizzledClass: %@, swizzledSelector: %@, swizzledImplementation: %p",
+                                                        NSStringFromClass(originalClass),
+                                                        NSStringFromSelector(originalSelector),
+                                                        method_getImplementation(originalMethod),
+                                                        NSStringFromClass(swizzledClass),
+                                                        NSStringFromSelector(swizzledSelector),
+                                                        swizzledImplementation];
+        [self exAlart:@"replaceInstanceMethod 异常 ??!!" message:message];
+    }
+}
+
+/**
+ 替换类方法
+ [MemoryUtils hookClassMethod:
+             objc_getClass("GlobalFunction")
+             originalSelector:NSSelectorFromString(@"isInChina")
+             swizzledClass:[self class]
+             swizzledSelector:@selector(hk_isInChina)
+ ];
+ @param originalClass 原始类
+ @param originalSelector 原始类的类方法
+ @param swizzledClass 替换类
+ @param swizzledSelector 替换类的类方法
+ */
++ (void)replaceClassMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
+    Method originalMethod = class_getClassMethod(originalClass, originalSelector);
+    IMP swizzledImplementation = class_getMethodImplementation(swizzledClass, swizzledSelector);
+    const char *types = method_getTypeEncoding(originalMethod);
+    
+    if (originalMethod && swizzledImplementation) {
+        // 替换类方法
+        class_replaceMethod(object_getClass(originalClass), originalSelector, swizzledImplementation, types);
+    } else {
+        NSLog(@">>>>>> Failed to replace class method.");
+        NSString *message = [NSString stringWithFormat:@"originalClass: %@, originalSelector: %@, originalMethod: %p\r"
+                                                        "swizzledClass: %@, swizzledSelector: %@, swizzledImplementation: %p",
+                                                        NSStringFromClass(originalClass),
+                                                        NSStringFromSelector(originalSelector),
+                                                        method_getImplementation(originalMethod),
+                                                        NSStringFromClass(swizzledClass),
+                                                        NSStringFromSelector(swizzledSelector),
+                                                        swizzledImplementation];
+        [self exAlart:@"replaceClassMethod 异常 ??!!" message:message];
     }
 }
 

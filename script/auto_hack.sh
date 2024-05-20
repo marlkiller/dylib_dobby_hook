@@ -42,7 +42,7 @@ hack_app() {
 
 
 hack_app "DevUtils"
-hack_app "TablePlus"
+hack_app "TablePlus" "/Applications/TablePlus.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
 hack_app "Paste"
 hack_app "Navicat Premium" "/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"
 hack_app "Transmit"
