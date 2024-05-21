@@ -34,7 +34,6 @@ then
     cp "$app_executable_path" "$app_executable_backup_path"
 fi
 
-cp -f "${current_path}/../release/libdobby.dylib" "${app_bundle_framework}"
 "${insert_dylib}" --weak --all-yes "${current_path}/../release/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
 
 echo ">>>>>> hack [${app_name}] completed"

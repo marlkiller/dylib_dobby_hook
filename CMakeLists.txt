@@ -43,7 +43,7 @@ file(GLOB Apps ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/apps/*.m)
 file(GLOB AppsHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/apps/*.h)
 
 
-file(GLOB StaticLibs ${CMAKE_SOURCE_DIR}/libs/*.dylib)
+file(GLOB StaticLibs ${CMAKE_SOURCE_DIR}/libs/*.a)
 
 include_directories(
         ${CMAKE_SOURCE_DIR}/dylib_dobby_hook

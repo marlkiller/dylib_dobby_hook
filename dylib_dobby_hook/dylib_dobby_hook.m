@@ -34,9 +34,10 @@ void initTest(void){
     
     NSLog(@"before %d", sum(1, 2));
     NSLog(@"%s", DobbyGetVersion());
-    DobbyHook(sum, mySum, (void *)&sum_p);
+//    DobbyHook(sum, mySum, (void *)&sum_p);
+    DobbyHook(sum, mySum, nil);
     NSLog(@"after %d", sum(1, 2));
-    NSLog(@"origin %d", sum_p(1, 2));
+//    NSLog(@"origin %d", sum_p(1, 2));
     
 }
 // INIT TEST END
@@ -45,7 +46,7 @@ void initTest(void){
 + (void) load {
     
     
-    // initTest()
+//    initTest();
     
     if ([Constant isFirstOpen]) {
         NSAlert *alert = [[NSAlert alloc] init];
