@@ -1,0 +1,53 @@
+name: Builder
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  CMAKE_VERSION: 3.5
+  LLVM_VERSION: 15.0.6  
+
+jobs:
+  delete_latest_release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout master
+      uses: actions/checkout@master
+
+    - name: delete latest release
+      uses: dev-drprasad/delete-tag-and-release@v0.2.1
+      with:
+        delete_release: true
+        tag_name: latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}  
+
+  macos:
+    runs-on: macos-latest
+    needs: delete_latest_release
+    steps:
+    - name: checkout dev
+      uses: actions/checkout@master
+
+    - name: compile macos
+      run: |
+        bash build.sh
+        
+      shell: bash
+
+
+    - name: print output
+      run: |
+        ls -lha .
+
+    - name: update release
+      uses: ncipollo/release-action@v1
+      with:
+        token: ${{ secrets.TOKEN }}
+        tag: latest
+        body: "A macOS dylib project based on the Dobby Hook framework, aimed at enhancing and extending the functionality of target software."
+        artifacts: "dylib_dobby_hook.tar.gz"
+        allowUpdates: true
+        replacesArtifacts: true
