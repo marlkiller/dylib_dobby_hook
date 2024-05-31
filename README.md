@@ -144,6 +144,10 @@ cp -f "${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib" "${app_bundle_framewo
 "${insert_dylib}" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
 ```
 
+## Sponsor
+
+<a href=" ">< img src="jetbrains.svg" alt="JetBrains" width="200"/></a >
+
 ## Ref
 
 1. [MacOS逆向] MacOS TablePlus dylib注入 HOOK x86/arm 双插
