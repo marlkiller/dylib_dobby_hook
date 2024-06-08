@@ -24,6 +24,7 @@
 
 static IMP urlWithStringSeletorIMP;
 static IMP NSURLSessionClassIMP;
+static IMP dataTaskWithRequestIMP;
 
 
 
@@ -156,16 +157,16 @@ static IMP NSURLSessionClassIMP;
 - (BOOL)hack {
     
     
-    Class NSURLControllerClass = NSClassFromString(@"NSURL");
-    SEL urlWithStringSeletor = NSSelectorFromString(@"URLWithString:");
-    Method urlWithStringSeletorMethod = class_getClassMethod(NSURL.class, urlWithStringSeletor);
-    urlWithStringSeletorIMP = method_getImplementation(urlWithStringSeletorMethod);
-    [MemoryUtils hookClassMethod:
-         NSURLControllerClass
-                originalSelector:urlWithStringSeletor
-                   swizzledClass:[self class]
-                swizzledSelector:NSSelectorFromString(@"hk_URLWithString:")
-    ];
+//    Class NSURLControllerClass = NSClassFromString(@"NSURL");
+//    SEL urlWithStringSeletor = NSSelectorFromString(@"URLWithString:");
+//    Method urlWithStringSeletorMethod = class_getClassMethod(NSURL.class, urlWithStringSeletor);
+//    urlWithStringSeletorIMP = method_getImplementation(urlWithStringSeletorMethod);
+//    [MemoryUtils hookClassMethod:
+//         NSURLControllerClass
+//                originalSelector:urlWithStringSeletor
+//                   swizzledClass:[self class]
+//                swizzledSelector:NSSelectorFromString(@"hk_URLWithString:")
+//    ];
     
     
 //    echo "fuck" > ~/Library/Application\ Support/com.tinyapp.TablePlus/.licensemac
@@ -205,11 +206,47 @@ static IMP NSURLSessionClassIMP;
                 swizzledSelector:NSSelectorFromString(@"hk_decryptData:withPassword:error:")
     ];
     
-    // -[_TtC9TablePlus13LicenseWindow licenseChanged]:
     
+    
+    Class AFURLSessionManagerClz = NSClassFromString(@"AFHTTPSessionManager");
+    SEL dataTaskWithRequestSel = NSSelectorFromString(@"dataTaskWithHTTPMethod:URLString:parameters:headers:uploadProgress:downloadProgress:success:failure:");
+    Method dataTaskWithRequestMethod = class_getInstanceMethod(AFURLSessionManagerClz, dataTaskWithRequestSel);
+    dataTaskWithRequestIMP = method_getImplementation(dataTaskWithRequestMethod);
+    [MemoryUtils hookInstanceMethod:
+         AFURLSessionManagerClz
+                   originalSelector:dataTaskWithRequestSel
+                      swizzledClass:[self class]
+                   swizzledSelector:NSSelectorFromString(@"hk_dataTaskWithHTTPMethod:URLString:parameters:headers:uploadProgress:downloadProgress:success:failure:")
+    ];
+    
+
     
     return YES;
 }
+
+- (id)hk_dataTaskWithHTTPMethod:(NSString *)method
+                                               URLString:(NSString *)URLString
+                                              parameters:(id)parameters
+                                                 headers:(NSDictionary<NSString *,NSString *> *)headers
+                                          uploadProgress:(void (^)(NSProgress *uploadProgress))uploadProgress
+                                        downloadProgress:(void (^)(NSProgress *downloadProgress))downloadProgress
+                                                 success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+                                                 failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    
+    
+    
+    // @"https://tableplus.com/v1/licenses/devices?deviceID=xxx"    0x0000600001f82a80
+    if ([URLString containsString:@"tableplus"]) {
+        success(nil, @{});
+        NSLog(@">>>>>> [hk_dataTaskWithHTTPMethod] Intercept url: %@",URLString);
+        return nil;
+
+    }
+    NSLog(@">>>>>> [hk_dataTaskWithHTTPMethod] Allow to pass url: %@",URLString);
+    return ((id(*)(id, SEL,NSString *,NSString *,id,id,id,id,id,id))dataTaskWithRequestIMP)(self, _cmd,method,URLString,parameters,headers,uploadProgress,downloadProgress,success,failure);
+}
+
+
 
 
 + (id) hk_decryptData:arg1 withPassword:(NSString *)withPassword error:(int)error{
@@ -222,19 +259,19 @@ static IMP NSURLSessionClassIMP;
         @"nextChargeAt": @"2025-06-16",
         @"updatesAvailableUntil": @"2025-06-16"
     };
-
+//    Class TBLicenseModelClass = NSClassFromString(@"_TtC9TablePlus14TBLicenseModel");
+//    [MemoryUtils listAllPropertiesMethodsAndVariables:TBLicenseModelClass];
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:propertyDictionary options:0 error:nil];
     return jsonData;
 }
 
-+ (id)hk_URLWithString:arg1{
-    
-    if ([arg1 hasPrefix:@"https://"] && [arg1 containsString:@"tableplus"]) {
-        NSLog(@">>>>>> hk_URLWithString Intercept requests %@",arg1);
-        // TODO: 优雅 hook 请求? 参考 Surge
-        arg1 =  @"https://127.0.0.1";
-    }
-    id ret = ((id(*)(id, SEL,id))urlWithStringSeletorIMP)(self, _cmd,arg1);
-    return ret;
-}
+//+ (id)hk_URLWithString:arg1{
+//    
+//    if ([arg1 hasPrefix:@"https://"] && [arg1 containsString:@"tableplus"]) {
+//        NSLog(@">>>>>> hk_URLWithString Intercept requests %@",arg1);
+//        arg1 =  @"https://127.0.0.1";
+//    }
+//    id ret = ((id(*)(id, SEL,id))urlWithStringSeletorIMP)(self, _cmd,arg1);
+//    return ret;
+//}
 @end
