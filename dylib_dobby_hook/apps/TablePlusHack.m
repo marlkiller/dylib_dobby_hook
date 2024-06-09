@@ -10,7 +10,6 @@
 #import "dobby.h"
 #import "MemoryUtils.h"
 #import "encryp_utils.h"
-#import "tableplus/LicenseModel.h"
 #import <objc/runtime.h>
 #include <mach-o/dyld.h>
 #import "HackProtocol.h"
@@ -220,6 +219,12 @@ static IMP dataTaskWithRequestIMP;
     ];
     
 
+    //     *(rbx + *objc_ivar_offset__TtC9TablePlus11AppDelegate_updaterController) = [objc_allocWithZone(@class(SPUStandardUpdaterController)) initWithStartingUpdater:0x1 updaterDelegate:0x0 userDriverDelegate:0x0];
+    [MemoryUtils replaceInstanceMethod:NSClassFromString(@"SPUUpdater")
+                      originalSelector:NSSelectorFromString(@"startUpdater:")
+                         swizzledClass:[self class]
+                      swizzledSelector:@selector(ret1)
+    ];
     
     return YES;
 }
@@ -237,7 +242,23 @@ static IMP dataTaskWithRequestIMP;
     
     // @"https://tableplus.com/v1/licenses/devices?deviceID=xxx"    0x0000600001f82a80
     if ([URLString containsString:@"tableplus"]) {
-        success(nil, @{});
+        
+//    loc_1002645ce:
+//        r14 = *qword_10093f548;
+//        sub_1002661d0(&var_80, 0x100909b50, rdx, *type metadata for Swift.String);
+//        swift_bridgeObjectRelease(rbx);
+//        swift_bridgeObjectRelease(r13);
+//        swift_bridgeObjectRelease(var_40);
+//        rbx = *(r14 + 0x68);
+//        *(r14 + 0x60) = r12;
+//        *(r14 + 0x68) = var_38;
+//        swift_release(r14);
+//        goto loc_100264365;
+        
+        // TODO: updatesAvailableUntil 字段在请求回调中处理; 但是没分析出来具体的响应;
+        success(nil, @{
+            @"fuck":@"dev",
+        });
         NSLog(@">>>>>> [hk_dataTaskWithHTTPMethod] Intercept url: %@",URLString);
         return nil;
 
@@ -265,13 +286,13 @@ static IMP dataTaskWithRequestIMP;
     return jsonData;
 }
 
-//+ (id)hk_URLWithString:arg1{
-//    
-//    if ([arg1 hasPrefix:@"https://"] && [arg1 containsString:@"tableplus"]) {
-//        NSLog(@">>>>>> hk_URLWithString Intercept requests %@",arg1);
-//        arg1 =  @"https://127.0.0.1";
-//    }
-//    id ret = ((id(*)(id, SEL,id))urlWithStringSeletorIMP)(self, _cmd,arg1);
-//    return ret;
-//}
++ (id)hk_URLWithString:arg1{
+    
+    if ([arg1 hasPrefix:@"https://"] && [arg1 containsString:@"tableplus"]) {
+        NSLog(@">>>>>> hk_URLWithString Intercept requests %@",arg1);
+        arg1 =  @"https://127.0.0.1";
+    }
+    id ret = ((id(*)(id, SEL,id))urlWithStringSeletorIMP)(self, _cmd,arg1);
+    return ret;
+}
 @end
