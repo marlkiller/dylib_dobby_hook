@@ -27,9 +27,6 @@
 		B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */; };
 		B580D3CA2BE3579300979568 /* LightRoomHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B580D3C72BE3579300979568 /* LightRoomHack.m */; };
 		B58160172BE88569001DDB9B /* encryp_utils.m in Sources */ = {isa = PBXBuildFile; fileRef = B58160112BE88569001DDB9B /* encryp_utils.m */; };
-		B58160182BE88569001DDB9B /* HPDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = B58160122BE88569001DDB9B /* HPDecoder.h */; };
-		B58160192BE88569001DDB9B /* LicenseModel.h in Headers */ = {isa = PBXBuildFile; fileRef = B58160132BE88569001DDB9B /* LicenseModel.h */; };
-		B581601A2BE88569001DDB9B /* Mapper.h in Headers */ = {isa = PBXBuildFile; fileRef = B58160142BE88569001DDB9B /* Mapper.h */; };
 		B581601B2BE88569001DDB9B /* encryp_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = B58160162BE88569001DDB9B /* encryp_utils.h */; };
 		B5D2ED3F2BC0252D0030CBCA /* DevHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D2ED3E2BC0252D0030CBCA /* DevHack.m */; };
 		B5F06B1D2BEF591E0079E68D /* InfuseHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F06B1C2BEF591E0079E68D /* InfuseHack.m */; };
@@ -78,9 +75,6 @@
 		B56968C72BEA4E4D0022FAC6 /* cmake_debugger.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = cmake_debugger.sh; sourceTree = "<group>"; };
 		B580D3C72BE3579300979568 /* LightRoomHack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightRoomHack.m; sourceTree = "<group>"; };
 		B58160112BE88569001DDB9B /* encryp_utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = encryp_utils.m; sourceTree = "<group>"; };
-		B58160122BE88569001DDB9B /* HPDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPDecoder.h; sourceTree = "<group>"; };
-		B58160132BE88569001DDB9B /* LicenseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicenseModel.h; sourceTree = "<group>"; };
-		B58160142BE88569001DDB9B /* Mapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mapper.h; sourceTree = "<group>"; };
 		B58160162BE88569001DDB9B /* encryp_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = encryp_utils.h; sourceTree = "<group>"; };
 		B5D2ED3E2BC0252D0030CBCA /* DevHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevHack.m; sourceTree = "<group>"; };
 		B5F06B1C2BEF591E0079E68D /* InfuseHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfuseHack.m; sourceTree = "<group>"; };
@@ -178,16 +172,6 @@
 			path = release;
 			sourceTree = "<group>";
 		};
-		B58160152BE88569001DDB9B /* tableplus */ = {
-			isa = PBXGroup;
-			children = (
-				B58160122BE88569001DDB9B /* HPDecoder.h */,
-				B58160132BE88569001DDB9B /* LicenseModel.h */,
-				B58160142BE88569001DDB9B /* Mapper.h */,
-			);
-			path = tableplus;
-			sourceTree = "<group>";
-		};
 		B581601C2BE8949B001DDB9B /* apps */ = {
 			isa = PBXGroup;
 			children = (
@@ -204,7 +188,6 @@
 				B5D2ED3E2BC0252D0030CBCA /* DevHack.m */,
 				B546A6572BC4F0CD0012338D /* ProxyManHack.m */,
 				B502BD5C2BCFB35200DAD97F /* MovistProHack.m */,
-				B58160152BE88569001DDB9B /* tableplus */,
 			);
 			path = apps;
 			sourceTree = "<group>";
@@ -231,14 +214,11 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B58160192BE88569001DDB9B /* LicenseModel.h in Headers */,
 				B5FECEAD2BC4FC29008916D6 /* common_ret.h in Headers */,
-				B581601A2BE88569001DDB9B /* Mapper.h in Headers */,
 				B581601B2BE88569001DDB9B /* encryp_utils.h in Headers */,
 				38350BF62B53F73A00DD52B3 /* dylib_dobby_hook.h in Headers */,
 				3816BBB72B54FED80051CF39 /* MemoryUtils.h in Headers */,
 				38350C022B53F78900DD52B3 /* dobby.h in Headers */,
-				B58160182BE88569001DDB9B /* HPDecoder.h in Headers */,
 				38D1AC282B54C9C100E6CB9E /* Constant.h in Headers */,
 				38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */,
 			);
