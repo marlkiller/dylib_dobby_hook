@@ -15,6 +15,19 @@
 #import "HackProtocol.h"
 #import "common_ret.h"
 
+@interface DummyURLSessionDataTask : NSObject
+@end
+
+@implementation DummyURLSessionDataTask
+
+- (void)resume {
+    // 重写 resume 方法，使其不做任何事情
+    NSLog(@">>>>>> DummyURLSessionDataTask.resume");
+}
+
+@end
+
+
 @interface TablePlusHack : NSObject <HackProtocol>
 
 @end
@@ -101,56 +114,6 @@ static IMP dataTaskWithRequestIMP;
 //    return _rbx;
 //}
 
-//
-//bool hook_device_id(uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t arg3, uint64_t arg4){
-//    //
-//    // Interceptor.attach(Module.findExportByName(null, 'CC_MD5')
-//    // ifconfig en0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'
-//    // system_profiler SPHardwareDataType | grep Serial
-//    // deviceID = md5(mac+Serial)
-//    // 3c:06:30:30:7d:35C02G64QMQ05D
-//    // 88548E5A38EEEE04E89C5621BA04BC7E
-//    
-//    if (_rbx!=nil && [_rbx.deviceID isEqual:@""]){
-//        
-//        // arm: r1 = *(int128_t *)(arg2 + 0x28);
-//        // x86: mov  rsi, qword [rdx+0x28] ; real device id ; rsi = *(arg2 + 0x28);
-//        
-//        // 地址要倒叙处理,垃圾写法
-//        // uint64_t _rsi = (arg2 + 0x28);
-//        // NSString * addressString = [MemoryUtils readMachineCodeStringAtAddress:(_rsi) length:(8)];
-//        // NSArray<NSString *> *byteStrings = [addressString componentsSeparatedByString:@" "];
-//        // NSMutableArray<NSString *> *reversedByteStrings = [NSMutableArray arrayWithCapacity:byteStrings.count];
-//        // // 将字节字符串倒序
-//        // for (NSInteger i = byteStrings.count - 1; i >= 0; i--) {
-//        //     [reversedByteStrings addObject:byteStrings[i]];
-//        // }
-//        // // 连接倒序后的字节字符串
-//        // NSString *reversedAddressString = [reversedByteStrings componentsJoinedByString:@""];
-//        // // 将倒序后的地址字符串转换为实际地址值
-//        // unsigned long long address = strtoull([reversedAddressString UTF8String], NULL, 16);
-//        // void *addressPtr = (void *)address;
-//        
-//        
-//        // 虽然看不明白, 但是这个写法短小精干
-//        // memory read ptr = 00 0f 3c 00 00 60 00 00,
-//        // memory read *ptr *ptr+100 = deviceId
-//        // addressPtr = 60 00 00 3c 0f 00
-//        uintptr_t *ptr = (uintptr_t *)(arg2 + 0x28);
-//        // NSLog(@">>>>>> ptr: %#lx", ptr);
-//        // 将 ptr 指向的内存地址的值（即指针所指向的地址）赋值给 addressPtr
-//        void * addressPtr = (void *) *ptr;
-//        // [MemoryUtils inspectObjectWithAddress:addressPtr]; // 打印对象
-//        // NSString * deviceId = [MemoryUtils readStringAtAddress:(addressPtr+0x20)];
-//        // NSLog(@">>>>>> deviceId: %@", deviceId);
-//        // _rbx.deviceID =deviceId;
-//        NSString *deviceId = [NSString stringWithCString:addressPtr+0x20 encoding:NSUTF8StringEncoding];
-//        _rbx.deviceID =deviceId;
-//        NSLog(@">>>>>> deviceId: %@", deviceId);
-//        
-//    }
-//    return hook_device_id_ori(arg0,arg1,arg2,arg3,arg4);
-//}
 
 
 - (BOOL)hack {
@@ -242,7 +205,8 @@ static IMP dataTaskWithRequestIMP;
     
     // @"https://tableplus.com/v1/licenses/devices?deviceID=xxx"    0x0000600001f82a80
     if ([URLString containsString:@"tableplus"]) {
-        
+        DummyURLSessionDataTask *dummyTask = [[DummyURLSessionDataTask alloc] init];
+
 //    loc_1002645ce:
 //        r14 = *qword_10093f548;
 //        sub_1002661d0(&var_80, 0x100909b50, rdx, *type metadata for Swift.String);
@@ -255,13 +219,35 @@ static IMP dataTaskWithRequestIMP;
 //        swift_release(r14);
 //        goto loc_100264365;
         
-        // TODO: updatesAvailableUntil 字段在请求回调中处理; 但是没分析出来具体的响应;
-        success(nil, @{
-            @"fuck":@"dev",
-        });
+        
+        
+        if ([URLString containsString:@"v1/licenses/devices"]){
+            NSMutableDictionary *result = [NSMutableDictionary dictionary];
+//            [result setObject:[EncryptionUtils generateTablePlusDeviceId] forKey:@"DeviceID"];
+//            00000001002641ef         movabs     rdi, 0x4449656369766544                     ; argument #1 for method sub_100033750
+//            00000001002641f9         movabs     rsi, 0xe800000000000000                     ; argument #2 for method sub_100033750
+//            0000000100264203         call       sub_100033750
+            [result setObject:[EncryptionUtils generateTablePlusDeviceId] forKey:@"DeviceID"];
+            [result setObject:@"2025-07-16" forKey:@"UpdatesAvailableUntilString"];
+                        
+    //        00000001002642c7         mov        rdi, r13                                    ; argument "ptr" for method imp___stubs__swift_bridgeObjectRetain
+    //        00000001002642ca         call       imp___stubs__swift_bridgeObjectRetain       ; swift_bridgeObjectRetain
+    //        00000001002642cf         lea        rax, qword [aTtc9tableplus1_100751390]      ; "_TtC9TablePlus12RemoteSource"
+    //        00000001002642d6         movabs     rsi, 0x8000000000000000
+    //        00000001002642e0         or         rsi, rax                                    ; argument #2 for method sub_100033750
+    //        00000001002642e3         movabs     rdi, 0xd00000000000001b                     ; argument #1 for method sub_100033750
+    //        00000001002642ed         call       sub_100033750                               ; sub_100033750
+    //        00000001002642f2         test       dl, 0x1
+    //        00000001002642f5         je         loc_1002645c3
+            
+            success(nil, @{
+//                @"Message":@"fuck",
+                @"Data":result,
+//                @"Code":@200
+            });
+        }
         NSLog(@">>>>>> [hk_dataTaskWithHTTPMethod] Intercept url: %@",URLString);
-        return nil;
-
+        return dummyTask;
     }
     NSLog(@">>>>>> [hk_dataTaskWithHTTPMethod] Allow to pass url: %@",URLString);
     return ((id(*)(id, SEL,NSString *,NSString *,id,id,id,id,id,id))dataTaskWithRequestIMP)(self, _cmd,method,URLString,parameters,headers,uploadProgress,downloadProgress,success,failure);
