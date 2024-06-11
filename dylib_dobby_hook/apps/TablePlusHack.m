@@ -204,7 +204,7 @@ static IMP dataTaskWithRequestIMP;
     
     
     // @"https://tableplus.com/v1/licenses/devices?deviceID=xxx"    0x0000600001f82a80
-    if ([URLString containsString:@"tableplus"]) {
+    if ([URLString containsString:@"tableplus.com"]) {
         DummyURLSessionDataTask *dummyTask = [[DummyURLSessionDataTask alloc] init];
 
 //    loc_1002645ce:
@@ -245,8 +245,14 @@ static IMP dataTaskWithRequestIMP;
                 @"Data":result,
 //                @"Code":@200
             });
+        }else if ([URLString containsString:@"apps/osx/tableplus"]){
+            success(nil, @{
+                @"Data":@{
+                    @"DayBeforeExpiration":@521
+                },
+            });
         }
-        NSLog(@">>>>>> [hk_dataTaskWithHTTPMethod] Intercept url: %@",URLString);
+        NSLog(@">>>>>> [hk_dataTaskWithHTTPMethod] Intercept url: %@, req params: %@",URLString,parameters);
         return dummyTask;
     }
     NSLog(@">>>>>> [hk_dataTaskWithHTTPMethod] Allow to pass url: %@",URLString);
