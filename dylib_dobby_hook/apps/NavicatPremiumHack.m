@@ -11,6 +11,7 @@
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
 #import "HackProtocol.h"
+#import "common_ret.h"
 
 @interface NavicatPremiumHack : NSObject <HackProtocol>
 
@@ -18,12 +19,15 @@
 @implementation NavicatPremiumHack
 
 
+static IMP displayRegisteredInfoIMP;
+
+
 - (NSString *)getAppName {
     return @"com.navicat.NavicatPremium";
 }
 
 - (NSString *)getSupportAppVersion {
-    return @"16.3";
+    return @"17.";
 }
 
 
@@ -127,9 +131,56 @@
                 swizzledClass:[self class]
                 swizzledSelector:@selector(ret)
     ];
+
+
+    Class AboutNavicatWindowControllerClz = NSClassFromString(@"AboutNavicatWindowController");
+    SEL displayRegisteredInfoSel = NSSelectorFromString(@"displayRegisteredInfo");
+    Method dataTaskWithRequestMethod = class_getInstanceMethod(AboutNavicatWindowControllerClz, displayRegisteredInfoSel);
+    displayRegisteredInfoIMP = method_getImplementation(dataTaskWithRequestMethod);
+    
+    [MemoryUtils hookInstanceMethod:
+                    AboutNavicatWindowControllerClz
+                   originalSelector:displayRegisteredInfoSel
+                      swizzledClass:[self class]
+                   swizzledSelector: @selector(hk_displayRegisteredInfo)
+    ];
     
     
     return YES;
 }
+- (void)hk_displayRegisteredInfo {
+    
+//   TODO: self 有个ivar _extraInfo 的 dict 是 license 信息, 后面这个特征失效就跟一下 这个 dict
+//   Ivar ivar = class_getInstanceVariable([self class], "_extraInfo");
+//   // 如果 ivar 不为空，说明属性存在
+//   if (ivar != NULL) {
+//       // 获取属性的偏移量
+//       ptrdiff_t offset = ivar_getOffset(ivar);
+//       uintptr_t address = (uintptr_t)(__bridge void *)self + offset;
+//       NSDictionary * __autoreleasing *deviceIdPtr = (NSDictionary * __autoreleasing *)(void *)address;
+//       NSDictionary *originalDict = *deviceIdPtr;
+//       NSMutableDictionary *mutableDict = [originalDict mutableCopy];
+//       [mutableDict setObject:@YES forKey:@"regMode"];
+//       [mutableDict setObject:@"name" forKey:@"name"];
+//       [mutableDict setObject:@"Registered" forKey:@"versionType"];
+//       [mutableDict setObject:@"subscriptionNavicatID" forKey:@"subscriptionNavicatID"];
+//       [mutableDict setObject:@"organization" forKey:@"organization"];
+//       *deviceIdPtr = mutableDict;
+//   }
 
+    ((void(*)(id, SEL))displayRegisteredInfoIMP)(self, _cmd);
+    
+    
+    
+    // ivar 分静态非静态的?? [MemoryUtils getInstanceIvar] 似乎获取不到哦
+    Ivar InfoLabel = class_getInstanceVariable([self class], "_appExtraInfoLabel");
+    if (InfoLabel != NULL) {
+        ptrdiff_t offset = ivar_getOffset(InfoLabel);
+        uintptr_t address = (uintptr_t)(__bridge void *)self + offset;
+        id  __autoreleasing *deviceIdPtr = (id  __autoreleasing *)(void *)address;
+        id _appExtraInfoLabel = *deviceIdPtr;
+         [_appExtraInfoLabel setStringValue:[NSString stringWithCString:global_email_address encoding:NSUTF8StringEncoding]];
+
+    }
+}
 @end

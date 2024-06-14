@@ -31,7 +31,7 @@
 | TablePlus       | 6.*     | ✔   | ✔   | https://tableplus.com/                      | inject_bin="/Applications/TablePlus.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"            |                     |
 | DevUtils        | 1.*     | ✔   | ✔   | https://devutils.com/                       |                                                                                                              |                     |
 | AirBuddy        | 2.*     | ✔   | ✔   | https://v2.airbuddy.app/download            | inject_bin="/Applications/AirBuddy.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"           |                     |
-| Navicat Premium | 16.*    | ✔   | ✔   | App Store                                   | inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"                | QiuChenlyOpenSource |
+| Navicat Premium | 17.*    | ✔   | ✔   | App Store                                   | inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"                | QiuChenlyOpenSource |
 | Paste           | 4.1.3   | ✘   | ✔   | App Store                                   |                                                                                                              | LeeeMooo            |
 | Transmit        | 5.*     | ✔   | ✔   | https://panic.com/transmit/#download        |                                                                                                              |                     |
 | <s>AnyGo<s>     | 7.*     | ✔   | ✔   | https://itoolab.com/gps-location-changer/   | DMCA                                                                                                         |                     |
