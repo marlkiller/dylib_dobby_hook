@@ -1,5 +1,5 @@
 #!/usr/sbin/dtrace -qs
-/* sudo dtrace -s kill.d
+/* sudo dtrace -s dtrace_kill.d
  * kill.d - watch process signals as they are sent (eg, kill -9).
  *          Written in DTrace (Solaris 10 3/05).
  *

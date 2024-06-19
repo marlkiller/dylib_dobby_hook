@@ -44,8 +44,10 @@
 
 ## Quick Start
 
-```
-git clone https://github.com/marlkiller/dylib_dobby_hook.git 
+
+[download latest release](https://github.com/marlkiller/dylib_dobby_hook/releases/download/latest/dylib_dobby_hook.tar.gz)
+```shell
+tar -xzvf dylib_dobby_hook.tar.gz
 cd script 
 sudo sh auto_hack.sh
 ```

@@ -37,7 +37,7 @@
 static IMP urlWithStringSeletorIMP;
 static IMP NSURLSessionClassIMP;
 static IMP dataTaskWithRequestIMP;
-
+static IMP decryptDataIMP;
 
 
 - (NSString *)getAppName {
@@ -47,72 +47,6 @@ static IMP dataTaskWithRequestIMP;
 - (NSString *)getSupportAppVersion {
     return @"6.";
 }
-
-
-//__strong id _rbx;
-//
-//id hook_license(int arg0, int arg1, int arg2, int arg3){
-//    if (_rbx==nil){
-//        
-//        // 通过反射获取 Swift 类
-//        Class TBLicenseModelClass = NSClassFromString(@"_TtC9TablePlus14TBLicenseModel");
-//        if (!TBLicenseModelClass) {
-//           return nil;
-//        }
-//       
-//        id r12 = [TBLicenseModelClass alloc] ;
-//
-//        [MemoryUtils listAllPropertiesMethodsAndVariables:TBLicenseModelClass];
-//        // LicenseModel *r12 = [[NSClassFromString(@"LicenseModel") alloc] init];
-//        NSString *deviceId = [EncryptionUtils generateTablePlusDeviceId];
-////        [r12 setValue:deviceId forKey:@"deviceID"];
-//        [MemoryUtils setInstanceIvar:r12 ivarName:@"deviceID" value:deviceId];
-//        [MemoryUtils setInstanceIvar:r12 ivarName:@"sign" value:@"12345678901234567890123456789012345678901234567890"];
-//        [MemoryUtils setInstanceIvar:r12 ivarName:@"purchasedAt" value:@"2999-01-16"];
-//        [MemoryUtils setInstanceIvar:r12 ivarName:@"updatesAvailableUntil" value:@"2999-01-16"];
-//        [MemoryUtils setInstanceIvar:r12 ivarName:@"licenseKey" value:@"licenseKey"];
-//        [MemoryUtils setInstanceIvar:r12 ivarName:@"nextChargeAt" value:@"123456"];
-//        [MemoryUtils setInstanceIvar:r12 ivarName:@"email" value:[NSString stringWithCString:global_email_address encoding:NSUTF8StringEncoding]];
-//        
-//        // 获取属性名对应的 Ivar
-//       Ivar ivar = class_getInstanceVariable([TBLicenseModelClass class], "deviceID");
-//       // 如果 ivar 不为空，说明属性存在
-//       if (ivar != NULL) {
-//           // 获取属性的偏移量
-//           ptrdiff_t offset = ivar_getOffset(ivar);
-//           
-//           uintptr_t address = (uintptr_t)(__bridge void *)r12 + offset;
-//           // 计算属性在对象中的地址
-//           NSString * __autoreleasing *deviceIdPtr = (NSString * __autoreleasing *)(void *)address;
-//           *deviceIdPtr = deviceId;
-//       }
-//        
-//        Ivar sign = class_getInstanceVariable([TBLicenseModelClass class], "sign");
-//        if (sign != NULL) {
-//            ptrdiff_t offset = ivar_getOffset(sign);
-//            uintptr_t address = (uintptr_t)(__bridge void *)r12 + offset;
-//            NSString * __autoreleasing *deviceIdPtr = (NSString * __autoreleasing *)(void *)address;
-//            *deviceIdPtr = deviceId;
-//        }
-//        
-//       _rbx=r12;
-//        NSLog(@">>>>>> deviceId: %@",deviceId);
-////        _rbx=r12;
-////        return r12;
-//        // rax_12.b = rax_11 s>= 0x32
-////        NSDictionary *propertyDictionary = @{
-////            @"sign": @"12345678901234567890123456789012345678901234567890",
-////            @"email": [NSString stringWithCString:global_email_address encoding:NSUTF8StringEncoding],
-////            @"deviceID": deviceId,
-////            @"licenseKey": @"licenseKey",
-////            @"purchasedAt": @"2999-01-16",
-////            @"nextChargeAt": @(9999999999999), // Replace with the actual double value
-////            @"updatesAvailableUntil": @"2999-01-16" // Replace with the actual value
-////        };
-////        _rbx = [r12 initWithDictionary:propertyDictionary];;
-//    }
-//    return _rbx;
-//}
 
 
 
@@ -161,9 +95,14 @@ static IMP dataTaskWithRequestIMP;
     
     // r12 = [[RNDecryptor decryptData:"file bytes" withPassword:"x" error:&var_48] retain];
     // +[RNDecryptor decryptData:withPassword:error:]:
+    Class RNDecryptorClz = NSClassFromString(@"RNDecryptor");
+    SEL decryptDataSel = NSSelectorFromString(@"decryptData:withPassword:error:");
+    Method decryptDataMethod = class_getClassMethod(RNDecryptorClz, decryptDataSel);
+    decryptDataIMP = method_getImplementation(decryptDataMethod);
+
     [MemoryUtils hookClassMethod:
-         NSClassFromString(@"RNDecryptor")
-                originalSelector: NSSelectorFromString(@"decryptData:withPassword:error:")
+         RNDecryptorClz
+                originalSelector:decryptDataSel
                    swizzledClass:[self class]
                 swizzledSelector:NSSelectorFromString(@"hk_decryptData:withPassword:error:")
     ];
@@ -263,19 +202,22 @@ static IMP dataTaskWithRequestIMP;
 
 
 + (id) hk_decryptData:arg1 withPassword:(NSString *)withPassword error:(int)error{
-    NSDictionary *propertyDictionary = @{
-        @"sign": @"12345678901234567890123456789012345678901234567890",
-        @"email": [NSString stringWithCString:global_email_address encoding:NSUTF8StringEncoding],
-        @"deviceID":[EncryptionUtils generateTablePlusDeviceId],
-        @"licenseKey": @"licenseKey",
-        @"purchasedAt": @"2025-06-16",
-        @"nextChargeAt": @"2025-06-16",
-        @"updatesAvailableUntil": @"2025-06-16"
-    };
-//    Class TBLicenseModelClass = NSClassFromString(@"_TtC9TablePlus14TBLicenseModel");
-//    [MemoryUtils listAllPropertiesMethodsAndVariables:TBLicenseModelClass];
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:propertyDictionary options:0 error:nil];
-    return jsonData;
+    
+    if ([arg1 isKindOfClass:NSClassFromString(@"_NSInlineData")]) {
+        NSDictionary *propertyDictionary = @{
+            @"sign": @"12345678901234567890123456789012345678901234567890",
+            @"email": [NSString stringWithCString:global_email_address encoding:NSUTF8StringEncoding],
+            @"deviceID":[EncryptionUtils generateTablePlusDeviceId],
+            @"licenseKey": @"licenseKey",
+            @"purchasedAt": @"2025-06-16",
+            @"nextChargeAt": @"2025-06-16",
+            @"updatesAvailableUntil": @"2025-06-16"
+        };
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:propertyDictionary options:0 error:nil];
+        return jsonData;
+    }
+    
+    return ((id(*)(id, SEL,id,NSString*,int))decryptDataIMP)(self, _cmd,arg1,withPassword,error);
 }
 
 + (id)hk_URLWithString:arg1{
