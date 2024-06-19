@@ -42,7 +42,7 @@
 | <s>Surge<s>     | 5.7.*   | ✔   | ✔   | https://nssurge.com/                        | DMCA                                                                                                         |                     |
 | Infuse          | 7.7.*   | ✔   | ✔   | App Store                                   | inject_bin="/Applications/Infuse.app/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator" |                     |
 
-## Quick Start
+## Usage
 
 
 [download latest release](https://github.com/marlkiller/dylib_dobby_hook/releases/download/latest/dylib_dobby_hook.tar.gz)
