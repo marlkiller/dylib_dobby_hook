@@ -32,9 +32,17 @@
     // f0:18:98:1b:24:20
 
     NSString *serialNumber = nil;
-
+    
+#if (MAC_OS_X_VERSION_MAX_ALLOWED >= 120000) // Before macOS 12 Monterey
     io_service_t platformExpert = IOServiceGetMatchingService(kIOMainPortDefault,
                                                               IOServiceMatching("IOPlatformExpertDevice"));
+#else
+    // 在 macOS 12.0 之前的版本，使用其他适当的兼容方法
+    io_service_t platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault,
+                                                              IOServiceMatching("IOPlatformExpertDevice"));
+#endif
+
+
 
     if (platformExpert) {
         CFTypeRef serialNumberAsCFString =
