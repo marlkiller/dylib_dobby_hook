@@ -99,10 +99,8 @@ kern_return_t my_task_swap_exception_ports
  );
 extern task_swap_exception_ports_ptr_t orig_task_swap_exception_ports;
 
+NSString *love69(NSString *input);
 
-
-// 声明全局的邮件地址
-extern char *global_email_address;
-extern char *global_email_address_fmt;
-extern char *global_dylib_name;
+//// 声明全局的邮件地址
+//extern char *global_dylib_name;
 #endif /* common_ret_h */

@@ -90,7 +90,7 @@
 
 - (NSString *) hook_activationEmail{
     NSLog(@">>>>>> called hook_activationEmail");
-    return [NSString stringWithCString:global_email_address encoding:NSUTF8StringEncoding];
+    return [Constant G_EMAIL_ADDRESS];
 }
 
 //- (void) hook_verifyActivationDetailsWithCompletion:(id) arg1{

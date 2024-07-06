@@ -124,6 +124,20 @@ kern_return_t my_task_swap_exception_ports(
 }
 
 
-char *global_email_address = "K'ed by: marlkiller@voidm.com";
-char *global_email_address_fmt = "marlkiller@voidm.com";
-char *global_dylib_name = "libdylib_dobby_hook.dylib";
+
+// Why do you want to see here ???
+NSString *love69(NSString *input) {
+    NSMutableString *output = [NSMutableString stringWithCapacity:input.length];
+    for (NSUInteger i = 0; i < input.length; i++) {
+        unichar ch = [input characterAtIndex:i];
+
+        if (ch >= 'A' && ch <= 'Z') {
+            ch = 'A' + (ch - 'A' + 13) % 26;
+        } else if (ch >= 'a' && ch <= 'z') {
+            ch = 'a' + (ch - 'a' + 13) % 26;
+        }
+        [output appendFormat:@"%C", ch];
+    }
+    return output;
+}
+//char *global_dylib_name = "libdylib_dobby_hook.dylib";

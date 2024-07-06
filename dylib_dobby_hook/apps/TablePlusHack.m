@@ -206,7 +206,7 @@ static IMP decryptDataIMP;
     if ([arg1 isKindOfClass:NSClassFromString(@"_NSInlineData")]) {
         NSDictionary *propertyDictionary = @{
             @"sign": @"12345678901234567890123456789012345678901234567890",
-            @"email": [NSString stringWithCString:global_email_address encoding:NSUTF8StringEncoding],
+            @"email": [Constant G_EMAIL_ADDRESS],
             @"deviceID":[EncryptionUtils generateTablePlusDeviceId],
             @"licenseKey": @"licenseKey",
             @"purchasedAt": @"2025-06-16",

@@ -179,7 +179,7 @@ static IMP displayRegisteredInfoIMP;
         uintptr_t address = (uintptr_t)(__bridge void *)self + offset;
         id  __autoreleasing *deviceIdPtr = (id  __autoreleasing *)(void *)address;
         id _appExtraInfoLabel = *deviceIdPtr;
-         [_appExtraInfoLabel setStringValue:[NSString stringWithCString:global_email_address encoding:NSUTF8StringEncoding]];
+         [_appExtraInfoLabel setStringValue:[Constant G_EMAIL_ADDRESS]];
 
     }
 }

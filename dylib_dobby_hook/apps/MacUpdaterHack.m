@@ -113,7 +113,7 @@ static NSString* licenseCode = @"123456789";
             [invocation setTarget:self];
             [invocation setSelector:selector];
             NSInteger *param1 = 0xc9;
-            NSString *param2 = [NSString stringWithCString:global_email_address_fmt encoding:NSUTF8StringEncoding];
+            NSString *param2 = [Constant G_EMAIL_ADDRESS_FMT];
             NSInteger param3 = licenseCode;
             [invocation setArgument:&param1 atIndex:2];
             [invocation setArgument:&param2 atIndex:3];
@@ -125,7 +125,7 @@ static NSString* licenseCode = @"123456789";
 
 - (NSMutableArray *) hk_directoryContents{
     
-    NSString* dylib_name = [NSString stringWithCString:global_dylib_name encoding:NSUTF8StringEncoding];
+    NSString* dylib_name = [Constant G_DYLIB_NAME];
     NSMutableArray* ret = ((NSMutableArray*(*)(id,SEL))directoryContentsIMP)(self,_cmd);
     if ([ret containsObject:dylib_name]) {
         [ret removeObject:dylib_name];
@@ -187,7 +187,7 @@ static NSString* licenseCode = @"123456789";
 }
 
 - (BOOL)hack {
-    licenseEmail = [NSString stringWithCString:global_email_address_fmt encoding:NSUTF8StringEncoding];
+    licenseEmail = [Constant G_EMAIL_ADDRESS_FMT];
     
 ////    -[AppDelegate purchaseInit]:
     Class __NSCFStringClz = NSClassFromString(@"__NSCFString");

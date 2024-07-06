@@ -141,7 +141,7 @@ int hook_TRTrialStatus(void){
 //    }
     
     NSUserDefaults *defaults  = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[NSString stringWithCString:global_email_address encoding:NSUTF8StringEncoding] forKey:@"RegistrationUsername"];
+    [defaults setObject:[Constant G_EMAIL_ADDRESS] forKey:@"RegistrationUsername"];
     [defaults setObject:@"2099-04-11 13:30:45 GMT" forKey:@"RegistrationDate"];
     [defaults synchronize];
     

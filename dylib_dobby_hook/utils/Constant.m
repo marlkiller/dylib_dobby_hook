@@ -12,6 +12,8 @@
 #import <objc/runtime.h>
 #import "HackProtocol.h"
 #import <Cocoa/Cocoa.h>
+#import "common_ret.h"
+
 #include <mach-o/arch.h>
 #include <sys/sysctl.h>
 
@@ -21,6 +23,27 @@
 static void __attribute__ ((constructor)) initialize(void){
     NSLog(@">>>>>> Constant init");    
 
+}
+
+
+static NSString *_G_EMAIL_ADDRESS = @"X'rq ol: zneyxvyyre@ibvqz.pbz";;
+static NSString *_G_EMAIL_ADDRESS_FMT = @"zneyxvyyre@ibvqz.pbz";;
+static NSString *_G_DYLIB_NAME = @"libdylib_dobby_hook.dylib";
+
+// 告诉编译器不生成默认的 getter 和 setter 方法
+@dynamic G_EMAIL_ADDRESS;
+@dynamic G_EMAIL_ADDRESS_FMT;
+@dynamic G_DYLIB_NAME;
+
+
++ (NSString *)G_EMAIL_ADDRESS {
+    return love69(_G_EMAIL_ADDRESS);
+}
++ (NSString *)G_EMAIL_ADDRESS_FMT {
+    return love69(_G_EMAIL_ADDRESS_FMT);
+}
++ (NSString *)G_DYLIB_NAME {
+    return _G_DYLIB_NAME;
 }
 
 + (BOOL) isFirstOpen {
