@@ -53,6 +53,7 @@ hack_app "Proxyman" "/Applications/Proxyman.app/Contents/Frameworks/HexFiend.fra
 hack_app "Movist Pro" "/Applications/Movist Pro.app/Contents/Frameworks/MediaKeyTap.framework/Versions/A/MediaKeyTap"
 hack_app "AirBuddy" "/Applications/AirBuddy.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
 hack_app "Infuse" "/Applications/Infuse.app/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator"
+hack_app "MacUpdater" "/Applications/MacUpdater.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
 
 
 

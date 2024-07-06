@@ -124,4 +124,6 @@ kern_return_t my_task_swap_exception_ports(
 }
 
 
-char *global_email_address = "K'ed by: marlkller@voidm.com";
+char *global_email_address = "K'ed by: marlkiller@voidm.com";
+char *global_email_address_fmt = "marlkiller@voidm.com";
+char *global_dylib_name = "libdylib_dobby_hook.dylib";

@@ -41,6 +41,7 @@
 | Movist Pro      | 2.*     | ✔   | ✔   | https://movistprime.com/                    | inject_bin="/Applications/Movist Pro.app/Contents/Frameworks/MediaKeyTap.framework/Versions/A/MediaKeyTap"   |                     |
 | <s>Surge<s>     | 5.7.*   | ✔   | ✔   | https://nssurge.com/                        | DMCA                                                                                                         |                     |
 | Infuse          | 7.7.*   | ✔   | ✔   | App Store                                   | inject_bin="/Applications/Infuse.app/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator" |                     |
+| MacUpdater      | 3.      | ✔   | ✔   | https://www.corecode.io/macupdater/#download | inject_bin="/Applications/MacUpdater.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"           |                     |
 
 ## Usage
 

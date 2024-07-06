@@ -103,6 +103,6 @@ extern task_swap_exception_ports_ptr_t orig_task_swap_exception_ports;
 
 // 声明全局的邮件地址
 extern char *global_email_address;
-
-
+extern char *global_email_address_fmt;
+extern char *global_dylib_name;
 #endif /* common_ret_h */

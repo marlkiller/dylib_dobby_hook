@@ -299,6 +299,12 @@ void my_viewDidLoad(id self, SEL _cmd) {
 //            [invocation setArgument:&param2 atIndex:3];
 //            [invocation setArgument:&param3 atIndex:4];
 //            [invocation invoke];
+//            // 获取返回值
+//            NSString *returnValue;
+//            [invocation getReturnValue:&returnValue];
+//
+//id (*sharedInstanceMethod)(id, SEL) = (id (*)(id, SEL))objc_msgSend;
+//id ret = sharedInstanceMethod(AppDelegateClz, selector);
 //        }
 //    }
 //}

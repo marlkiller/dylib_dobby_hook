@@ -412,4 +412,36 @@
     return nil;
 }
 
+
++(NSString*) calculateSHA1OfFile:(NSString *)filePath {
+    NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
+    if (fileHandle == nil) {
+        NSLog(@"Failed to open file at path %@", filePath);
+        return nil;
+    }
+    
+    CC_SHA1_CTX sha1;
+    CC_SHA1_Init(&sha1);
+    
+    NSData *fileData;
+    do {
+        @autoreleasepool {
+            fileData = [fileHandle readDataOfLength:4096]; // Read data in chunks
+            CC_SHA1_Update(&sha1, [fileData bytes], (CC_LONG)[fileData length]);
+        }
+    } while ([fileData length] > 0);
+    
+    unsigned char digest[CC_SHA1_DIGEST_LENGTH];
+    CC_SHA1_Final(digest, &sha1);
+    
+    NSMutableString *sha1String = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
+    for (int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++) {
+        [sha1String appendFormat:@"%02x", digest[i]];
+    }
+    
+    [fileHandle closeFile];
+    
+    return sha1String;
+}
+
 @end
