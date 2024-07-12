@@ -9,6 +9,7 @@
 #import "Constant.h"
 #import "dobby.h"
 #import "MemoryUtils.h"
+#import "encryp_utils.h"
 #import <objc/runtime.h>
 #import "HackProtocol.h"
 #include <sys/ptrace.h>
@@ -29,8 +30,12 @@ static IMP dataTaskWithRequestIMP;
 static IMP URLWithHostIMP;
 static IMP directoryContentsIMP;
 static IMP URLSessionIMP;
-static NSString* licenseEmail;
-static NSString* licenseCode = @"123456789";
+static IMP fileChecksumSHAIMP;
+static IMP checksumSparkleFrameworkIMP;
+static Class stringClass;
+static id licenseEmail;
+static id licenseCode;
+static id appPath;
 
 - (NSString *)getAppName {
     // >>>>>> AppName is [com.corecode.MacUpdater],Version is [3.3.1], myAppCFBundleVersion is [16954].
@@ -113,7 +118,7 @@ static NSString* licenseCode = @"123456789";
             [invocation setTarget:self];
             [invocation setSelector:selector];
             NSInteger *param1 = 0xc9;
-            NSString *param2 = [Constant G_EMAIL_ADDRESS_FMT];
+            NSString *param2 = licenseEmail;
             NSInteger param3 = licenseCode;
             [invocation setArgument:&param1 atIndex:2];
             [invocation setArgument:&param2 atIndex:3];
@@ -170,13 +175,32 @@ static NSString* licenseCode = @"123456789";
     return ret;
 }
 
+
 + (NSString *) hk_checksumSparkleFramework{
+    NSLog(@">>>>>> hk_checksumSparkleFramework %@", self);
+
     // x86: 46e6b06e5626534a9c61b91cfb041ccf051a2db8
     // arm: a5f76baec8ce44138ceadc97130d622642fe4d2e
-    NSString *Sparkle = [[Constant getCurrentAppPath] stringByAppendingString:@"/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle_Backup"];
-    NSString *ret = [EncryptionUtils calculateSHA1OfFile:Sparkle];
-    return ret;
+    // id ret = ((id (*)(id,SEL))checksumSparkleFrameworkIMP)(self,_cmd);
+
+    NSString *Sparkle = [appPath stringByAppendingString:@"/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle_Backup"];
+    NSString *retFake = [EncryptionUtils calculateSHA1OfFile:Sparkle];
+    return  retFake;
+
+    // return  @"5cac513cff8b040faff3d4a6b40d13bbfa034334";
 }
+
++ (NSString *) hk_uniqueIdentifierForDB{
+    NSLog(@">>>>>> hk_uniqueIdentifierForDB");
+    NSString *letters = @"abcdefghijklmnopqrstuvwxyz0123456789";
+    NSMutableString *randomString = [NSMutableString stringWithCapacity:40];
+    for (int i = 0; i < 40; i++) {
+        uint32_t randomIndex = arc4random_uniform((uint32_t)[letters length]);
+        [randomString appendFormat:@"%C", [letters characterAtIndex:randomIndex]];
+    }
+    return  randomString;
+}
+
 
 -(void)hk_URLSession:(NSURLSession *)arg2 didReceiveChallenge:(NSURLAuthenticationChallenge*)arg3 completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))arg4 {
     
@@ -187,7 +211,19 @@ static NSString* licenseCode = @"123456789";
 }
 
 - (BOOL)hack {
-    licenseEmail = [Constant G_EMAIL_ADDRESS_FMT];
+//  [BEGIN]
+//  下面这块代码是为了防止 clion 编译的 str 与 app 中的 str 不属于同一个 clz...
+//  xcode 编译则不需要这么抽象的写法, 不知道为什么
+//  如果你知道, 请告诉我.!
+    stringClass = NSClassFromString(@"NSString");
+    licenseEmail = [[stringClass alloc] initWithString:[Constant G_EMAIL_ADDRESS_FMT]];
+    licenseCode = [[stringClass alloc] initWithString:@"123456789"];
+    appPath = [[stringClass alloc] initWithString:[Constant getCurrentAppPath]];
+//  [END]
+
+    // licenseEmail = [Constant G_EMAIL_ADDRESS_FMT];
+    // licenseCode = @"123456789";
+    // appPath = [Constant getCurrentAppPath];
     
 ////    -[AppDelegate purchaseInit]:
     Class __NSCFStringClz = NSClassFromString(@"__NSCFString");
@@ -265,13 +301,17 @@ static NSString* licenseCode = @"123456789";
 
 
     
-//  还原文件的 sha1
-    [MemoryUtils hookClassMethod:objc_getClass("AppDelegate")
-                   originalSelector:NSSelectorFromString(@"checksumSparkleFramework")
+
+    Class AppDelegateClz = NSClassFromString(@"AppDelegate");
+    SEL checksumSparkleFrameworkSel = NSSelectorFromString(@"checksumSparkleFramework");
+    Method checksumSparkleFrameworkMethod = class_getClassMethod(AppDelegateClz, checksumSparkleFrameworkSel);
+    checksumSparkleFrameworkIMP = method_getImplementation(checksumSparkleFrameworkMethod);
+    [MemoryUtils hookClassMethod:AppDelegateClz
+                   originalSelector:checksumSparkleFrameworkSel
                       swizzledClass:[self class]
                    swizzledSelector:@selector(hk_checksumSparkleFramework)
     ];
-    
+
 //  清除 API 中的 license 信息
     Class NSURLClz = NSClassFromString(@"NSURL");
     SEL URLWithHostSel = NSSelectorFromString(@"URLWithHost:path:query:user:password:fragment:scheme:port:");
@@ -284,6 +324,14 @@ static NSString* licenseCode = @"123456789";
                    swizzledSelector:NSSelectorFromString(@"hook_URLWithHost:path:query:user:password:fragment:scheme:port:")
     ];
     
+//    +[AppDelegate uniqueIdentifierForDB]:
+    [MemoryUtils hookClassMethod:
+         NSClassFromString(@"AppDelegate")
+                   originalSelector:NSSelectorFromString(@"uniqueIdentifierForDB")
+                      swizzledClass:[self class]
+                   swizzledSelector:NSSelectorFromString(@"hk_uniqueIdentifierForDB")
+    ];
+    
 //  清除 SSL 证书绑定
     [MemoryUtils hookInstanceMethod:
          NSClassFromString(@"HTTPSecurePOST")
@@ -291,8 +339,6 @@ static NSString* licenseCode = @"123456789";
                       swizzledClass:[self class]
                    swizzledSelector:NSSelectorFromString(@"hk_URLSession:didReceiveChallenge:completionHandler:")
     ];
-    
-    
     
     return YES;
 }

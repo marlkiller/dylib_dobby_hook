@@ -8,11 +8,23 @@ enable_language(CXX)
 enable_language(OBJC)
 enable_language(OBJCXX)
 
+
 set(CMAKE_C_STANDARD 17)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+#set(CMAKE_C_EXTENSIONS ON)
+#set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu17")
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -x objective-c")
+
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++20")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -x objective-c++")
+
+#关闭编译器优化
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
+#set(CMAKE_OBJC_FLAGS "${CMAKE_OBJC_FLAGS} -O0")
+#set(CMAKE_OBJCXX_FLAGS "${CMAKE_OBJCXX_FLAGS} -O0")
+
 
 set(COMPILE_OPTION
         -Wno-int-conversion
@@ -78,7 +90,6 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         "-framework Cocoa"
         "-framework IOKit"
         "-framework CloudKit"
-        "-framework AppKit"
         "-framework Security"
         "-framework CoreWLAN"
 

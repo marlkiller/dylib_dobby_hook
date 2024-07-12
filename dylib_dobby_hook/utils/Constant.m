@@ -20,15 +20,24 @@
 
 @implementation Constant
 
+// 使用构造函数属性 (constructor attribute) 的方法
+// 这个方法会在 main 函数执行之前自动调用
 static void __attribute__ ((constructor)) initialize(void){
-    NSLog(@">>>>>> Constant init");    
+        
+    NSLog(@">>>>>> Constant ((constructor)) initialize(void)");
 
 }
 
 
-static NSString *_G_EMAIL_ADDRESS = @"X'rq ol: zneyxvyyre@ibvqz.pbz";;
-static NSString *_G_EMAIL_ADDRESS_FMT = @"zneyxvyyre@ibvqz.pbz";;
-static NSString *_G_DYLIB_NAME = @"libdylib_dobby_hook.dylib";
+static NSString *G_EMAIL_ADDRESS = @"X'rq ol: zneyxvyyre@ibvqz.pbz";;
+static NSString *G_EMAIL_ADDRESS_FMT = @"zneyxvyyre@ibvqz.pbz";;
+static NSString *G_DYLIB_NAME = @"libdylib_dobby_hook.dylib";
+
+static NSString *currentAppPath;;
+static NSString *currentAppName;;
+static NSString *currentAppVersion;
+static NSString *currentAppCFBundleVersion;
+static BOOL arm;
 
 // 告诉编译器不生成默认的 getter 和 setter 方法
 @dynamic G_EMAIL_ADDRESS;
@@ -37,13 +46,13 @@ static NSString *_G_DYLIB_NAME = @"libdylib_dobby_hook.dylib";
 
 
 + (NSString *)G_EMAIL_ADDRESS {
-    return love69(_G_EMAIL_ADDRESS);
+    return love69(G_EMAIL_ADDRESS);
 }
 + (NSString *)G_EMAIL_ADDRESS_FMT {
-    return love69(_G_EMAIL_ADDRESS_FMT);
+    return love69(G_EMAIL_ADDRESS_FMT);
 }
 + (NSString *)G_DYLIB_NAME {
-    return _G_DYLIB_NAME;
+    return G_DYLIB_NAME;
 }
 
 + (BOOL) isFirstOpen {
@@ -60,6 +69,8 @@ static NSString *_G_DYLIB_NAME = @"libdylib_dobby_hook.dylib";
     return false;
 }
 
+// 类的初始化方法
+// 当类第一次被使用时会自动调用这个方法
 + (void)initialize {
     if (self == [Constant class]) {
         NSLog(@">>>>>> Constant initialize");
@@ -79,29 +90,23 @@ static NSString *_G_DYLIB_NAME = @"libdylib_dobby_hook.dylib";
         NSString *NSUserDefaultsPath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"Preferences/%@.plist", bundleIdentifier]];
         NSLog(@">>>>>> NSUserDefaultsPath is %@", NSUserDefaultsPath);
         NSRange range = [[Constant getSystemArchitecture] rangeOfString:@"arm" options:NSCaseInsensitiveSearch];
-        isArm = range.location != NSNotFound;
+        arm = range.location != NSNotFound;
         
         // 返回包的完整路径。
         currentAppPath = [app bundlePath];
+        NSLog(@">>>>>> [app bundlePath] %@",currentAppPath);
+        
         // 返回应用程序执行文件的路径。
         // NSString *executablePath = [app executablePath];
         // 根据资源文件名、文件类型和子目录返回资源的路径。
         // NSString *resourcePath = [[NSBundle mainBundle] pathForResource:@"example" ofType:@"png" inDirectory:@"Images"];
         // 返回本地化字符串。
         // NSString *localizedString = [[NSBundle mainBundle] localizedStringForKey:@"Greeting" value:@"" table:@"Greetings"];
-        
     }
 }
 
-NSString *currentAppPath;
-NSString *currentAppName;
-NSString *currentAppVersion;
-NSString *currentAppCFBundleVersion;
-bool isArm;
-
-
 + (BOOL)isArm {
-    return isArm;
+    return arm;
 }
 
 + (NSString *)getCurrentAppPath {
@@ -196,6 +201,5 @@ bool isArm;
     [alert addButtonWithTitle:@"OK"];
     alert.messageText =  [NSString stringWithFormat:@"Unsupported current app: [%s]", currentAppName.UTF8String];;
     [alert runModal];
-    
 }
 @end

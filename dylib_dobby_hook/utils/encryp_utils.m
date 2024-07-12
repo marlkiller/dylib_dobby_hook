@@ -16,6 +16,7 @@
 #import <CoreWLAN/CoreWLAN.h>
 #import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonCryptor.h>
+#import <CommonCrypto/CommonCrypto.h>
 
 @implementation EncryptionUtils
 
@@ -413,35 +414,43 @@
 }
 
 
-+(NSString*) calculateSHA1OfFile:(NSString *)filePath {
+
++ (NSString *)calculateSHA1OfFile:(NSString *)filePath {
+    // 打开文件
     NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
-    if (fileHandle == nil) {
-        NSLog(@"Failed to open file at path %@", filePath);
+    if (!fileHandle) {
         return nil;
     }
-    
-    CC_SHA1_CTX sha1;
-    CC_SHA1_Init(&sha1);
-    
-    NSData *fileData;
-    do {
-        @autoreleasepool {
-            fileData = [fileHandle readDataOfLength:4096]; // Read data in chunks
-            CC_SHA1_Update(&sha1, [fileData bytes], (CC_LONG)[fileData length]);
-        }
-    } while ([fileData length] > 0);
-    
-    unsigned char digest[CC_SHA1_DIGEST_LENGTH];
-    CC_SHA1_Final(digest, &sha1);
-    
-    NSMutableString *sha1String = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
-    for (int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++) {
-        [sha1String appendFormat:@"%02x", digest[i]];
-    }
-    
-    [fileHandle closeFile];
-    
-    return sha1String;
-}
 
+    // 初始化 SHA1 上下文
+    CC_SHA1_CTX sha1Context;
+    CC_SHA1_Init(&sha1Context);
+
+    // 定义一个缓冲区
+    static const size_t bufferSize = 4096;
+    NSData *fileData;
+
+    // 读取文件数据并更新 SHA1
+    while ((fileData = [fileHandle readDataOfLength:bufferSize])) {
+        CC_SHA1_Update(&sha1Context, [fileData bytes], (CC_LONG)[fileData length]);
+        if ([fileData length] == 0) {
+            break;
+        }
+    }
+
+    // 关闭文件
+    [fileHandle closeFile];
+
+    // 完成 SHA1 计算
+    unsigned char hash[CC_SHA1_DIGEST_LENGTH];
+    CC_SHA1_Final(hash, &sha1Context);
+
+    // 将 SHA1 值转换为 NSString
+    NSMutableString *hashString = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
+    for (int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++) {
+        [hashString appendFormat:@"%02x", hash[i]];
+    }
+
+    return hashString;
+}
 @end

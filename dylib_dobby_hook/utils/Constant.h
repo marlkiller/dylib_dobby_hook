@@ -13,6 +13,14 @@
 @property (class, nonatomic, strong) NSString *G_EMAIL_ADDRESS_FMT;
 @property (class, nonatomic, strong) NSString *G_DYLIB_NAME;
 
+@property (class, nonatomic, strong) NSString *currentAppPath;
+@property (class, nonatomic, strong) NSString *currentAppName;
+@property (class, nonatomic, strong) NSString *currentAppVersion;
+@property (class, nonatomic, strong) NSString *currentAppCFBundleVersion;
+@property (class, nonatomic, assign) BOOL arm;
+
+
+
 + (BOOL) isFirstOpen;
 + (BOOL)isArm;
 + (NSString *)getCurrentAppPath;

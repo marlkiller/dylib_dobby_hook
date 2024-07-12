@@ -67,4 +67,4 @@ iOSInjectionProject/
 cmake-build-debug
 cmake-build-release
 
-release/dylib_dobby_hook.dylib
+release/libdylib_dobby_hook.dylib
