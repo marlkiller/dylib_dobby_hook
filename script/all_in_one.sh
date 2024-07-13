@@ -67,6 +67,14 @@ fi
 
 cp -f "${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib" "${app_bundle_framework}"
 
+
+# TODO: 是否要清除 insert_dylib 的隔离信息
+
+echo "check insert_dylib quarantine:"
+xattr "${insert_dylib}"
+# sudo xattr -r -d com.apple.quarantine "${insert_dylib}"
+
+
 "${insert_dylib}" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
 
 echo ">>>>>> hack [${app_name}] completed"

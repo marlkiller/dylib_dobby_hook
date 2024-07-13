@@ -33,9 +33,9 @@ static IMP URLSessionIMP;
 static IMP fileChecksumSHAIMP;
 static IMP checksumSparkleFrameworkIMP;
 static Class stringClass;
-static id licenseEmail;
-static id licenseCode;
-static id appPath;
+static NSString* licenseEmail;
+static NSString* licenseCode;
+static NSString* appPath;
 
 - (NSString *)getAppName {
     // >>>>>> AppName is [com.corecode.MacUpdater],Version is [3.3.1], myAppCFBundleVersion is [16954].
@@ -119,7 +119,7 @@ static id appPath;
             [invocation setSelector:selector];
             NSInteger *param1 = 0xc9;
             NSString *param2 = licenseEmail;
-            NSInteger param3 = licenseCode;
+            NSString *param3 = licenseCode;
             [invocation setArgument:&param1 atIndex:2];
             [invocation setArgument:&param2 atIndex:3];
             [invocation setArgument:&param3 atIndex:4];
@@ -214,16 +214,15 @@ static id appPath;
 //  [BEGIN]
 //  下面这块代码是为了防止 clion 编译的 str 与 app 中的 str 不属于同一个 clz...
 //  xcode 编译则不需要这么抽象的写法, 不知道为什么
-//  如果你知道, 请告诉我.!
-    stringClass = NSClassFromString(@"NSString");
-    licenseEmail = [[stringClass alloc] initWithString:[Constant G_EMAIL_ADDRESS_FMT]];
-    licenseCode = [[stringClass alloc] initWithString:@"123456789"];
-    appPath = [[stringClass alloc] initWithString:[Constant getCurrentAppPath]];
+//     stringClass = NSClassFromString(@"NSString");
+//     licenseEmail = [[stringClass alloc] initWithString:[Constant G_EMAIL_ADDRESS_FMT]];
+//     licenseCode = [[stringClass alloc] initWithString:@"123456789"];
+//     appPath = [[stringClass alloc] initWithString:[Constant getCurrentAppPath]];
 //  [END]
 
-    // licenseEmail = [Constant G_EMAIL_ADDRESS_FMT];
-    // licenseCode = @"123456789";
-    // appPath = [Constant getCurrentAppPath];
+    licenseEmail = [Constant G_EMAIL_ADDRESS_FMT];
+    licenseCode = @"123456789";
+    appPath = [Constant getCurrentAppPath];
     
 ////    -[AppDelegate purchaseInit]:
     Class __NSCFStringClz = NSClassFromString(@"__NSCFString");
@@ -270,13 +269,6 @@ static id appPath;
                    swizzledClass:[self class]
                 swizzledSelector:@selector(ret1)
     ];
-
-    [MemoryUtils replaceClassMethod:objc_getClass("CGIInfoHelper")
-                   originalSelector:NSSelectorFromString(@"checkExpiry:eventType:")
-                      swizzledClass:[self class]
-                   swizzledSelector:@selector(ret)
-    ];
-    
     
     //  nop 掉定时教研
     [MemoryUtils replaceClassMethod:objc_getClass("CGIInfoHelper")

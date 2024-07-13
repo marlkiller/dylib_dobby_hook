@@ -13,7 +13,6 @@
 #import "HackProtocol.h"
 #import <Cocoa/Cocoa.h>
 #import "common_ret.h"
-
 #include <mach-o/arch.h>
 #include <sys/sysctl.h>
 
@@ -33,8 +32,8 @@ static NSString *G_EMAIL_ADDRESS = @"X'rq ol: zneyxvyyre@ibvqz.pbz";;
 static NSString *G_EMAIL_ADDRESS_FMT = @"zneyxvyyre@ibvqz.pbz";;
 static NSString *G_DYLIB_NAME = @"libdylib_dobby_hook.dylib";
 
-static NSString *currentAppPath;;
-static NSString *currentAppName;;
+static NSString *currentAppPath;
+static NSString *currentAppName;
 static NSString *currentAppVersion;
 static NSString *currentAppCFBundleVersion;
 static BOOL arm;
@@ -77,9 +76,9 @@ static BOOL arm;
         NSLog(@">>>>>> DobbyGetVersion: %s", DobbyGetVersion());
 
         NSBundle *app = [NSBundle mainBundle];
-        currentAppName = [app bundleIdentifier];
-        currentAppVersion = [app objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-        currentAppCFBundleVersion = [app objectForInfoDictionaryKey:@"CFBundleVersion"];
+        currentAppName = [[app bundleIdentifier] copy];
+        currentAppVersion =[ [app objectForInfoDictionaryKey:@"CFBundleShortVersionString"] copy];
+        currentAppCFBundleVersion = [[app objectForInfoDictionaryKey:@"CFBundleVersion"] copy];
         NSLog(@">>>>>> AppName is [%s],Version is [%s], myAppCFBundleVersion is [%s].", currentAppName.UTF8String, currentAppVersion.UTF8String, currentAppCFBundleVersion.UTF8String);
         NSLog(@">>>>>> App Architecture is: %@", [Constant getSystemArchitecture]);
         NSLog(@">>>>>> App DebuggerAttached is: %d", [Constant isDebuggerAttached]);
@@ -92,8 +91,9 @@ static BOOL arm;
         NSRange range = [[Constant getSystemArchitecture] rangeOfString:@"arm" options:NSCaseInsensitiveSearch];
         arm = range.location != NSNotFound;
         
+        // 这里不用 copy 的话, clion cmake 编译的产物会内存泄漏,字符串对象乱飞...不知道为什么
         // 返回包的完整路径。
-        currentAppPath = [app bundlePath];
+        currentAppPath = [[app bundlePath] copy];
         NSLog(@">>>>>> [app bundlePath] %@",currentAppPath);
         
         // 返回应用程序执行文件的路径。
