@@ -33,9 +33,7 @@ static IMP URLSessionIMP;
 static IMP fileChecksumSHAIMP;
 static IMP checksumSparkleFrameworkIMP;
 static Class stringClass;
-static NSString* licenseEmail;
-static NSString* licenseCode;
-static NSString* appPath;
+static NSString* licenseCode = @"123456789";
 
 - (NSString *)getAppName {
     // >>>>>> AppName is [com.corecode.MacUpdater],Version is [3.3.1], myAppCFBundleVersion is [16954].
@@ -52,7 +50,7 @@ static NSString* appPath;
     id ret = ((NSString *(*)(id,SEL))defaultStringIMP)(self,_cmd);
     
     if ([self isEqualTo:@"SavedV3PurchaseEmail"]) {
-        ret = [licenseEmail performSelector:NSSelectorFromString(@"rot13")];
+        ret = [[Constant G_EMAIL_ADDRESS_FMT] performSelector:NSSelectorFromString(@"rot13")];
     } else if ([self isEqualTo:@"SavedV3PurchaseLicense"]) {
         ret = [licenseCode performSelector:NSSelectorFromString(@"rot13")];
     }else if ([self isEqualTo:@"SavedPurchaseLicense"]) {
@@ -118,7 +116,7 @@ static NSString* appPath;
             [invocation setTarget:self];
             [invocation setSelector:selector];
             NSInteger *param1 = 0xc9;
-            NSString *param2 = licenseEmail;
+            NSString *param2 = [Constant G_EMAIL_ADDRESS_FMT];
             NSString *param3 = licenseCode;
             [invocation setArgument:&param1 atIndex:2];
             [invocation setArgument:&param2 atIndex:3];
@@ -160,7 +158,7 @@ static NSString* appPath;
             arg4 = [arg4 stringByReplacingOccurrencesOfString:@"a=2" withString:@"a=0"];
         }
         if(arg4!=nil){
-            arg4 = [arg4 stringByReplacingOccurrencesOfString:[@"=" stringByAppendingString:licenseEmail] withString:@"=(null)"];
+            arg4 = [arg4 stringByReplacingOccurrencesOfString:[@"=" stringByAppendingString:[Constant G_EMAIL_ADDRESS_FMT]] withString:@"=(null)"];
             arg4 = [arg4 stringByReplacingOccurrencesOfString:[@"=" stringByAppendingString:licenseCode] withString:@"=(null)"];
         }
     }
@@ -183,7 +181,7 @@ static NSString* appPath;
     // arm: a5f76baec8ce44138ceadc97130d622642fe4d2e
     // id ret = ((id (*)(id,SEL))checksumSparkleFrameworkIMP)(self,_cmd);
 
-    NSString *Sparkle = [appPath stringByAppendingString:@"/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle_Backup"];
+    NSString *Sparkle = [[Constant getCurrentAppPath] stringByAppendingString:@"/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle_Backup"];
     NSString *retFake = [EncryptionUtils calculateSHA1OfFile:Sparkle];
     return  retFake;
 
@@ -220,10 +218,6 @@ static NSString* appPath;
 //     appPath = [[stringClass alloc] initWithString:[Constant getCurrentAppPath]];
 //  [END]
 
-    licenseEmail = [Constant G_EMAIL_ADDRESS_FMT];
-    licenseCode = @"123456789";
-    appPath = [Constant getCurrentAppPath];
-    
 ////    -[AppDelegate purchaseInit]:
     Class __NSCFStringClz = NSClassFromString(@"__NSCFString");
     SEL defaultStringSel = NSSelectorFromString(@"defaultString");
