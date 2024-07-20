@@ -164,26 +164,51 @@ static NSWindow *myWindow = nil;
 
 - (BOOL)hack {
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        // 在这里执行你的代码
-        NSLog(@">>>>>> 代码延迟执行了 1 秒");
-        NSLog(@">>>>>> 添加自定义菜单");
-        
-        NSMenu *mainMenu = [NSApplication sharedApplication].mainMenu;
-        // 创建一个与独立的菜单项
-        NSMenuItem *newMenuItem = [[NSMenuItem alloc] initWithTitle:@"menu_new" action:nil keyEquivalent:@""];
-        NSMenuItem *subMenuItem1 = [[NSMenuItem alloc] initWithTitle:@"mem_event" action:NSSelectorFromString(@"mem_event:") keyEquivalent:@""];
-        [subMenuItem1 setTarget:self.class];
-        NSMenuItem *subMenuItem2 = [[NSMenuItem alloc] initWithTitle:@"draw_event" action:@selector(draw_event:) keyEquivalent:@""];
-        [subMenuItem2 setTarget:DevHack.class];
-        // 创建一个子菜单并将子菜单项添加进去
-        NSMenu *newMenu = [[NSMenu alloc] initWithTitle:@"New Menu [HOOK]"];
-        [newMenu addItem:subMenuItem1];
-        [newMenu addItem:subMenuItem2];
-        // 将子菜单添加到父菜单项
-        [newMenuItem setSubmenu:newMenu];
-        [mainMenu addItem:newMenuItem];
-    });
+//    手动定时监测菜单
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        while (true) {
+//            // 每 5 秒执行一次
+//            sleep(5);
+//            NSLog(@">>>>>> allWindows");
+//            // 在主线程上异步执行窗口信息获取和日志记录
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                NSArray<NSWindow *> *allWindows = [NSApplication sharedApplication].windows;
+//                // 遍历所有窗口，打印窗口信息
+//                for (NSWindow *window in allWindows) {
+//                    NSViewController *viewController = window.contentViewController;
+//                    NSLog(@"窗口类名: %@, 关联视图控制器: %@", NSStringFromClass([window class]), viewController ? viewController : @"无");
+//                }
+//            });
+//        }
+//    });
+    
+//    -[_TtC13App_Cleaner_822BaseFeaturesController onAppDidFinishLaunching]:
+    
+    
+
+    
+    
+//    添加菜单
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        // 在这里执行你的代码
+//        NSLog(@">>>>>> 代码延迟执行了 1 秒");
+//        NSLog(@">>>>>> 添加自定义菜单");
+//        
+//        NSMenu *mainMenu = [NSApplication sharedApplication].mainMenu;
+//        // 创建一个与独立的菜单项
+//        NSMenuItem *newMenuItem = [[NSMenuItem alloc] initWithTitle:@"menu_new" action:nil keyEquivalent:@""];
+//        NSMenuItem *subMenuItem1 = [[NSMenuItem alloc] initWithTitle:@"mem_event" action:NSSelectorFromString(@"mem_event:") keyEquivalent:@""];
+//        [subMenuItem1 setTarget:self.class];
+//        NSMenuItem *subMenuItem2 = [[NSMenuItem alloc] initWithTitle:@"draw_event" action:@selector(draw_event:) keyEquivalent:@""];
+//        [subMenuItem2 setTarget:DevHack.class];
+//        // 创建一个子菜单并将子菜单项添加进去
+//        NSMenu *newMenu = [[NSMenu alloc] initWithTitle:@"New Menu [HOOK]"];
+//        [newMenu addItem:subMenuItem1];
+//        [newMenu addItem:subMenuItem2];
+//        // 将子菜单添加到父菜单项
+//        [newMenuItem setSubmenu:newMenu];
+//        [mainMenu addItem:newMenuItem];
+//    });
     
         
 //    Class WinControllerClass = NSClassFromString(@"mac_app_dev_swift.ViewController");

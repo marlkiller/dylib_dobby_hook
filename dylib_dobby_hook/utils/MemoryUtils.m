@@ -215,7 +215,7 @@ NSData *machineCode2Bytes(NSString *hexString) {
                                                 searchFilePath,
                                                 searchMachineCode];
         
-        [self exAlart:@"特征吗匹配 异常 ??!!" message:message];
+        [self exAlart:@"特征吗匹配 异常 ?!!!" message:message];
         return offsets;
     }
     if (CACHE_MACHINE_CODE_OFFSETS) {
@@ -518,7 +518,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
                                                         NSStringFromClass(swizzledClass),
                                                         NSStringFromSelector(swizzledSelector),
                                                         swizzledMethod];
-        [self exAlart:@"hookInstanceMethod 异常 ??!!" message:message];
+        [self exAlart:@"hookInstanceMethod 异常 ?!!!" message:message];
     }
 }
 
@@ -551,7 +551,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
                                                         NSStringFromClass(swizzledClass),
                                                         NSStringFromSelector(swizzledSelector),
                                                         swizzledMethod];
-        [self exAlart:@"hookClassMethod 异常 ??!!" message:message];
+        [self exAlart:@"hookClassMethod 异常 ?!!!" message:message];
     }
 }
 
@@ -587,7 +587,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
                                                         NSStringFromClass(swizzledClass),
                                                         NSStringFromSelector(swizzledSelector),
                                                         swizzledImplementation];
-        [self exAlart:@"replaceInstanceMethod 异常 ??!!" message:message];
+        [self exAlart:@"replaceInstanceMethod 异常 ?!!!" message:message];
     }
 }
 
@@ -622,7 +622,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
                                                         NSStringFromClass(swizzledClass),
                                                         NSStringFromSelector(swizzledSelector),
                                                         swizzledImplementation];
-        [self exAlart:@"replaceClassMethod 异常 ??!!" message:message];
+        [self exAlart:@"replaceClassMethod 异常 ?!!!" message:message];
     }
 }
 

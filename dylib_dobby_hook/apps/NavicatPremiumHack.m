@@ -167,6 +167,54 @@ static IMP displayRegisteredInfoIMP;
 //       [mutableDict setObject:@"organization" forKey:@"organization"];
 //       *deviceIdPtr = mutableDict;
 //   }
+    
+    
+//    指针转换 (void *)
+//    id object = self;
+//    NSString  *user = *(NSString __strong  **)((__bridge void *)object + 0x60);
+//    NSString *newUser = @"";
+//    *(NSString __strong **)((__bridge void *)object + 0x60) = newUser;
+
+
+//    指针转换 (&)
+//    id object = self;
+//    NSString *user = *(NSString __strong **)(&object + 0x60);
+//    NSString *newUser = @"";
+//    *(NSString __strong **)((&object) + 0x60) = newUser;
+    
+
+    
+//    指针转换 (uintptr_t)
+//    id object = self;
+//    NSString *user = *(NSString __strong **)(((void *)(uintptr_t)object) + 0x60);
+//    NSString *newUser = @"";
+//    *(NSString __strong **)(((void *)(uintptr_t)object) + 0x60) = newUser;
+
+//    读写 id 类型
+//    id  user = *(id __strong  *)((__bridge void *)object + 0x60);
+//    id c = *(id __strong *)(&object + 0x60);
+//    id newC = @"";
+//    *(id __strong *)(&object + 0x60) = newC;
+
+
+//    读写 int 属性对象
+//    int intValue = *(int *)((__bridge void *)object + 0x30);
+//    *(int *)((__bridge void *)object + 0x30) = 123;
+    
+
+//    读写 NSString 属性对象
+//    NSString __strong **propertyPtr = (NSString __strong **)(&object + 0x60);
+//    *propertyPtr = @"1";
+//    NSString *propertyA = *propertyPtr = @"1";
+
+
+    // demo
+//    std::string str = "123";
+//    std::string *ptr = &str;
+//
+//    uintptr_t address = reinterpret_cast<uintptr_t>(ptr);
+//    void * address2 = (void *)ptr;
+//    void * address3 = &str;
 
     ((void(*)(id, SEL))displayRegisteredInfoIMP)(self, _cmd);
     
@@ -182,5 +230,25 @@ static IMP displayRegisteredInfoIMP;
          [_appExtraInfoLabel setStringValue:[Constant G_EMAIL_ADDRESS]];
 
     }
+//    id BaseFeaturesController  = self;
+//    
+////  r14 = *(r13 + *objc_ivar_offset__TtC13App_Cleaner_822BaseFeaturesController_licenseManager);
+//    id  NKLicenseManager = *(id __strong *)((__bridge void *)BaseFeaturesController + 0x8);
+//      
+////  r14 = *(rbx + 0x28);
+////  r15 = r14 + 0x20;
+//    id  LicenseStateStorage = *(id __strong *)((__bridge void *)NKLicenseManager + 0x28);
+//    id  TtC16NKLicenseManager19LicenseStateStorage_serialKey = *(id __strong *)((__bridge void *)LicenseStateStorage + 0x20);
+//    if (!TtC16NKLicenseManager19LicenseStateStorage_serialKey) {
+//        
+//        
+////        *(id __strong *)((__bridge void *)LicenseStateStorage + 0x20) = @"123456";
+//        Ivar serialKeyIvar = class_getInstanceVariable([LicenseStateStorage class], "serialKey");
+//        const char *ivarTypeEncoding = ivar_getTypeEncoding(serialKeyIvar);
+//        NSString *ivarType = [NSString stringWithUTF8String:ivarTypeEncoding];
+//        id currentValue = object_getIvar(LicenseStateStorage, serialKeyIvar);
+//        object_setIvar(LicenseStateStorage, serialKeyIvar, @"2222222222");
+//        *(int *)((__bridge void *)LicenseStateStorage + 0x28) = 1;
+//    }
 }
 @end

@@ -13,6 +13,16 @@
     "clear_certificate":[
         "/Applications/Surge.app/Contents/Library/LaunchServices/com.nssurge.surge-mac.helper"
     ]
+  },
+  "ForkLift":{
+    "TODO// patch":{
+      "/Applications/ForkLift.app/Contents/Library/LaunchServices/com.binarynights.ForkLiftHelper":{
+        
+      }
+    },
+    "clear_certificate":[
+        "/Applications/ForkLift.app/Contents/Library/LaunchServices/com.binarynights.ForkLiftHelper"
+    ]
   }
 }
 

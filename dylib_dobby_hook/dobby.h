@@ -129,7 +129,7 @@ int DobbyInstrument(void *address, dobby_instrument_callback_t pre_handler);
 // destroy and restore code patch
 int DobbyDestroy(void *address);
 
-const char *DobbyGetVersion();
+const char *DobbyGetVersion(void);
 
 // symbol resolver
 void *DobbySymbolResolver(const char *image_name, const char *symbol_name);

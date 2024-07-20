@@ -26,22 +26,30 @@
 2. Xcode|Clion 集成开发调试环境
 3. 特征码搜索
 
-| App             | version | x86 | arm | Download                                    | remark                                                                                                       | Author              |
-|-----------------|---------|-----|-----|---------------------------------------------|--------------------------------------------------------------------------------------------------------------|---------------------|
-| TablePlus       | 6.*     | ✔   | ✔   | https://tableplus.com/                      | inject_bin="/Applications/TablePlus.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"            |                     |
-| DevUtils        | 1.*     | ✔   | ✔   | https://devutils.com/                       |                                                                                                              |                     |
-| AirBuddy        | 2.*     | ✔   | ✔   | https://v2.airbuddy.app/download            | inject_bin="/Applications/AirBuddy.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"           |                     |
-| Navicat Premium | 17.*    | ✔   | ✔   | App Store                                   | inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"                | QiuChenlyOpenSource |
-| Paste           | 4.1.3   | ✘   | ✔   | App Store                                   |                                                                                                              | LeeeMooo            |
-| Transmit        | 5.*     | ✔   | ✔   | https://panic.com/transmit/#download        |                                                                                                              |                     |
-| <s>AnyGo<s>     | 7.*     | ✔   | ✔   | https://itoolab.com/gps-location-changer/   | DMCA                                                                                                         |                     |
-| Downie          | 4.*     | ✔   | ✔   | https://software.charliemonroe.net/downie/  | inject_bin="/Applications/Permute 3.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"        |                     |
-| Permute         | 3.*     | ✔   | ✔   | https://software.charliemonroe.net/permute/ | inject_bin="/Applications/Downie 4.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"         |                     |
-| ProxyMan        | 5.2     | ✔   | ✔   | https://proxyman.io/                        | inject_bin="/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend"           |                     |
-| Movist Pro      | 2.*     | ✔   | ✔   | https://movistprime.com/                    | inject_bin="/Applications/Movist Pro.app/Contents/Frameworks/MediaKeyTap.framework/Versions/A/MediaKeyTap"   |                     |
-| <s>Surge<s>     | 5.7.*   | ✔   | ✔   | https://nssurge.com/                        | DMCA                                                                                                         |                     |
-| Infuse          | 7.7.*   | ✔   | ✔   | App Store                                   | inject_bin="/Applications/Infuse.app/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator" |                     |
-| MacUpdater      | 3.      | ✔   | ✔   | https://www.corecode.io/macupdater/#download | inject_bin="/Applications/MacUpdater.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"           |                     |
+<details>
+  <summary>点击这里展开/收起</summary>
+
+| App             | version | x86 | arm | Download                                     | remark                                                                                                               | Author              |
+|-----------------|---------|-----|-----|----------------------------------------------|----------------------------------------------------------------------------------------------------------------------|---------------------|
+| TablePlus       | 6.*     | ✔   | ✔   | https://tableplus.com/                       | inject_bin="/Applications/TablePlus.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"                    |                     |
+| DevUtils        | 1.*     | ✔   | ✔   | https://devutils.com/                        |                                                                                                                      |                     |
+| AirBuddy        | 2.*     | ✔   | ✔   | https://v2.airbuddy.app/download             | inject_bin="/Applications/AirBuddy.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"                   |                     |
+| Navicat Premium | 17.*    | ✔   | ✔   | App Store                                    | inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"                        | QiuChenlyOpenSource |
+| Paste           | 4.1.3   | ✘   | ✔   | App Store                                    |                                                                                                                      | LeeeMooo            |
+| Transmit        | 5.*     | ✔   | ✔   | https://panic.com/transmit/#download         |                                                                                                                      |                     |
+| AnyGo           | 7.*     | ✔   | ✔   | https://itoolab.com/gps-location-changer/    | DMCA                                                                                                                 |                     |
+| Downie          | 4.*     | ✔   | ✔   | https://software.charliemonroe.net/downie/   | inject_bin="/Applications/Permute 3.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"                |                     |
+| Permute         | 3.*     | ✔   | ✔   | https://software.charliemonroe.net/permute/  | inject_bin="/Applications/Downie 4.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"                 |                     |
+| ProxyMan        | 5.2     | ✔   | ✔   | https://proxyman.io/                         | inject_bin="/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend"                   |                     |
+| Movist Pro      | 2.*     | ✔   | ✔   | https://movistprime.com/                     | inject_bin="/Applications/Movist Pro.app/Contents/Frameworks/MediaKeyTap.framework/Versions/A/MediaKeyTap"           |                     |
+| Surge           | 5.7.*   | ✔   | ✔   | https://nssurge.com/                         | DMCA                                                                                                                 |                     |
+| Infuse          | 7.7.*   | ✔   | ✔   | App Store                                    | inject_bin="/Applications/Infuse.app/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator"         |                     |
+| MacUpdater      | 3.      | ✔   | ✔   | https://www.corecode.io/macupdater/#download | inject_bin="/Applications/MacUpdater.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"                   |                     |
+| CleanShotX      | 4.      | ✔   | ✘   | https://updates.getcleanshot.com/v3/         | DMCA                                                                                                                 |                     |
+| ForkLift        | 4.      | ✔   | ✔   | https://binarynights.com/                    | inject_bin="/Applications/ForkLift.app/Contents/Frameworks/UniversalDetector.framework/Versions/A/UniversalDetector" |                     |
+
+</details>
+
 
 ## Usage
 

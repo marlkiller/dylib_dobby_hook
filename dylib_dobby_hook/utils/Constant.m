@@ -42,7 +42,11 @@ static BOOL arm;
 @dynamic G_EMAIL_ADDRESS;
 @dynamic G_EMAIL_ADDRESS_FMT;
 @dynamic G_DYLIB_NAME;
-
+@dynamic currentAppPath;
+@dynamic currentAppName;
+@dynamic currentAppVersion;
+@dynamic currentAppCFBundleVersion;
+@dynamic arm;
 
 + (NSString *)G_EMAIL_ADDRESS {
     return love69(G_EMAIL_ADDRESS);

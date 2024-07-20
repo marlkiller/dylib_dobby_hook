@@ -57,5 +57,16 @@
     NSLog(@">>>>>> called + ret");
 }
 
+- (BOOL)hack {
+    return NO;
+}
+
+- (NSString *)getAppName {
+    return nil;
+}
+
+- (NSString *)getSupportAppVersion {
+    return nil;
+}
 
 @end
