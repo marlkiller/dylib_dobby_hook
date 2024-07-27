@@ -2,7 +2,7 @@
 //  encryp_utils.h
 //  mac_patch_helper
 //
-//  Created by 马治武 on 2024/5/3.
+//  Created by voidm on 2024/5/3.
 //
 
 #ifndef encryp_utils_h

@@ -2,7 +2,7 @@
 //  DevUtilsHack.m
 //  dylib_dobby_hook
 //
-//  Created by 马治武 on 2024/1/26.
+//  Created by voidm on 2024/1/26.
 //
 
 #import <Foundation/Foundation.h>

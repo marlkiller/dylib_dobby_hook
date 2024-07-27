@@ -8,7 +8,7 @@
 
 #import "HackProtocolDefault.h"
 
-@interface HackHelperProtocolDefault :  HackProtocolDefault
+@interface HackHelperProtocolDefault : CommonRetOC
 
 
 @end

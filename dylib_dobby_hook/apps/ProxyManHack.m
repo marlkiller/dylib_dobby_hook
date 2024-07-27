@@ -2,7 +2,7 @@
 //  ProxyManHack.m
 //  dylib_dobby_hook
 //
-//  Created by 马治武 on 2024/4/9.
+//  Created by voidm on 2024/4/9.
 //
 
 #import <Foundation/Foundation.h>

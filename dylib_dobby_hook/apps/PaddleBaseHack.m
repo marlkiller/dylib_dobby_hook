@@ -2,7 +2,7 @@
 //  DownieHack.m
 //  dylib_dobby_hook
 //
-//  Created by 马治武 on 2024/4/3.
+//  Created by voidm on 2024/4/3.
 //
 
 #import <Foundation/Foundation.h>
