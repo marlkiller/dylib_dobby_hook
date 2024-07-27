@@ -15,13 +15,13 @@
     ]
   },
   "ForkLift":{
-    "TODO// patch":{
-      "/Applications/ForkLift.app/Contents/Library/LaunchServices/com.binarynights.ForkLiftHelper":{
-        
-      }
-    },
     "clear_certificate":[
         "/Applications/ForkLift.app/Contents/Library/LaunchServices/com.binarynights.ForkLiftHelper"
+    ]
+  },
+  "SMJobBlessApp":{
+    "clear_certificate":[
+        "/Applications/SMJobBlessApp.app/Contents/Library/LaunchServices/com.apple.bsd.SMJobBlessHelper"
     ]
   }
 }

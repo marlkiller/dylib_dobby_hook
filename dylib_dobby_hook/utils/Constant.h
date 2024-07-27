@@ -18,11 +18,13 @@
 @property (class, nonatomic, strong) NSString *currentAppVersion;
 @property (class, nonatomic, strong) NSString *currentAppCFBundleVersion;
 @property (class, nonatomic, assign) BOOL arm;
+@property (class, nonatomic, assign) BOOL helper;
 
 
 
 + (BOOL) isFirstOpen;
 + (BOOL)isArm;
++ (BOOL)isHelper;
 + (NSString *)getCurrentAppPath;
 + (NSString *)getCurrentAppVersion;
 + (NSString *)getCurrentAppCFBundleVersion;

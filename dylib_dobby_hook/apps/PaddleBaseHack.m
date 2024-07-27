@@ -12,10 +12,10 @@
 #import <objc/runtime.h>
 #include <mach-o/dyld.h>
 #import <Cocoa/Cocoa.h>
-#import "HackProtocol.h"
+#import "HackProtocolDefault.h"
 #import "common_ret.h"
 
-@interface PaddleBaseHack : NSObject <HackProtocol>
+@interface PaddleBaseHack : HackProtocolDefault
 
 @end
 

@@ -10,12 +10,12 @@
 #import "dobby.h"
 #import <mach-o/dyld.h>
 #import <objc/runtime.h>
-#import "HackProtocol.h"
 #import <Cocoa/Cocoa.h>
 #import "common_ret.h"
 #include <mach-o/arch.h>
 #include <sys/sysctl.h>
-
+#import "HackProtocolDefault.h"
+#import "HackHelperProtocolDefault.h"
 
 @implementation Constant
 
@@ -37,6 +37,7 @@ static NSString *currentAppName;
 static NSString *currentAppVersion;
 static NSString *currentAppCFBundleVersion;
 static BOOL arm;
+static BOOL helper;
 
 // 告诉编译器不生成默认的 getter 和 setter 方法
 @dynamic G_EMAIL_ADDRESS;
@@ -47,6 +48,7 @@ static BOOL arm;
 @dynamic currentAppVersion;
 @dynamic currentAppCFBundleVersion;
 @dynamic arm;
+@dynamic helper;
 
 + (NSString *)G_EMAIL_ADDRESS {
     return love69(G_EMAIL_ADDRESS);
@@ -56,6 +58,10 @@ static BOOL arm;
 }
 + (NSString *)G_DYLIB_NAME {
     return G_DYLIB_NAME;
+}
+
++ (NSString *)currentAppName {
+    return currentAppName;
 }
 
 + (BOOL) isFirstOpen {
@@ -99,6 +105,10 @@ static BOOL arm;
         // 返回包的完整路径。
         currentAppPath = [[app bundlePath] copy];
         NSLog(@">>>>>> [app bundlePath] %@",currentAppPath);
+        // /Library/PrivilegedHelperTools
+        if ([currentAppPath isEqualToString:@"/Library/PrivilegedHelperTools"]) {
+            helper = YES;
+        }
         
         // 返回应用程序执行文件的路径。
         // NSString *executablePath = [app executablePath];
@@ -107,6 +117,10 @@ static BOOL arm;
         // 返回本地化字符串。
         // NSString *localizedString = [[NSBundle mainBundle] localizedStringForKey:@"Greeting" value:@"" table:@"Greetings"];
     }
+}
+
++ (BOOL)isHelper {
+    return helper;
 }
 
 + (BOOL)isArm {
@@ -156,37 +170,47 @@ static BOOL arm;
 
 
 + (NSArray<Class> *)getAllHackClasses {
-    NSMutableArray<Class> *hackClasses = [NSMutableArray array];
-    
-    int numClasses;
-    Class *classes = NULL;
-    numClasses = objc_getClassList(NULL, 0);
-    
-    if (numClasses > 0) {
-        classes = (__unsafe_unretained Class *)malloc(sizeof(Class) * numClasses);
-        numClasses = objc_getClassList(classes, numClasses);
-        
-        for (int i = 0; i < numClasses; i++) {
-            Class class = classes[i];
-            
-            if (class_conformsToProtocol(class, @protocol(HackProtocol))) {
-                [hackClasses addObject:class];
-            }
-        }
-        free(classes);
+    if ([self isHelper]) {
+        return [self getAllSubclassesOfClass:[HackHelperProtocolDefault class]];
+    }else{
+        return [self getAllSubclassesOfClass:[HackProtocolDefault class]];
     }
-    return hackClasses;
+    
 }
 
++ (NSArray<Class> *)getAllSubclassesOfClass:(Class)parentClass {
+    NSMutableArray<Class> *subclasses = [NSMutableArray array];
+    
+    // 获取所有已加载的类
+    unsigned int numClasses = 0;
+    Class *classes = objc_copyClassList(&numClasses);
+    for (int i = 0; i < numClasses; i++) {
+        Class currentClass = classes[i];
+        if ([self isSubclassOfClass:currentClass parentClass:parentClass] &&
+            currentClass != parentClass) {
+            [subclasses addObject:currentClass];
+        }
+    }
+    
+    free(classes);
+    return [subclasses copy];
+}
+
++ (BOOL)isSubclassOfClass:(Class)class parentClass:(Class)parentClass {
+    while (class != nil) {
+        if (class == parentClass) {
+            return YES;
+        }
+        class = class_getSuperclass(class);
+    }
+    return NO;
+}
 
 + (void)doHack {
     NSArray<Class> *personClasses = [Constant getAllHackClasses];
     
     for (Class class in personClasses) {
-        
-        if ([class isEqualTo:NSObject.class]) {
-            continue;;
-        }
+
         id<HackProtocol> it = [[class alloc] init];
         if ([currentAppName hasPrefix:[it getAppName]]) {
             NSString *supportAppVersion = [it getSupportAppVersion];

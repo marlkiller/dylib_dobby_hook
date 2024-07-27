@@ -12,7 +12,7 @@
 #import "encryp_utils.h"
 #import <objc/runtime.h>
 #include <mach-o/dyld.h>
-#import "HackProtocol.h"
+#import "HackProtocolDefault.h"
 #import "common_ret.h"
 
 @interface DummyURLSessionDataTask : NSObject
@@ -28,7 +28,7 @@
 @end
 
 
-@interface TablePlusHack : NSObject <HackProtocol>
+@interface TablePlusHack : HackProtocolDefault
 
 @end
 

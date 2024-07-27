@@ -10,9 +10,9 @@
 #import "dobby.h"
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
-#import "HackProtocol.h"
+#import "HackProtocolDefault.h"
 
-@interface DevUtilsHack : NSObject <HackProtocol>
+@interface DevUtilsHack : HackProtocolDefault
 
 @end
 

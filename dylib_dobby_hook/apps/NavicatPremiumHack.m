@@ -10,10 +10,10 @@
 #import "dobby.h"
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
-#import "HackProtocol.h"
+#import "HackProtocolDefault.h"
 #import "common_ret.h"
 
-@interface NavicatPremiumHack : NSObject <HackProtocol>
+@interface NavicatPremiumHack : HackProtocolDefault
 
 @end
 @implementation NavicatPremiumHack

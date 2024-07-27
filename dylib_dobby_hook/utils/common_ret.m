@@ -10,7 +10,6 @@
 #import "Constant.h"
 #import "MemoryUtils.h"
 #include <mach-o/dyld.h>
-#import "HackProtocol.h"
 #include <sys/ptrace.h>
 #import <sys/sysctl.h>
 #include <mach/mach_types.h>

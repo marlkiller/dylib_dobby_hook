@@ -3,10 +3,10 @@
 #import "dobby.h"
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
-#import "HackProtocol.h"
 #import "common_ret.h"
+#import "HackProtocolDefault.h"
 
-@interface PasteHack : NSObject <HackProtocol>
+@interface PasteHack : HackProtocolDefault
 
 @end
 

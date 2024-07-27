@@ -9,14 +9,14 @@
 #import "Constant.h"
 #import "dobby.h"
 #import "MemoryUtils.h"
-#import "HackProtocol.h"
 #include "common_ret.h"
 #include <sys/ptrace.h>
 #import <objc/runtime.h>
 #include <mach-o/dyld.h>
 #import <Cocoa/Cocoa.h>
+#import "HackProtocolDefault.h"
 
-@interface AirBuddyHack : NSObject <HackProtocol>
+@interface AirBuddyHack : HackProtocolDefault
 
 @end
 @implementation AirBuddyHack

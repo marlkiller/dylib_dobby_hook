@@ -16,8 +16,8 @@
 2. libs:  项目依赖的开源 dobby 库
 3. release:  build 后的成品
 4. script:
-    - hack.sh 自定义注入脚本 `sudo sh hack.sh`
-    - auto_hack.sh 妹妹全自动注入脚本 `sudo sh auto_hack.sh`
+   - hack.sh 自定义注入脚本 `sudo sh hack.sh`
+   - auto_hack.sh 妹妹全自动注入脚本 `sudo sh auto_hack.sh`
 5. tools: insert_dylib 开源注入工具
 
 ## Feat
@@ -29,32 +29,31 @@
 <details>
   <summary>点击这里展开/收起</summary>
 
-| App             | version | x86 | arm | Download                                     | remark                                                                                                               | Author              |
-|-----------------|---------|-----|-----|----------------------------------------------|----------------------------------------------------------------------------------------------------------------------|---------------------|
-| TablePlus       | 6.*     | ✔   | ✔   | https://tableplus.com/                       | inject_bin="/Applications/TablePlus.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"                    |                     |
-| DevUtils        | 1.*     | ✔   | ✔   | https://devutils.com/                        |                                                                                                                      |                     |
-| AirBuddy        | 2.*     | ✔   | ✔   | https://v2.airbuddy.app/download             | inject_bin="/Applications/AirBuddy.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"                   |                     |
-| Navicat Premium | 17.*    | ✔   | ✔   | App Store                                    | inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"                        | QiuChenlyOpenSource |
-| Paste           | 4.1.3   | ✘   | ✔   | App Store                                    |                                                                                                                      | LeeeMooo            |
-| Transmit        | 5.*     | ✔   | ✔   | https://panic.com/transmit/#download         |                                                                                                                      |                     |
-| AnyGo           | 7.*     | ✔   | ✔   | https://itoolab.com/gps-location-changer/    | DMCA                                                                                                                 |                     |
-| Downie          | 4.*     | ✔   | ✔   | https://software.charliemonroe.net/downie/   | inject_bin="/Applications/Permute 3.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"                |                     |
-| Permute         | 3.*     | ✔   | ✔   | https://software.charliemonroe.net/permute/  | inject_bin="/Applications/Downie 4.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"                 |                     |
-| ProxyMan        | 5.2     | ✔   | ✔   | https://proxyman.io/                         | inject_bin="/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend"                   |                     |
-| Movist Pro      | 2.*     | ✔   | ✔   | https://movistprime.com/                     | inject_bin="/Applications/Movist Pro.app/Contents/Frameworks/MediaKeyTap.framework/Versions/A/MediaKeyTap"           |                     |
-| Surge           | 5.7.*   | ✔   | ✔   | https://nssurge.com/                         | DMCA                                                                                                                 |                     |
-| Infuse          | 7.7.*   | ✔   | ✔   | App Store                                    | inject_bin="/Applications/Infuse.app/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator"         |                     |
-| MacUpdater      | 3.      | ✔   | ✔   | https://www.corecode.io/macupdater/#download | inject_bin="/Applications/MacUpdater.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"                   |                     |
-| CleanShotX      | 4.      | ✔   | ✘   | https://updates.getcleanshot.com/v3/         | DMCA                                                                                                                 |                     |
-| ForkLift        | 4.      | ✔   | ✔   | https://binarynights.com/                    | inject_bin="/Applications/ForkLift.app/Contents/Frameworks/UniversalDetector.framework/Versions/A/UniversalDetector" |                     |
+| App             | version | x86 | arm | Download                                     | SIP | Author              |
+|-----------------|---------|-----|-----|----------------------------------------------|-----|---------------------|
+| TablePlus       | 6.*     | ✔   | ✔   | https://tableplus.com/                       |     |                     |
+| DevUtils        | 1.*     | ✔   | ✔   | https://devutils.com/                        |     |                     |
+| AirBuddy        | 2.*     | ✔   | ✔   | https://v2.airbuddy.app/download             |     |                     |
+| Navicat Premium | 17.*    | ✔   | ✔   | App Store                                    |     | QiuChenlyOpenSource |
+| Paste           | 4.1.3   | ✘   | ✔   | App Store                                    |     | LeeeMooo            |
+| Transmit        | 5.*     | ✔   | ✔   | https://panic.com/transmit/#download         |     |                     |
+| AnyGo           | 7.*     | ✔   | ✔   | https://itoolab.com/gps-location-changer/    |     |                     |
+| Downie          | 4.*     | ✔   | ✔   | https://software.charliemonroe.net/downie/   |     |                     |
+| Permute         | 3.*     | ✔   | ✔   | https://software.charliemonroe.net/permute/  |     |                     |
+| ProxyMan        | 5.      | ✔   | ✔   | https://proxyman.io/                         |     |                     |
+| Movist Pro      | 2.*     | ✔   | ✔   | https://movistprime.com/                     |     |                     |
+| Surge           | 5.7.*   | ✔   | ✔   | https://nssurge.com/                         |     |                     |
+| Infuse          | 7.7.*   | ✔   | ✔   | App Store                                    |     |                     |
+| MacUpdater      | 3.      | ✔   | ✔   | https://www.corecode.io/macupdater/#download |     |                     |
+| CleanShotX      | 4.      | ✔   | ✘   | https://updates.getcleanshot.com/v3/         |     |                     |
+| ForkLift        | 4.      | ✔   | ✔   | https://binarynights.com/                    | ON  |                     |
 
 </details>
 
-
 ## Usage
 
-
 [download latest release](https://github.com/marlkiller/dylib_dobby_hook/releases/download/latest/dylib_dobby_hook.tar.gz)
+
 ```shell
 tar -xzvf dylib_dobby_hook.tar.gz
 cd script 
@@ -76,7 +75,7 @@ sudo sh auto_hack.sh
 #import "HackProtocol.h"
 
 
-@interface XXXHack : NSObject <HackProtocol>
+@interface XXXHack : HackProtocolDefault
 
 @end
 
@@ -156,6 +155,7 @@ cp -f "${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib" "${app_bundle_framewo
 ```
 
 ## Sponsor
+
 [![JetBrains](jetbrains.svg)](https://www.jetbrains.com/?from=dylib_dobby_hook "JetBrains")
 
 ## Ref

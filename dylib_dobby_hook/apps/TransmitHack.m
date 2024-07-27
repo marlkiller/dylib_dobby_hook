@@ -11,10 +11,10 @@
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
 #include <mach-o/dyld.h>
-#import "HackProtocol.h"
 #import "common_ret.h"
+#import "HackProtocolDefault.h"
 
-@interface TransmitHack : NSObject <HackProtocol>
+@interface TransmitHack : HackProtocolDefault
 
 @end
 

@@ -11,11 +11,11 @@
 #import "MemoryUtils.h"
 #import "encryp_utils.h"
 #import <objc/runtime.h>
-#import "HackProtocol.h"
+#import "HackProtocolDefault.h"
 #include <sys/ptrace.h>
 #import "common_ret.h"
 
-@interface MacUpdaterHack : NSObject <HackProtocol>
+@interface MacUpdaterHack : HackProtocolDefault
 
 
 

@@ -10,10 +10,9 @@
 #import "dobby.h"
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
-#import "HackProtocol.h"
 #include <sys/ptrace.h>
 #import "common_ret.h"
-
+#import "HackProtocolDefault.h"
 
 @interface InfuseHack : NSObject <HackProtocol>
 

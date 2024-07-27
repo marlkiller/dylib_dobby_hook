@@ -9,11 +9,12 @@
 #import "Constant.h"
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
-#import "HackProtocol.h"
 #include <sys/ptrace.h>
+#import <CloudKit/CloudKit.h>
+#import "dobby.h"
+#import "HackProtocolDefault.h"
 
-
-@interface ForkLiftHack : NSObject <HackProtocol>
+@interface ForkLiftHack : HackProtocolDefault
 
 
 
@@ -22,9 +23,11 @@
 
 @implementation ForkLiftHack
 
+static IMP listenerIMP;
 
 
 - (NSString *)getAppName {
+    // com.binarynights.ForkLiftHelper
     return @"com.binarynights.ForkLift";
 }
 
@@ -32,32 +35,12 @@
     return @"4.";
 }
 
++ (CKContainer *)containerWithIdentifier:identifier {
+    return class_createInstance([CKContainer class], 0);
+}
 
- 
 - (BOOL)hack {
-    
-    
-//
-//    ; struct ForkLift.RegistrationData {
-//    ;     let name: Swift.String
-//    ;     let quantity: Swift.Int
-//    ;     let license_type: Swift.Int
-//    ;     let validityDate: Foundation.Date
-//    ;     let signature: Swift.String
-//    ;     let licenseKey: Swift.String?
-//    ; }
-//_$s8ForkLift16RegistrationDataVMn:        // nominal type descriptor for ForkLift.RegistrationData
-//00000001008327c0         struct __swift_StructDescriptor {                      ; "RegistrationData", DATA XREF=_$s8ForkLift16RegistrationDataVMa+7
-//    struct __swift_ContextDescriptor {   // context
-//        0x10051,                         // flags
-//        _$s8ForkLiftMXM-0x1008327c4,     // parent context
-//        aRegistrationda-0x1008327c8,     // name of the type
-//        _$s8ForkLift16RegistrationDataVMa-0x1008327cc, // type accessor function pointer
-//        _$s8ForkLift16RegistrationDataVMF-0x1008327d0 // fields
-//    },
-//    0x6,                                 // number of fields
-//    0x2
-//}
+   
     // 自定义日期字符串
     NSDictionary *registrationDataDict = @{
         @"name": [Constant G_EMAIL_ADDRESS],
@@ -72,6 +55,14 @@
     [defaults setObject:jsonData forKey:@"registrationData"];
     [defaults synchronize];
     
+    
+    
+    [MemoryUtils hookClassMethod:
+         NSClassFromString(@"CKContainer")
+                   originalSelector:NSSelectorFromString(@"containerWithIdentifier:")
+                      swizzledClass:[self class]
+                   swizzledSelector:@selector(containerWithIdentifier: )
+    ];
     
     return YES;
 }

@@ -56,12 +56,15 @@ file(GLOB UtilsHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/utils/*.h)
 file(GLOB Apps ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/apps/*.m)
 file(GLOB AppsHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/apps/*.h)
 
+file(GLOB Helpers ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/helpers/*.m)
+file(GLOB HelpersHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/helpers/*.h)
 
 file(GLOB StaticLibs ${CMAKE_SOURCE_DIR}/libs/*.a)
 
 include_directories(
         ${CMAKE_SOURCE_DIR}/dylib_dobby_hook
         ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/apps
+        ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/helpers
         ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/utils
 )
 
@@ -70,8 +73,10 @@ add_library(${PROJECT_NAME} SHARED
         ${MainHeader}
         ${UtilsHeader}
         ${AppsHeader}
+        ${HelpersHeader}
         ${Utils}
         ${Apps}
+        ${Helpers}
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
         

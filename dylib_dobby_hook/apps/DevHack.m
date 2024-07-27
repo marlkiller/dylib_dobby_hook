@@ -11,7 +11,7 @@
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
 #include <mach-o/dyld.h>
-#import "HackProtocol.h"
+#import "HackProtocolDefault.h"
 #include <sys/ptrace.h>
 #import <AppKit/AppKit.h>
 #import "common_ret.h"
@@ -72,7 +72,7 @@
 @end
 
 
-@interface DevHack : NSObject <HackProtocol>
+@interface DevHack : HackProtocolDefault
 
 //+ (NSWindow *)myWindow;
 @end

@@ -16,7 +16,6 @@
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
 #include <mach-o/dyld.h>
-#import "HackProtocol.h"
 #include <sys/ptrace.h>
 #import <objc/message.h>
 #import "common_ret.h"
