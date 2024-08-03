@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "Constant.h"
 #import "MemoryUtils.h"
+#import "common_ret.h"
 #import <objc/runtime.h>
 #include <sys/ptrace.h>
 #import <CloudKit/CloudKit.h>
@@ -50,7 +51,7 @@ static IMP listenerIMP;
 //}
 
 
-OSStatus hk_SecCodeCopySigningInformation(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo) {
+OSStatus hk_SecCodeCopySigningInformation_forklift(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo) {
 
     OSStatus status = SecCodeCopySigningInformation_ori(codeRef, flags, signingInfo);
     NSLog(@">>>>>> hk_SecCodeCopySigningInformation_ori status = %d",  status);
@@ -89,22 +90,6 @@ OSStatus hk_SecCodeCopySigningInformation(SecCodeRef codeRef, SecCSFlags flags, 
 
     return errSecSuccess;
 }
-
-
-
-OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags,SecRequirementRef  requirement, CFErrorRef *errors){
-    // anchor apple generic and certificate leaf[subject.OU] = "J3CP9BBBN6"
-    // NSString* fakeRequirement = [NSString stringWithFormat:@"identifier \"com.binarynights.ForkLift\""];
-    NSLog(@">>>>>> hk_SecCodeCheckValidityWithErrors  requirement = %@",requirement);
-    return errSecSuccess;
-}
-
-OSStatus (*SecCodeCopySigningInformation_ori)(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo);
-
-OSStatus (*SecRequirementCreateWithString_forklift_ori)(CFStringRef text, SecCSFlags flags,SecRequirementRef *requirement);
-
-OSStatus (*SecCodeCheckValidityWithErrors_ori)(SecCodeRef code, SecCSFlags flags,SecRequirementRef  requirement, CFErrorRef *errors);
-
  
 - (BOOL)hack {
             
@@ -120,7 +105,7 @@ OSStatus (*SecCodeCheckValidityWithErrors_ori)(SecCodeRef code, SecCSFlags flags
         
         //     DobbyHook((void *)sub_10005ad20, (void *)hook_sub_10005ad20, (void *)&sub_10005ad20_ori);
         
-    DobbyHook(SecCodeCopySigningInformation, (void *)hk_SecCodeCopySigningInformation, (void *)&SecCodeCopySigningInformation_ori);
+    DobbyHook(SecCodeCopySigningInformation, (void *)hk_SecCodeCopySigningInformation_forklift, (void *)&SecCodeCopySigningInformation_ori);
     DobbyHook(SecCodeCheckValidityWithErrors, (void *)hk_SecCodeCheckValidityWithErrors, (void *)&SecCodeCheckValidityWithErrors_ori);    
     return YES;
 }

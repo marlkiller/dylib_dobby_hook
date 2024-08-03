@@ -123,6 +123,17 @@ kern_return_t my_task_swap_exception_ports(
 }
 
 
+// Apple Sec
+SecCodeCheckValidityWithErrors_ptr_t SecCodeCheckValidityWithErrors_ori = NULL;
+OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors) {
+    // anchor apple generic and certificate leaf[subject.OU] = "J3CP9BBBN6"
+    // NSString* fakeRequirement = [NSString stringWithFormat:@"identifier \"com.binarynights.ForkLift\""];
+    NSLog(@">>>>>> hk_SecCodeCheckValidityWithErrors  requirement = %@", requirement);
+    return errSecSuccess;
+}
+SecCodeCopySigningInformation_ptr_t SecCodeCopySigningInformation_ori = NULL;
+
+
 
 // Why do you want to see here ???
 NSString *love69(NSString *input) {

@@ -18,6 +18,15 @@
 - (int)ret0;
 + (int)ret1;
 + (int)ret0;
+
+
+
++ (id)hook_defaultStore;
+- (id)hook_NSFileManager:containerIdentifier;
+
++ (id)hook_containerWithIdentifier:identifier;
++ (id)hook_defaultContainer;
+
 @end
 
 #endif /* CommonRetOC_h */

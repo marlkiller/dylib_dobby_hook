@@ -28,6 +28,8 @@
 		B552CA382C54AC450095C9B9 /* CommonRetOC.m in Sources */ = {isa = PBXBuildFile; fileRef = B552CA372C54AC450095C9B9 /* CommonRetOC.m */; };
 		B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */; };
 		B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */; };
+		B57F200E2C5DD6D700C87201 /* MockCKDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = B57F200D2C5DD6D700C87201 /* MockCKDatabase.h */; };
+		B57F20102C5DD70700C87201 /* MockCKDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = B57F200F2C5DD70700C87201 /* MockCKDatabase.m */; };
 		B58160172BE88569001DDB9B /* encryp_utils.m in Sources */ = {isa = PBXBuildFile; fileRef = B58160112BE88569001DDB9B /* encryp_utils.m */; };
 		B581601B2BE88569001DDB9B /* encryp_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = B58160162BE88569001DDB9B /* encryp_utils.h */; };
 		B5A7D30F2C548B71003D4C7F /* HackProtocolDefault.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A7D30E2C548B71003D4C7F /* HackProtocolDefault.h */; };
@@ -35,6 +37,8 @@
 		B5A7D3142C549130003D4C7F /* ForkLiftHelperHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A7D3132C549130003D4C7F /* ForkLiftHelperHack.m */; };
 		B5A7D3172C5491A0003D4C7F /* HackHelperProtocolDefault.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A7D3152C5491A0003D4C7F /* HackHelperProtocolDefault.m */; };
 		B5A7D3182C5491A0003D4C7F /* HackHelperProtocolDefault.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A7D3162C5491A0003D4C7F /* HackHelperProtocolDefault.h */; };
+		B5B89BCB2C5DD49B00F61EB0 /* MockCKContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = B5B89BCA2C5DD49B00F61EB0 /* MockCKContainer.h */; };
+		B5B89BCD2C5DD4AB00F61EB0 /* MockCKContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B89BCC2C5DD4AB00F61EB0 /* MockCKContainer.m */; };
 		B5D0C0BB2C4B553500881398 /* ForkLiftHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D0C0BA2C4B553500881398 /* ForkLiftHack.m */; };
 		B5D2ED3F2BC0252D0030CBCA /* DevHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D2ED3E2BC0252D0030CBCA /* DevHack.m */; };
 		B5F06B1D2BEF591E0079E68D /* InfuseHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F06B1C2BEF591E0079E68D /* InfuseHack.m */; };
@@ -89,6 +93,8 @@
 		B57AEDBC2C5009F200B9C5FB /* SMJobBlessUtil-python3.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "SMJobBlessUtil-python3.py"; sourceTree = "<group>"; };
 		B57AEDBD2C5009F200B9C5FB /* mac_patch_helper */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = mac_patch_helper; sourceTree = "<group>"; };
 		B57AEDBE2C5009F200B9C5FB /* patch.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = patch.json; sourceTree = "<group>"; };
+		B57F200D2C5DD6D700C87201 /* MockCKDatabase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockCKDatabase.h; sourceTree = "<group>"; };
+		B57F200F2C5DD70700C87201 /* MockCKDatabase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockCKDatabase.m; sourceTree = "<group>"; };
 		B58160112BE88569001DDB9B /* encryp_utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = encryp_utils.m; sourceTree = "<group>"; };
 		B58160162BE88569001DDB9B /* encryp_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = encryp_utils.h; sourceTree = "<group>"; };
 		B5A7D30E2C548B71003D4C7F /* HackProtocolDefault.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackProtocolDefault.h; sourceTree = "<group>"; };
@@ -96,6 +102,8 @@
 		B5A7D3132C549130003D4C7F /* ForkLiftHelperHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForkLiftHelperHack.m; sourceTree = "<group>"; };
 		B5A7D3152C5491A0003D4C7F /* HackHelperProtocolDefault.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HackHelperProtocolDefault.m; sourceTree = "<group>"; };
 		B5A7D3162C5491A0003D4C7F /* HackHelperProtocolDefault.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HackHelperProtocolDefault.h; sourceTree = "<group>"; };
+		B5B89BCA2C5DD49B00F61EB0 /* MockCKContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockCKContainer.h; sourceTree = "<group>"; };
+		B5B89BCC2C5DD4AB00F61EB0 /* MockCKContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockCKContainer.m; sourceTree = "<group>"; };
 		B5BE2D582C52A5E40056B3E2 /* build.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build.sh; sourceTree = "<group>"; };
 		B5BE2D592C52A5E40056B3E2 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		B5BE2D5A2C52A5E40056B3E2 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -243,6 +251,10 @@
 				B5FECEAC2BC4FC29008916D6 /* common_ret.m */,
 				B552CA352C54AC200095C9B9 /* CommonRetOC.h */,
 				B552CA372C54AC450095C9B9 /* CommonRetOC.m */,
+				B5B89BCA2C5DD49B00F61EB0 /* MockCKContainer.h */,
+				B5B89BCC2C5DD4AB00F61EB0 /* MockCKContainer.m */,
+				B57F200D2C5DD6D700C87201 /* MockCKDatabase.h */,
+				B57F200F2C5DD70700C87201 /* MockCKDatabase.m */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -275,6 +287,7 @@
 				B5FECEAD2BC4FC29008916D6 /* common_ret.h in Headers */,
 				B581601B2BE88569001DDB9B /* encryp_utils.h in Headers */,
 				B5A7D30F2C548B71003D4C7F /* HackProtocolDefault.h in Headers */,
+				B5B89BCB2C5DD49B00F61EB0 /* MockCKContainer.h in Headers */,
 				38350BF62B53F73A00DD52B3 /* dylib_dobby_hook.h in Headers */,
 				3816BBB72B54FED80051CF39 /* MemoryUtils.h in Headers */,
 				B5A7D3182C5491A0003D4C7F /* HackHelperProtocolDefault.h in Headers */,
@@ -282,6 +295,7 @@
 				B552CA362C54AC200095C9B9 /* CommonRetOC.h in Headers */,
 				38D1AC282B54C9C100E6CB9E /* Constant.h in Headers */,
 				38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */,
+				B57F200E2C5DD6D700C87201 /* MockCKDatabase.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,8 +380,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B57F20102C5DD70700C87201 /* MockCKDatabase.m in Sources */,
 				B50E935E2BBD024F0073FEAA /* PaddleBaseHack.m in Sources */,
 				38D1AC322B54D1CC00E6CB9E /* AirBuddyHack.m in Sources */,
+				B5B89BCD2C5DD4AB00F61EB0 /* MockCKContainer.m in Sources */,
 				B5D2ED3F2BC0252D0030CBCA /* DevHack.m in Sources */,
 				B5A7D3112C548BAB003D4C7F /* HackProtocolDefault.m in Sources */,
 				B546A6582BC4F0CD0012338D /* ProxyManHack.m in Sources */,

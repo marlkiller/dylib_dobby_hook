@@ -10,17 +10,17 @@
         }
       }
     },
-    "clear_certificate":[
+    "helper_plist_resign":[
         "/Applications/Surge.app/Contents/Library/LaunchServices/com.nssurge.surge-mac.helper"
     ]
   },
   "ForkLift":{
-    "clear_certificate":[
+    "helper_plist_resign":[
         "/Applications/ForkLift.app/Contents/Library/LaunchServices/com.binarynights.ForkLiftHelper"
     ]
   },
   "SMJobBlessApp":{
-    "clear_certificate":[
+    "helper_plist_resign":[
         "/Applications/SMJobBlessApp.app/Contents/Library/LaunchServices/com.apple.bsd.SMJobBlessHelper"
     ]
   }

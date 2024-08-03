@@ -98,6 +98,18 @@ kern_return_t my_task_swap_exception_ports
  );
 extern task_swap_exception_ports_ptr_t orig_task_swap_exception_ports;
 
+
+
+// Apple Sec..
+typedef OSStatus (*SecCodeCheckValidityWithErrors_ptr_t)(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors);
+OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors);
+extern SecCodeCheckValidityWithErrors_ptr_t SecCodeCheckValidityWithErrors_ori;
+
+
+typedef OSStatus (*SecCodeCopySigningInformation_ptr_t)(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo);
+extern SecCodeCopySigningInformation_ptr_t SecCodeCopySigningInformation_ori;
+
+
 NSString *love69(NSString *input);
 
 //// 声明全局的邮件地址
