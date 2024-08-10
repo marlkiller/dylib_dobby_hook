@@ -26,7 +26,8 @@
 
 static IMP defaultStringIMP;
 static IMP defaultIntIMP;
-static IMP dataTaskWithRequestIMP;
+static IMP URLSessionIMP2;
+static IMP dataTaskWithRequest;
 static IMP URLWithHostIMP;
 static IMP directoryContentsIMP;
 static IMP URLSessionIMP;
@@ -175,17 +176,17 @@ static NSString* licenseCode = @"123456789";
 
 
 + (NSString *) hk_checksumSparkleFramework{
-    NSLog(@">>>>>> hk_checksumSparkleFramework %@", self);
+    NSLog(@">>>>>> hk_checksumSparkleFramework");
 
     // x86: 46e6b06e5626534a9c61b91cfb041ccf051a2db8
     // arm: a5f76baec8ce44138ceadc97130d622642fe4d2e
-    // id ret = ((id (*)(id,SEL))checksumSparkleFrameworkIMP)(self,_cmd);
-
-    NSString *Sparkle = [[Constant getCurrentAppPath] stringByAppendingString:@"/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle_Backup"];
-    NSString *retFake = [EncryptionUtils calculateSHA1OfFile:Sparkle];
-    return  retFake;
-
-    // return  @"5cac513cff8b040faff3d4a6b40d13bbfa034334";
+    static NSString *cachedChecksum = nil;
+    if (!cachedChecksum){
+        NSString *Sparkle = [[Constant getCurrentAppPath] stringByAppendingString:@"/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle_Backup"];
+        cachedChecksum = [[EncryptionUtils calculateSHA1OfFile:Sparkle] copy];
+        NSLog(@">>>>>> hk_checksumSparkleFramework cachedChecksum = %@", cachedChecksum);
+    }
+    return  cachedChecksum;
 }
 
 + (NSString *) hk_uniqueIdentifierForDB{
@@ -207,6 +208,48 @@ static NSString* licenseCode = @"123456789";
         arg4(NSURLSessionAuthChallengeUseCredential, [NSURLCredential credentialForTrust:arg3.protectionSpace.serverTrust]);
     }
 }
+//
+//- (void)hook_URLSession:(id)session task:(id)task didCompleteWithError:(id)error{
+//    
+//    // https://macupdater-backend.com/configfile.cgi?b=16971&c=d8cef3817314647190c70f16357d0204f80c7dd6&s=5cac513cff8b040faff3d4a6b40d13bbfa034334&p=bd4867852d87df9b6353c6cad95adb5cbdde0a81&u=4bxexx40docih65dv6azovmier5m2xc7fqsgjjzn&a=0&e=(null)&l=(null)&x=5
+//
+//    NSString *cacheDir = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
+//    NSString * cacheConfigFile = [cacheDir stringByAppendingPathComponent:@"MacUpdater/cache_configfile.cgi"];
+//    
+//    
+//    NSFileManager *fileManager = [NSFileManager defaultManager];
+//    NSDate *currentDate = [NSDate date];
+//    BOOL fileExists = [fileManager fileExistsAtPath:cacheConfigFile];
+//    
+//    
+//    id dataToDownload = [MemoryUtils getInstanceIvar:self ivarName:"dataToDownload"];
+//
+//    if (!fileExists) {
+//        [dataToDownload writeToFile:cacheConfigFile atomically:YES];
+//        NSLog(@">>>>>> cache_configfile.cgi 文件不存在，已创建并写入数据");
+//    } else {
+//        // 文件存在，检查文件的修改日期
+//        NSDictionary *attributes = [fileManager attributesOfItemAtPath:cacheConfigFile error:nil];
+//        NSDate *modificationDate = [attributes fileModificationDate];
+//        
+//        if (modificationDate) {
+//            // 计算文件的修改日期与当前日期的时间差
+//            NSTimeInterval timeInterval = [currentDate timeIntervalSinceDate:modificationDate];
+//            NSTimeInterval oneMonthInterval = 30 * 24 * 60 * 60; // 一个大致的月份（30天）
+//            if (timeInterval > oneMonthInterval) {
+//                
+//                [dataToDownload writeToFile:cacheConfigFile atomically:YES];
+//                NSLog(@">>>>>> cache_configfile.cgi 文件存在且超过一个月，已重新写入数据");
+//            }
+//        }
+//    }
+////    [MemoryUtils setInstanceIvar:self ivarName:"dataToDownload" value:
+////          [NSData dataWithContentsOfFile:@"/Users/voidm/Downloads/[406] Response - macupdater-backend.com_configfile.cgi" options:0 error:nil]
+////    ];
+//    ((void(*)(id,SEL,id,id,id))URLSessionIMP2)(self,_cmd,session,task,error);
+//    return ;
+//}
+
 
 - (BOOL)hack {
 //  [BEGIN]
@@ -219,22 +262,15 @@ static NSString* licenseCode = @"123456789";
 //  [END]
 
 ////    -[AppDelegate purchaseInit]:
-    Class __NSCFStringClz = NSClassFromString(@"__NSCFString");
-    SEL defaultStringSel = NSSelectorFromString(@"defaultString");
-    Method defaultStringMethod = class_getInstanceMethod(__NSCFStringClz, defaultStringSel);
-    defaultStringIMP = method_getImplementation(defaultStringMethod);
-    [MemoryUtils hookInstanceMethod:__NSCFStringClz
-                   originalSelector:defaultStringSel
+    defaultStringIMP = [MemoryUtils hookInstanceMethod:NSClassFromString(@"__NSCFString")
+                   originalSelector:NSSelectorFromString(@"defaultString")
                    swizzledClass:[self class]
                 swizzledSelector:@selector(hk_defaultString)
     ];
 
-    
-    SEL defaultIntSel = NSSelectorFromString(@"defaultInt");
-    Method defaultIntMethod = class_getInstanceMethod(__NSCFStringClz, defaultIntSel);
-    defaultIntIMP = method_getImplementation(defaultIntMethod);
-    [MemoryUtils hookInstanceMethod:__NSCFStringClz
-                   originalSelector:defaultIntSel
+            
+    defaultIntIMP = [MemoryUtils hookInstanceMethod:NSClassFromString(@"__NSCFString")
+                   originalSelector:NSSelectorFromString(@"defaultInt")
                    swizzledClass:[self class]
                 swizzledSelector:@selector(hk_defaultInt)
     ];
@@ -275,37 +311,24 @@ static NSString* licenseCode = @"123456789";
     
 //  过滤 Framework 下的 dylib
 //  -[NSString directoryContents]:
-    Class NSStringClz = NSClassFromString(@"NSString");
-    SEL directoryContentsSel = NSSelectorFromString(@"directoryContents");
-    Method directoryContentsMethod = class_getInstanceMethod(NSStringClz, directoryContentsSel);
-    directoryContentsIMP = method_getImplementation(directoryContentsMethod);
-    [MemoryUtils hookInstanceMethod:NSStringClz
-                   originalSelector:directoryContentsSel
+    directoryContentsIMP = [MemoryUtils hookInstanceMethod:NSClassFromString(@"NSString")
+                   originalSelector:NSSelectorFromString(@"directoryContents")
                       swizzledClass:[self class]
                    swizzledSelector:@selector(hk_directoryContents)
     ];
 
 
-    
-
-    Class AppDelegateClz = NSClassFromString(@"AppDelegate");
-    SEL checksumSparkleFrameworkSel = NSSelectorFromString(@"checksumSparkleFramework");
-    Method checksumSparkleFrameworkMethod = class_getClassMethod(AppDelegateClz, checksumSparkleFrameworkSel);
-    checksumSparkleFrameworkIMP = method_getImplementation(checksumSparkleFrameworkMethod);
-    [MemoryUtils hookClassMethod:AppDelegateClz
-                   originalSelector:checksumSparkleFrameworkSel
+        
+    checksumSparkleFrameworkIMP = [MemoryUtils hookClassMethod:NSClassFromString(@"AppDelegate")
+                   originalSelector:NSSelectorFromString(@"checksumSparkleFramework")
                       swizzledClass:[self class]
                    swizzledSelector:@selector(hk_checksumSparkleFramework)
     ];
 
-//  清除 API 中的 license 信息
-    Class NSURLClz = NSClassFromString(@"NSURL");
-    SEL URLWithHostSel = NSSelectorFromString(@"URLWithHost:path:query:user:password:fragment:scheme:port:");
-    Method URLWithHostMethod = class_getClassMethod(NSURLClz, URLWithHostSel);
-    URLWithHostIMP = method_getImplementation(URLWithHostMethod);
-    [MemoryUtils hookClassMethod:
-                    NSURLClz
-                   originalSelector:URLWithHostSel
+//  清除 API 中的 license 信息    
+    URLWithHostIMP = [MemoryUtils hookClassMethod:
+         NSClassFromString(@"NSURL")
+                   originalSelector:NSSelectorFromString(@"URLWithHost:path:query:user:password:fragment:scheme:port:")
                       swizzledClass:[self class]
                    swizzledSelector:NSSelectorFromString(@"hook_URLWithHost:path:query:user:password:fragment:scheme:port:")
     ];
@@ -326,6 +349,14 @@ static NSString* licenseCode = @"123456789";
                    swizzledSelector:NSSelectorFromString(@"hk_URLSession:didReceiveChallenge:completionHandler:")
     ];
     
+    
+//    TODO: 不知道 有没有好的办法来拦截修改 configfile.cgi 请求
+//    URLSessionIMP2 = [MemoryUtils hookInstanceMethod:NSClassFromString(@"HTTPSecurePOST")
+//                   originalSelector:NSSelectorFromString(@"URLSession:task:didCompleteWithError:")
+//                      swizzledClass:[self class]
+//                   swizzledSelector:NSSelectorFromString(@"hook_URLSession:task:didCompleteWithError:")
+//    ];
+
     return YES;
 }
 

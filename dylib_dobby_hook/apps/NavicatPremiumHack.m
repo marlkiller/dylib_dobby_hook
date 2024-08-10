@@ -133,14 +133,9 @@ static IMP displayRegisteredInfoIMP;
     ];
 
 
-    Class AboutNavicatWindowControllerClz = NSClassFromString(@"AboutNavicatWindowController");
-    SEL displayRegisteredInfoSel = NSSelectorFromString(@"displayRegisteredInfo");
-    Method dataTaskWithRequestMethod = class_getInstanceMethod(AboutNavicatWindowControllerClz, displayRegisteredInfoSel);
-    displayRegisteredInfoIMP = method_getImplementation(dataTaskWithRequestMethod);
-    
-    [MemoryUtils hookInstanceMethod:
-                    AboutNavicatWindowControllerClz
-                   originalSelector:displayRegisteredInfoSel
+    displayRegisteredInfoIMP = [MemoryUtils hookInstanceMethod:
+                                    NSClassFromString(@"AboutNavicatWindowController")
+                   originalSelector:NSSelectorFromString(@"displayRegisteredInfo")
                       swizzledClass:[self class]
                    swizzledSelector: @selector(hk_displayRegisteredInfo)
     ];

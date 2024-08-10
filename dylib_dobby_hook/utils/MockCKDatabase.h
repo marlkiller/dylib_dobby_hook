@@ -10,18 +10,19 @@
 #define MockCKDatabase_h
 
 
-@interface MockCKDatabase : NSObject
+@interface MockCKDatabase : CKDatabase
 
 @property (nonatomic, strong) NSMutableDictionary<CKRecordID *, CKRecord *> * records;
 @property (nonatomic, strong) NSMutableDictionary<CKRecordZoneID *, CKRecordZone *> *recordZones;
 @property (nonatomic, strong) NSMutableDictionary<NSString *, CKSubscription *> *subscriptions;
 
+- (instancetype)initDatabase ;
 
-- (void)saveRecord:(CKRecord *)record completion:(void (^)(CKRecord *record, NSError *error))completion;
-- (void)fetchRecordWithID:(CKRecordID *)recordID completion:(void (^)(CKRecord *record, NSError *error))completion;
-- (void)deleteRecordWithID:(CKRecordID *)recordID completion:(void (^)(NSError *error))completion;
-- (void)performQuery:(CKQuery *)query inZoneWithID:(CKRecordZoneID *)zoneID completion:(void (^)(NSArray<CKRecord *> *records, NSError *error))completion;
-- (void)fetchAllRecordsWithCompletion:(void (^)(NSArray<CKRecord *> *records, NSError *error))completion;
+- (void)saveRecord:(CKRecord *)record completionHandler:(void (^)(CKRecord *record, NSError *error))completionHandler;
+- (void)fetchRecordWithID:(CKRecordID *)recordID completionHandler:(void (^)(CKRecord *record, NSError *error))completionHandler;
+- (void)deleteRecordWithID:(CKRecordID *)recordID completionHandler:(void (^)(NSError *error))completionHandler;
+- (void)performQuery:(CKQuery *)query inZoneWithID:(CKRecordZoneID *)zoneID completionHandler:(void (^)(NSArray<CKRecord *> *records, NSError *error))completionHandler;
+- (void)fetchAllRecordsWithCompletion:(void (^)(NSArray<CKRecord *> *records, NSError *error))completionHandler;
 - (void)addOperation:(NSOperation *)operation;
 
 - (void)fetchAllRecordZonesWithCompletionHandler:(void (^)(NSArray<CKRecordZone *> * zones, NSError * error))completionHandler;

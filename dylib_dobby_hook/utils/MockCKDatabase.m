@@ -11,44 +11,42 @@
 
 @implementation MockCKDatabase
 
-- (instancetype)init {
-    self = [super init];
+- (instancetype)initDatabase {
+    // self = [super init];
     if (self) {
+        // TODO: 是否需要考虑数据持久华 ?
+        // _records = [self loadPersistedDataForKey:@"records"];
+
         _records = [NSMutableDictionary dictionary];
     }
     return self;
 }
 
-- (void)saveRecord:(CKRecord *)record
-         completion:(void (^)(CKRecord *record, NSError *error))completion {
+- (void)saveRecord:(CKRecord *)record completionHandler:(void (^)(CKRecord *record, NSError *error))completionHandler {
     NSLog(@">>>>>> saveRecord record = %@",record);
     self.records[record.recordID] = record;
-    if (completion) {
-        completion(record, nil);
+    if (completionHandler) {
+        completionHandler(record, nil);
     }
 }
 
-- (void)fetchRecordWithID:(CKRecordID *)recordID
-               completion:(void (^)(CKRecord *record, NSError *error))completion {
+- (void)fetchRecordWithID:(CKRecordID *)recordID completionHandler:(void (^)(CKRecord *record, NSError *error))completionHandler {
     NSLog(@">>>>>> fetchRecordWithID recordID = %@",recordID);
     CKRecord *record = self.records[recordID];
-    if (completion) {
-        completion(record, nil);
+    if (completionHandler) {
+        completionHandler(record, nil);
     }
 }
 
-- (void)deleteRecordWithID:(CKRecordID *)recordID
-                completion:(void (^)(NSError *error))completion {
+- (void)deleteRecordWithID:(CKRecordID *)recordID completionHandler:(void (^)(NSError *error))completionHandler {
     NSLog(@">>>>>> deleteRecordWithID recordID = %@",recordID);
     [self.records removeObjectForKey:recordID];
-    if (completion) {
-        completion(nil);
+    if (completionHandler) {
+        completionHandler(nil);
     }
 }
 
-- (void)performQuery:(CKQuery *)query
-          inZoneWithID:(CKRecordZoneID *)zoneID
-           completion:(void (^)(NSArray<CKRecord *> *records, NSError *error))completion {
+- (void)performQuery:(CKQuery *)query inZoneWithID:(CKRecordZoneID *)zoneID completionHandler:(void (^)(NSArray<CKRecord *> *records, NSError *error))completionHandler {
     NSLog(@">>>>>> performQuery query = %@,zoneID = %@",query,zoneID);
     NSPredicate *predicate = query.predicate;
     NSMutableArray<CKRecord *> *results = [NSMutableArray array];
@@ -59,23 +57,50 @@
         }
     }
     
-    if (completion) {
-        completion(results, nil);
+    if (completionHandler) {
+        completionHandler(results, nil);
     }
 }
 
-- (void)fetchAllRecordsWithCompletion:(void (^)(NSArray<CKRecord *> *records, NSError *error))completion {
+- (void)fetchAllRecordsWithCompletion:(void (^)(NSArray<CKRecord *> *records, NSError *error))completionHandler {
     NSLog(@">>>>>> fetchAllRecordsWithCompletion");
 
-    if (completion) {
-        completion(self.records.allValues, nil);
+    if (completionHandler) {
+        completionHandler(self.records.allValues, nil);
     }
 }
 
 
 - (void)addOperation:(NSOperation *)operation {
-    NSLog(@">>>>>> TODO addOperation operation = %@", operation);
+    NSString *operationClass = NSStringFromClass([operation class]);
+    BOOL isAsynchronous = [operation isAsynchronous];
+    BOOL isReady = [operation isReady];
+    BOOL isExecuting = [operation isExecuting];
+    BOOL isFinished = [operation isFinished];
+    BOOL isCancelled = [operation isCancelled];
+    
+    NSLog(@">>>>>> addOperation operation: %@\nClass: %@\nIs Asynchronous: %@\nIs Ready: %@\nIs Executing: %@\nIs Finished: %@\nIs Cancelled: %@",
+          operation,
+          operationClass,
+          isAsynchronous ? @"YES" : @"NO",
+          isReady ? @"YES" : @"NO",
+          isExecuting ? @"YES" : @"NO",
+          isFinished ? @"YES" : @"NO",
+          isCancelled ? @"YES" : @"NO");
+   
+    if (isAsynchronous && [operation isReady]) {
+        // 模拟操作执行
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            if (operation.completionBlock) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    operation.completionBlock();
+                });
+            }
+        });
+    }
 }
+
+
 
 - (void)fetchAllRecordZonesWithCompletionHandler:(void (^)(NSArray<CKRecordZone *> * zones, NSError * error))completionHandler {
     NSLog(@">>>>>> fetchAllRecordZonesWithCompletionHandler");
@@ -143,6 +168,24 @@
         completionHandler(nil, error);
     }
 }
+
+#pragma mark - Persistence Methods
+//
+//- (void)persistData:(NSDictionary *)data forKey:(NSString *)key {
+//    NSString *path = [self pathForKey:key];
+//    [NSKeyedArchiver archiveRootObject:data toFile:path];
+//}
+//
+//- (NSMutableDictionary *)loadPersistedDataForKey:(NSString *)key {
+//    NSString *path = [self pathForKey:key];
+//    return [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+//}
+//
+//- (NSString *)pathForKey:(NSString *)key {
+//    NSString *documentDirectory = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+//    return [documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.dat", key]];
+//}
+
 
 @end
 

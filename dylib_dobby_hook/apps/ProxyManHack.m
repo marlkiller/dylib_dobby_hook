@@ -88,14 +88,10 @@ intptr_t handleHelper(intptr_t a1, intptr_t a2, intptr_t a3) {
     NSString *proxymanCoreFilePath = [[Constant getCurrentAppPath] stringByAppendingString:@"/Contents/Frameworks/ProxymanCore.framework/Versions/A/ProxymanCore"];
     uintptr_t proxymanCoreFileOffset =[MemoryUtils getCurrentArchFileOffset: proxymanCoreFilePath];
     
-
-    Class NSMutableArrayClass = NSClassFromString(@"_TtC8Proxyman25PremiumPlanViewController");
-    SEL componentsJoinedByStringSeletor = NSSelectorFromString(@"viewDidLoad");
-    Method componentsJoinedByStringMethod = class_getInstanceMethod(NSMutableArrayClass, componentsJoinedByStringSeletor);
-    viewDidLoadIMP = method_getImplementation(componentsJoinedByStringMethod);
-    [MemoryUtils hookInstanceMethod:
-                    NSMutableArrayClass
-                   originalSelector:componentsJoinedByStringSeletor
+    
+    viewDidLoadIMP = [MemoryUtils hookInstanceMethod:
+                          NSClassFromString(@"_TtC8Proxyman25PremiumPlanViewController")
+                   originalSelector:NSSelectorFromString(@"viewDidLoad")
                       swizzledClass:[self class]
                    swizzledSelector:NSSelectorFromString(@"hook_viewDidLoad")
     ];

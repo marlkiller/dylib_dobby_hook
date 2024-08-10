@@ -489,7 +489,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
 }
 
 /**
- 交换对象方法 -[_TtC8DevUtils16WindowController showUnregistered]
+ 交换 OC 对象方法,返回原始函数地址
  [MemoryUtils hookInstanceMethod:
              objc_getClass("_TtC8DevUtils16WindowController")
              originalSelector:NSSelectorFromString(@"showUnregistered")
@@ -502,11 +502,12 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
  @param swizzledClass 替换类
  @param swizzledSelector 替换类的方法
  */
-+ (void)hookInstanceMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
++ (IMP)hookInstanceMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
     Method originalMethod = class_getInstanceMethod(originalClass, originalSelector);
     Method swizzledMethod = class_getInstanceMethod(swizzledClass, swizzledSelector);
-    
+    IMP imp = nil;
     if (originalMethod && swizzledMethod) {
+        imp = method_getImplementation(originalMethod);
         method_exchangeImplementations(originalMethod, swizzledMethod);
     } else {
         NSLog(@">>>>>> Failed to swizzle method.");
@@ -520,10 +521,11 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
                                                         swizzledMethod];
         [self exAlart:@"hookInstanceMethod 异常 ?!!!" message:message];
     }
+    return imp;
 }
 
 /**
- 交换类方法
+ 交换 OC 类方法,返回原始函数地址
  [MemoryUtils hookClassMethod:
              objc_getClass("GlobalFunction")
              originalSelector:NSSelectorFromString(@"isInChina")
@@ -535,11 +537,13 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
  @param swizzledClass 替换类
  @param swizzledSelector 替换类的类方法
  */
-+ (void)hookClassMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
++ (IMP)hookClassMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
     Method originalMethod = class_getClassMethod(originalClass, originalSelector);
     Method swizzledMethod = class_getClassMethod(swizzledClass, swizzledSelector);
     
+    IMP imp = nil;
     if (originalMethod && swizzledMethod) {
+        imp = method_getImplementation(originalMethod);
         method_exchangeImplementations(originalMethod, swizzledMethod);
     } else {
         NSLog(@">>>>>> Failed to swizzle class method.");
@@ -553,10 +557,11 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
                                                         swizzledMethod];
         [self exAlart:@"hookClassMethod 异常 ?!!!" message:message];
     }
+    return imp;
 }
 
 /**
- 替换对象方法 -[_TtC8DevUtils16WindowController showUnregistered]
+ 替换 OC 对象方法,返回原始函数地址
  [MemoryUtils hookInstanceMethod:
              objc_getClass("_TtC8DevUtils16WindowController")
              originalSelector:NSSelectorFromString(@"showUnregistered")
@@ -569,12 +574,14 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
  @param swizzledClass 替换类
  @param swizzledSelector 替换类的方法
  */
-+ (void)replaceInstanceMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
++ (IMP)replaceInstanceMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
     Method originalMethod = class_getInstanceMethod(originalClass, originalSelector);
     IMP swizzledImplementation = class_getMethodImplementation(swizzledClass, swizzledSelector);
     const char *types = method_getTypeEncoding(originalMethod);
     
+    IMP imp = nil;
     if (originalMethod && swizzledImplementation) {
+        imp = method_getImplementation(originalMethod);
         // 替换对象方法
         class_replaceMethod(originalClass, originalSelector, swizzledImplementation, types);
     } else {
@@ -589,10 +596,11 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
                                                         swizzledImplementation];
         [self exAlart:@"replaceInstanceMethod 异常 ?!!!" message:message];
     }
+    return imp;
 }
 
 /**
- 替换类方法
+ 替换 OC 类方法,返回原始函数地址
  [MemoryUtils hookClassMethod:
              objc_getClass("GlobalFunction")
              originalSelector:NSSelectorFromString(@"isInChina")
@@ -604,12 +612,14 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
  @param swizzledClass 替换类
  @param swizzledSelector 替换类的类方法
  */
-+ (void)replaceClassMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
++ (IMP)replaceClassMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
     Method originalMethod = class_getClassMethod(originalClass, originalSelector);
     IMP swizzledImplementation = class_getMethodImplementation(swizzledClass, swizzledSelector);
     const char *types = method_getTypeEncoding(originalMethod);
     
+    IMP imp = nil;
     if (originalMethod && swizzledImplementation) {
+        imp = method_getImplementation(originalMethod);
         // 替换类方法
         class_replaceMethod(object_getClass(originalClass), originalSelector, swizzledImplementation, types);
     } else {
@@ -624,6 +634,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
                                                         swizzledImplementation];
         [self exAlart:@"replaceClassMethod 异常 ?!!!" message:message];
     }
+    return imp;
 }
 
 /**

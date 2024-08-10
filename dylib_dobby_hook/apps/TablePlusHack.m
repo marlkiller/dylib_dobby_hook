@@ -95,27 +95,17 @@ static IMP decryptDataIMP;
     
     // r12 = [[RNDecryptor decryptData:"file bytes" withPassword:"x" error:&var_48] retain];
     // +[RNDecryptor decryptData:withPassword:error:]:
-    Class RNDecryptorClz = NSClassFromString(@"RNDecryptor");
-    SEL decryptDataSel = NSSelectorFromString(@"decryptData:withPassword:error:");
-    Method decryptDataMethod = class_getClassMethod(RNDecryptorClz, decryptDataSel);
-    decryptDataIMP = method_getImplementation(decryptDataMethod);
-
-    [MemoryUtils hookClassMethod:
-         RNDecryptorClz
-                originalSelector:decryptDataSel
+    decryptDataIMP = [MemoryUtils hookClassMethod:
+                          NSClassFromString(@"RNDecryptor")
+                originalSelector:NSSelectorFromString(@"decryptData:withPassword:error:")
                    swizzledClass:[self class]
                 swizzledSelector:NSSelectorFromString(@"hk_decryptData:withPassword:error:")
     ];
     
     
     
-    Class AFURLSessionManagerClz = NSClassFromString(@"AFHTTPSessionManager");
-    SEL dataTaskWithRequestSel = NSSelectorFromString(@"dataTaskWithHTTPMethod:URLString:parameters:headers:uploadProgress:downloadProgress:success:failure:");
-    Method dataTaskWithRequestMethod = class_getInstanceMethod(AFURLSessionManagerClz, dataTaskWithRequestSel);
-    dataTaskWithRequestIMP = method_getImplementation(dataTaskWithRequestMethod);
-    [MemoryUtils hookInstanceMethod:
-         AFURLSessionManagerClz
-                   originalSelector:dataTaskWithRequestSel
+    dataTaskWithRequestIMP = [MemoryUtils hookInstanceMethod:NSClassFromString(@"AFHTTPSessionManager")
+                   originalSelector:NSSelectorFromString(@"dataTaskWithHTTPMethod:URLString:parameters:headers:uploadProgress:downloadProgress:success:failure:")
                       swizzledClass:[self class]
                    swizzledSelector:NSSelectorFromString(@"hk_dataTaskWithHTTPMethod:URLString:parameters:headers:uploadProgress:downloadProgress:success:failure:")
     ];

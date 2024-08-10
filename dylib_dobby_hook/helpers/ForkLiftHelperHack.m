@@ -92,19 +92,6 @@ OSStatus hk_SecCodeCopySigningInformation_forklift(SecCodeRef codeRef, SecCSFlag
 }
  
 - (BOOL)hack {
-            
-    //    Class ForkLiftHelper10HelperTool = NSClassFromString(@"_TtC31com_binarynights_ForkLiftHelper10HelperTool");
-    //    SEL listenerSel = NSSelectorFromString(@"listener:shouldAcceptNewConnection:");
-    //    Method listenerMethod = class_getInstanceMethod(ForkLiftHelper10HelperTool, listenerSel);
-    //    listenerIMP = method_getImplementation(listenerMethod);
-    //    [MemoryUtils hookInstanceMethod:ForkLiftHelper10HelperTool
-    //                   originalSelector:listenerSel
-    //                      swizzledClass:[self class]
-    //                   swizzledSelector:@selector(hk_listener:shouldAcceptNewConnection:)
-    //    ];
-        
-        //     DobbyHook((void *)sub_10005ad20, (void *)hook_sub_10005ad20, (void *)&sub_10005ad20_ori);
-        
     DobbyHook(SecCodeCopySigningInformation, (void *)hk_SecCodeCopySigningInformation_forklift, (void *)&SecCodeCopySigningInformation_ori);
     DobbyHook(SecCodeCheckValidityWithErrors, (void *)hk_SecCodeCheckValidityWithErrors, (void *)&SecCodeCheckValidityWithErrors_ori);    
     return YES;

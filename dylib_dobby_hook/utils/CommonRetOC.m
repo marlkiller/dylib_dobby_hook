@@ -86,11 +86,13 @@
 
 + (id)hook_containerWithIdentifier:identifier {
     NSLog(@">>>>>> hook_containerWithIdentifier identifier = %@",identifier);
+    // [CKContainer containerWithIdentifier:identifier];
     return [MockCKContainer containerWithIdentifier:identifier];
 
 }
 + (id)hook_defaultContainer {
     NSLog(@">>>>>> hook_defaultContainer");
+    // [CKContainer defaultContainer];
     return [MockCKContainer defaultContainer];
 
 }

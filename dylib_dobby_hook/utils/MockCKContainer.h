@@ -10,9 +10,29 @@
 #ifndef MockCKContainer_h
 #define MockCKContainer_h
 
-@interface MockCKContainer : NSObject
+@interface MockCKContainer : CKContainer
 
+//    [TEST]
+//    CKContainer* container = [CKContainer containerWithIdentifier:@"iCloud.com.example.myapp"];
+//    CKDatabase *publicDatabase = [container publicCloudDatabase];
+//    CKRecordID *artworkRecordID = [[CKRecordID alloc] initWithRecordName:@"123456"];
+//    CKRecord *artworkRecord = [[CKRecord alloc] initWithRecordType:@"Artwork" recordID:artworkRecordID];
+//    artworkRecord[@"title" ] = @"this is title";
+//    [publicDatabase saveRecord:artworkRecord completionHandler:^(CKRecord *record, NSError *error){
+//        if (error) {
+//            NSLog(@">>>>>> saveRecord error = %@",error);
+//        }
+//    }];
+//    [publicDatabase fetchRecordWithID:artworkRecordID completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+//        if (error) {
+//            NSLog(@">>>>>> fetchRecordWithID error = %@",error);
+//        }else {
+//
+//            NSLog(@">>>>>> fetchRecordWithID record = %@",record);
+//        }
+//    }];
 
+@property (nonatomic, strong) NSDictionary *options;
 @property (nonatomic, readonly) MockCKDatabase *privateDatabase;
 @property (nonatomic, readonly) MockCKDatabase *publicDatabase;
 @property (nonatomic, strong) NSString *identifier;
@@ -24,6 +44,8 @@
 - (CKDatabase *)privateCloudDatabase;
 - (CKDatabase *)publicCloudDatabase;
 
+
+- (void)accountStatusWithCompletionHandler:(void (NS_SWIFT_SENDABLE ^)(CKAccountStatus accountStatus, NSError * error))completionHandler;
 
 @end
 

@@ -147,14 +147,6 @@ void hook_sub_10005ad20(void){
     [defaults setBool:true forKey:@"AMSkipOnboarding"];
     [defaults synchronize];
 
-//    boolForKeyImp = method_getImplementation(class_getInstanceMethod(NSClassFromString(@"NSUserDefaults"), NSSelectorFromString(@"boolForKey:")));
-//    [MemoryUtils hookInstanceMethod:
-//                objc_getClass("NSUserDefaults")
-//                originalSelector:NSSelectorFromString(@"boolForKey:")
-//                swizzledClass:[self class]
-//                swizzledSelector:NSSelectorFromString(@"hk_boolForKey:")
-//    ];
-//    
     return YES;
 }
 
