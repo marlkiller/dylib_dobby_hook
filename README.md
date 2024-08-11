@@ -47,6 +47,7 @@
 | MacUpdater      | 3.      | ✔   | ✔   | https://www.corecode.io/macupdater/#download |     |                     |
 | CleanShotX      | 4.      | ✔   | ✘   | https://updates.getcleanshot.com/v3/         |     |                     |
 | ForkLift        | 4.      | ✔   | ✔   | https://binarynights.com/                    | ON  |                     |
+| IDA Pro         | 9.      | ✔   | ✔   | https://out5.hex-rays.com/beta90_6ba923/     |     | alula               |
 
 </details>
 

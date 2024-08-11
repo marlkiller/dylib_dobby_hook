@@ -33,6 +33,7 @@ static IMP directoryContentsIMP;
 static IMP URLSessionIMP;
 static IMP fileChecksumSHAIMP;
 static IMP checksumSparkleFrameworkIMP;
+static IMP downloadURLWithSecurePOSTIMP;
 static Class stringClass;
 static NSString* licenseCode = @"123456789";
 
@@ -164,10 +165,6 @@ static NSString* licenseCode = @"123456789";
         }
     }
     
-   
-    
-    
-    
     NSLog(@">>>>>> hook_URLWithHost %@,%@,%@,%@,%@,%@",arg2,arg3,arg4,arg5,arg6,arg7);
     
     id ret = ((id(*)(id,SEL,id,id,id,id,id,id,id,id))URLWithHostIMP)(self,_cmd,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
@@ -208,48 +205,54 @@ static NSString* licenseCode = @"123456789";
         arg4(NSURLSessionAuthChallengeUseCredential, [NSURLCredential credentialForTrust:arg3.protectionSpace.serverTrust]);
     }
 }
-//
-//- (void)hook_URLSession:(id)session task:(id)task didCompleteWithError:(id)error{
-//    
-//    // https://macupdater-backend.com/configfile.cgi?b=16971&c=d8cef3817314647190c70f16357d0204f80c7dd6&s=5cac513cff8b040faff3d4a6b40d13bbfa034334&p=bd4867852d87df9b6353c6cad95adb5cbdde0a81&u=4bxexx40docih65dv6azovmier5m2xc7fqsgjjzn&a=0&e=(null)&l=(null)&x=5
-//
-//    NSString *cacheDir = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
-//    NSString * cacheConfigFile = [cacheDir stringByAppendingPathComponent:@"MacUpdater/cache_configfile.cgi"];
-//    
-//    
-//    NSFileManager *fileManager = [NSFileManager defaultManager];
-//    NSDate *currentDate = [NSDate date];
-//    BOOL fileExists = [fileManager fileExistsAtPath:cacheConfigFile];
-//    
-//    
-//    id dataToDownload = [MemoryUtils getInstanceIvar:self ivarName:"dataToDownload"];
-//
-//    if (!fileExists) {
-//        [dataToDownload writeToFile:cacheConfigFile atomically:YES];
-//        NSLog(@">>>>>> cache_configfile.cgi 文件不存在，已创建并写入数据");
-//    } else {
-//        // 文件存在，检查文件的修改日期
-//        NSDictionary *attributes = [fileManager attributesOfItemAtPath:cacheConfigFile error:nil];
-//        NSDate *modificationDate = [attributes fileModificationDate];
-//        
-//        if (modificationDate) {
-//            // 计算文件的修改日期与当前日期的时间差
-//            NSTimeInterval timeInterval = [currentDate timeIntervalSinceDate:modificationDate];
-//            NSTimeInterval oneMonthInterval = 30 * 24 * 60 * 60; // 一个大致的月份（30天）
-//            if (timeInterval > oneMonthInterval) {
-//                
-//                [dataToDownload writeToFile:cacheConfigFile atomically:YES];
-//                NSLog(@">>>>>> cache_configfile.cgi 文件存在且超过一个月，已重新写入数据");
-//            }
-//        }
-//    }
-////    [MemoryUtils setInstanceIvar:self ivarName:"dataToDownload" value:
-////          [NSData dataWithContentsOfFile:@"/Users/voidm/Downloads/[406] Response - macupdater-backend.com_configfile.cgi" options:0 error:nil]
-////    ];
-//    ((void(*)(id,SEL,id,id,id))URLSessionIMP2)(self,_cmd,session,task,error);
-//    return ;
-//}
 
+
+- (id)hook_downloadURLWithSecurePOST:(NSURL *)url timeout:(NSTimeInterval)timeout{
+    
+    // https://macupdater-backend.com/configfile.cgi?b=16971&c=d8cef3817314647190c70f16357d0204f80c7dd6&s=5cac513cff8b040faff3d4a6b40d13bbfa034334&p=bd4867852d87df9b6353c6cad95adb5cbdde0a81&u=4bxexx40docih65dv6azovmier5m2xc7fqsgjjzn&a=0&e=(null)&l=(null)&x=5
+    
+    NSString* path = [url path];
+    if ([path isEqualToString:@"/configfile.cgi"]) {
+        NSString *cacheDir = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
+        // /Users/voidm/Library/Caches/com.corecode.MacUpdater/cache_configfile.cgi
+        NSString * cacheConfigFile = [cacheDir stringByAppendingPathComponent:@"com.corecode.MacUpdater/cache_configfile.cgi"];
+        
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        BOOL fileExists = [fileManager fileExistsAtPath:cacheConfigFile];
+        
+        if (fileExists) {
+            // 文件存在，检查文件的修改日期
+            NSDictionary *attributes = [fileManager attributesOfItemAtPath:cacheConfigFile error:nil];
+            NSDate *modificationDate = [attributes fileModificationDate];
+            if (modificationDate) {
+                NSDate *currentDate = [NSDate date];
+                // 缓存 config 30天
+                NSDate* fakaData = [NSData dataWithContentsOfFile:cacheConfigFile];
+                NSTimeInterval timeInterval = [currentDate timeIntervalSinceDate:modificationDate];
+                NSTimeInterval oneMonthInterval = 30 * 24 * 60 * 60;
+                if (timeInterval < oneMonthInterval) {
+                    // 这句 setInstanceIvar 不知道需不需要...
+                    // [MemoryUtils setInstanceIvar:self ivarName:"dataToDownload" value:fakaData];
+                    return fakaData;
+                }
+            }
+        }
+        NSData* ret = ((NSData*(*)(id,SEL,NSURL*,NSTimeInterval))downloadURLWithSecurePOSTIMP)(self,_cmd,url,timeout);
+        if (ret.length > 409600) {
+            BOOL success = [ret writeToFile:cacheConfigFile options:NSDataWritingAtomic error:nil];
+            NSLog(@">>>>>> [cache_configfile.cgi] saved %hhd",success);
+        } else {
+            // NSData 长度小于或等于 400KB
+            NSLog(@">>>>>> [configfile.cgi] api returns data exception, possibly banned IP !!");
+        }
+        return ret;
+    }
+    
+    
+    id ret = ((id(*)(id,SEL,NSURL*,NSTimeInterval))downloadURLWithSecurePOSTIMP)(self,_cmd,url,timeout);
+    
+    return ret;
+}
 
 - (BOOL)hack {
 //  [BEGIN]
@@ -350,13 +353,14 @@ static NSString* licenseCode = @"123456789";
     ];
     
     
-//    TODO: 不知道 有没有好的办法来拦截修改 configfile.cgi 请求
-//    URLSessionIMP2 = [MemoryUtils hookInstanceMethod:NSClassFromString(@"HTTPSecurePOST")
-//                   originalSelector:NSSelectorFromString(@"URLSession:task:didCompleteWithError:")
-//                      swizzledClass:[self class]
-//                   swizzledSelector:NSSelectorFromString(@"hook_URLSession:task:didCompleteWithError:")
-//    ];
-
+//    config.cgi 缓存策略
+//    -[HTTPSecurePOST downloadURLWithSecurePOST:timeout:]:
+    downloadURLWithSecurePOSTIMP = [MemoryUtils hookInstanceMethod:NSClassFromString(@"HTTPSecurePOST")
+                   originalSelector:NSSelectorFromString(@"downloadURLWithSecurePOST:timeout:")
+                      swizzledClass:[self class]
+                   swizzledSelector:NSSelectorFromString(@"hook_downloadURLWithSecurePOST:timeout:")
+    ];
+    
     return YES;
 }
 

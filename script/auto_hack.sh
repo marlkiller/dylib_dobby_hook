@@ -56,9 +56,12 @@ hack_app "Infuse" "/Applications/Infuse.app/Contents/Frameworks/Differentiator.f
 hack_app "MacUpdater" "/Applications/MacUpdater.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
 # hack_app "CleanShot X" "/Applications/CleanShot X.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
 
+
 # fixed with helper
+hack_app "IDA Professional 9.0" "/Applications/IDA Professional 9.0.app/Contents/Frameworks/QtDBus.framework/Versions/5/QtDBus" "apps/ida_hack.sh"
 hack_app "ForkLift" "/Applications/ForkLift.app/Contents/Frameworks/UniversalDetector.framework/Versions/A/UniversalDetector" "apps/forklift_hack.sh"
 # hack_app "Surge" "/Applications/Surge.app/Contents/Frameworks/MMMarkdown.framework/Versions/A/MMMarkdown" "apps/surge_hack.sh"
+
 
 
  
