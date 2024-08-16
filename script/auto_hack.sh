@@ -54,7 +54,7 @@ hack_app "Movist Pro" "/Applications/Movist Pro.app/Contents/Frameworks/MediaKey
 hack_app "AirBuddy" "/Applications/AirBuddy.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
 hack_app "Infuse" "/Applications/Infuse.app/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator"
 hack_app "MacUpdater" "/Applications/MacUpdater.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
-# hack_app "CleanShot X" "/Applications/CleanShot X.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
+hack_app "CleanShot X" "/Applications/CleanShot X.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
 
 
 # fixed with helper
