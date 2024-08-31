@@ -20,7 +20,6 @@
 		38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC292B54CA4D00E6CB9E /* Constant.m */; };
 		38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */; };
 		38D1AC322B54D1CC00E6CB9E /* AirBuddyHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */; };
-		B502BD5D2BCFB35200DAD97F /* MovistProHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B502BD5C2BCFB35200DAD97F /* MovistProHack.m */; };
 		B50E935E2BBD024F0073FEAA /* PaddleBaseHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */; };
 		B53522462C2FE4D4001CA305 /* MacUpdaterHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B53522452C2FE4D4001CA305 /* MacUpdaterHack.m */; };
 		B53F9DED2C4AA4EC00A6B32D /* CleanShotXHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B53F9DEC2C4AA4EC00A6B32D /* CleanShotXHack.m */; };
@@ -29,7 +28,7 @@
 		B552CA382C54AC450095C9B9 /* CommonRetOC.m in Sources */ = {isa = PBXBuildFile; fileRef = B552CA372C54AC450095C9B9 /* CommonRetOC.m */; };
 		B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */; };
 		B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */; };
-		B558F9712C676AE700EAAAC3 /* IDAHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B558F9702C676AE700EAAAC3 /* IDAHack.m */; };
+		B5732BF12C82CD5900EC9E11 /* IDAHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5732BF02C82CD5900EC9E11 /* IDAHack.m */; };
 		B57F200E2C5DD6D700C87201 /* MockCKDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = B57F200D2C5DD6D700C87201 /* MockCKDatabase.h */; };
 		B57F20102C5DD70700C87201 /* MockCKDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = B57F200F2C5DD70700C87201 /* MockCKDatabase.m */; };
 		B58160172BE88569001DDB9B /* encryp_utils.m in Sources */ = {isa = PBXBuildFile; fileRef = B58160112BE88569001DDB9B /* encryp_utils.m */; };
@@ -80,7 +79,6 @@
 		38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AirBuddyHack.m; sourceTree = "<group>"; };
 		38E793632B6C7AB8005677AA /* all_in_one.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = all_in_one.sh; sourceTree = "<group>"; };
 		38E793642B6C7FB6005677AA /* auto_hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = auto_hack.sh; sourceTree = "<group>"; };
-		B502BD5C2BCFB35200DAD97F /* MovistProHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MovistProHack.m; sourceTree = "<group>"; };
 		B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaddleBaseHack.m; sourceTree = "<group>"; };
 		B53522452C2FE4D4001CA305 /* MacUpdaterHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MacUpdaterHack.m; sourceTree = "<group>"; };
 		B53F9DEC2C4AA4EC00A6B32D /* CleanShotXHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CleanShotXHack.m; sourceTree = "<group>"; };
@@ -91,6 +89,7 @@
 		B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevUtilsHack.m; sourceTree = "<group>"; };
 		B56968C62BEA4E2A0022FAC6 /* libdylib_dobby_hook.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libdylib_dobby_hook.dylib; sourceTree = "<group>"; };
 		B56968C72BEA4E4D0022FAC6 /* cmake_debugger.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = cmake_debugger.sh; sourceTree = "<group>"; };
+		B5732BF02C82CD5900EC9E11 /* IDAHack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDAHack.m; sourceTree = "<group>"; };
 		B57AEDBA2C5009E400B9C5FB /* forklift_hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = forklift_hack.sh; sourceTree = "<group>"; };
 		B57AEDBB2C5009F200B9C5FB /* dtrace_kill.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = dtrace_kill.d; sourceTree = "<group>"; };
 		B57AEDBC2C5009F200B9C5FB /* SMJobBlessUtil-python3.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "SMJobBlessUtil-python3.py"; sourceTree = "<group>"; };
@@ -221,6 +220,7 @@
 		B581601C2BE8949B001DDB9B /* apps */ = {
 			isa = PBXGroup;
 			children = (
+				B5732BF02C82CD5900EC9E11 /* IDAHack.m */,
 				B5D0C0BA2C4B553500881398 /* ForkLiftHack.m */,
 				B5F06B1C2BEF591E0079E68D /* InfuseHack.m */,
 				38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */,
@@ -233,12 +233,10 @@
 				B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */,
 				B5D2ED3E2BC0252D0030CBCA /* DevHack.m */,
 				B546A6572BC4F0CD0012338D /* ProxyManHack.m */,
-				B502BD5C2BCFB35200DAD97F /* MovistProHack.m */,
 				B53522452C2FE4D4001CA305 /* MacUpdaterHack.m */,
 				B53F9DEC2C4AA4EC00A6B32D /* CleanShotXHack.m */,
 				B5A7D30E2C548B71003D4C7F /* HackProtocolDefault.h */,
 				B5A7D3102C548BAB003D4C7F /* HackProtocolDefault.m */,
-				B558F9702C676AE700EAAAC3 /* IDAHack.m */,
 			);
 			path = apps;
 			sourceTree = "<group>";
@@ -408,9 +406,8 @@
 				B552CA382C54AC450095C9B9 /* CommonRetOC.m in Sources */,
 				B5FECEAE2BC4FC29008916D6 /* common_ret.m in Sources */,
 				38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */,
-				B502BD5D2BCFB35200DAD97F /* MovistProHack.m in Sources */,
 				B5FE3B862BA2A571001AE437 /* TransmitHack.m in Sources */,
-				B558F9712C676AE700EAAAC3 /* IDAHack.m in Sources */,
+				B5732BF12C82CD5900EC9E11 /* IDAHack.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

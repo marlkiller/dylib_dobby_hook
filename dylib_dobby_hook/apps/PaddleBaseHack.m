@@ -21,15 +21,26 @@
 
 @implementation PaddleBaseHack
 
-- (NSString *)getAppName {
-    return @"com.charliemonroe.";
+- (BOOL)shouldInject:(NSString *)target {
+    
+//    Movist Pro
+//    Downie 4
+//    Fork
+//    BetterMouse
+//    Permute 3
+    
+    int paddleIndex = [MemoryUtils indexForImageWithName:@"Paddle"];
+    if (paddleIndex > 0) {
+        return true;
+    }
+    return false;
 }
 
-- (NSString *)getSupportAppVersion {
-    // downie 4.7.8
-    // permute 3.11.8
-    return @"";
-}
+//- (NSString *)getAppName {
+//    return @"com.charliemonroe.";
+//}
+//
+
 - (NSNumber *) hook_trialDaysRemaining {
     NSLog(@">>>>>> called hook_trialDaysRemaining");
     return @9;

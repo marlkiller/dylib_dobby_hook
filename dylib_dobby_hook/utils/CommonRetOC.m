@@ -44,12 +44,21 @@
 
 
 - (NSString *)getAppName { 
-    return @"EMPTY";
+    return @"";
 }
 
 - (NSString *)getSupportAppVersion { 
-    return @"EMPTY";
+    return @"";
 }
+
+
+
+- (BOOL)shouldInject:(NSString *)target {
+    NSString *appName = [self getAppName];
+    return [target hasPrefix:appName];
+}
+
+
 
 - (BOOL)hack { 
     return NO;

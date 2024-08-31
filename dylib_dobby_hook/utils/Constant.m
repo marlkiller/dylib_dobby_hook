@@ -212,7 +212,8 @@ static BOOL helper;
     for (Class class in personClasses) {
 
         id<HackProtocol> it = [[class alloc] init];
-        if ([currentAppName hasPrefix:[it getAppName]]) {
+        
+        if ([it shouldInject:currentAppName]) {
             NSString *supportAppVersion = [it getSupportAppVersion];
             if (supportAppVersion!=nil && supportAppVersion.length>0 && ![currentAppVersion hasPrefix:supportAppVersion]){
                 NSAlert *alert = [[NSAlert alloc] init];

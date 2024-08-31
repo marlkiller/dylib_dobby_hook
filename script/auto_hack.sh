@@ -47,14 +47,17 @@ hack_app "Paste"
 hack_app "Navicat Premium" "/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"
 hack_app "Transmit"
 # hack_app "AnyGo"
-hack_app "Downie 4" "/Applications/Downie 4.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"
-hack_app "Permute 3" "/Applications/Permute 3.app/Contents/Frameworks/Licensing.framework/Versions/A/Licensing"
 hack_app "Proxyman" "/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend"
-hack_app "Movist Pro" "/Applications/Movist Pro.app/Contents/Frameworks/MediaKeyTap.framework/Versions/A/MediaKeyTap"
 hack_app "AirBuddy" "/Applications/AirBuddy.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
 hack_app "Infuse" "/Applications/Infuse.app/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator"
 hack_app "MacUpdater" "/Applications/MacUpdater.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
 hack_app "CleanShot X" "/Applications/CleanShot X.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
+
+# paddle 
+hack_app "Downie 4" "/Applications/Downie 4.app/Contents/Frameworks/Paddle.framework/Versions/A/Paddle"
+hack_app "Permute 3" "/Applications/Permute 3.app/Contents/Frameworks/Paddle.framework/Versions/A/Paddle"
+hack_app "Movist Pro" "/Applications/Movist Pro.app/Contents/Frameworks/Paddle.framework/Versions/A/Paddle"
+
 
 
 # fixed with helper
