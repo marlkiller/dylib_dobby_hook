@@ -31,8 +31,8 @@
 		B5732BF12C82CD5900EC9E11 /* IDAHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5732BF02C82CD5900EC9E11 /* IDAHack.m */; };
 		B57F200E2C5DD6D700C87201 /* MockCKDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = B57F200D2C5DD6D700C87201 /* MockCKDatabase.h */; };
 		B57F20102C5DD70700C87201 /* MockCKDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = B57F200F2C5DD70700C87201 /* MockCKDatabase.m */; };
-		B58160172BE88569001DDB9B /* encryp_utils.m in Sources */ = {isa = PBXBuildFile; fileRef = B58160112BE88569001DDB9B /* encryp_utils.m */; };
-		B581601B2BE88569001DDB9B /* encryp_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = B58160162BE88569001DDB9B /* encryp_utils.h */; };
+		B58160172BE88569001DDB9B /* EncryptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = B58160112BE88569001DDB9B /* EncryptionUtils.m */; };
+		B581601B2BE88569001DDB9B /* EncryptionUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = B58160162BE88569001DDB9B /* EncryptionUtils.h */; };
 		B5A7D30F2C548B71003D4C7F /* HackProtocolDefault.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A7D30E2C548B71003D4C7F /* HackProtocolDefault.h */; };
 		B5A7D3112C548BAB003D4C7F /* HackProtocolDefault.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A7D3102C548BAB003D4C7F /* HackProtocolDefault.m */; };
 		B5A7D3142C549130003D4C7F /* ForkLiftHelperHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A7D3132C549130003D4C7F /* ForkLiftHelperHack.m */; };
@@ -42,6 +42,8 @@
 		B5B89BCD2C5DD4AB00F61EB0 /* MockCKContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B89BCC2C5DD4AB00F61EB0 /* MockCKContainer.m */; };
 		B5D0C0BB2C4B553500881398 /* ForkLiftHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D0C0BA2C4B553500881398 /* ForkLiftHack.m */; };
 		B5D2ED3F2BC0252D0030CBCA /* DevHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D2ED3E2BC0252D0030CBCA /* DevHack.m */; };
+		B5EAA9E02C8C3FAF008C4089 /* URLSessionHook.h in Headers */ = {isa = PBXBuildFile; fileRef = B5EAA9DF2C8C3FAF008C4089 /* URLSessionHook.h */; };
+		B5EAA9E22C8C3FC3008C4089 /* URLSessionHook.m in Sources */ = {isa = PBXBuildFile; fileRef = B5EAA9E12C8C3FC3008C4089 /* URLSessionHook.m */; };
 		B5F06B1D2BEF591E0079E68D /* InfuseHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F06B1C2BEF591E0079E68D /* InfuseHack.m */; };
 		B5FE3B862BA2A571001AE437 /* TransmitHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FE3B842BA2A571001AE437 /* TransmitHack.m */; };
 		B5FECEAD2BC4FC29008916D6 /* common_ret.h in Headers */ = {isa = PBXBuildFile; fileRef = B5FECEAB2BC4FC29008916D6 /* common_ret.h */; };
@@ -97,8 +99,8 @@
 		B57AEDBE2C5009F200B9C5FB /* patch.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = patch.json; sourceTree = "<group>"; };
 		B57F200D2C5DD6D700C87201 /* MockCKDatabase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockCKDatabase.h; sourceTree = "<group>"; };
 		B57F200F2C5DD70700C87201 /* MockCKDatabase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockCKDatabase.m; sourceTree = "<group>"; };
-		B58160112BE88569001DDB9B /* encryp_utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = encryp_utils.m; sourceTree = "<group>"; };
-		B58160162BE88569001DDB9B /* encryp_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = encryp_utils.h; sourceTree = "<group>"; };
+		B58160112BE88569001DDB9B /* EncryptionUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncryptionUtils.m; sourceTree = "<group>"; };
+		B58160162BE88569001DDB9B /* EncryptionUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncryptionUtils.h; sourceTree = "<group>"; };
 		B5A7D30E2C548B71003D4C7F /* HackProtocolDefault.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackProtocolDefault.h; sourceTree = "<group>"; };
 		B5A7D3102C548BAB003D4C7F /* HackProtocolDefault.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HackProtocolDefault.m; sourceTree = "<group>"; };
 		B5A7D3132C549130003D4C7F /* ForkLiftHelperHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForkLiftHelperHack.m; sourceTree = "<group>"; };
@@ -112,6 +114,8 @@
 		B5BE2D5B2C52A5E40056B3E2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B5D0C0BA2C4B553500881398 /* ForkLiftHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForkLiftHack.m; sourceTree = "<group>"; };
 		B5D2ED3E2BC0252D0030CBCA /* DevHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevHack.m; sourceTree = "<group>"; };
+		B5EAA9DF2C8C3FAF008C4089 /* URLSessionHook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URLSessionHook.h; sourceTree = "<group>"; };
+		B5EAA9E12C8C3FC3008C4089 /* URLSessionHook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = URLSessionHook.m; sourceTree = "<group>"; };
 		B5F06B1C2BEF591E0079E68D /* InfuseHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfuseHack.m; sourceTree = "<group>"; };
 		B5FE3B842BA2A571001AE437 /* TransmitHack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransmitHack.m; sourceTree = "<group>"; };
 		B5FECEAB2BC4FC29008916D6 /* common_ret.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common_ret.h; sourceTree = "<group>"; };
@@ -246,8 +250,8 @@
 			children = (
 				38D1AC272B54C9C100E6CB9E /* Constant.h */,
 				38D1AC292B54CA4D00E6CB9E /* Constant.m */,
-				B58160162BE88569001DDB9B /* encryp_utils.h */,
-				B58160112BE88569001DDB9B /* encryp_utils.m */,
+				B58160162BE88569001DDB9B /* EncryptionUtils.h */,
+				B58160112BE88569001DDB9B /* EncryptionUtils.m */,
 				3816BBB62B54FED80051CF39 /* MemoryUtils.h */,
 				3816BBB82B54FF090051CF39 /* MemoryUtils.m */,
 				B5FECEAB2BC4FC29008916D6 /* common_ret.h */,
@@ -258,6 +262,8 @@
 				B5B89BCC2C5DD4AB00F61EB0 /* MockCKContainer.m */,
 				B57F200D2C5DD6D700C87201 /* MockCKDatabase.h */,
 				B57F200F2C5DD70700C87201 /* MockCKDatabase.m */,
+				B5EAA9DF2C8C3FAF008C4089 /* URLSessionHook.h */,
+				B5EAA9E12C8C3FC3008C4089 /* URLSessionHook.m */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -287,8 +293,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5EAA9E02C8C3FAF008C4089 /* URLSessionHook.h in Headers */,
 				B5FECEAD2BC4FC29008916D6 /* common_ret.h in Headers */,
-				B581601B2BE88569001DDB9B /* encryp_utils.h in Headers */,
+				B581601B2BE88569001DDB9B /* EncryptionUtils.h in Headers */,
 				B5A7D30F2C548B71003D4C7F /* HackProtocolDefault.h in Headers */,
 				B5B89BCB2C5DD49B00F61EB0 /* MockCKContainer.h in Headers */,
 				38350BF62B53F73A00DD52B3 /* dylib_dobby_hook.h in Headers */,
@@ -390,7 +397,7 @@
 				B5D2ED3F2BC0252D0030CBCA /* DevHack.m in Sources */,
 				B5A7D3112C548BAB003D4C7F /* HackProtocolDefault.m in Sources */,
 				B546A6582BC4F0CD0012338D /* ProxyManHack.m in Sources */,
-				B58160172BE88569001DDB9B /* encryp_utils.m in Sources */,
+				B58160172BE88569001DDB9B /* EncryptionUtils.m in Sources */,
 				B53522462C2FE4D4001CA305 /* MacUpdaterHack.m in Sources */,
 				B5A7D3142C549130003D4C7F /* ForkLiftHelperHack.m in Sources */,
 				38350BF82B53F73A00DD52B3 /* dylib_dobby_hook.m in Sources */,
@@ -400,6 +407,7 @@
 				B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */,
 				B5D0C0BB2C4B553500881398 /* ForkLiftHack.m in Sources */,
 				B5F06B1D2BEF591E0079E68D /* InfuseHack.m in Sources */,
+				B5EAA9E22C8C3FC3008C4089 /* URLSessionHook.m in Sources */,
 				B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */,
 				3816BBB92B54FF090051CF39 /* MemoryUtils.m in Sources */,
 				38B83E312B5505B300919735 /* TablePlusHack.m in Sources */,

@@ -14,12 +14,19 @@
 #import <Cocoa/Cocoa.h>
 #import "HackProtocolDefault.h"
 #import "common_ret.h"
+#import "URLSessionHook.h"
+#import "EncryptionUtils.h"
+
+
 
 @interface PaddleBaseHack : HackProtocolDefault
 
 @end
 
 @implementation PaddleBaseHack
+
+IMP initWithProductIDIMP;
+IMP dataTaskWithRequestIMP;
 
 - (BOOL)shouldInject:(NSString *)target {
     
@@ -94,8 +101,13 @@
 }
 - (NSString *) hook_licenseCode{
     NSLog(@">>>>>> called hook_licenseCode");
-    NSUUID *uuid = [NSUUID UUID];
-    return [uuid UUIDString];
+    static NSString *uuidString = nil;
+    if (!uuidString) {
+        NSUUID *uuid = [NSUUID UUID];
+        uuidString = [uuid UUIDString];
+        NSLog(@">>>>>> UUID initialized: %@", uuidString);
+    }
+    return uuidString;
 //    return @"B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C";
 }
 
@@ -104,10 +116,63 @@
     return [Constant G_EMAIL_ADDRESS];
 }
 
-//- (void) hook_verifyActivationDetailsWithCompletion:(id) arg1{
-//    NSLog(@">>>>>> called hook_verifyActivationDetailsWithCompletion");
-//    return;
+
+//- (id)hook_initWithProductID:(NSString *)productID andLicenseController:(id)licenseController {
+//    NSLog(@">>>>>> called hook_initWithProductID");
+//    id ret =  ((id(*)(id, SEL, id,id))initWithProductIDIMP)(self, _cmd, productID,licenseController);
+//    return ret;
 //}
+
+- (id) hook_dataTaskWithRequest:(NSMutableURLRequest*)request completionHandler:(NSCompletionHandler)completionHandler{
+    
+    NSURL *url = [request URL];
+    NSString *urlString = [url absoluteString];
+    if ([urlString containsString:@"v3.paddleapi.com"] && completionHandler) {
+        URLSessionHook *dummyTask = [[URLSessionHook alloc] init];
+        // 在 Objective-C 中，completionHandler 是一种常见的异步编程模式，它通常用于在一个操作完成后执行一些额外的代码或处理结果。
+        __auto_type wrapper = ^(NSError *error, NSDictionary *data) {
+            __auto_type resp = [[NSHTTPURLResponse alloc] initWithURL:url statusCode:200 HTTPVersion:@"1.1" headerFields:@{}];
+            NSData *body = [NSJSONSerialization dataWithJSONObject:data options:0 error: &error];
+            completionHandler(body, resp,error);
+        };
+        NSDictionary *respBody;
+        NSString *reqBody = [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding];
+        NSString *productId = [EncryptionUtils  getTextBetween:@"product_id=" and:@"&" inString:reqBody];
+        
+        if ([urlString containsString:@"/3.2/license/activate"]) {
+            respBody = @{
+                @"success": @YES,
+                @"response": @{
+                        @"activation_id": [Constant G_EMAIL_ADDRESS],
+                        @"allowed_uses": @"10",
+                        @"expires": @NO,
+                        @"expiry_date": @"2500-12-30",
+                        @"product_id": productId,
+                        @"times_used": @"1",
+                        @"type": @"activation_license",
+                        @"user_id": @""
+                },
+                @"signature": @""
+            };
+        } else if([urlString containsString:@"/3.2/license/deactivate"]) {
+            respBody =@{
+                @"success": @YES,
+                @"response": @{},
+                @"signature": @""
+            };
+        } else {
+            NSLog(@">>>>>> [hook_dataTaskWithRequest] Allow to pass url: %@",url);
+            return ((id(*)(id, SEL,id,id))dataTaskWithRequestIMP)(self, _cmd,request,completionHandler);
+
+        }
+        NSLog(@">>>>>> [hook_dataTaskWithRequest] Intercept url: %@, request body: %@, response body: %@",url, reqBody,respBody);
+        wrapper(nil,respBody);
+        return dummyTask;
+;
+    }
+    NSLog(@">>>>>> [hook_dataTaskWithRequest] Allow to pass url: %@",url);
+    return ((id(*)(id, SEL,id,id))dataTaskWithRequestIMP)(self, _cmd,request,completionHandler);
+}
 
 - (BOOL)hack {
 //    license eg: B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C
@@ -143,45 +208,9 @@
 //        }
 //    });
     
-    
-//    boom 爆破
-//    // -[_TtC9Licensing27CMLicensingWindowController windowDidLoad]:        // -[Licensing.CMLicensingWindowController windowDidLoad]
-//    [MemoryUtils hookInstanceMethod:
-//         objc_getClass("Licensing.CMLicensingWindowController")
-//                   originalSelector:NSSelectorFromString(@"windowDidLoad")
-//                      swizzledClass:[self class]
-//                   swizzledSelector:NSSelectorFromString(@"hook_windowDidLoad")
-//    ];
-//    //  viewDidLoad
-//    [MemoryUtils hookInstanceMethod:
-//         objc_getClass("Licensing.CMLicensingViewController")
-//                   originalSelector:NSSelectorFromString(@"viewDidLoad")
-//                      swizzledClass:[self class]
-//                   swizzledSelector:NSSelectorFromString(@"hook_viewDidLoad")
-//    ];
-//    
-//    [MemoryUtils hookInstanceMethod:
-//         objc_getClass("PADProduct")
-//                   originalSelector:NSSelectorFromString(@"trialLength")
-//                      swizzledClass:[self class]
-//                   swizzledSelector:NSSelectorFromString(@"hook_trialLength2")
-//     
-//    ];
-//    //    trialDaysRemaining
-//    [MemoryUtils hookInstanceMethod:
-//         objc_getClass("PADProduct")
-//                   originalSelector:NSSelectorFromString(@"trialDaysRemaining")
-//                      swizzledClass:[self class]
-//                   swizzledSelector:NSSelectorFromString(@"hook_trialDaysRemaining")
-//     
-//    ];
-    
-    
-    
-    
 //    license HOOK
 //    -[PADProduct activated]:    
-    [MemoryUtils hookInstanceMethod:
+    [MemoryUtils replaceInstanceMethod:
          objc_getClass("PADProduct")
                    originalSelector:NSSelectorFromString(@"activated")
                       swizzledClass:[self class]
@@ -189,6 +218,17 @@
 
     ];
     
+    // -[PADProduct initWithProductID:andLicenseController:]
+//    initWithProductIDIMP = [MemoryUtils replaceInstanceMethod:
+//         objc_getClass("PADProduct")
+//                   originalSelector:NSSelectorFromString(@"initWithProductID:andLicenseController:")
+//                      swizzledClass:[self class]
+//                      swizzledSelector:@selector(hook_initWithProductID:andLicenseController:)
+//
+//    ];
+//        
+   
+    // shouldTrackTrialStartDate
     [MemoryUtils hookInstanceMethod:
          objc_getClass("PADProduct")
                    originalSelector:NSSelectorFromString(@"activationDate")
@@ -218,54 +258,12 @@
 
     ];
     
-//            // Licensing.CMLicensing.numberOfTrialDays.getter
-//            // 反射创建类实例
-//            Class Dcls=NSClassFromString(@"Licensing.CMLicensingViewController");
-//            id dobj=[[Dcls alloc] init];
-//        
-//            // 反射创建无类实例(也叫类对象)
-//            Class currentClass=objc_getMetaClass("Licensing.CMLicensingViewController");
-//            // id dclsobj=[[currentClass alloc] init];
-//        
-//            // 获取类的方法列表
-//            unsigned int classMethodCount;
-//            Method *classMethods = class_copyMethodList(currentClass, &classMethodCount);
-//            NSLog(@"Class Methods:");
-//            for (unsigned int i = 0; i < classMethodCount; i++) {
-//                SEL selector = method_getName(classMethods[i]);
-//                NSLog(@"- %@", NSStringFromSelector(selector));
-//            }
-//            free(classMethods);
-//        
-//            // 获取类的属性列表
-//            unsigned int classPropertyCount;
-//            objc_property_t *classProperties = class_copyPropertyList(currentClass, &classPropertyCount);
-//            NSLog(@"Class Properties:");
-//            for (unsigned int i = 0; i < classPropertyCount; i++) {
-//                const char *propertyName = property_getName(classProperties[i]);
-//                NSLog(@"- %s", propertyName);
-//            }
-//            free(classProperties);
-//        
-//            // 获取实例的方法列表
-//            unsigned int instanceMethodCount;
-//            Method *instanceMethods = class_copyMethodList(Dcls, &instanceMethodCount);
-//            NSLog(@"Instance Methods:");
-//            for (unsigned int i = 0; i < instanceMethodCount; i++) {
-//                SEL selector = method_getName(instanceMethods[i]);
-//                NSLog(@"- %@", NSStringFromSelector(selector));
-//            }
-//            free(instanceMethods);
-//        
-//            // 获取实例的属性列表
-//            unsigned int instancePropertyCount;
-//            objc_property_t *instanceProperties = class_copyPropertyList(Dcls, &instancePropertyCount);
-//            NSLog(@"Instance Properties:");
-//            for (unsigned int i = 0; i < instancePropertyCount; i++) {
-//                const char *propertyName = property_getName(instanceProperties[i]);
-//                NSLog(@"- %s", propertyName);
-//            }
-//            free(instanceProperties);
+    dataTaskWithRequestIMP = [MemoryUtils hookInstanceMethod:
+                                  NSClassFromString(@"NSURLSession")
+                   originalSelector:NSSelectorFromString(@"dataTaskWithRequest:completionHandler:")
+                      swizzledClass:[self class]
+                   swizzledSelector:NSSelectorFromString(@"hook_dataTaskWithRequest:completionHandler:")
+    ];
     return YES;
 }
 @end

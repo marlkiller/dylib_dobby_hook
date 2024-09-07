@@ -27,5 +27,7 @@
 + (NSData *)cccEncryptData:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv;
 + (NSData *)cccDecryptData:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv;
 + (NSString*) calculateSHA1OfFile:(NSString *)filePath;
+
++ (NSString *)getTextBetween:(NSString *)startText and:(NSString *)endText inString:(NSString *)inputString;
 @end
 #endif /* encryp_utils_h */

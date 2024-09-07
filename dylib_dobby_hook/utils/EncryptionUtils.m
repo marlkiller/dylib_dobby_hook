@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "encryp_utils.h"
+#import "EncryptionUtils.h"
 #import <Security/Security.h>
 #import <IOKit/IOKitLib.h>
 #import <stdio.h>
@@ -452,5 +452,33 @@
     }
 
     return hashString;
+}
+
++ (NSString *)getTextBetween:(NSString *)startText and:(NSString *)endText inString:(NSString *)inputString {
+    // 查找 startText 在 inputString 中的位置
+    NSRange startRange = [inputString rangeOfString:startText];
+    
+    // 如果没找到 startText，返回 nil
+    if (startRange.location == NSNotFound) {
+        return nil;
+    }
+    
+    // 从 startText 的结尾开始查找 endText
+    NSRange searchRange;
+    searchRange.location = startRange.location + startRange.length;
+    searchRange.length = inputString.length - searchRange.location;
+    
+    NSRange endRange = [inputString rangeOfString:endText options:0 range:searchRange];
+    
+    // 如果没找到 endText，返回 nil
+    if (endRange.location == NSNotFound) {
+        return nil;
+    }
+    
+    // 计算 startText 和 endText 之间的范围
+    NSRange resultRange = NSMakeRange(searchRange.location, endRange.location - searchRange.location);
+    
+    // 截取并返回这个范围内的文本
+    return [inputString substringWithRange:resultRange];
 }
 @end

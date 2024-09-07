@@ -16,8 +16,8 @@
 2. libs:  项目依赖的开源 dobby 库
 3. release:  build 后的成品
 4. script:
-    - hack.sh 自定义注入脚本 `sudo sh hack.sh`
-    - auto_hack.sh 妹妹全自动注入脚本 `sudo sh auto_hack.sh`
+    - hack.sh 自定义注入脚本 `sudo bash hack.sh`
+    - auto_hack.sh 妹妹全自动注入脚本 `sudo bash auto_hack.sh`
 5. tools: insert_dylib 开源注入工具
 
 ## Feat
@@ -58,7 +58,7 @@
 ```shell
 tar -xzvf dylib_dobby_hook.tar.gz
 cd script 
-sudo sh auto_hack.sh
+sudo bash auto_hack.sh
 ```
 
 ## Develop

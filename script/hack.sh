@@ -1,5 +1,7 @@
+#!/bin/bash
+
 current_path=$PWD
-echo "当前路径：$current_path"
+echo "✅ Current Path: $current_path"
 
 app_name="DevUtils"
 # The default is injected into the main program, if you need to customize, please edit the variable inject_bin, otherwise do not touch it
@@ -17,7 +19,7 @@ app_bundle_path="/Applications/${app_name}.app/Contents/MacOS"
 app_bundle_framework="/Applications/${app_name}.app/Contents/Frameworks/"
 
 if [ ! -d "$app_bundle_framework" ]; then
-  mkdir -p "$app_bundle_framework"
+    mkdir -p "$app_bundle_framework"
 fi
 
 if [ -n "$inject_bin" ]; then
@@ -27,16 +29,10 @@ else
 fi
 app_executable_backup_path="${app_executable_path}_Backup"
 
-
-if [ ! -f "$app_executable_backup_path" ];
-then
+if [ ! -f "$app_executable_backup_path" ]; then
     cp "$app_executable_path" "$app_executable_backup_path"
 fi
-
-
 
 cp -f "${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib" "${app_bundle_framework}"
 
 "${insert_dylib}" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
-
-

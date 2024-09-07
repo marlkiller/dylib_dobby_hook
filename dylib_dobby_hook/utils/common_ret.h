@@ -21,7 +21,7 @@
 #import "common_ret.h"
 #include <sys/xattr.h>
 #import <CommonCrypto/CommonCrypto.h>
-#import "encryp_utils.h"
+#import "EncryptionUtils.h"
 #import <sys/ptrace.h>
 #import <sys/sysctl.h>
 #include <dlfcn.h>

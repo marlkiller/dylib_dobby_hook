@@ -9,24 +9,12 @@
 #import "Constant.h"
 #import "dobby.h"
 #import "MemoryUtils.h"
-#import "encryp_utils.h"
+#import "EncryptionUtils.h"
 #import <objc/runtime.h>
 #include <mach-o/dyld.h>
 #import "HackProtocolDefault.h"
 #import "common_ret.h"
-
-@interface DummyURLSessionDataTask : NSObject
-@end
-
-@implementation DummyURLSessionDataTask
-
-- (void)resume {
-    // 重写 resume 方法，使其不做任何事情
-    NSLog(@">>>>>> DummyURLSessionDataTask.resume");
-}
-
-@end
-
+#import "URLSessionHook.h"
 
 @interface TablePlusHack : HackProtocolDefault
 
@@ -134,7 +122,7 @@ static IMP decryptDataIMP;
     
     // @"https://tableplus.com/v1/licenses/devices?deviceID=xxx"    0x0000600001f82a80
     if ([URLString containsString:@"tableplus.com"]) {
-        DummyURLSessionDataTask *dummyTask = [[DummyURLSessionDataTask alloc] init];
+        URLSessionHook *dummyTask = [[URLSessionHook alloc] init];
 
 //    loc_1002645ce:
 //        r14 = *qword_10093f548;

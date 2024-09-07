@@ -9,7 +9,7 @@
 #import "Constant.h"
 #import "dobby.h"
 #import "MemoryUtils.h"
-#import "encryp_utils.h"
+#import "EncryptionUtils.h"
 #import <objc/runtime.h>
 #import "HackProtocolDefault.h"
 #include <sys/ptrace.h>
