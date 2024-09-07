@@ -26,10 +26,18 @@ check_dylib_exist() {
     return 1
 }
 
+
+# If SIP is on, re-sign the app and fix the helper file (if the app has a helper); refer to `forklift_hack.sh`;
 function resign_app() {
-    sudo codesign --remove-signature "$1" >/dev/null 2>&1
-    sudo xattr -cr "$1" >/dev/null 2>&1
-    sudo codesign -f -s - --timestamp=none --all-architectures --deep "$1" >/dev/null 2>&1
+    sudo xattr -cr "$1"
+    echo -e "${GREEN}🔍 Checking code signature before re-signing${NC}"
+    sudo codesign -d -r- "$1"
+
+    echo -e "${GREEN}🔏 Re-signing ${app_name}...${NC}"
+    sudo codesign -f -s - --all-architectures --deep "$1"
+
+    echo -e "${GREEN}🔍 Checking code signature after re-signing${NC}"
+    sudo codesign -d -r- "$1"
 }
 
 BUILT_PRODUCTS_DIR="${current_path}/../release"
@@ -64,7 +72,7 @@ printf "${RED}⛔️ Checking the insert_dylib quarantine status...${NC}\n"
 xattr "${insert_dylib}"
 
 "${insert_dylib}" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
-printf "${GREEN}✅ [${app_name}] - dylib_dobby_hook Injection completed successfully.${NC}\n"
 
 resign_app "/Applications/${app_name}.app"
-printf "${GREEN}✅ [${app_name}] - Resigned successfully.${NC}\n"
+printf "${GREEN}🔧 [${app_name}] - Resigned.${NC}\n"
+printf "${GREEN}✅ [${app_name}] - dylib_dobby_hook Injection completed successfully.${NC}\n"
