@@ -107,7 +107,7 @@ IMP dataTaskWithRequestIMP;
         uuidString = [uuid UUIDString];
         NSLog(@">>>>>> UUID initialized: %@", uuidString);
     }
-    return uuidString;
+    return uuidString.copy;
 //    return @"B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C";
 }
 

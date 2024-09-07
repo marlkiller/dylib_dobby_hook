@@ -29,7 +29,6 @@ check_dylib_exist() {
 
 # If SIP is on, re-sign the app and fix the helper file (if the app has a helper); refer to `forklift_hack.sh`;
 function resign_app() {
-    sudo xattr -cr "$1"
     echo -e "${GREEN}🔍 Checking code signature before re-signing${NC}"
     sudo codesign -d -r- "$1"
 
@@ -38,6 +37,8 @@ function resign_app() {
 
     echo -e "${GREEN}🔍 Checking code signature after re-signing${NC}"
     sudo codesign -d -r- "$1"
+        
+    sudo /usr/bin/xattr -cr "$1"
 }
 
 BUILT_PRODUCTS_DIR="${current_path}/../release"
@@ -69,7 +70,7 @@ fi
 
 cp -f "${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib" "${app_bundle_framework}"
 printf "${RED}⛔️ Checking the insert_dylib quarantine status...${NC}\n"
-xattr "${insert_dylib}"
+/usr/bin/xattr "${insert_dylib}"
 
 "${insert_dylib}" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
 

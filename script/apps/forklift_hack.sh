@@ -52,7 +52,7 @@ fi
 ##################################################################
 
 echo -e "${YELLOW}Checking quarantine status of ${insert_dylib}:${NC}"
-xattr "${insert_dylib}"
+/usr/bin/xattr "${insert_dylib}"
 
 echo -e "${GREEN}🚀 Injecting dylib into ${helper_executable_path}${NC}"
 "${insert_dylib}" --weak --all-yes "${app_bundle_framework}/${prefix}${dylib_name}.dylib" "$helper_executable_backup_path" "$helper_executable_path"
@@ -79,7 +79,7 @@ sudo /bin/rm "/Library/PrivilegedHelperTools/com.binarynights.ForkLiftHelper" 2>
 sudo rm -rf "~/Library/Preferences/com.binarynights.ForkLift.plist" 2>/dev/null
 sudo rm -rf "~/Library/Application Support/com.binarynights.ForkLift" 2>/dev/null
 sudo /bin/rm /Library/PrivilegedHelperTools/com.binarynights.ForkLiftHelper 2>/dev/null
-xattr -c '/Applications/ForkLift.app'
+/usr/bin/xattr -cr '/Applications/ForkLift.app'
 
 echo -e "${GREEN}🔧 Modifying Info.plist for ForkLift...${NC}"
 identifier_name="identifier \\\"$helper_name\\\""
