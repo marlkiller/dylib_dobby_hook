@@ -34,7 +34,7 @@
 | TablePlus       | 6.*     | ✔   | ✔   | https://tableplus.com/                       |     |                     |
 | DevUtils        | 1.*     | ✔   | ✔   | https://devutils.com/                        |     |                     |
 | AirBuddy        | 2.*     | ✔   | ✔   | https://v2.airbuddy.app/download             |     |                     |
-| Navicat Premium | 17.*    | ✔   | ✔   | App Store                                    |     | QiuChenlyOpenSource |
+| Navicat Premium | 17.*    | ✔   | ✔   | App Store                                    |     |                     |
 | Paste           | 4.1.3   | ✘   | ✔   | App Store                                    |     | LeeeMooo            |
 | Transmit        | 5.*     | ✔   | ✔   | https://panic.com/transmit/#download         |     |                     |
 | AnyGo           | 7.*     | ✔   | ✔   | https://itoolab.com/gps-location-changer/    |     |                     |

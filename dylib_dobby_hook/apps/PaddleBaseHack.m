@@ -264,6 +264,15 @@ IMP dataTaskWithRequestIMP;
                       swizzledClass:[self class]
                    swizzledSelector:NSSelectorFromString(@"hook_dataTaskWithRequest:completionHandler:")
     ];
+    
+    if ([[Constant currentAppName] containsString:@"mindmac"]) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:@"Basic" forKey:@"licenseType"];
+        [defaults setObject:@YES forKey:@"licenseStatusChanged"];
+        [defaults synchronize];
+    }
+    
+    
     return YES;
 }
 @end
