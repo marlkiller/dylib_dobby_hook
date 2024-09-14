@@ -33,6 +33,8 @@ function resign_app() {
     sudo codesign -d -r- "$1"
 
     echo -e "${GREEN}🔏 Re-signing ${app_name}...${NC}"
+    # sudo codesign --remove-signature "$1"
+    # sudo codesign -f -s - --timestamp=none --all-architectures --deep "$1"
     sudo codesign -f -s - --all-architectures --deep "$1"
 
     echo -e "${GREEN}🔍 Checking code signature after re-signing${NC}"
@@ -70,7 +72,7 @@ fi
 
 cp -f "${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib" "${app_bundle_framework}"
 printf "${RED}⛔️ Checking the insert_dylib quarantine status...${NC}\n"
-/usr/bin/xattr "${insert_dylib}"
+/usr/bin/xattr -cr "${insert_dylib}"
 
 "${insert_dylib}" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
 

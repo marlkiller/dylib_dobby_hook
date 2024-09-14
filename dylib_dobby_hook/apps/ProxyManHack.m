@@ -75,7 +75,7 @@ intptr_t handleHelper(intptr_t a1, intptr_t a2, intptr_t a3) {
     NSView *expiredLicenseInfoStackView = [MemoryUtils getInstanceIvar:self ivarName:"expiredLicenseInfoStackView"];
     NSTextField *licenseUntilLbl = [MemoryUtils getInstanceIvar:self ivarName:"licenseUntilLbl"];
     [expiredLicenseInfoStackView setHidden:true];
-    [licenseUntilLbl setStringValue:@"更新永久可用. (直到 QiuChenlyTeam 停止更新 以后)"];
+    [licenseUntilLbl setStringValue:@"Saturday, Sep 01, 2050"];
     [registerAtLbl setStringValue:[Constant G_EMAIL_ADDRESS]];
 }
 - (BOOL)hack {
@@ -96,11 +96,28 @@ intptr_t handleHelper(intptr_t a1, intptr_t a2, intptr_t a3) {
                    swizzledSelector:NSSelectorFromString(@"hook_viewDidLoad")
     ];
 
+    
+//    ProxymanCore.WorkspaceService.defaultProject
+//    rbx = r13;
+//    *(r13 + 0xe8) = 0x0;
+//    *(int128_t *)(r13 + 0xb8) = intrinsic_movups(*(int128_t *)(r13 + 0xb8), 0x0);
+//    *(int128_t *)(r13 + 0xc8) = intrinsic_movups(*(int128_t *)(r13 + 0xc8), 0x0);
+//    *(r13 + 0xd8) = 0x0;
+//    *(int8_t *)(r13 + 0xf0) = 0x2;
+//    swift_allocObject(type metadata accessor for ProxymanCore.WorkspaceService(0x0), 0x20, 0x7);
+//    r15 = ProxymanCore.WorkspaceService.init();
+//    r12 = ProxymanCore.WorkspaceService.defaultProject();
+//    swift_allocObject(type metadata accessor for ProxymanCore.ProxymanGateway(0x0), 0x38, 0x7);
+//    swift_retain(r12);
+//    r14 = ProxymanCore.ProxymanGateway.init(r12);
+//    swift_allocObject(type metadata accessor for ProxymanCore.FlowPool(0x0), 0x30, 0x7);
+//    var_30 = ProxymanCore.FlowPool.init();
+//    static ProxymanCore.UserDataBackupService.backupUserDataIfNeedAsync();
 
 #if defined(__arm64__) || defined(__aarch64__)
-    NSString *patch_1Code = @"FF ?? ?? D1 FC 6F ?? A9 FA 67 ?? A9 F8 5F ?? A9 F6 57 ?? A9 F4 4F ?? A9 FD 7B ?? A9 FD ?? 03 91 F3 03 14 AA 9F 76 00 F9 00 00 80 D2 ?? ?? 0B 94 00 E4 00 6F 80 82 8B 3C 80 82 8C 3C 9F 6E 00 F9 01 04 80 52 E2 00 80 52 ?? ?? 0B 94 F4 03 00 AA ?? ?? 0B 94 F5 03 00 AA F4 03 00 AA ?? ?? 0B 94 F6 03 00 AA 00 00 80 D2 ?? ?? 0B 94 01 07 80 52 E2 00 80 52 ?? ?? 0B 94 F4 03 00 AA E0 03 16 AA ?? ?? 0B 94 ?? ?? 0B 94 F7 03 00 AA 00 00 80 D2 ?? ?? 0B 94 01 06 80 52 E2 00 80 52 ?? ?? 0B 94 F4 03 00 AA ?? ?? 0B 94 F8 03 00 AA ?? ?? 0B 94 75 4E 00 F9 76 72 00 F9 77 56 00 F9 E0 03 ?? AA ?? ?? 0B 94 E0 03 ?? AA ?? ?? 0B 94 E0 03 ?? AA";
+    NSString *patch_1Code = @"FF 43 03 D1 FC 6F 07 A9 FA 67 08 A9 F8 5F 09 A9 F6 57 0A A9 F4 4F 0B A9 FD 7B 0C A9 FD 03 03 91 F3 03 14 AA 9F 76 00 F9 00 E4 00 6F 80 82 8B 3C 80 82 8C 3C 9F 6E 00 F9 5B 00 80 52 9B C2 03 39";
 #elif defined(__x86_64__)
-    NSString *patch_1Code = @"55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC ?? 00 00 00 4C 89 EB 49 C7 85 E8 00 00 00 00 00 00 00 31 FF E8 ?? ?? ?? 00 0F 57 C0 41 0F 11 85 B8 00 00 00 41 0F 11 85 C8 00 00 00 49 C7 85 D8 00 00 00 00 00 00 00 BE 20 00 00 00 BA 07 00 00 00 48 89 C7 E8 ?? ?? ?? 00 49 89 C5 E8 ?? ?? ?? 00 49 89 C7 49 89 C5 E8 ?? ?? ?? 00 49 89 C4 31 FF E8 ?? ?? ?? 00 BE 38 00 00 00 BA 07 00 00 00 48 89 C7 E8 ?? ?? ?? 00 49 89 C5 4C 89 E7 E8 ?? ?? ?? 00 4C 89 E7 E8 ?? ?? ?? 00 49 89 C6 31 FF E8 ?? ?? ?? 00 BE 30 00 00 00 BA 07 00 00 00 48 89 C7 E8 ?? ?? ?? 00 49 89 C5 E8 ?? ?? ?? 00 48 89 45 D0 E8 ?? ?? ?? 00 4C 89 BB 98 00 00 00 4C 89 A3 E0 00 00 00 4C 89 75 C8";
+    NSString *patch_1Code = @"55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC 98 00 00 00 4C 89 EB 49 C7 85 E8 00 00 00 00 00 00 00 0F 57 C0 41 0F 11 85 B8 00 00 00 41 0F 11 85 C8 00 00 00 49 C7 85 D8 00 00 00 00 00 00 00 41 C6 85 F0 00 00 00 02 31 FF";
 #endif
     NSArray *patch_1Offsets =[MemoryUtils searchMachineCodeOffsets:
                     searchFilePath
@@ -164,11 +181,6 @@ intptr_t handleHelper(intptr_t a1, intptr_t a2, intptr_t a3) {
 //                            );
 
     return YES;
-}
-
-- (BOOL)swizzled_isHideExpireLicenseBadge {
-    // 在这里实现您自己的逻辑，返回您期望的结果
-    return YES; // 示例中返回固定的值，您需要根据您的实际需求进行逻辑处理
 }
 
 

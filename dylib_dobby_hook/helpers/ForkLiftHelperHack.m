@@ -58,7 +58,8 @@ OSStatus hk_SecCodeCopySigningInformation_forklift(SecCodeRef codeRef, SecCSFlag
 
     CFMutableDictionaryRef fakeDict = CFDictionaryCreateMutableCopy(NULL, 0, *signingInfo);
 
-    CFNumberRef flagsVal = CFNumberCreate(NULL, kCFNumberSInt32Type, @65536);
+    SInt32 number = (SInt32) 65536;
+    CFNumberRef flagsVal = CFNumberCreate(NULL, kCFNumberSInt32Type, &number);
     if (flagsVal) {
         CFDictionarySetValue(fakeDict,  kSecCodeInfoFlags, flagsVal);
         CFRelease(flagsVal);
@@ -92,18 +93,18 @@ OSStatus hk_SecCodeCopySigningInformation_forklift(SecCodeRef codeRef, SecCSFlag
 }
  
 - (BOOL)hack {
-    // DobbyHook(SecCodeCopySigningInformation, (void *)hk_SecCodeCopySigningInformation_forklift, (void *)&SecCodeCopySigningInformation_ori);
-    // DobbyHook(SecCodeCheckValidityWithErrors, (void *)hk_SecCodeCheckValidityWithErrors, (void *)&SecCodeCheckValidityWithErrors_ori); 
+     DobbyHook(SecCodeCopySigningInformation, (void *)hk_SecCodeCopySigningInformation_forklift, (void *)&SecCodeCopySigningInformation_ori);
+     DobbyHook(SecCodeCheckValidityWithErrors, (void *)hk_SecCodeCheckValidityWithErrors, (void *)&SecCodeCheckValidityWithErrors_ori); 
     
-    Class ForkLiftHelper10HelperTool = NSClassFromString(@"_TtC31com_binarynights_ForkLiftHelper10HelperTool");
-    SEL listenerSel = NSSelectorFromString(@"listener:shouldAcceptNewConnection:");
-    Method listenerMethod = class_getInstanceMethod(ForkLiftHelper10HelperTool, listenerSel);
-    listenerIMP = method_getImplementation(listenerMethod);
-    [MemoryUtils hookInstanceMethod:ForkLiftHelper10HelperTool
-                   originalSelector:listenerSel
-                      swizzledClass:[self class]
-                   swizzledSelector:@selector(hk_listener:shouldAcceptNewConnection:)
-    ];
+//    Class ForkLiftHelper10HelperTool = NSClassFromString(@"_TtC31com_binarynights_ForkLiftHelper10HelperTool");
+//    SEL listenerSel = NSSelectorFromString(@"listener:shouldAcceptNewConnection:");
+//    Method listenerMethod = class_getInstanceMethod(ForkLiftHelper10HelperTool, listenerSel);
+//    listenerIMP = method_getImplementation(listenerMethod);
+//    [MemoryUtils hookInstanceMethod:ForkLiftHelper10HelperTool
+//                   originalSelector:listenerSel
+//                      swizzledClass:[self class]
+//                   swizzledSelector:@selector(hk_listener:shouldAcceptNewConnection:)
+//    ];
     return YES;
 }
 
