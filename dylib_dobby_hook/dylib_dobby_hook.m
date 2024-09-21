@@ -47,16 +47,15 @@ void initTest(void){
     
     
 //    initTest();
-    
-    if ([Constant isFirstOpen]) {
+    NSLog(@">>>>>> dylib_dobby_hook load");
+    if ([Constant isFirstOpen] && ![Constant isHelper]) {
         NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText:@"Cracked By\n[marlkiller/dylib_dobby_hook]"];
         [alert setInformativeText:@"仅供研究学习使用，请勿用于非法用途"];
         [alert addButtonWithTitle:@"OK"];
         [alert runModal];
     }
-    
-    if (SHOW_ALARM) {
+    if (SHOW_ALARM && ![Constant isHelper]) {
         NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText:@"FBI warning"];
         [alert setInformativeText:@"Please confirm if the app has been backed up.\nIf there are any issues, please restore it yourself!"];

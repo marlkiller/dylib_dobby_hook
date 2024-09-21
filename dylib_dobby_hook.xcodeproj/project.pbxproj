@@ -101,6 +101,8 @@
 		B57F200F2C5DD70700C87201 /* MockCKDatabase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockCKDatabase.m; sourceTree = "<group>"; };
 		B58160112BE88569001DDB9B /* EncryptionUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncryptionUtils.m; sourceTree = "<group>"; };
 		B58160162BE88569001DDB9B /* EncryptionUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncryptionUtils.h; sourceTree = "<group>"; };
+		B59751F52C9DAF8600617629 /* fix_helper.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = fix_helper.sh; sourceTree = "<group>"; };
+		B59751F62C9DB54E00617629 /* fix_helper_and_inject.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = fix_helper_and_inject.sh; sourceTree = "<group>"; };
 		B5A7D30E2C548B71003D4C7F /* HackProtocolDefault.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackProtocolDefault.h; sourceTree = "<group>"; };
 		B5A7D3102C548BAB003D4C7F /* HackProtocolDefault.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HackProtocolDefault.m; sourceTree = "<group>"; };
 		B5A7D3132C549130003D4C7F /* ForkLiftHelperHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForkLiftHelperHack.m; sourceTree = "<group>"; };
@@ -281,6 +283,8 @@
 		B5BE2D572C52A4530056B3E2 /* apps */ = {
 			isa = PBXGroup;
 			children = (
+				B59751F52C9DAF8600617629 /* fix_helper.sh */,
+				B59751F62C9DB54E00617629 /* fix_helper_and_inject.sh */,
 				B57AEDBA2C5009E400B9C5FB /* forklift_hack.sh */,
 			);
 			path = apps;

@@ -107,6 +107,7 @@ static BOOL helper;
         NSLog(@">>>>>> [app bundlePath] %@",currentAppPath);
         // /Library/PrivilegedHelperTools
         if ([currentAppPath isEqualToString:@"/Library/PrivilegedHelperTools"]) {
+            NSLog(@">>>>>> helper is True");
             helper = YES;
         }
         
@@ -208,21 +209,24 @@ static BOOL helper;
 
 + (void)doHack {
     NSArray<Class> *personClasses = [Constant getAllHackClasses];
-    
-    for (Class class in personClasses) {
-
-        id<HackProtocol> it = [[class alloc] init];
         
+    NSLog(@">>>>>> Constant: Initiating doHack operation...");
+    for (Class class in personClasses) {
+        NSLog(@">>>>>> Constant: Processing class - %@", NSStringFromClass(class));
+        id<HackProtocol> it = [[class alloc] init];        
         if ([it shouldInject:currentAppName]) {
             NSString *supportAppVersion = [it getSupportAppVersion];
-            if (supportAppVersion!=nil && supportAppVersion.length>0 && ![currentAppVersion hasPrefix:supportAppVersion]){
+            if (supportAppVersion==NULL ||
+                supportAppVersion.length==0 ||
+                currentAppVersion==NULL  ||
+                [currentAppVersion hasPrefix:supportAppVersion] ) {
+                [it hack];
+            }else{
                 NSAlert *alert = [[NSAlert alloc] init];
                 [alert addButtonWithTitle:@"OK"];
                 alert.messageText =  [NSString stringWithFormat:@"Unsupported current appVersion !!\nSuppert appVersion: [%s]\nCurrent appVersion: [%s]",[it getSupportAppVersion].UTF8String, currentAppVersion.UTF8String];;
                 [alert runModal];
-                return;
-            }            
-            [it hack];
+            }
             return;
         }
     }

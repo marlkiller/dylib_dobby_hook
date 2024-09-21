@@ -19,7 +19,6 @@ ALL_APPS_LIST=(
     "Navicat Premium|/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"
     "Transmit"
     # "AnyGo"
-    "Proxyman|/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend"
     "AirBuddy|/Applications/AirBuddy.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
     "Infuse|/Applications/Infuse.app/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator"
     "MacUpdater|/Applications/MacUpdater.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
@@ -30,7 +29,8 @@ ALL_APPS_LIST=(
 
     ## fixed with helper
     "IDA Professional 9.0|/Applications/IDA Professional 9.0.app/Contents/Frameworks/QtDBus.framework/Versions/5/QtDBus|apps/ida_hack.sh"
-    "ForkLift|/Applications/ForkLift.app/Contents/Frameworks/UniversalDetector.framework/Versions/A/UniversalDetector|apps/forklift_hack.sh"
+    "ForkLift|/Applications/ForkLift.app/Contents/Frameworks/UniversalDetector.framework/Versions/A/UniversalDetector|apps/fix_helper_and_inject.sh|com.binarynights.ForkLiftHelper"
+    "Proxyman|/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend|apps/fix_helper.sh|com.proxyman.NSProxy.HelperTool"
     # "Surge|/Applications/Surge.app/Contents/Frameworks/MMMarkdown.framework/Versions/A/MMMarkdown|apps/surge_hack.sh"
 )
 
@@ -79,8 +79,9 @@ find_paddle_apps() {
 
 inject_dobby_hook() {
     app_name="$1"
-    app_path="$2"
+    inject_path="$2"
     script_after="$3"
+    helper_name="$4"
     if [ -d "/Applications/${app_name}.app" ]; then
         version=$(defaults read "/Applications/${app_name}.app/Contents/Info.plist" CFBundleShortVersionString)
         bundle_id=$(defaults read "/Applications/${app_name}.app/Contents/Info.plist" CFBundleIdentifier)
@@ -92,9 +93,9 @@ inject_dobby_hook() {
         fi
         if [ "$user_input" = "Y" ] || [ "$user_input" = "y" ]; then
             printf "\n${GREEN}🚀 [${app_name}] - dylib_dobby_hook Injection starting...${NC}\n"
-            bash all_in_one.sh "$app_name" "$app_path"
+            bash all_in_one.sh "$app_name" "$inject_path"
             if [ -n "$script_after" ]; then
-                bash "$script_after"
+                bash "$script_after" "$app_name" "$helper_name"
             fi
         else
             printf "${YELLOW}😒 App skipped on user demand.${NC}\n"
@@ -107,8 +108,8 @@ inject_dobby_hook() {
 start() {
     find_paddle_apps
     for app_entry in "${ALL_APPS_LIST[@]}"; do
-        IFS="|" read -r app_name app_path script_after <<<"$app_entry"
-        inject_dobby_hook "$app_name" "$app_path" "$script_after"
+        IFS="|" read -r app_name inject_path script_after helper_name<<<"$app_entry"
+        inject_dobby_hook "$app_name" "$inject_path" "$script_after" "$helper_name"
     done
 }
 

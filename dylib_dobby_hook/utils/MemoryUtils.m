@@ -123,9 +123,9 @@ NSData *machineCode2Bytes(NSString *hexString) {
 + (void)saveMachineCodeOffsetsToUserDefaults:(NSString *)searchMachineCode offsets:(NSArray<NSNumber *> *)offsets {
     NSString *appVersion = [Constant getCurrentAppCFBundleVersion];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
     NSMutableDictionary *allOffsetsMap = [NSMutableDictionary dictionaryWithDictionary:[defaults objectForKey:CACHE_MACHINE_CODE_KEY]];
-    
+    NSLog(@">>>>>> Offset information saved to UserDefaults for %@ machine code: %@",appVersion, offsets);
+
     // Make sure versionMap is mutable
     NSMutableDictionary *versionMap = [allOffsetsMap objectForKey:appVersion];
     if (!versionMap) {
@@ -143,8 +143,6 @@ NSData *machineCode2Bytes(NSString *hexString) {
     
     [defaults setObject:allOffsetsMap forKey:CACHE_MACHINE_CODE_KEY];
     [defaults synchronize];
-    
-    NSLog(@">>>>>> Offset information saved to UserDefaults for machine code: %@", offsets);
 }
 
 + (NSArray<NSNumber *> *)loadMachineCodeOffsetsFromUserDefaults:(NSString *)searchMachineCode {
@@ -156,7 +154,7 @@ NSData *machineCode2Bytes(NSString *hexString) {
 
     if (versionMap) {
         NSArray<NSNumber *> *offsets = [versionMap objectForKey:searchMachineCode];
-        NSLog(@">>>>>> Offset information loaded from UserDefaults for machine code: %@", offsets);
+        NSLog(@">>>>>> Offset information loaded from UserDefaults %@ for machine code: %@",appVersion, offsets);
         return offsets ?: nil;
     }
     return nil;
