@@ -17,7 +17,7 @@
 3. release:  build 后的成品
 4. script:
     - auto_hack.sh 静态注入 `sudo bash auto_hack.sh`
-    - auto_dynamic_hack.sh 动态注入 `sudo bash auto_dynamic_hack.sh`
+    - auto_dynamic_hack.sh 动态注入[SIP OFF] `sudo bash auto_dynamic_hack.sh`
 5. tools: insert_dylib 开源注入工具
 
 ## Feat
