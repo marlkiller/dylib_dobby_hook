@@ -43,11 +43,35 @@ void initTest(void){
 // INIT TEST END
 
 
+
+
+
+BOOL shouldExcludeCurrentApp(void) {
+    NSArray *excludedPrefixes = @[
+        @"/System/",
+        @"/usr/"
+    ];
+    NSString *currentPath = [Constant getCurrentAppPath];
+    for (NSString *prefix in excludedPrefixes) {
+        if ([currentPath hasPrefix:prefix]) {
+            NSLog(@">>>>>> Current process '%@' is excluded, matching prefix '%@'", currentPath, prefix);
+            return YES;
+        }
+    }
+    return NO;
+}
+
 + (void) load {
     
     
 //    initTest();
     NSLog(@">>>>>> dylib_dobby_hook load");
+    if (shouldExcludeCurrentApp()) {
+        // Starter Ref :
+        // https://book.hacktricks.xyz/v/cn/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-library-injection#dyld_insert_libraries
+        return;
+    }
+    
     if ([Constant isFirstOpen] && ![Constant isHelper]) {
         NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText:@"Cracked By\n[marlkiller/dylib_dobby_hook]"];

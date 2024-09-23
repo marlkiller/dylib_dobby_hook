@@ -16,8 +16,8 @@
 2. libs:  项目依赖的开源 dobby 库
 3. release:  build 后的成品
 4. script:
-    - hack.sh 自定义注入脚本 `sudo bash hack.sh`
-    - auto_hack.sh 妹妹全自动注入脚本 `sudo bash auto_hack.sh`
+    - auto_hack.sh 静态注入 `sudo bash auto_hack.sh`
+    - auto_dynamic_hack.sh 动态注入 `sudo bash auto_dynamic_hack.sh`
 5. tools: insert_dylib 开源注入工具
 
 ## Feat
@@ -112,47 +112,8 @@ return YES;
 然后编写 shell 脚本,来注入
 
 ```shell
-current_path=$PWD
-echo "当前路径：$current_path"
-
-app_name="DevUtils"
-# The default is injected into the main program, if you need to customize, please edit the variable inject_bin, otherwise do not touch it
-# inject_bin="/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"
-# inject_bin="/Applications/${app_name}.app/Contents/MacOS//${app_name}"
-
-dylib_name="dylib_dobby_hook"
-prefix="lib"
-insert_dylib="${current_path}/../tools/insert_dylib"
-chmod a+x ${insert_dylib}
-
-BUILT_PRODUCTS_DIR="${current_path}/../release"
-
-app_bundle_path="/Applications/${app_name}.app/Contents/MacOS"
-app_bundle_framework="/Applications/${app_name}.app/Contents/Frameworks/"
-
-if [ ! -d "$app_bundle_framework" ]; then
-  mkdir -p "$app_bundle_framework"
-fi
-
-if [ -n "$inject_bin" ]; then
-    app_executable_path="$inject_bin"
-else
-    app_executable_path="${app_bundle_path}/${app_name}"
-fi
-app_executable_backup_path="${app_executable_path}_Backup"
-
-# 备份注入程序
-if [ ! -f "$app_executable_backup_path" ];
-then
-    cp "$app_executable_path" "$app_executable_backup_path"
-fi
-
-
-# copy dylib
-cp -f "${BUILT_PRODUCTS_DIR}/${prefix}${dylib_name}.dylib" "${app_bundle_framework}"
-
-# dylib 注入
-"${insert_dylib}" --weak --all-yes "@rpath/${prefix}${dylib_name}.dylib" "$app_executable_backup_path" "$app_executable_path"
+cp -f source_bin source_bin_backup 
+"${insert_dylib}" --weak --all-yes "${YOUR_BUILD_PATH}/libdylib_dobby_hook.dylib" "source_bin_backup" "source_bin"
 ```
 
 ## Sponsor

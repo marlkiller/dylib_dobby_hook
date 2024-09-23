@@ -29,5 +29,8 @@
 + (NSString*) calculateSHA1OfFile:(NSString *)filePath;
 
 + (NSString *)getTextBetween:(NSString *)startText and:(NSString *)endText inString:(NSString *)inputString;
+
++ (BOOL)isCodeSignatureValid;
+
 @end
 #endif /* encryp_utils_h */

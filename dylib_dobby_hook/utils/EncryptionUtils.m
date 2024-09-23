@@ -481,4 +481,21 @@
     // 截取并返回这个范围内的文本
     return [inputString substringWithRange:resultRange];
 }
+
++ (BOOL)isCodeSignatureValid {
+    SecCodeRef code = NULL;
+    OSStatus status = SecCodeCopySelf(kSecCSDefaultFlags, &code);
+    if (status != errSecSuccess) {
+        NSLog(@">>>>>> Failed to get current app code: %d", (int)status);
+        return NO;
+    }
+    status = SecCodeCheckValidity(code, kSecCSDefaultFlags, NULL);
+    if (status == errSecSuccess) {
+        NSLog(@">>>>>> Code signature is valid.");
+    } else {
+        NSLog(@">>>>>> Code signature is invalid: %d", (int)status);
+    }
+    CFRelease(code);
+    return (status == errSecSuccess);
+}
 @end

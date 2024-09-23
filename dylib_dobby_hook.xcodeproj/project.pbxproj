@@ -73,7 +73,6 @@
 		38350BF72B53F73A00DD52B3 /* dylib_dobby_hook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = dylib_dobby_hook.m; sourceTree = "<group>"; };
 		38350C012B53F78900DD52B3 /* dobby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dobby.h; sourceTree = "<group>"; };
 		38350C072B53F96100DD52B3 /* insert_dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = insert_dylib; sourceTree = "<group>"; };
-		38350C092B54047F00DD52B3 /* hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = hack.sh; sourceTree = "<group>"; };
 		38B83E302B5505B300919735 /* TablePlusHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TablePlusHack.m; sourceTree = "<group>"; };
 		38D1AC272B54C9C100E6CB9E /* Constant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
 		38D1AC292B54CA4D00E6CB9E /* Constant.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constant.m; sourceTree = "<group>"; };
@@ -101,6 +100,7 @@
 		B57F200F2C5DD70700C87201 /* MockCKDatabase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockCKDatabase.m; sourceTree = "<group>"; };
 		B58160112BE88569001DDB9B /* EncryptionUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncryptionUtils.m; sourceTree = "<group>"; };
 		B58160162BE88569001DDB9B /* EncryptionUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncryptionUtils.h; sourceTree = "<group>"; };
+		B58290EC2CA18B6200934F7C /* auto_dynamic_hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = auto_dynamic_hack.sh; sourceTree = "<group>"; };
 		B59751F52C9DAF8600617629 /* fix_helper.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = fix_helper.sh; sourceTree = "<group>"; };
 		B59751F62C9DB54E00617629 /* fix_helper_and_inject.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = fix_helper_and_inject.sh; sourceTree = "<group>"; };
 		B5A7D30E2C548B71003D4C7F /* HackProtocolDefault.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackProtocolDefault.h; sourceTree = "<group>"; };
@@ -206,9 +206,8 @@
 		38350C082B54047F00DD52B3 /* script */ = {
 			isa = PBXGroup;
 			children = (
+				B58290EC2CA18B6200934F7C /* auto_dynamic_hack.sh */,
 				B5BE2D572C52A4530056B3E2 /* apps */,
-				B56968C72BEA4E4D0022FAC6 /* cmake_debugger.sh */,
-				38350C092B54047F00DD52B3 /* hack.sh */,
 				38E793632B6C7AB8005677AA /* all_in_one.sh */,
 				38E793642B6C7FB6005677AA /* auto_hack.sh */,
 			);
