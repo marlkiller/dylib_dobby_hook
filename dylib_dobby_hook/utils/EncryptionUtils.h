@@ -32,5 +32,7 @@
 
 + (BOOL)isCodeSignatureValid;
 
++ (pid_t)getProcessIDByName:(NSString *)name;
+
 @end
 #endif /* encryp_utils_h */

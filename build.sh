@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# xcode build
+# xcodebuild  -scheme dylib_dobby_hook -configuration Release
+
 PROJECT_ROOT=$(pwd)
 BUILD_DIR="$PROJECT_ROOT/cmake-build-release"
 

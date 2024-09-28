@@ -17,6 +17,7 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonCryptor.h>
 #import <CommonCrypto/CommonCrypto.h>
+#import <Cocoa/Cocoa.h>
 
 @implementation EncryptionUtils
 
@@ -482,20 +483,72 @@
     return [inputString substringWithRange:resultRange];
 }
 
+
 + (BOOL)isCodeSignatureValid {
+    
     SecCodeRef code = NULL;
     OSStatus status = SecCodeCopySelf(kSecCSDefaultFlags, &code);
     if (status != errSecSuccess) {
-        NSLog(@">>>>>> Failed to get current app code: %d", (int)status);
+        NSLog(@"[Error] Failed to get current app code: %d", (int)status);
         return NO;
     }
-    status = SecCodeCheckValidity(code, kSecCSDefaultFlags, NULL);
-    if (status == errSecSuccess) {
-        NSLog(@">>>>>> Code signature is valid.");
-    } else {
-        NSLog(@">>>>>> Code signature is invalid: %d", (int)status);
+
+    CFDictionaryRef csInfo = NULL;
+    status = SecCodeCopySigningInformation(code, kSecCSSigningInformation, &csInfo);
+    if (status != errSecSuccess) {
+        NSLog(@"[Error] SecCodeCopySigningInformation failed with status = %d", (int)status);
+        if (code) CFRelease(code);
+        return NO;
     }
+
+    // 检查签名是否有效
+    SecCSFlags flags = 0;
+    CFNumberRef flagsNumber = (CFNumberRef)CFDictionaryGetValue(csInfo, kSecCodeInfoFlags);
+    if (flagsNumber == NULL) {
+        NSLog(@">>>>>> [Error] kSecCodeInfoFlags is nil");
+        CFRelease(csInfo);
+        CFRelease(code);
+        return NO;
+    }
+
+    CFNumberGetValue(flagsNumber, kCFNumberSInt32Type, &flags);
+    NSLog(@">>>>>> Flags: %d", flags);
+
+    // 常量定义
+    // ref: https://opensource.apple.com/source/xnu/xnu-4903.221.2/osfmk/kern/cs_blobs.h.auto.html
+    const int CS_VALID = 0x00000001;   // 签名是有效的
+    const int CS_RUNTIME = 0x00010000; // 启用了 "hardened runtime" 的应用
+    const int CS_HARD = 0x00000002;    // 强制代码签名（hardened code）
+
+    if (flags & CS_HARD) {
+        NSLog(@">>>>>> App has hardened code signature.");
+    }
+
+    if (!(flags & CS_VALID) && !(flags & CS_RUNTIME)) {
+        NSLog(@">>>>>> [Error] App signature is not valid or does not have hardened runtime.");
+        CFRelease(csInfo);
+        CFRelease(code);
+        return NO;
+    }
+
+    NSLog(@">>>>>> Code signature is valid.");
+    
+    CFRelease(csInfo);
     CFRelease(code);
-    return (status == errSecSuccess);
+    return YES;
 }
+
+
++ (pid_t)getProcessIDByName:(NSString *)name {
+    NSArray *runningApps = [[NSWorkspace sharedWorkspace] runningApplications];
+    for (NSRunningApplication *app in runningApps) {
+        if ([[app localizedName] isEqualToString:name]) {
+            pid_t pid = [app processIdentifier];
+            NSLog(@">>>>>> pid is %d",pid);
+            return pid;
+        }
+    }
+    return -1; // 进程未找到
+}
+
 @end

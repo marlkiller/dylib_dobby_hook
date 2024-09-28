@@ -37,6 +37,7 @@ static IMP listenerIMP;
 }
 
 
+// Ref: https://book.hacktricks.xyz/v/cn/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-ipc-inter-process-communication/macos-xpc/macos-xpc-authorization
 - (BOOL)hk_listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection {
 
     NSLog(@">>>>>> hk_listener");

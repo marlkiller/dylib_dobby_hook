@@ -27,6 +27,8 @@
 + (id)hook_containerWithIdentifier:identifier;
 + (id)hook_defaultContainer;
 
+- (void)startMonitorInjection:processName;
+
 @end
 
 #endif /* CommonRetOC_h */

@@ -151,3 +151,9 @@ NSString *love69(NSString *input) {
     return output;
 }
 //char *global_dylib_name = "libdylib_dobby_hook.dylib";
+// 注入函数
+
+int inject_dylib(pid_t pid, const char *lib) {    
+    // Ref: https://juejin.cn/post/7277787934863835171
+    return 0;
+}

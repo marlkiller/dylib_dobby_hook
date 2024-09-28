@@ -9,6 +9,8 @@
 #import "CommonRetOC.h"
 #import <CloudKit/CloudKit.h>
 #import "MockCKContainer.h"
+#import "common_ret.h"
+
 
 @implementation CommonRetOC
 
@@ -104,6 +106,27 @@
     // [CKContainer defaultContainer];
     return [MockCKContainer defaultContainer];
 
+}
+
+
+
+// TODO: 监听进程并执行线程注入
+- (void)startMonitorInjection:processName {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        while (true) {
+            @autoreleasepool {
+//                pid_t pid = [EncryptionUtils getProcessIDByName:processName];
+//                kern_return_t result = inject_dylib(pid, nil);
+//                if (result == KERN_SUCCESS) {
+//                    NSLog(@">>>>>> Successfully injected dylib into process %d", pid);
+//                    return;
+//                } else {
+//                    NSLog(@">>>>>> Failed to inject dylib into process %d", pid);
+//                }
+            }
+            [NSThread sleepForTimeInterval:5.0];  // 每 5 秒检查一次
+        }
+    });
 }
 
 @end

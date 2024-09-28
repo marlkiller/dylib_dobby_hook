@@ -47,7 +47,10 @@ jobs:
       with:
         token: ${{ secrets.TOKEN }}
         tag: latest
-        body: "A macOS dylib project based on the Dobby Hook framework, aimed at enhancing and extending the functionality of target software."
-        artifacts: "dylib_dobby_hook.tar.gz"
+        body: |
+          A macOS dylib project based on the Dobby Hook framework, aimed at enhancing and extending the functionality of target software.
+
+          ## Latest Commit
+          ${{ github.event.head_commit.message }}        artifacts: "dylib_dobby_hook.tar.gz"
         allowUpdates: true
         replacesArtifacts: true
