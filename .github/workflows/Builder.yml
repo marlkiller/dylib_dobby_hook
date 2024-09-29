@@ -51,6 +51,7 @@ jobs:
           A macOS dylib project based on the Dobby Hook framework, aimed at enhancing and extending the functionality of target software.
 
           ## Latest Commit
-          ${{ github.event.head_commit.message }}        artifacts: "dylib_dobby_hook.tar.gz"
+          ${{ github.event.head_commit.message }}        
+        artifacts: "dylib_dobby_hook.tar.gz"
         allowUpdates: true
         replacesArtifacts: true
