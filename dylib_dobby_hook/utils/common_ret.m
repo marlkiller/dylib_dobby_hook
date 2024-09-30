@@ -13,22 +13,28 @@
 #include <sys/ptrace.h>
 #import <sys/sysctl.h>
 #include <mach/mach_types.h>
-#include <mach/i386/thread_status.h>
+
 
 int ret2 (void){
     printf(">>>>>> ret2\n");
     return 2;
 }
 int ret1 (void){
+//    uint8_t ret1Hex[6] = {0xB8, 0x01, 0x00, 0x00, 0x00, 0xC3}; // mov eax, 1; ret
+//    uint8_t ret1HexARM[8] = {0x20, 0x00, 0x80, 0xD2, 0xC0, 0x03, 0x5F, 0xD6}; // mov x0, #1; ret
     printf(">>>>>> ret1\n");
     return 1;
 }
 int ret0 (void){
+//    uint8_t ret0Hex[3] = {0x31, 0xC0, 0xC3}; // xor eax, eax; ret
+//    uint8_t ret0HexARM[8] = {0x00, 0x00, 0x80, 0xD2, 0xC0, 0x03, 0x5F, 0xD6}; // mov x0, #0; ret
     printf(">>>>>> ret0\n");
     return 0;
 }
 
 void ret(void){
+//    uint8_t retHex[1] = {0xC3}; // ret
+//    uint8_t retHexARM[4] = {0xC0, 0x03, 0x5F, 0xD6}; // ret
     printf(">>>>>> ret\n");
 }
 
@@ -151,9 +157,4 @@ NSString *love69(NSString *input) {
     return output;
 }
 //char *global_dylib_name = "libdylib_dobby_hook.dylib";
-// 注入函数
 
-int inject_dylib(pid_t pid, const char *lib) {    
-    // Ref: https://juejin.cn/post/7277787934863835171
-    return 0;
-}

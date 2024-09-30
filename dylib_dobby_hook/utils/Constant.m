@@ -17,51 +17,49 @@
 #import "HackProtocolDefault.h"
 #import "HackHelperProtocolDefault.h"
 
-@implementation Constant
 
 // 使用构造函数属性 (constructor attribute) 的方法
 // 这个方法会在 main 函数执行之前自动调用
 static void __attribute__ ((constructor)) initialize(void){
-        
-    NSLog(@">>>>>> Constant ((constructor)) initialize(void)");
-
+    printf(">>>>>> Constant ((constructor)) initialize(void)\n");
 }
 
+@implementation Constant
 
-static NSString *G_EMAIL_ADDRESS = @"X'rq ol: zneyxvyyre@ibvqz.pbz";;
-static NSString *G_EMAIL_ADDRESS_FMT = @"zneyxvyyre@ibvqz.pbz";;
-static NSString *G_DYLIB_NAME = @"libdylib_dobby_hook.dylib";
+static NSString *_G_EMAIL_ADDRESS = @"X'rq ol: zneyxvyyre@ibvqz.pbz";;
+static NSString *_G_EMAIL_ADDRESS_FMT = @"zneyxvyyre@ibvqz.pbz";;
+static NSString *_G_DYLIB_NAME = @"libdylib_dobby_hook.dylib";
 
-static NSString *currentAppPath;
-static NSString *currentAppName;
-static NSString *currentAppVersion;
-static NSString *currentAppCFBundleVersion;
-static BOOL arm;
-static BOOL helper;
+static NSString *_currentAppPath;
+static NSString *_currentAppName;
+static NSString *_currentAppVersion;
+static NSString *_currentAppCFBundleVersion;
+static BOOL _arm;
+static BOOL _helper;
 
 // 告诉编译器不生成默认的 getter 和 setter 方法
-@dynamic G_EMAIL_ADDRESS;
-@dynamic G_EMAIL_ADDRESS_FMT;
-@dynamic G_DYLIB_NAME;
-@dynamic currentAppPath;
-@dynamic currentAppName;
-@dynamic currentAppVersion;
-@dynamic currentAppCFBundleVersion;
-@dynamic arm;
-@dynamic helper;
+//@dynamic G_EMAIL_ADDRESS;
+//@dynamic G_EMAIL_ADDRESS_FMT;
+//@dynamic G_DYLIB_NAME;
+//@dynamic currentAppPath;
+//@dynamic currentAppName;
+//@dynamic currentAppVersion;
+//@dynamic currentAppCFBundleVersion;
+//@dynamic arm;
+//@dynamic helper;
 
 + (NSString *)G_EMAIL_ADDRESS {
-    return love69(G_EMAIL_ADDRESS);
+    return love69(_G_EMAIL_ADDRESS);
 }
 + (NSString *)G_EMAIL_ADDRESS_FMT {
-    return love69(G_EMAIL_ADDRESS_FMT);
+    return love69(_G_EMAIL_ADDRESS_FMT);
 }
 + (NSString *)G_DYLIB_NAME {
-    return G_DYLIB_NAME;
+    return _G_DYLIB_NAME;
 }
 
-+ (NSString *)currentAppName {
-    return currentAppName;
++ (NSString *)getCurrentAppName {
+    return _currentAppName;
 }
 
 + (BOOL) isFirstOpen {
@@ -86,10 +84,10 @@ static BOOL helper;
         NSLog(@">>>>>> DobbyGetVersion: %s", DobbyGetVersion());
 
         NSBundle *app = [NSBundle mainBundle];
-        currentAppName = [[app bundleIdentifier] copy];
-        currentAppVersion =[ [app objectForInfoDictionaryKey:@"CFBundleShortVersionString"] copy];
-        currentAppCFBundleVersion = [[app objectForInfoDictionaryKey:@"CFBundleVersion"] copy];
-        NSLog(@">>>>>> AppName is [%s],Version is [%s], myAppCFBundleVersion is [%s].", currentAppName.UTF8String, currentAppVersion.UTF8String, currentAppCFBundleVersion.UTF8String);
+        _currentAppName = [[app bundleIdentifier] copy];
+        _currentAppVersion =[ [app objectForInfoDictionaryKey:@"CFBundleShortVersionString"] copy];
+        _currentAppCFBundleVersion = [[app objectForInfoDictionaryKey:@"CFBundleVersion"] copy];
+        NSLog(@">>>>>> AppName is [%s],Version is [%s], myAppCFBundleVersion is [%s].", _currentAppName.UTF8String, _currentAppVersion.UTF8String, _currentAppCFBundleVersion.UTF8String);
         NSLog(@">>>>>> App Architecture is: %@", [Constant getSystemArchitecture]);
         NSLog(@">>>>>> App DebuggerAttached is: %d", [Constant isDebuggerAttached]);
         NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"Info" ofType:@"plist"];
@@ -99,16 +97,16 @@ static BOOL helper;
         NSString *NSUserDefaultsPath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"Preferences/%@.plist", bundleIdentifier]];
         NSLog(@">>>>>> NSUserDefaultsPath is %@", NSUserDefaultsPath);
         NSRange range = [[Constant getSystemArchitecture] rangeOfString:@"arm" options:NSCaseInsensitiveSearch];
-        arm = range.location != NSNotFound;
+        _arm = range.location != NSNotFound;
         
         // 这里不用 copy 的话, clion cmake 编译的产物会内存泄漏,字符串对象乱飞...不知道为什么
         // 返回包的完整路径。
-        currentAppPath = [[app bundlePath] copy];
-        NSLog(@">>>>>> [app bundlePath] %@",currentAppPath);
+        _currentAppPath = [[app bundlePath] copy];
+        NSLog(@">>>>>> [app bundlePath] %@",_currentAppPath);
         // /Library/PrivilegedHelperTools
-        if ([currentAppPath isEqualToString:@"/Library/PrivilegedHelperTools"]) {
+        if ([_currentAppPath isEqualToString:@"/Library/PrivilegedHelperTools"]) {
             NSLog(@">>>>>> helper is True");
-            helper = YES;
+            _helper = YES;
         }
         
         // 返回应用程序执行文件的路径。
@@ -121,23 +119,23 @@ static BOOL helper;
 }
 
 + (BOOL)isHelper {
-    return helper;
+    return _helper;
 }
 
 + (BOOL)isArm {
-    return arm;
+    return _arm;
 }
 
 + (NSString *)getCurrentAppPath {
-    return currentAppPath;
+    return _currentAppPath;
 }
 + (NSString *)getCurrentAppVersion {
-    return currentAppVersion;
+    return _currentAppVersion;
 }
 // currentAppVersion 有时会影响计算偏移位置,
 // 所以 cache 偏移用这个 currentAppCFBundleVersion
 + (NSString *)getCurrentAppCFBundleVersion {
-    return currentAppCFBundleVersion;
+    return _currentAppCFBundleVersion;
 }
 + (NSString *)getSystemArchitecture {
     size_t size;
@@ -208,31 +206,31 @@ static BOOL helper;
 }
 
 + (void)doHack {
-    NSArray<Class> *personClasses = [Constant getAllHackClasses];
-        
-    NSLog(@">>>>>> Constant: Initiating doHack operation...");
-    for (Class class in personClasses) {
-        NSLog(@">>>>>> Constant: Processing class - %@", NSStringFromClass(class));
-        id<HackProtocol> it = [[class alloc] init];        
-        if ([it shouldInject:currentAppName]) {
-            NSString *supportAppVersion = [it getSupportAppVersion];
-            if (supportAppVersion==NULL ||
-                supportAppVersion.length==0 ||
-                currentAppVersion==NULL  ||
-                [currentAppVersion hasPrefix:supportAppVersion] ) {
-                [it hack];
-            }else{
-                NSAlert *alert = [[NSAlert alloc] init];
-                [alert addButtonWithTitle:@"OK"];
-                alert.messageText =  [NSString stringWithFormat:@"Unsupported current appVersion !!\nSuppert appVersion: [%s]\nCurrent appVersion: [%s]",[it getSupportAppVersion].UTF8String, currentAppVersion.UTF8String];;
-                [alert runModal];
+    
+    @try {
+        NSArray<Class> *personClasses = [Constant getAllHackClasses];
+        NSLog(@">>>>>> Constant: Initiating doHack operation...");
+        for (Class class in personClasses) {
+            NSLog(@">>>>>> Constant: Processing class - %@", NSStringFromClass(class));
+            id<HackProtocol> it = [[class alloc] init];
+            if ([it shouldInject:_currentAppName]) {
+                NSString *supportAppVersion = [it getSupportAppVersion];
+                if (supportAppVersion==NULL ||
+                    supportAppVersion.length==0 ||
+                    _currentAppVersion==NULL  ||
+                    (_currentAppVersion!=NULL && [_currentAppVersion hasPrefix:supportAppVersion]) ) {
+                    [it hack];
+                    return;
+
+                }else{
+                    NSLog(@">>>>>> [ERROR] Unsupported current appVersion !! Suppert appVersion: [%@] Current appVersion: [%@]",
+                          [it getSupportAppVersion], _currentAppVersion);
+                }
             }
-            return;
         }
+        NSLog(@">>>>>>> [ERROR] Unsupported current app: [%@]",_currentAppName);
+    } @catch (NSException *exception) {
+        NSLog(@">>>>>> [Caught exception]: %@", exception);
     }
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert addButtonWithTitle:@"OK"];
-    alert.messageText =  [NSString stringWithFormat:@"Unsupported current app: [%s]", currentAppName.UTF8String];;
-    [alert runModal];
 }
 @end

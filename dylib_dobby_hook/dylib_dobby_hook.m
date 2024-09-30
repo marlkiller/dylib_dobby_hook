@@ -13,12 +13,6 @@
 
 @implementation dylib_dobby_hook
 
-#ifdef DEBUG
-const bool SHOW_ALARM = true;
-#else
-const bool SHOW_ALARM = false;
-#endif
-
 // INIT TEST START
 int sum(int a, int b) {
     return a+b;
@@ -43,9 +37,6 @@ void initTest(void){
 // INIT TEST END
 
 
-
-
-
 BOOL shouldExcludeCurrentApp(void) {
     NSArray *excludedPrefixes = @[
         @"/System/",
@@ -61,6 +52,28 @@ BOOL shouldExcludeCurrentApp(void) {
     return NO;
 }
 
+
+BOOL canShowAlert(void) {
+    NSString *path = [[[NSProcessInfo processInfo] arguments] firstObject];
+    
+    // 检查路径
+    if ([path hasPrefix:@"/System/Library/"] || [path hasPrefix:@"/usr/bin/"]) {
+        NSLog(@">>>>>> Path starts with /usr/bin/, UI alert not allowed.");
+        return NO;
+    }
+    
+    if ([Constant isHelper]) {
+        NSLog(@">>>>>> Process is a helper, UI alert not allowed.");
+        return NO;
+    }
+//    NSApplicationActivationPolicyRegular： 普通应用，能在 Dock 中显示，接受用户输入。例如：Safari、Mail。
+//    NSApplicationActivationPolicyAccessory： 辅助应用，不在 Dock 中显示，但可以在菜单栏中显示图标。通常用于后台工具。
+//    NSApplicationActivationPolicyProhibited： 被禁止激活的应用，不显示在 Dock 中，也无法接受输入。常用于后台服务。
+    BOOL isForeground = [NSRunningApplication currentApplication].activationPolicy == NSApplicationActivationPolicyRegular;
+    NSLog(@">>>>>> Is current application canShowAlert: %@", isForeground ? @"YES" : @"NO");
+    return isForeground;
+}
+
 + (void) load {
     
     
@@ -72,27 +85,15 @@ BOOL shouldExcludeCurrentApp(void) {
         return;
     }
     
-    if ([Constant isFirstOpen] && ![Constant isHelper]) {
+    
+    BOOL showAlarm = canShowAlert();
+    if ([Constant isFirstOpen] && showAlarm) {
         NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText:@"Cracked By\n[marlkiller/dylib_dobby_hook]"];
         [alert setInformativeText:@"仅供研究学习使用，请勿用于非法用途"];
         [alert addButtonWithTitle:@"OK"];
         [alert runModal];
     }
-    if (SHOW_ALARM && ![Constant isHelper]) {
-        NSAlert *alert = [[NSAlert alloc] init];
-        [alert setMessageText:@"FBI warning"];
-        [alert setInformativeText:@"Please confirm if the app has been backed up.\nIf there are any issues, please restore it yourself!"];
-        [alert addButtonWithTitle:@"Confirm"];
-        [alert addButtonWithTitle:@"Cancel"];
-        NSInteger response = [alert runModal];
-        if (response == NSAlertFirstButtonReturn) {
-            [Constant doHack];
-        } else {
-            return;
-        }
-    }else {
-        [Constant doHack];
-    }
+    [Constant doHack];
 }
 @end
