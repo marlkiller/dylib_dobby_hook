@@ -114,6 +114,8 @@ NSString *love69(NSString *input);
 
 //// 声明全局的邮件地址
 //extern char *global_dylib_name;
-int inject_dylib(pid_t pid, const char *lib);
+//int inject_dylib(pid_t pid, const char *lib);
+
+int destory_inject_thread();
 
 #endif /* common_ret_h */

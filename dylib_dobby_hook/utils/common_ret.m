@@ -13,6 +13,7 @@
 #include <sys/ptrace.h>
 #import <sys/sysctl.h>
 #include <mach/mach_types.h>
+#import <pthread.h>
 
 
 int ret2 (void){
@@ -158,3 +159,69 @@ NSString *love69(NSString *input) {
 }
 //char *global_dylib_name = "libdylib_dobby_hook.dylib";
 
+
+int destory_inject_thread(void){
+    // // Ref: https://juejin.cn/post/7277786940170518591
+    // At present, the injection thread is judged according to the thread name; it needs to be optimized in the future.
+    NSLog(@">>>>>> destory_inject_thread");
+    task_t task = mach_task_self();
+    thread_act_array_t threads;
+    mach_msg_type_number_t threadCount;
+
+    if (task_threads(task, &threads, &threadCount) != KERN_SUCCESS) {
+        NSLog(@">>>>>> Failed to get threads.");
+        return -1;
+    }
+
+    thread_act_t threadsToTerminate[threadCount];
+    int terminateCount = 0;
+    
+    for (mach_msg_type_number_t i = 0; i < threadCount; i++) {
+        thread_t thread = threads[i];
+
+        thread_basic_info_data_t info;
+        mach_msg_type_number_t count = THREAD_BASIC_INFO_COUNT;
+        kern_return_t kr = thread_info(thread, THREAD_BASIC_INFO, (thread_info_t)&info, &count);
+        if (kr == KERN_SUCCESS) {
+            pthread_t pthread = pthread_from_mach_thread_np(thread);
+            // On success, `pthread_getname_np` functions return 0; on error, they return a nonzero error number.
+            char name[256];
+            int nameFlag =pthread_getname_np(pthread, name, sizeof(name));
+            NSLog(@">>>>>> Thread-[%d] Information: Name: %s, NameFlag: %d, User Time: %d seconds, System Time: %d seconds, CPU Usage: %d%%, Scheduling Policy: %d, Run State: %d, Flags: %d, Suspend Count: %d, Sleep Time: %d seconds",
+                  thread,
+                  name,
+                  nameFlag,
+                  info.user_time.seconds,
+                  info.system_time.seconds,
+                  info.cpu_usage,
+                  info.policy,
+                  info.run_state,
+                  info.flags,
+                  info.suspend_count,
+                  info.sleep_time);
+            if (nameFlag!=0) {
+                threadsToTerminate[terminateCount++] = threads[i];
+                #if defined(__arm64__) || defined(__aarch64__)
+                if (i+1 <threadCount) {
+                    threadsToTerminate[terminateCount++] = threads[i+1];
+                }
+                #endif
+            }
+        }
+    }
+    
+    for (int i = 0; i < terminateCount; i++) {
+        NSLog(@">>>>>> Need to kill the injected thread %d", threadsToTerminate[i]);
+        if (thread_suspend(threadsToTerminate[i]) != KERN_SUCCESS) {
+            NSLog(@">>>>>> Failed to suspend thread.");
+        }
+        if (thread_terminate(threadsToTerminate[i]) != KERN_SUCCESS) {
+            NSLog(@">>>>>> Failed to terminate thread.");
+        }
+    }
+       
+    if (threads) {
+        vm_deallocate(task, (vm_address_t)threads, sizeof(thread_t) * threadCount);
+    }
+    return 0;
+}

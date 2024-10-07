@@ -14,7 +14,7 @@
 #import "common_ret.h"
 #import "HackProtocolDefault.h"
 
-@interface InfuseHack : NSObject <HackProtocol>
+@interface InfuseHack : HackProtocolDefault
 
 
 
