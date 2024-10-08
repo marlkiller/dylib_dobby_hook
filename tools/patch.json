@@ -46,6 +46,14 @@
         "arm":{
           "ED FD 42 5C F9 78": "ED FD 42 CB F9 78"
         }
+      },
+      "/Applications/IDA Professional 9.0.app/Contents/MacOS/libida32.dylib":{
+        "x86": {
+          "ED FD 42 5C F9 78": "ED FD 42 CB F9 78"
+        },
+        "arm":{
+          "ED FD 42 5C F9 78": "ED FD 42 CB F9 78"
+        }
       }
     }
   }
