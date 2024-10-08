@@ -22,6 +22,7 @@
 
 - (NSString *)getAppName {
 //    >>>>>> AppName is [com.hexrays.ida64],Version is [9.0.240807], myAppCFBundleVersion is [240807].
+//    >>>>>> AppName is [com.hexrays.ida],Version is [9.0.240925], myAppCFBundleVersion is [240925].
     return @"com.hexrays.ida64";
 }
 
@@ -32,7 +33,7 @@
 - (BOOL)hack {
     
    
-    // libida64.dylib/libida64.dylib
+    // libida32.dylib/libida64.dylib
     // ED FD 42 5C F9 78 -> ED FD 42 CB F9 78
 
 
