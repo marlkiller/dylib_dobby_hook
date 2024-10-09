@@ -3,34 +3,34 @@
 [English](https://github.com/marlkiller/dylib_dobby_hook/blob/master/README.md) | [中文](https://github.com/marlkiller/dylib_dobby_hook/blob/master/README.zh-CN.md) |[Others..TODO]()
 
 
-This project is a macOS dylib project that integrates the Dobby Hook framework, aiming to enhance software through the use of the Dobby Hook framework.
+该项目是一个 macOS dylib 项目，集成了 Dobby Hook 框架，旨在通过使用 Dobby Hook 框架对软件进行辅助增强。
 
-Development Environment:
+开发环境:
 
-- macOS (SIP disabled & allow any source)
+- macOS (关闭 SIP & 允许任何来源)
 - Xcode 15.2 | CLion
 - Hopper | IDA
 
-Directory Structure:
+目录结构 :
 
-1. dylib_dobby_hook: Source code
-2. libs: Libraries that the project depends on
-3. release: Built product libraries
+1. dylib_dobby_hook: 源码
+2. libs: 项目依赖的库
+3. release: build 后的成品库
 4. script:
-   - auto_hack.sh: One-click script `sudo bash auto_hack.sh`
-5. tools:
-   - insert_dylib: Open-source static injection tool
-   - dynamic_inject: Dynamic injection tool [SIP OFF]
-   - process_inject: Process injection tool [BETA][SIP OFF]
+    - auto_hack.sh: 一键脚本 `sudo bash auto_hack.sh`
+5. tools: 
+    - insert_dylib: 开源静态注入工具
+    - dynamic_inject: 动态注入工具 [SIP OFF]
+    - process_inject: 进程注入工具 [测试版][SIP OFF]
 
 ## Feat
 
-1. Cross-platform [intel/apple] HOOK
-2. Integrated development and debugging environment with Xcode|CLion
-3. Signature code search
+1. 跨平台 [intel/apple] HOOK
+2. Xcode|Clion 集成开发调试环境
+3. 特征码搜索
 
 <details>
-  <summary>Click here to expand/collapse</summary>
+  <summary>点击这里展开/收起</summary>
 
 | App             | version | x86 | arm | Download                                     | SIP | Author              |
 |-----------------|---------|-----|-----|----------------------------------------------|-----|---------------------|
@@ -56,7 +56,7 @@ Directory Structure:
 
 ## Usage
 
-[download latest release](https://github.com/marlkiller/dylib_dobby_hook_private/releases/download/latest/dylib_dobby_hook.tar.gz)
+[download latest release](https://github.com/marlkiller/dylib_dobby_hook/releases/download/latest/dylib_dobby_hook.tar.gz)
 
 ```shell
 tar -xzvf dylib_dobby_hook.tar.gz
@@ -68,9 +68,9 @@ sudo bash auto_hack.sh
 
 ### 0x0
 
-The basic code has been completed. To be compatible with more app patches, the adapter pattern is used for extension.
+基础代码已经完成, 为了兼容更多的 app 补丁, 使用了适配器模式来进行扩展
 
-### 0x1 Define Implementation Class (taking current XXX as an example)
+### 0x1 定义实现类(以当前 XXX 为例)
 
 ```objective-c
 
@@ -109,26 +109,26 @@ return YES;
 
 ```
 
-### 0x2 Build & Inject
+### 0x2 Build & 注入
 
-After compilation, we will get our dylib patch.
-Then write a shell script to inject.
+编译后, 会得到一个我们的 dylib 补丁  
+然后编写 shell 脚本,来注入
 
 ```shell
 
-## Static Injection
+## 静态注入
 cp -f source_bin source_bin_backup 
 "${insert_dylib}" --weak --all-yes "${YOUR_BUILD_PATH}/libdylib_dobby_hook.dylib" "source_bin_backup" "source_bin"
 
-## Dynamic Injection [SIP OFF]
+## 动态注入 [SIP OFF]
 ./dynamic_inject "xxx.app" "${YOUR_BUILD_PATH}/libdylib_dobby_hook.dylib"
 
-## Process Injection [SIP OFF]
+## 进程注入 [SIP OFF]
 ./process_inject "$pid" "${YOUR_BUILD_PATH}/libdylib_dobby_hook.dylib"
 ```
 
 
-### 0x3 Resigning
+### 0x3 重新签名
 ```shell
 sudo codesign -f -s - --all-architectures --deep "/Applications/xxx.app"
 ```
@@ -139,6 +139,6 @@ sudo codesign -f -s - --all-architectures --deep "/Applications/xxx.app"
 
 ## WARN
 
-For research and learning purposes only. Please do not use for illegal purposes.
-Note: If reprinted, please indicate the source (link to this post) and author information.
+仅供研究学习使用，请勿用于非法用途  
+注：若转载请注明来源（本贴地址）与作者信息。
 
