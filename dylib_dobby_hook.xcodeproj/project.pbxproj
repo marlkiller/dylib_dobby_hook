@@ -20,6 +20,7 @@
 		38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC292B54CA4D00E6CB9E /* Constant.m */; };
 		38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */; };
 		38D1AC322B54D1CC00E6CB9E /* AirBuddyHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */; };
+		9C99D64B2CB6CEF100B8A6D7 /* iStat7Hack.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C99D64A2CB6CEF100B8A6D7 /* iStat7Hack.m */; };
 		B50E935E2BBD024F0073FEAA /* PaddleBaseHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */; };
 		B53522462C2FE4D4001CA305 /* MacUpdaterHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B53522452C2FE4D4001CA305 /* MacUpdaterHack.m */; };
 		B53F9DED2C4AA4EC00A6B32D /* CleanShotXHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B53F9DEC2C4AA4EC00A6B32D /* CleanShotXHack.m */; };
@@ -80,6 +81,7 @@
 		38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AirBuddyHack.m; sourceTree = "<group>"; };
 		38E793632B6C7AB8005677AA /* all_in_one.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = all_in_one.sh; sourceTree = "<group>"; };
 		38E793642B6C7FB6005677AA /* auto_hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = auto_hack.sh; sourceTree = "<group>"; };
+		9C99D64A2CB6CEF100B8A6D7 /* iStat7Hack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iStat7Hack.m; sourceTree = "<group>"; };
 		B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaddleBaseHack.m; sourceTree = "<group>"; };
 		B53522452C2FE4D4001CA305 /* MacUpdaterHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MacUpdaterHack.m; sourceTree = "<group>"; };
 		B53F9DEC2C4AA4EC00A6B32D /* CleanShotXHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CleanShotXHack.m; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				B5732BF02C82CD5900EC9E11 /* IDAHack.m */,
+				9C99D64A2CB6CEF100B8A6D7 /* iStat7Hack.m */,
 				B5D0C0BA2C4B553500881398 /* ForkLiftHack.m */,
 				B5F06B1C2BEF591E0079E68D /* InfuseHack.m */,
 				38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */,
@@ -403,6 +406,7 @@
 				38350BF82B53F73A00DD52B3 /* dylib_dobby_hook.m in Sources */,
 				B5A7D3172C5491A0003D4C7F /* HackHelperProtocolDefault.m in Sources */,
 				B53F9DED2C4AA4EC00A6B32D /* CleanShotXHack.m in Sources */,
+				9C99D64B2CB6CEF100B8A6D7 /* iStat7Hack.m in Sources */,
 				382A25862B6918DF0083F28C /* PasteHack.m in Sources */,
 				B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */,
 				B5D0C0BB2C4B553500881398 /* ForkLiftHack.m in Sources */,

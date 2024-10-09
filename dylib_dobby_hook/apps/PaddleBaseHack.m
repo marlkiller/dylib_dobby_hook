@@ -36,6 +36,12 @@ IMP dataTaskWithRequestIMP;
 //    BetterMouse
 //    Permute 3
     
+    
+    if ([[Constant getCurrentAppName] containsString:@"com.bjango.istatmenus"]) {
+        // double check
+        return false;
+    }
+    
     int paddleIndex = [MemoryUtils indexForImageWithName:@"Paddle"];
     if (paddleIndex > 0) {
         return true;

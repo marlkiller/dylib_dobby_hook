@@ -39,6 +39,7 @@ Directory Structure:
 | AirBuddy        | 2.*     | ✔   | ✔   | https://v2.airbuddy.app/download             |     |                     |
 | Navicat Premium | 17.*    | ✔   | ✔   | App Store                                    |     |                     |
 | Paste           | 4.*     | ✔   | ✔   | App Store                                    |     | Hokkaido            |
+| iStat Menus     | 7.*     | ✔   | ✔   | https://bjango.com/mac/istatmenus/           |     | Hokkaido            |
 | Transmit        | 5.*     | ✔   | ✔   | https://panic.com/transmit/#download         |     |                     |
 | AnyGo           | 7.*     | ✔   | ✔   | https://itoolab.com/gps-location-changer/    |     |                     |
 | Downie          | 4.*     | ✔   | ✔   | https://software.charliemonroe.net/downie/   |     |                     |
@@ -139,6 +140,6 @@ sudo codesign -f -s - --all-architectures --deep "/Applications/xxx.app"
 
 ## WARN
 
-For research and learning purposes only. Please do not use for illegal purposes.
+For research and learning purposes only. Please do not use for illegal purposes.   
 Note: If reprinted, please indicate the source (link to this post) and author information.
 
