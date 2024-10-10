@@ -23,7 +23,8 @@ ALL_APPS_LIST=(
     "Infuse|/Applications/Infuse.app/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator"
     "MacUpdater|/Applications/MacUpdater.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
     "CleanShot X|/Applications/CleanShot X.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
-
+    "iStat Menus|/Applications/iStat Menus.app/Contents/Frameworks/Paddle.framework/Versions/A/Paddle"
+    
     ## paddle:Movist Pro/Downie 4/Fork/BetterMouse/MindMac/Permute 3
     #"xx|/Applications/xx.app/Contents/Frameworks/Paddle.framework/Versions/A/Paddle"
 

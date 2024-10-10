@@ -49,7 +49,8 @@ IMP dataTaskWithRequestIMP2;
     return YES;
 }
 
-- (id)hook_dataTaskWithRequest:(NSMutableURLRequest *)request completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler {
+- (id)hook_dataTaskWithRequest:(NSMutableURLRequest *)request completionHandler:
+    (void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler {
     
     NSURL *url = [request URL];
     NSString *urlString = [url absoluteString];
@@ -95,7 +96,7 @@ IMP dataTaskWithRequestIMP2;
     return ((id(*)(id, SEL, NSMutableURLRequest *, void (^)(NSData *, NSURLResponse *, NSError *)))dataTaskWithRequestIMP2)(self, _cmd, request, completionHandler);
 }
 
-+ (void)hk_isLicenseValid:(id)validationInfo
++ (void)hk_isLicenseValid:(id)licenseInfo
       validationInfo:(id)validationInfo
           completion:(void (^)(BOOL isValid, NSError *error))completion {
 

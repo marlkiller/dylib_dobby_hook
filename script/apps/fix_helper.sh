@@ -39,6 +39,7 @@ fi
 
 echo -e "${GREEN}🔧 Running mac_patch_helper to apply patch...${NC}"
 sudo chmod a+x "$mac_patch_helper"
+/usr/bin/xattr -cr "$mac_patch_helper"
 $mac_patch_helper "$app_name" "$mac_patch_helper_config"
 
 app_path="/Applications/${app_name}.app"
