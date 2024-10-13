@@ -40,6 +40,20 @@ void ret(void){
 }
 
 
+void DobbyCodePatchRet(uintptr_t targetAddress) {
+    printf(">>>>> DobbyCodePatchRet\n");
+
+#if defined(__arm64__) || defined(__aarch64__)
+    uint8_t retHexARM[4] = {0xC0, 0x03, 0x5F, 0xD6}; // ret
+    DobbyCodePatch((void *)targetAddress, retHexARM, sizeof(retHexARM));
+#elif defined(__x86_64__)
+    uint8_t retHex[1] = {0xC3}; // ret
+    DobbyCodePatch((void *)targetAddress, retHex, sizeof(retHex));
+#else
+    printf(">>>>> Unsupported architecture\n");
+#endif
+}
+
 // hook ptrace
 // 通过 ptrace 来检测当前进程是否被调试，通过检查 PT_DENY_ATTACH 标记是否被设置来判断。如果检测到该标记，说明当前进程正在被调试，可以采取相应的反调试措施。
 ptrace_ptr_t orig_ptrace = NULL;
@@ -130,7 +144,6 @@ kern_return_t my_task_swap_exception_ports(
 }
 
 
-// Apple Sec
 SecCodeCheckValidityWithErrors_ptr_t SecCodeCheckValidityWithErrors_ori = NULL;
 OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors) {
     // anchor apple generic and certificate leaf[subject.OU] = "J3CP9BBBN6"
@@ -140,6 +153,81 @@ OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags, Se
 }
 SecCodeCopySigningInformation_ptr_t SecCodeCopySigningInformation_ori = NULL;
 
+
+OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
+    printf(">>>>> hk_SecItemAdd\n");
+    CFStringRef service = (CFStringRef)CFDictionaryGetValue(attributes, kSecAttrService);
+    CFStringRef account = (CFStringRef)CFDictionaryGetValue(attributes, kSecAttrAccount);
+    CFDataRef passwordData = (CFDataRef)CFDictionaryGetValue(attributes, kSecValueData);
+    if (!service || !account || !passwordData) {
+        return errSecParam;
+    }
+    CFIndex passwordLength = CFDataGetLength(passwordData);
+    char *passwordBuffer = (char *)malloc(passwordLength + 1);
+    if (passwordBuffer == NULL) {
+        return errSecAllocate;
+    }
+    CFDataGetBytes(passwordData, CFRangeMake(0, CFDataGetLength(passwordData)), (UInt8 *)passwordBuffer);
+    passwordBuffer[CFDataGetLength(passwordData)] = '\0';
+    
+    
+    const char * serviceCStr = [MemoryUtils CFStringToCString:service];
+    const char * accountCStr = [MemoryUtils CFStringToCString:account];
+    
+    SecKeychainItemRef item = NULL;
+    OSStatus status = SecKeychainAddGenericPassword(
+        NULL,                      
+        (UInt32)strlen(serviceCStr), serviceCStr,
+        (UInt32)strlen(accountCStr), accountCStr,
+        (UInt32)strlen(passwordBuffer), passwordBuffer,
+        &item
+    );
+    
+    free(passwordBuffer);
+    if (status == errSecSuccess && result) {
+       *result = item;
+    }
+    return status;
+}
+
+OSStatus hk_SecItemDelete(CFDictionaryRef query) {
+    printf(">>>>> hk_SecItemDelete\n");
+    CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
+    CFStringRef account = (CFStringRef)CFDictionaryGetValue(query, kSecAttrAccount);
+
+    if (!service || !account) {
+        return errSecParam;
+    }
+    CFMutableDictionaryRef searchQuery = CFDictionaryCreateMutable(
+        NULL,
+        0,
+        &kCFTypeDictionaryKeyCallBacks,
+        &kCFTypeDictionaryValueCallBacks
+    );
+    CFDictionaryAddValue(searchQuery, kSecClass, kSecClassGenericPassword);
+    CFDictionaryAddValue(searchQuery, kSecAttrService, service);
+    CFDictionaryAddValue(searchQuery, kSecAttrAccount, account);
+    CFDictionaryAddValue(searchQuery, kSecReturnRef, kCFBooleanTrue);
+
+    CFTypeRef itemRef = NULL;
+    OSStatus status = SecItemCopyMatching((CFDictionaryRef)searchQuery, &itemRef);
+    if (status == errSecSuccess && itemRef) {
+        status = SecKeychainItemDelete((SecKeychainItemRef)itemRef);
+    }
+    if (searchQuery) {
+        CFRelease(searchQuery);
+    }
+    if (itemRef) {
+        CFRelease(itemRef);
+    }
+    return status;
+}
+
+
+OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
+    printf(">>>>> [TODO] hk_SecItemCopyMatching\n");
+    return -1;
+}
 
 
 // Why do you want to see here ???

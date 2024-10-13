@@ -30,11 +30,6 @@ int (*validSubscriptionOri)(void);
 //    return 1;
 //}
 
-- (int) hook_ubiquityIdentityToken {
-    NSLog(@">>>>>> hook_ubiquityIdentityToken");
-    return 0;
-}
-
 - (BOOL)hack {
 
     // 有効なサブスクリプションをフックする
@@ -65,7 +60,7 @@ int (*validSubscriptionOri)(void);
     // アプリケーションがiCloudファイルストレージにアクセスする動作を制御または監視する
     [MemoryUtils hookInstanceMethod:
         NSClassFromString(@"NSFileManager")
-                originalSelector:NSSelectorFromString(@"URLForUbiquityContainerIdentifier:") swizzledClass:[self class] swizzledSelector:@selector(hook_NSFileManager:)
+                originalSelector:NSSelectorFromString(@"URLForUbiquityContainerIdentifier:") swizzledClass:[self class] swizzledSelector:@selector(hook_URLForUbiquityContainerIdentifier:)
     ];
 
     // アプリケーションと特定のCloudKitコンテナとの相互作用を制御または監視する

@@ -10,6 +10,7 @@
 #import "common_ret.h"
 #import "HackProtocolDefault.h"
 #import <objc/objc-exception.h>
+#import "URLSessionHook.h"
 
 @interface iStat7Hack : HackProtocolDefault
 
@@ -60,6 +61,7 @@ IMP dataTaskWithRequestIMP2;
         NSDictionary *respBody;
         NSString *reqBody = [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding];
 
+        URLSessionHook *dummyTask = [[URLSessionHook alloc] init];
         // Create the response body based on the URL
         if ([urlString containsString:@"/istatmenus/v3/subscription/"]) {
             respBody = @{
@@ -88,8 +90,7 @@ IMP dataTaskWithRequestIMP2;
         if (completionHandler) {
             completionHandler(body, resp, nil);
         }
-        
-        return nil; // Return nil to prevent original data task execution
+        return dummyTask;
     }
     
     NSLog(@">>>>>> [hook_dataTaskWithRequest] Allowing URL: %@", url);

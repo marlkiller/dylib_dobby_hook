@@ -72,11 +72,18 @@
 
 + (id)hook_defaultStore{
     NSLog(@">>>>>> hook_defaultStore");
-    return [NSUserDefaults standardUserDefaults];
+    // return [NSUserDefaults standardUserDefaults];
+    return NULL;
 }
 
-- (id)hook_NSFileManager:(nullable NSString *)containerIdentifier{
-    NSLog(@">>>>>> hook_NSFileManager containerIdentifier = %@",containerIdentifier);
+
+- (id) hook_ubiquityIdentityToken {
+    NSLog(@">>>>>> hook_ubiquityIdentityToken");
+    return NULL;
+}
+
+- (id)hook_URLForUbiquityContainerIdentifier:(nullable NSString *)containerIdentifier{
+    NSLog(@">>>>>> hook_URLForUbiquityContainerIdentifier containerIdentifier = %@",containerIdentifier);
     NSFileManager *defaultManager = [NSFileManager defaultManager];
     NSURL *url = [[defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
     url = [url URLByAppendingPathComponent:containerIdentifier];

@@ -46,4 +46,10 @@
 
 + (id)getInstanceIvar:(Class)cls ivarName:(const char *)ivarName;
 + (void)setInstanceIvar:(Class)slf ivarName:(const char *)ivarName value:(id)value;
+
+/**
+ * Converts a CFStringRef to an char *.
+ */
++ (char *)CFStringToCString:(CFStringRef)cfString;
+
 @end

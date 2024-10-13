@@ -169,11 +169,11 @@ NSData *machineCode2Bytes(NSString *hexString) {
     searchMachineCode = [searchMachineCode stringByReplacingOccurrencesOfString:@"." withString:@"?"];
 
     if (CACHE_MACHINE_CODE_OFFSETS) {
-            NSArray *cachedOffsets = [self loadMachineCodeOffsetsFromUserDefaults:searchMachineCode];
-            if (cachedOffsets) {
-                return [cachedOffsets copy];
-            }
+        NSArray *cachedOffsets = [self loadMachineCodeOffsetsFromUserDefaults:searchMachineCode];
+        if (cachedOffsets) {
+            return [cachedOffsets copy];
         }
+    }
     
     NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:searchFilePath];
 
@@ -652,6 +652,25 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     Class cls = object_getClass(slf);
     Ivar v = class_getInstanceVariable(cls, ivarName);
     object_setIvar(slf, v, value);
+}
+
++ (char *)CFStringToCString:(CFStringRef)cfString {
+    if (!cfString) {
+        return NULL;
+    }
+    CFIndex maxLength = CFStringGetMaximumSizeForEncoding(CFStringGetLength(cfString), kCFStringEncodingUTF8) + 1;
+    char *cString = (char *)malloc(maxLength);
+    if (!cString) {
+        NSLog(@">>>>>> Memory allocation failed.");
+        return NULL;
+    }
+    Boolean success = CFStringGetCString(cfString, cString, maxLength, kCFStringEncodingUTF8);
+    if (!success) {
+        NSLog(@">>>>>> Failed to convert CFString to C string.");
+        free(cString);
+        return NULL;
+    }
+    return cString;
 }
 
 @end

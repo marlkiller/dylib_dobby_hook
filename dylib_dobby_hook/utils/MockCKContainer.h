@@ -44,7 +44,13 @@
 - (CKDatabase *)privateCloudDatabase;
 - (CKDatabase *)publicCloudDatabase;
 
-
+/**
+ * [CKContainer -accountStatusWithCompletionHandler:(void (^)(CKAccountStatus accountStatus, NSError *error))completionHandler;]
+ *  CKAccountStatusAvailable：iCloud is available and logged in
+ *  CKAccountStatusNoAccount：Not logged in.
+ *  CKAccountStatusRestricted：iCloud is restricted.
+ *  CKAccountStatusCouldNotDetermine：Status unknown.
+ */
 - (void)accountStatusWithCompletionHandler:(void (NS_SWIFT_SENDABLE ^)(CKAccountStatus accountStatus, NSError * error))completionHandler;
 
 @end

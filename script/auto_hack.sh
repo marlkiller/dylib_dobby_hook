@@ -7,10 +7,24 @@ NC='\033[0m'
 
 
 force_flag=false
-# 判断脚本是否有 -f 参数
+
 if [[ "$@" =~ "-f" ]]; then
     force_flag=true
 fi
+
+PARENT_DIR=$(dirname "$(pwd)")
+DYLIB_PATH="$PARENT_DIR/release/libdylib_dobby_hook.dylib"
+
+if [ "$(id -u)" -ne 0 ]; then
+    echo -e "${RED}❌ Error: This script must be run as root. Exiting.${NC}"
+    exit 1
+fi
+
+if [ ! -f "$DYLIB_PATH" ]; then
+    echo -e "${RED}❌ Error: $DYLIB_PATH not found. Please build the project first.${NC}"
+    exit 1
+fi
+
 
 ALL_APPS_LIST=(
     "DevUtils"
@@ -19,7 +33,6 @@ ALL_APPS_LIST=(
     "Navicat Premium|/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"
     "Transmit"
     # "AnyGo"
-    "AirBuddy|/Applications/AirBuddy.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
     "Infuse|/Applications/Infuse.app/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator"
     "MacUpdater|/Applications/MacUpdater.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
     "CleanShot X|/Applications/CleanShot X.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
