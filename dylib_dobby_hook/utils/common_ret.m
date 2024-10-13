@@ -155,11 +155,12 @@ SecCodeCopySigningInformation_ptr_t SecCodeCopySigningInformation_ori = NULL;
 
 
 OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
-    printf(">>>>> hk_SecItemAdd\n");
+    NSLog(@">>>>>> hk_SecItemAdd");
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(attributes, kSecAttrService);
     CFStringRef account = (CFStringRef)CFDictionaryGetValue(attributes, kSecAttrAccount);
     CFDataRef passwordData = (CFDataRef)CFDictionaryGetValue(attributes, kSecValueData);
     if (!service || !account || !passwordData) {
+        NSLog(@">>>>>> hk_SecItemAdd: Missing service or account or passwordData");
         return errSecParam;
     }
     CFIndex passwordLength = CFDataGetLength(passwordData);
@@ -169,8 +170,7 @@ OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
     }
     CFDataGetBytes(passwordData, CFRangeMake(0, CFDataGetLength(passwordData)), (UInt8 *)passwordBuffer);
     passwordBuffer[CFDataGetLength(passwordData)] = '\0';
-    
-    
+
     const char * serviceCStr = [MemoryUtils CFStringToCString:service];
     const char * accountCStr = [MemoryUtils CFStringToCString:account];
     
@@ -187,46 +187,100 @@ OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
     if (status == errSecSuccess && result) {
        *result = item;
     }
+    NSLog(@">>>>>> hk_SecItemAdd Status = %d", status);
+    return status;
+}
+
+OSStatus hk_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate) {
+    NSLog(@">>>>>> hk_SecItemUpdate");
+    CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
+    CFStringRef account = (CFStringRef)CFDictionaryGetValue(query, kSecAttrAccount);
+    if (!service || !account) {
+        NSLog(@">>>>>> hk_SecItemUpdate: Missing service or account");
+        return errSecParam;
+    }
+    CFDataRef newPasswordData = (CFDataRef)CFDictionaryGetValue(attributesToUpdate, kSecValueData);
+    if (!newPasswordData) {
+        NSLog(@">>>>>> hk_SecItemUpdate: No new password provided");
+        return errSecParam;
+    }
+    const char *serviceCStr = [MemoryUtils CFStringToCString:service];
+    const char *accountCStr = [MemoryUtils CFStringToCString:account];
+    SecKeychainItemRef itemRef = NULL;
+    OSStatus status = SecKeychainFindGenericPassword(
+        NULL,
+        (UInt32)strlen(serviceCStr), serviceCStr,
+        (UInt32)strlen(accountCStr), accountCStr,
+        NULL, NULL, &itemRef
+    );
+    if (status == errSecSuccess) {
+        CFIndex newPasswordLength = CFDataGetLength(newPasswordData);
+        const UInt8 *newPasswordBytes = CFDataGetBytePtr(newPasswordData);
+        status = SecKeychainItemModifyAttributesAndData(
+            itemRef,
+            NULL,
+            (UInt32)newPasswordLength, newPasswordBytes
+        );
+        CFRelease(itemRef);  // 释放引用
+    }
+    NSLog(@">>>>>> hk_SecItemUpdate Status = %d", status);
     return status;
 }
 
 OSStatus hk_SecItemDelete(CFDictionaryRef query) {
-    printf(">>>>> hk_SecItemDelete\n");
+    NSLog(@">>>>>> hk_SecItemDelete");
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
     CFStringRef account = (CFStringRef)CFDictionaryGetValue(query, kSecAttrAccount);
-
     if (!service || !account) {
+        NSLog(@">>>>>> hk_SecItemDelete: Missing service or account");
         return errSecParam;
     }
-    CFMutableDictionaryRef searchQuery = CFDictionaryCreateMutable(
-        NULL,
-        0,
-        &kCFTypeDictionaryKeyCallBacks,
-        &kCFTypeDictionaryValueCallBacks
+    const char *serviceCStr = [MemoryUtils CFStringToCString:service];
+    const char *accountCStr = [MemoryUtils CFStringToCString:account];
+    
+    SecKeychainItemRef itemRef = NULL;
+    OSStatus status = SecKeychainFindGenericPassword(
+        NULL,                       // 默认 Keychain
+        (UInt32)strlen(serviceCStr), serviceCStr,
+        (UInt32)strlen(accountCStr), accountCStr,
+        NULL, NULL, &itemRef
     );
-    CFDictionaryAddValue(searchQuery, kSecClass, kSecClassGenericPassword);
-    CFDictionaryAddValue(searchQuery, kSecAttrService, service);
-    CFDictionaryAddValue(searchQuery, kSecAttrAccount, account);
-    CFDictionaryAddValue(searchQuery, kSecReturnRef, kCFBooleanTrue);
-
-    CFTypeRef itemRef = NULL;
-    OSStatus status = SecItemCopyMatching((CFDictionaryRef)searchQuery, &itemRef);
     if (status == errSecSuccess && itemRef) {
-        status = SecKeychainItemDelete((SecKeychainItemRef)itemRef);
-    }
-    if (searchQuery) {
-        CFRelease(searchQuery);
-    }
-    if (itemRef) {
+        status = SecKeychainItemDelete(itemRef);
         CFRelease(itemRef);
     }
+    NSLog(@">>>>>> hk_SecItemDelete Status = %d", status);
     return status;
 }
 
-
 OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
-    printf(">>>>> [TODO] hk_SecItemCopyMatching\n");
-    return -1;
+    NSLog(@">>>>>> hk_SecItemCopyMatching");
+    // 从查询字典中提取 service 和 account
+    CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
+    CFStringRef account = (CFStringRef)CFDictionaryGetValue(query, kSecAttrAccount);
+    if (!service || !account) {
+        NSLog(@">>>>>> hk_SecItemCopyMatching: Missing service or account");
+        return errSecParam;
+    }
+    const char *serviceCStr = [MemoryUtils CFStringToCString:service];
+    const char *accountCStr = [MemoryUtils CFStringToCString:account];
+
+    // 查找与 service 和 account 匹配的密码项
+    UInt32 passwordLength;
+    void *passwordData = NULL;
+    OSStatus status = SecKeychainFindGenericPassword(
+        NULL,                       // 默认 Keychain
+        (UInt32)strlen(serviceCStr), serviceCStr,
+        (UInt32)strlen(accountCStr), accountCStr,
+        &passwordLength, &passwordData, NULL
+    );
+    if (status == errSecSuccess && result) {
+        CFDataRef passwordCFData = CFDataCreate(NULL, (const UInt8 *)passwordData, passwordLength);
+        *result = passwordCFData;
+        SecKeychainItemFreeContent(NULL, passwordData);
+    }
+    NSLog(@">>>>>> hk_SecItemCopyMatching Status = %d", status);
+    return status;
 }
 
 

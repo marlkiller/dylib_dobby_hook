@@ -117,7 +117,15 @@ extern SecCodeCopySigningInformation_ptr_t SecCodeCopySigningInformation_ori;
 
 
 /// KeyChain
+/**
+ * Fallbacks for SecItem APIs using SecKeychain due to code signature issues.
+ * - hk_SecItemAdd: Adds a password.
+ * - hk_SecItemUpdate: Updates a password.
+ * - hk_SecItemDelete: Deletes an item.
+ * - hk_SecItemCopyMatching: Retrieves an item.
+ */
 OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result);
+OSStatus hk_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate);
 OSStatus hk_SecItemDelete(CFDictionaryRef query);
 OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result);
 

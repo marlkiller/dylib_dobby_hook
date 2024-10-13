@@ -30,22 +30,23 @@ ALL_APPS_LIST=(
     "DevUtils"
     "TablePlus|/Applications/TablePlus.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
     "Paste"
-    "Navicat Premium|/Applications/Navicat Premium.app/Contents/Frameworks/EE.framework/Versions/A/EE"
+    "Navicat Premium|Contents/Frameworks/EE.framework/Versions/A/EE"
     "Transmit"
-    # "AnyGo"
-    "Infuse|/Applications/Infuse.app/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator"
-    "MacUpdater|/Applications/MacUpdater.app/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
-    "CleanShot X|/Applications/CleanShot X.app/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
-    "iStat Menus|/Applications/iStat Menus.app/Contents/Frameworks/Paddle.framework/Versions/A/Paddle"
-    
+    #"AnyGo"
+    "Infuse|Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator"
+    "MacUpdater|Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
+    "CleanShot X|Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
+    "iStat Menus|Contents/Frameworks/Paddle.framework/Versions/A/Paddle"
+    "Alfred 5|Contents/Preferences/Alfred Preferences.app/Contents/MacOS/Alfred Preferences"
+
     ## paddle:Movist Pro/Downie 4/Fork/BetterMouse/MindMac/Permute 3
     #"xx|/Applications/xx.app/Contents/Frameworks/Paddle.framework/Versions/A/Paddle"
 
     ## fixed with helper
-    "IDA Professional 9.0|/Applications/IDA Professional 9.0.app/Contents/Frameworks/QtDBus.framework/Versions/5/QtDBus|apps/ida_hack.sh"
-    "ForkLift|/Applications/ForkLift.app/Contents/Frameworks/UniversalDetector.framework/Versions/A/UniversalDetector|apps/fix_helper_and_inject.sh|com.binarynights.ForkLiftHelper"
-    "Proxyman|/Applications/Proxyman.app/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend|apps/fix_helper.sh|com.proxyman.NSProxy.HelperTool"
-    # "Surge|/Applications/Surge.app/Contents/Frameworks/MMMarkdown.framework/Versions/A/MMMarkdown|apps/surge_hack.sh"
+    "IDA Professional 9.0|Contents/Frameworks/QtDBus.framework/Versions/5/QtDBus|apps/ida_hack.sh"
+    "ForkLift|Contents/Frameworks/UniversalDetector.framework/Versions/A/UniversalDetector|apps/fix_helper_and_inject.sh|com.binarynights.ForkLiftHelper"
+    "Proxyman|Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend|apps/fix_helper.sh|com.proxyman.NSProxy.HelperTool"
+    #"Surge|/Applications/Surge.app/Contents/Frameworks/MMMarkdown.framework/Versions/A/MMMarkdown|apps/surge_hack.sh"
 )
 
 

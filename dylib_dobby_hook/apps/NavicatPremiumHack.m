@@ -46,9 +46,10 @@ static IMP displayRegisteredInfoIMP;
 
 - (BOOL)hack {
     
-//    DobbyHook(SecItemAdd, hk_SecItemAdd, NULL);
-//    DobbyHook(SecItemDelete, hk_SecItemDelete, NULL);
-//    DobbyHook(SecItemCopyMatching, hk_SecItemCopyMatching, NULL);
+    DobbyHook(SecItemAdd, hk_SecItemAdd, NULL);
+    DobbyHook(SecItemUpdate, hk_SecItemUpdate, NULL);
+    DobbyHook(SecItemDelete, hk_SecItemDelete, NULL);
+    DobbyHook(SecItemCopyMatching, hk_SecItemCopyMatching, NULL);
 
     [MemoryUtils hookInstanceMethod:
                 objc_getClass("IAPHelper")

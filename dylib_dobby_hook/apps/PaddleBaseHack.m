@@ -186,42 +186,16 @@ IMP dataTaskWithRequestIMP;
     
     if ([[Constant getCurrentAppName] containsString:@"codes.rambo.AirBuddy"]) {
         NSUserDefaults *defaults  = [NSUserDefaults standardUserDefaults];
-            [defaults setBool:true forKey:@"AMSkipOnboarding"];
-            [defaults synchronize];
+        [defaults setBool:true forKey:@"AMSkipOnboarding"];
+        [defaults synchronize];
+    }
+    if ([[Constant getCurrentAppName] containsString:@"mindmac"]) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:@"Basic" forKey:@"licenseType"];
+        [defaults setObject:@YES forKey:@"licenseStatusChanged"];
+        [defaults synchronize];
     }
 //    license eg: B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C
-    
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        // 在这里执行你的代码
-//        NSLog(@">>>>>>> 代码延迟执行了10秒");
-//        // 获取当前应用程序的所有窗口
-//        NSArray<NSWindow *> *allWindows = [NSApplication sharedApplication].windows;
-//        
-//        NSString *viewControllerClassName = @"Licensing.CMLicensingViewController";
-//        Class viewControllerClass = NSClassFromString(viewControllerClassName);
-//        
-//        // 遍历所有窗口，查找目标窗口
-//        for (NSWindow *window in allWindows) {
-//            NSLog(@">>>>>> Window class name: %@", NSStringFromClass([window class]));
-//            //            [window orderOut:nil]; // 隐藏窗口
-//            NSViewController *viewController = window.contentViewController;
-//            if (viewController != nil) {
-//                // 窗口关联了一个视图控制器
-//                NSLog(@"Window is associated with view controller: %@", viewController);
-//                if ([viewController isKindOfClass:viewControllerClass]) {
-//                    NSLog(@"Window is associated with view controller: %@", viewController);
-//                    // 隐藏窗口
-//                    // [window orderOut:nil];
-//                    // 或者销毁窗口
-//                    // [window close];
-//                }
-//            } else {
-//                // 窗口没有关联视图控制器
-//                NSLog(@"Window is not associated with any view controller");
-//            }
-//        }
-//    });
-    
 //    license HOOK
 //    -[PADProduct activated]:    
     [MemoryUtils replaceInstanceMethod:
@@ -278,14 +252,6 @@ IMP dataTaskWithRequestIMP;
                       swizzledClass:[self class]
                    swizzledSelector:NSSelectorFromString(@"hook_dataTaskWithRequest:completionHandler:")
     ];
-    
-    if ([[Constant getCurrentAppName] containsString:@"mindmac"]) {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setObject:@"Basic" forKey:@"licenseType"];
-        [defaults setObject:@YES forKey:@"licenseStatusChanged"];
-        [defaults synchronize];
-    }
-    
     
     return YES;
 }

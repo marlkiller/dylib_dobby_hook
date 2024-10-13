@@ -46,6 +46,7 @@
 		B5D2ED3F2BC0252D0030CBCA /* DevHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D2ED3E2BC0252D0030CBCA /* DevHack.m */; };
 		B5EAA9E02C8C3FAF008C4089 /* URLSessionHook.h in Headers */ = {isa = PBXBuildFile; fileRef = B5EAA9DF2C8C3FAF008C4089 /* URLSessionHook.h */; };
 		B5EAA9E22C8C3FC3008C4089 /* URLSessionHook.m in Sources */ = {isa = PBXBuildFile; fileRef = B5EAA9E12C8C3FC3008C4089 /* URLSessionHook.m */; };
+		B5EC63D82CBD39C700D92EEC /* AlfredHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5EC63D72CBD39C700D92EEC /* AlfredHack.m */; };
 		B5F06B1D2BEF591E0079E68D /* InfuseHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F06B1C2BEF591E0079E68D /* InfuseHack.m */; };
 		B5FE3B862BA2A571001AE437 /* TransmitHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FE3B842BA2A571001AE437 /* TransmitHack.m */; };
 		B5FECEAD2BC4FC29008916D6 /* common_ret.h in Headers */ = {isa = PBXBuildFile; fileRef = B5FECEAB2BC4FC29008916D6 /* common_ret.h */; };
@@ -83,6 +84,8 @@
 		38E793642B6C7FB6005677AA /* auto_hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = auto_hack.sh; sourceTree = "<group>"; };
 		9C99D64A2CB6CEF100B8A6D7 /* iStat7Hack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iStat7Hack.m; sourceTree = "<group>"; };
 		B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaddleBaseHack.m; sourceTree = "<group>"; };
+		B513ADD62CB95D0B00F5DC97 /* LocalizationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalizationManager.h; sourceTree = "<group>"; };
+		B513ADD82CB95D4100F5DC97 /* LocalizationManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalizationManager.m; sourceTree = "<group>"; };
 		B53522452C2FE4D4001CA305 /* MacUpdaterHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MacUpdaterHack.m; sourceTree = "<group>"; };
 		B53F9DEC2C4AA4EC00A6B32D /* CleanShotXHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CleanShotXHack.m; sourceTree = "<group>"; };
 		B546A6572BC4F0CD0012338D /* ProxyManHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProxyManHack.m; sourceTree = "<group>"; };
@@ -118,6 +121,7 @@
 		B5D2ED3E2BC0252D0030CBCA /* DevHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevHack.m; sourceTree = "<group>"; };
 		B5EAA9DF2C8C3FAF008C4089 /* URLSessionHook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URLSessionHook.h; sourceTree = "<group>"; };
 		B5EAA9E12C8C3FC3008C4089 /* URLSessionHook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = URLSessionHook.m; sourceTree = "<group>"; };
+		B5EC63D72CBD39C700D92EEC /* AlfredHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlfredHack.m; sourceTree = "<group>"; };
 		B5F06B1C2BEF591E0079E68D /* InfuseHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfuseHack.m; sourceTree = "<group>"; };
 		B5FE3B842BA2A571001AE437 /* TransmitHack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransmitHack.m; sourceTree = "<group>"; };
 		B5FECEAB2BC4FC29008916D6 /* common_ret.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common_ret.h; sourceTree = "<group>"; };
@@ -224,11 +228,11 @@
 		B581601C2BE8949B001DDB9B /* apps */ = {
 			isa = PBXGroup;
 			children = (
+				B5EC63D72CBD39C700D92EEC /* AlfredHack.m */,
 				B5732BF02C82CD5900EC9E11 /* IDAHack.m */,
 				9C99D64A2CB6CEF100B8A6D7 /* iStat7Hack.m */,
 				B5D0C0BA2C4B553500881398 /* ForkLiftHack.m */,
 				B5F06B1C2BEF591E0079E68D /* InfuseHack.m */,
-				38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */,
 				38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */,
 				B5FE3B842BA2A571001AE437 /* TransmitHack.m */,
 				382A25842B6918DF0083F28C /* PasteHack.m */,
@@ -408,6 +412,7 @@
 				38350BF82B53F73A00DD52B3 /* dylib_dobby_hook.m in Sources */,
 				B5A7D3172C5491A0003D4C7F /* HackHelperProtocolDefault.m in Sources */,
 				B53F9DED2C4AA4EC00A6B32D /* CleanShotXHack.m in Sources */,
+				B5EC63D82CBD39C700D92EEC /* AlfredHack.m in Sources */,
 				9C99D64B2CB6CEF100B8A6D7 /* iStat7Hack.m in Sources */,
 				382A25862B6918DF0083F28C /* PasteHack.m in Sources */,
 				B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */,
@@ -561,7 +566,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -580,7 +586,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
