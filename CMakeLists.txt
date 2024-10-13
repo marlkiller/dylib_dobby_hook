@@ -33,7 +33,7 @@ set(COMPILE_OPTION
         -Wno-incompatible-pointer-types
         -Wno-int-to-void-pointer-cast
         -Wno-unguarded-availability-new # is only available on macOS 10.15 or newer
-        # -ftrivial-auto-var-init=zero
+        -ftrivial-auto-var-init=zero
 )
 
 set(LINK_OPTION

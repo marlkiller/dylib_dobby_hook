@@ -10,6 +10,7 @@
 #import "Constant.h"
 #import "MemoryUtils.h"
 #import <Cocoa/Cocoa.h>
+#import <LocalizationManager.h>
 
 @implementation dylib_dobby_hook
 
@@ -89,10 +90,15 @@ BOOL canShowAlert(void) {
     BOOL showAlarm = canShowAlert();
     if ([Constant isFirstOpen] && showAlarm) {
         NSAlert *alert = [[NSAlert alloc] init];
-        [alert setMessageText:@"Cracked By\n[marlkiller/dylib_dobby_hook]"];
-        [alert setInformativeText:@"仅供研究学习使用，请勿用于非法用途"];
-        [alert addButtonWithTitle:@"OK"];
-        [alert runModal];
+        NSString *alertTip = [LocalizationManager localizedStringForKey:@"alert_tip"];
+        NSString *alertMessage = [LocalizationManager localizedStringForKey:@"alert_message"];
+        NSString *alertButtonTitle = [LocalizationManager localizedStringForKey:@"alert_button"];
+        
+        [alert setAlertStyle:NSAlertStyleInformational];
+        [alert setMessageText:alertTip];
+        [alert setInformativeText:alertMessage];
+        [alert addButtonWithTitle:alertButtonTitle];
+        [alert runModal];        
     }
     [Constant doHack];
 }

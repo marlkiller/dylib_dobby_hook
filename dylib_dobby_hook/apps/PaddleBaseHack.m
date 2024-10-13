@@ -172,7 +172,9 @@ IMP dataTaskWithRequestIMP;
 
         }
         NSLog(@">>>>>> [hook_dataTaskWithRequest] Intercept url: %@, request body: %@, response body: %@",url, reqBody,respBody);
-        wrapper(nil,respBody);
+        if (completionHandler) {
+            wrapper(nil,respBody);
+        }        
         return dummyTask;
 ;
     }
@@ -181,6 +183,12 @@ IMP dataTaskWithRequestIMP;
 }
 
 - (BOOL)hack {
+    
+    if ([[Constant getCurrentAppName] containsString:@"codes.rambo.AirBuddy"]) {
+        NSUserDefaults *defaults  = [NSUserDefaults standardUserDefaults];
+            [defaults setBool:true forKey:@"AMSkipOnboarding"];
+            [defaults synchronize];
+    }
 //    license eg: B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C
     
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

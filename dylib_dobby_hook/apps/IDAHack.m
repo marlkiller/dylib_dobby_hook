@@ -23,7 +23,7 @@
 - (NSString *)getAppName {
 //    >>>>>> AppName is [com.hexrays.ida64],Version is [9.0.240807], myAppCFBundleVersion is [240807].
 //    >>>>>> AppName is [com.hexrays.ida],Version is [9.0.240925], myAppCFBundleVersion is [240925].
-    return @"com.hexrays.ida64";
+    return @"com.hexrays.ida";
 }
 
 - (NSString *)getSupportAppVersion {

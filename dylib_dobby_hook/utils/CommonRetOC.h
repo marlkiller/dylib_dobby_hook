@@ -20,11 +20,36 @@
 + (int)ret0;
 
 
-
+/**
+ * [NSUbiquitousKeyValueStore +defaultStore]
+ *  Check iCloud Key-Value Store
+ */
 + (id)hook_defaultStore;
-- (id)hook_NSFileManager:containerIdentifier;
 
+/**
+ * [NSFileManager -ubiquityIdentityToken]
+ *  Check iCloud file storage status
+ */
+- (id)hook_ubiquityIdentityToken;
+- (id)hook_URLForUbiquityContainerIdentifier:containerIdentifier;
+
+
+
+
+
+///codesign -d --entitlements :- /path/to/YourApp.app
+///com.apple.developer.icloud-services: Ensure iCloud services are enabled.
+///com.apple.developer.ubiquity-container-identifiers: Check container identifiers.
+/**
+ * [CKContainer +containerWithIdentifier:]
+ *  Get a specific iCloud container by its identifier.
+ */
 + (id)hook_containerWithIdentifier:identifier;
+
+/**
+ * [CKContainer +defaultContainer]
+ *  Get the default iCloud container for the app.
+ */
 + (id)hook_defaultContainer;
 
 - (void)startMonitorInjection:processName;

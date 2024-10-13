@@ -90,9 +90,7 @@
 
 - (void)accountStatusWithCompletionHandler:(void (NS_SWIFT_SENDABLE ^)(CKAccountStatus accountStatus, NSError * error))completionHandler{
     NSLog(@">>>>>> accountStatusWithCompletionHandler");
-
-    // 模拟账户状态和错误
-    CKAccountStatus mockAccountStatus = CKAccountStatusAvailable;
+    CKAccountStatus mockAccountStatus = CKAccountStatusCouldNotDetermine;
     NSError *mockError = nil;
    
     if (completionHandler) {

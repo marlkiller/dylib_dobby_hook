@@ -19,9 +19,10 @@
 		38D1AC282B54C9C100E6CB9E /* Constant.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC272B54C9C100E6CB9E /* Constant.h */; };
 		38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC292B54CA4D00E6CB9E /* Constant.m */; };
 		38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */; };
-		38D1AC322B54D1CC00E6CB9E /* AirBuddyHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */; };
 		9C99D64B2CB6CEF100B8A6D7 /* iStat7Hack.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C99D64A2CB6CEF100B8A6D7 /* iStat7Hack.m */; };
 		B50E935E2BBD024F0073FEAA /* PaddleBaseHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */; };
+		B513ADD72CB95D0B00F5DC97 /* LocalizationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B513ADD62CB95D0B00F5DC97 /* LocalizationManager.h */; };
+		B513ADD92CB95D4100F5DC97 /* LocalizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B513ADD82CB95D4100F5DC97 /* LocalizationManager.m */; };
 		B53522462C2FE4D4001CA305 /* MacUpdaterHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B53522452C2FE4D4001CA305 /* MacUpdaterHack.m */; };
 		B53F9DED2C4AA4EC00A6B32D /* CleanShotXHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B53F9DEC2C4AA4EC00A6B32D /* CleanShotXHack.m */; };
 		B546A6582BC4F0CD0012338D /* ProxyManHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B546A6572BC4F0CD0012338D /* ProxyManHack.m */; };
@@ -78,7 +79,6 @@
 		38D1AC272B54C9C100E6CB9E /* Constant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
 		38D1AC292B54CA4D00E6CB9E /* Constant.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constant.m; sourceTree = "<group>"; };
 		38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackProtocol.h; sourceTree = "<group>"; };
-		38D1AC312B54D1CC00E6CB9E /* AirBuddyHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AirBuddyHack.m; sourceTree = "<group>"; };
 		38E793632B6C7AB8005677AA /* all_in_one.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = all_in_one.sh; sourceTree = "<group>"; };
 		38E793642B6C7FB6005677AA /* auto_hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = auto_hack.sh; sourceTree = "<group>"; };
 		9C99D64A2CB6CEF100B8A6D7 /* iStat7Hack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iStat7Hack.m; sourceTree = "<group>"; };
@@ -265,6 +265,8 @@
 				B57F200F2C5DD70700C87201 /* MockCKDatabase.m */,
 				B5EAA9DF2C8C3FAF008C4089 /* URLSessionHook.h */,
 				B5EAA9E12C8C3FC3008C4089 /* URLSessionHook.m */,
+				B513ADD62CB95D0B00F5DC97 /* LocalizationManager.h */,
+				B513ADD82CB95D4100F5DC97 /* LocalizationManager.m */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -297,6 +299,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5EAA9E02C8C3FAF008C4089 /* URLSessionHook.h in Headers */,
+				B513ADD72CB95D0B00F5DC97 /* LocalizationManager.h in Headers */,
 				B5FECEAD2BC4FC29008916D6 /* common_ret.h in Headers */,
 				B581601B2BE88569001DDB9B /* EncryptionUtils.h in Headers */,
 				B5A7D30F2C548B71003D4C7F /* HackProtocolDefault.h in Headers */,
@@ -395,7 +398,6 @@
 			files = (
 				B57F20102C5DD70700C87201 /* MockCKDatabase.m in Sources */,
 				B50E935E2BBD024F0073FEAA /* PaddleBaseHack.m in Sources */,
-				38D1AC322B54D1CC00E6CB9E /* AirBuddyHack.m in Sources */,
 				B5B89BCD2C5DD4AB00F61EB0 /* MockCKContainer.m in Sources */,
 				B5D2ED3F2BC0252D0030CBCA /* DevHack.m in Sources */,
 				B5A7D3112C548BAB003D4C7F /* HackProtocolDefault.m in Sources */,
@@ -412,6 +414,7 @@
 				B5D0C0BB2C4B553500881398 /* ForkLiftHack.m in Sources */,
 				B5F06B1D2BEF591E0079E68D /* InfuseHack.m in Sources */,
 				B5EAA9E22C8C3FC3008C4089 /* URLSessionHook.m in Sources */,
+				B513ADD92CB95D4100F5DC97 /* LocalizationManager.m in Sources */,
 				B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */,
 				3816BBB92B54FF090051CF39 /* MemoryUtils.m in Sources */,
 				38B83E312B5505B300919735 /* TablePlusHack.m in Sources */,

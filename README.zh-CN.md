@@ -77,7 +77,7 @@ sudo bash auto_hack.sh
 
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
-#import "HackProtocol.h"
+#import "HackProtocolDefault.h"
 
 
 @interface XXXHack : HackProtocolDefault

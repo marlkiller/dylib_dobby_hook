@@ -17,6 +17,7 @@ sudo chmod a+x $mac_patch_helper
 ida_path="/Applications/IDA Professional 9.0.app"
 app_name=$(basename "$ida_path" .app)
 
+/usr/bin/xattr -cr "$mac_patch_helper"
 $mac_patch_helper "IDA" $mac_patch_helper_config 
 
 echo -e "${GREEN}✅ [${app_name}] - Copying license file...${NC}"

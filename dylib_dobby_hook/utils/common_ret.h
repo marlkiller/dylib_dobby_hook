@@ -39,6 +39,12 @@ int ret1 (void);
 int ret0 (void);
 void ret(void);
 
+
+/**
+ * DobbyCodePatchRet when DobbyHook fails.
+ */
+void DobbyCodePatchRet(uintptr_t targetAddress);
+
 // AntiAntiDebug 反反调试相关
 typedef int (*ptrace_ptr_t)(int _request, pid_t _pid, caddr_t _addr, int _data);
 int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data);
@@ -100,7 +106,7 @@ extern task_swap_exception_ports_ptr_t orig_task_swap_exception_ports;
 
 
 
-// Apple Sec..
+/// Apple Sec..
 typedef OSStatus (*SecCodeCheckValidityWithErrors_ptr_t)(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors);
 OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors);
 extern SecCodeCheckValidityWithErrors_ptr_t SecCodeCheckValidityWithErrors_ori;
@@ -110,12 +116,17 @@ typedef OSStatus (*SecCodeCopySigningInformation_ptr_t)(SecCodeRef codeRef, SecC
 extern SecCodeCopySigningInformation_ptr_t SecCodeCopySigningInformation_ori;
 
 
+/// KeyChain
+OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result);
+OSStatus hk_SecItemDelete(CFDictionaryRef query);
+OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result);
+
 NSString *love69(NSString *input);
 
 //// 声明全局的邮件地址
 //extern char *global_dylib_name;
 //int inject_dylib(pid_t pid, const char *lib);
 
-int destory_inject_thread();
+int destory_inject_thread(void);
 
 #endif /* common_ret_h */

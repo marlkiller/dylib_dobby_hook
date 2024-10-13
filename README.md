@@ -77,7 +77,7 @@ The basic code has been completed. To be compatible with more app patches, the a
 
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
-#import "HackProtocol.h"
+#import "HackProtocolDefault.h"
 
 
 @interface XXXHack : HackProtocolDefault
