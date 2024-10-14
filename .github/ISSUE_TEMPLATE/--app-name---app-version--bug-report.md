@@ -7,24 +7,25 @@ assignees: ''
 
 ---
 
-# Issue Template
+**Device Information:**
 
-### **Describe the bug**  
-A clear and concise description of what the bug is.  
+- OS: <!-- Example: macOS 13.0, ARM -->
+- SIP: <!-- Specify whether SIP is enabled or disabled (e.g., Enabled/Disabled) -->
+- Application: <!-- Provide the name of the application (e.g., DevUtils) -->
+- Application Version: <!-- Provide the version of the application (e.g., 1.0.0) -->
 
-### **To Reproduce**  
-Steps to reproduce the behavior:  
-1. Go to '...'  
-2. Click on '...'  
-3. Scroll down to '...'  
-4. See error  
+**Describe the bug:**
+<!-- A clear and concise description of what the bug is. -->
 
-### **System Information & SIP Status**  
-- **Operating System:** (e.g., macOS 13.5, Windows 11)  
-- **SIP Enabled/Disabled:** (Enabled / Disabled)  
 
-### **Crash Logs**  
-Paste or attach crash logs here if available.  
+**Screenshots:**
+<!-- If applicable, add screenshots to help explain your problem. -->
 
-### **Screenshots**  
-If applicable, add screenshots to help explain your problem.
+
+**Crash Logs:**
+<!-- Paste or attach crash logs here if available. -->
+
+
+**Additional Information:**
+<!-- Add any other context about the problem here. -->
+<!-- You can also put references to similar bugs here. -->
