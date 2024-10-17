@@ -30,7 +30,7 @@
 }
 
 - (NSString *)getSupportAppVersion {
-    return @"7.7";
+    return @"8";
 }
 
 - (BOOL)hack {
@@ -44,6 +44,32 @@
                 swizzledSelector:@selector(ret1)
     ];
 
+    DobbyHook(SecItemAdd, hk_SecItemAdd, NULL);
+    DobbyHook(SecItemUpdate, hk_SecItemUpdate, NULL);
+    DobbyHook(SecItemDelete, hk_SecItemDelete, NULL);
+    DobbyHook(SecItemCopyMatching, hk_SecItemCopyMatching, NULL);
+    
+    [MemoryUtils hookClassMethod:
+         NSClassFromString(@"NSUbiquitousKeyValueStore")
+                   originalSelector:NSSelectorFromString(@"defaultStore")
+                      swizzledClass:[self class]
+                   swizzledSelector:@selector(hook_defaultStore)
+    ];
+
+    [MemoryUtils hookClassMethod:
+        NSClassFromString(@"CKContainer")
+                  originalSelector:NSSelectorFromString(@"containerWithIdentifier:")
+                     swizzledClass:[self class]
+                  swizzledSelector:@selector(hook_containerWithIdentifier: )
+    ];
+    [MemoryUtils hookClassMethod:
+        NSClassFromString(@"CKContainer")
+                  originalSelector:NSSelectorFromString(@"defaultContainer")
+                     swizzledClass:[self class]
+                  swizzledSelector:@selector(hook_defaultContainer)
+
+    ];
+    
     return YES;
 }
 
