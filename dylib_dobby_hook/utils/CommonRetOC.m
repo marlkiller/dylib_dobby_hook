@@ -10,38 +10,38 @@
 #import <CloudKit/CloudKit.h>
 #import "MockCKContainer.h"
 #import "common_ret.h"
-
+#import "Logger.h"
 
 @implementation CommonRetOC
 
 - (void)ret {
-    NSLog(@">>>>>> called - ret");
+    NSLogger(@"called - ret");
 }
 - (void)ret_ {
-    NSLog(@">>>>>> called - ret_");
+    NSLogger(@"called - ret_");
 }
 - (void)ret__ {
-    NSLog(@">>>>>> called - ret__");
+    NSLogger(@"called - ret__");
 }
 
 - (int)ret1 {
-    NSLog(@">>>>>> called - ret1");
+    NSLogger(@"called - ret1");
     return 1;
 }
 - (int)ret0 {
-    NSLog(@">>>>>> called - ret0");
+    NSLogger(@"called - ret0");
     return 0;
 }
 + (int)ret1 {
-    NSLog(@">>>>>> called + ret1");
+    NSLogger(@"called + ret1");
     return 1;
 }
 + (int)ret0 {
-    NSLog(@">>>>>> called + ret0");
+    NSLogger(@"called + ret0");
     return 0;
 }
 + (void)ret {
-    NSLog(@">>>>>> called + ret");
+    NSLogger(@"called + ret");
 }
 
 
@@ -71,19 +71,19 @@
 
 
 + (id)hook_defaultStore{
-    NSLog(@">>>>>> hook_defaultStore");
+    NSLogger(@"hook_defaultStore");
     // return [NSUserDefaults standardUserDefaults];
     return NULL;
 }
 
 
 - (id) hook_ubiquityIdentityToken {
-    NSLog(@">>>>>> hook_ubiquityIdentityToken");
+    NSLogger(@"hook_ubiquityIdentityToken");
     return NULL;
 }
 
 - (id)hook_URLForUbiquityContainerIdentifier:(nullable NSString *)containerIdentifier{
-    NSLog(@">>>>>> hook_URLForUbiquityContainerIdentifier containerIdentifier = %@",containerIdentifier);
+    NSLogger(@"hook_URLForUbiquityContainerIdentifier containerIdentifier = %@",containerIdentifier);
     NSFileManager *defaultManager = [NSFileManager defaultManager];
     NSURL *url = [[defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
     url = [url URLByAppendingPathComponent:containerIdentifier];
@@ -93,23 +93,23 @@
         NSError *error = nil;
         BOOL success = [defaultManager createDirectoryAtURL:url withIntermediateDirectories:YES attributes:nil error:&error];
         if (!success) {
-            NSLog(@">>>>>> Failed to create directory: %@", error.localizedDescription);
+            NSLogger(@"Failed to create directory: %@", error.localizedDescription);
         }
     } else {
-        NSLog(@">>>>>> Directory already exists.");
+        NSLogger(@"Directory already exists.");
     }
     return url;
 }
 
 
 + (id)hook_containerWithIdentifier:identifier {
-    NSLog(@">>>>>> hook_containerWithIdentifier identifier = %@",identifier);
+    NSLogger(@"hook_containerWithIdentifier identifier = %@",identifier);
     // [CKContainer containerWithIdentifier:identifier];
     return [MockCKContainer containerWithIdentifier:identifier];
 
 }
 + (id)hook_defaultContainer {
-    NSLog(@">>>>>> hook_defaultContainer");
+    NSLogger(@"hook_defaultContainer");
     // [CKContainer defaultContainer];
     return [MockCKContainer defaultContainer];
 
@@ -125,10 +125,10 @@
 //                pid_t pid = [EncryptionUtils getProcessIDByName:processName];
 //                kern_return_t result = inject_dylib(pid, nil);
 //                if (result == KERN_SUCCESS) {
-//                    NSLog(@">>>>>> Successfully injected dylib into process %d", pid);
+//                    NSLogger(@"Successfully injected dylib into process %d", pid);
 //                    return;
 //                } else {
-//                    NSLog(@">>>>>> Failed to inject dylib into process %d", pid);
+//                    NSLogger(@"Failed to inject dylib into process %d", pid);
 //                }
             }
             [NSThread sleepForTimeInterval:5.0];  // 每 5 秒检查一次

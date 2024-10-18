@@ -14,7 +14,7 @@
 #import <objc/runtime.h>
 #import <AppKit/AppKit.h>
 #include <mach/mach_vm.h>
-
+#import "Logger.h"
 
 @implementation MemoryUtils
 
@@ -76,7 +76,7 @@ NSString * CACHE_MACHINE_CODE_KEY = @"All-Offsets";
         kr = mach_vm_protect(selfTask, (mach_vm_address_t)pageStart, pageSize, FALSE, VM_PROT_READ | VM_PROT_WRITE | VM_PROT_COPY);
         if (kr != KERN_SUCCESS) {
             // 错误处理
-            NSLog(@"xxxxxxxxxxxxxxxxerr");
+            NSLogger(@"xxxxxxxxxxxxxxxxerr");
             return;
         }
         
@@ -124,7 +124,7 @@ NSData *machineCode2Bytes(NSString *hexString) {
     NSString *appVersion = [Constant getCurrentAppCFBundleVersion];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSMutableDictionary *allOffsetsMap = [NSMutableDictionary dictionaryWithDictionary:[defaults objectForKey:CACHE_MACHINE_CODE_KEY]];
-    NSLog(@">>>>>> Offset information saved to UserDefaults for %@ machine code: %@",appVersion, offsets);
+    NSLogger(@"Offset information saved to UserDefaults for %@ machine code: %@",appVersion, offsets);
 
     // Make sure versionMap is mutable
     NSMutableDictionary *versionMap = [allOffsetsMap objectForKey:appVersion];
@@ -154,7 +154,7 @@ NSData *machineCode2Bytes(NSString *hexString) {
 
     if (versionMap) {
         NSArray<NSNumber *> *offsets = [versionMap objectForKey:searchMachineCode];
-        NSLog(@">>>>>> Offset information loaded from UserDefaults %@ for machine code: %@",appVersion, offsets);
+        NSLogger(@"Offset information loaded from UserDefaults %@ for machine code: %@",appVersion, offsets);
         return offsets ?: nil;
     }
     return nil;
@@ -190,7 +190,7 @@ NSData *machineCode2Bytes(NSString *hexString) {
          for (NSUInteger j = 0; j < searchLength; j++) {
              uint8_t fileByte = ((const uint8_t *)[fileData bytes])[i + j];
              // if (i>364908 && i<364930) {
-             //     NSLog(@">>>>>> %d : %p",i,fileByte);
+             //     NSLogger(@"%d : %p",i,fileByte);
              // }
              uint8_t searchByte = ((const uint8_t *)[searchBytes bytes])[j];
              if (searchByte != 0x90 && fileByte != searchByte) {
@@ -233,12 +233,12 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     
     NSData *fileData = [NSData dataWithContentsOfFile:filePath];
     if (fileData == nil) {
-        NSLog(@">>>>>> Failed to read file data.");
+        NSLogger(@"Failed to read file data.");
         return nil;
     }
     const uint32_t magic = *(const uint32_t *)fileData.bytes;
     if (magic == FAT_MAGIC || magic == FAT_CIGAM) {
-        NSLog(@">>>>>> is FAT");
+        NSLogger(@"is FAT");
         struct fat_header *fatHeader = (struct fat_header *)fileData.bytes;
         uint32_t nfat_arch = OSSwapBigToHostInt32(fatHeader->nfat_arch);
         struct fat_arch *fatArchs = (struct fat_arch *)(fileData.bytes + sizeof(struct fat_header));
@@ -257,7 +257,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
             [architecturesInfo addObject:archInfo];
         }
     }else {
-        NSLog(@">>>>>> is not FAT");
+        NSLogger(@"is not FAT");
         // magic == MH_MAGIC_64 || magic == MH_CIGAM_64)
         // /* Constant for the magic field of the mach_header (32-bit architectures) */
         // #define    MH_MAGIC    0xfeedface    /* the mach magic number */
@@ -311,7 +311,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     BOOL isDebugging = [Constant isDebuggerAttached];
     intptr_t slide = 0;
     if(!isDebugging){
-        // NSLog(@"The current app running with debugging");
+        // NSLogger(@"The current app running with debugging");
         // 不知道为什么
         // 如果是调试模式, 计算地址不需要 + _dyld_get_image_vmaddr_slide,否则会出错
         slide = _dyld_get_image_vmaddr_slide(index);
@@ -333,19 +333,19 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     if ([Constant isArm]) {
         if([Constant isDebuggerAttached]){
             uintptr_t result = ARCH_FAT_SIZE+targetFunctionOffset-reduceOffset;
-            NSLog(@">>>>>> 0x%lx + 0x%lx - 0x%lx = 0x%lx",ARCH_FAT_SIZE,targetFunctionOffset,reduceOffset,result);
+            NSLogger(@"0x%lx + 0x%lx - 0x%lx = 0x%lx",ARCH_FAT_SIZE,targetFunctionOffset,reduceOffset,result);
             return result;
 
         }
         result = _dyld_get_image_vmaddr_slide(index)+ARCH_FAT_SIZE+targetFunctionOffset-reduceOffset;
-        NSLog(@">>>>>> 0x%lx + 0x%lx + 0x%lx - 0x%lx = 0x%lx ",_dyld_get_image_vmaddr_slide(index),ARCH_FAT_SIZE,targetFunctionOffset,reduceOffset,result);
+        NSLogger(@"0x%lx + 0x%lx + 0x%lx - 0x%lx = 0x%lx ",_dyld_get_image_vmaddr_slide(index),ARCH_FAT_SIZE,targetFunctionOffset,reduceOffset,result);
         return result;
 
     }else {
         const struct mach_header *header = _dyld_get_image_header(index);
         uintptr_t baseAddress = (uintptr_t)header;
         result = baseAddress + targetFunctionOffset - reduceOffset;
-        NSLog(@">>>>>> 0x%lx + 0x%lx - 0x%lx = 0x%lx ",baseAddress,targetFunctionOffset,reduceOffset,result);
+        NSLogger(@"0x%lx + 0x%lx - 0x%lx = 0x%lx ",baseAddress,targetFunctionOffset,reduceOffset,result);
         return result;
 
     }
@@ -360,7 +360,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         NSString *currentImageNameString = [NSString stringWithUTF8String:currentImageName];
         
         if ([currentImageNameString.lastPathComponent isEqualToString:imageName]) {
-            NSLog(@">>>>>> indexForImageWithName: %@ -> %d", imageName,i);
+            NSLogger(@"indexForImageWithName: %@ -> %d", imageName,i);
             return i;
         }
     }
@@ -373,42 +373,42 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     // 获取类的属性列表
     unsigned int propertyCount;
     objc_property_t *properties = class_copyPropertyList(cls, &propertyCount);
-    NSLog(@"Properties for class %@", NSStringFromClass(cls));
+    NSLogger(@"Properties for class %@", NSStringFromClass(cls));
     for (unsigned int i = 0; i < propertyCount; i++) {
         objc_property_t property = properties[i];
         const char *propertyName = property_getName(property);
-        NSLog(@"- %@", [NSString stringWithUTF8String:propertyName]);
+        NSLogger(@"- %@", [NSString stringWithUTF8String:propertyName]);
     }
     free(properties);
     
     // 获取类的实例变量列表
     unsigned int ivarCount;
     Ivar *ivars = class_copyIvarList(cls, &ivarCount);
-    NSLog(@"Instance Variables for class %@", NSStringFromClass(cls));
+    NSLogger(@"Instance Variables for class %@", NSStringFromClass(cls));
     for (unsigned int i = 0; i < ivarCount; i++) {
         Ivar ivar = ivars[i];
         const char *ivarName = ivar_getName(ivar);
-        NSLog(@"- %s", ivarName);
+        NSLogger(@"- %s", ivarName);
     }
     free(ivars);
     
     // 获取类的实例方法列表
     unsigned int instanceMethodCount;
     Method *instanceMethods = class_copyMethodList(cls, &instanceMethodCount);
-    NSLog(@"Instance Methods for class %@", NSStringFromClass(cls));
+    NSLogger(@"Instance Methods for class %@", NSStringFromClass(cls));
     for (unsigned int i = 0; i < instanceMethodCount; i++) {
         Method method = instanceMethods[i];
-        NSLog(@"- %@", NSStringFromSelector(method_getName(method)));
+        NSLogger(@"- %@", NSStringFromSelector(method_getName(method)));
     }
     free(instanceMethods);
     
     // 获取类的方法列表
     unsigned int methodCount;
     Method *methods = class_copyMethodList(object_getClass(cls), &methodCount);
-    NSLog(@"Class Methods for class %@", NSStringFromClass(cls));
+    NSLogger(@"Class Methods for class %@", NSStringFromClass(cls));
     for (unsigned int i = 0; i < methodCount; i++) {
         Method method = methods[i];
-        NSLog(@"+ %@", NSStringFromSelector(method_getName(method)));
+        NSLogger(@"+ %@", NSStringFromSelector(method_getName(method)));
     }
     free(methods);
 }
@@ -419,16 +419,16 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     
     // 获取对象的十六进制地址
     uintptr_t ptrValue = (uintptr_t)address;
-    NSLog(@">>>>>> Address: 0x%lx", ptrValue);
+    NSLogger(@"Address: 0x%lx", ptrValue);
     
     // 获取对象的类名
     NSString *className = NSStringFromClass([object class]);
-    NSLog(@">>>>>> Class: %@", className);
+    NSLogger(@"Class: %@", className);
 
     // %@ 格式说明符将其作为对象进行输出。在此情况下，NSLog 将会调用对象的 description 方法来获取其字符串表示形式，并将其输出到控制台。
-    NSLog(@">>>>>> className.description: %@", address);
+    NSLogger(@"className.description: %@", address);
     NSString *objectDescription = [object description];
-    NSLog(@">>>>>> Object Description: %@", objectDescription);
+    NSLogger(@"Object Description: %@", objectDescription);
 
     // 获取对象的属性与值
     unsigned int count;
@@ -439,7 +439,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         NSString *propertyName = [NSString stringWithUTF8String:property_getName(property)];
 
         id propertyValue = [object valueForKey:propertyName];
-        NSLog(@">>>>>> Property: %@, Value: %@", propertyName, propertyValue);
+        NSLogger(@"Property: %@, Value: %@", propertyName, propertyValue);
     }
 
     free(properties);
@@ -508,7 +508,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         imp = method_getImplementation(originalMethod);
         method_exchangeImplementations(originalMethod, swizzledMethod);
     } else {
-        NSLog(@">>>>>> Failed to swizzle method.");
+        NSLogger(@"Failed to swizzle method.");
         NSString *message = [NSString stringWithFormat:@"originalClass: %@, originalSelector: %@, originalMethod:%p\r"
                                                         "swizzledClass: %@, swizzledSelector: %@, swizzledMethod:%p",
                                                         NSStringFromClass(originalClass),
@@ -544,7 +544,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         imp = method_getImplementation(originalMethod);
         method_exchangeImplementations(originalMethod, swizzledMethod);
     } else {
-        NSLog(@">>>>>> Failed to swizzle class method.");
+        NSLogger(@"Failed to swizzle class method.");
         NSString *message = [NSString stringWithFormat:@"originalClass: %@, originalSelector: %@, originalMethod: %p\r"
                                                         "swizzledClass: %@, swizzledSelector: %@, swizzledMethod: %p",
                                                         NSStringFromClass(originalClass),
@@ -583,7 +583,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         // 替换对象方法
         class_replaceMethod(originalClass, originalSelector, swizzledImplementation, types);
     } else {
-        NSLog(@">>>>>> Failed to replace instance method.");
+        NSLogger(@"Failed to replace instance method.");
         NSString *message = [NSString stringWithFormat:@"originalClass: %@, originalSelector: %@, originalMethod: %p\r"
                                                         "swizzledClass: %@, swizzledSelector: %@, swizzledImplementation: %p",
                                                         NSStringFromClass(originalClass),
@@ -621,7 +621,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         // 替换类方法
         class_replaceMethod(object_getClass(originalClass), originalSelector, swizzledImplementation, types);
     } else {
-        NSLog(@">>>>>> Failed to replace class method.");
+        NSLogger(@"Failed to replace class method.");
         NSString *message = [NSString stringWithFormat:@"originalClass: %@, originalSelector: %@, originalMethod: %p\r"
                                                         "swizzledClass: %@, swizzledSelector: %@, swizzledImplementation: %p",
                                                         NSStringFromClass(originalClass),
@@ -661,12 +661,12 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     CFIndex maxLength = CFStringGetMaximumSizeForEncoding(CFStringGetLength(cfString), kCFStringEncodingUTF8) + 1;
     char *cString = (char *)malloc(maxLength);
     if (!cString) {
-        NSLog(@">>>>>> Memory allocation failed.");
+        NSLogger(@"Memory allocation failed.");
         return NULL;
     }
     Boolean success = CFStringGetCString(cfString, cString, maxLength, kCFStringEncodingUTF8);
     if (!success) {
-        NSLog(@">>>>>> Failed to convert CFString to C string.");
+        NSLogger(@"Failed to convert CFString to C string.");
         free(cString);
         return NULL;
     }

@@ -59,7 +59,7 @@ static NSString* licenseCode = @"123456789";
         //        NSString* ret = [@"123456789" performSelector:NSSelectorFromString(@"rot13")];
         //        return ret;
     }else if ([self isEqualTo:@"NSNavLastRootBacktraceDiag"]) {
-        //        NSLog(@"");
+        //        NSLogger(@"");
         //        tmp = [ret dataFromBase64String];
         //       r15 = [[rax stringUTF8] retain];
         //       rax = [r15 rot13];
@@ -69,7 +69,7 @@ static NSString* licenseCode = @"123456789";
         //        NSString *rax = [stringUTF8 performSelector:NSSelectorFromString(@"rot13")];
         //        rax = [rax stringByReplacingOccurrencesOfString:@"hdhkbcddfvlmwz" withString:@""];
     }
-    NSLog(@">>>>>> hk_defaultString %@:%@",self,ret);
+    NSLogger(@"hk_defaultString %@:%@",self,ret);
     return ret;
     
 }
@@ -96,7 +96,7 @@ static NSString* licenseCode = @"123456789";
         ret = 5;
     }
     //     [@"UpdatecheckMenuindex" setDefaultInt:0x2];
-    NSLog(@">>>>>> hk_defaultInt %@:%d",self,ret);
+    NSLogger(@"hk_defaultInt %@:%d",self,ret);
     return ret;
     
 }
@@ -165,7 +165,7 @@ static NSString* licenseCode = @"123456789";
         }
     }
     
-    NSLog(@">>>>>> hook_URLWithHost %@,%@,%@,%@,%@,%@",arg2,arg3,arg4,arg5,arg6,arg7);
+    NSLogger(@"hook_URLWithHost %@,%@,%@,%@,%@,%@",arg2,arg3,arg4,arg5,arg6,arg7);
     
     id ret = ((id(*)(id,SEL,id,id,id,id,id,id,id,id))URLWithHostIMP)(self,_cmd,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
     return ret;
@@ -173,7 +173,7 @@ static NSString* licenseCode = @"123456789";
 
 
 + (NSString *) hk_checksumSparkleFramework{
-    NSLog(@">>>>>> hk_checksumSparkleFramework");
+    NSLogger(@"hk_checksumSparkleFramework");
 
     // x86: 46e6b06e5626534a9c61b91cfb041ccf051a2db8
     // arm: a5f76baec8ce44138ceadc97130d622642fe4d2e
@@ -181,13 +181,13 @@ static NSString* licenseCode = @"123456789";
     if (!cachedChecksum){
         NSString *Sparkle = [[Constant getCurrentAppPath] stringByAppendingString:@"/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle_Backup"];
         cachedChecksum = [[EncryptionUtils calculateSHA1OfFile:Sparkle] copy];
-        NSLog(@">>>>>> hk_checksumSparkleFramework cachedChecksum = %@", cachedChecksum);
+        NSLogger(@"hk_checksumSparkleFramework cachedChecksum = %@", cachedChecksum);
     }
     return  cachedChecksum;
 }
 
 + (NSString *) hk_uniqueIdentifierForDB{
-    NSLog(@">>>>>> hk_uniqueIdentifierForDB");
+    NSLogger(@"hk_uniqueIdentifierForDB");
     NSString *letters = @"abcdefghijklmnopqrstuvwxyz0123456789";
     NSMutableString *randomString = [NSMutableString stringWithCapacity:40];
     for (int i = 0; i < 40; i++) {
@@ -240,10 +240,10 @@ static NSString* licenseCode = @"123456789";
         NSData* ret = ((NSData*(*)(id,SEL,NSURL*,NSTimeInterval))downloadURLWithSecurePOSTIMP)(self,_cmd,url,timeout);
         if (ret.length > 409600) {
             BOOL success = [ret writeToFile:cacheConfigFile options:NSDataWritingAtomic error:nil];
-            NSLog(@">>>>>> [cache_configfile.cgi] saved %hhd",success);
+            NSLogger(@"[cache_configfile.cgi] saved %hhd",success);
         } else {
             // NSData 长度小于或等于 400KB
-            NSLog(@">>>>>> [configfile.cgi] api returns data exception, possibly banned IP !!");
+            NSLogger(@"[configfile.cgi] api returns data exception, possibly banned IP !!");
         }
         return ret;
     }

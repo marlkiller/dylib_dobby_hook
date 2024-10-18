@@ -20,6 +20,10 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++20")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -x objective-c++")
 
+# Enable ARC
+set(CMAKE_OBJC_FLAGS "${CMAKE_OBJC_FLAGS} -fobjc-arc")
+set(CMAKE_OBJCXX_FLAGS "${CMAKE_OBJCXX_FLAGS} -fobjc-arc")
+
 #关闭编译器优化
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
@@ -91,7 +95,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         ## ----------------------------------
         ## Architecture
         ## ----------------------------------
-        XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH[variant=Debug] "YES"
+        XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH[variant=Debug] "NO"
         XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH[variant=Release] "NO"
         ## ----------------------------------
         ## Build Option
@@ -130,7 +134,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         ## Apple Clang - Language - Objective-C
         ## ----------------------------------
         # Enable ARC, cmake default is MRC
-        XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC "No"
+        XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC "YES"
         XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_WEAK "YES"
         ## ----------------------------------
         ## Apple Clang - Language - Code Generation

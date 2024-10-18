@@ -18,49 +18,46 @@
 #import <CommonCrypto/CommonCryptor.h>
 #import <CommonCrypto/CommonCrypto.h>
 #import <Cocoa/Cocoa.h>
+#import "Logger.h"
 
 @implementation EncryptionUtils
 
++ (NSString *)runCommand:(NSString *)command trimWhitespace:(BOOL)trim {
+    NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/bin/sh"];
+    [task setArguments:@[@"-c", command]];
+
+    NSPipe *pipe = [NSPipe pipe];
+    [task setStandardOutput:pipe];
+    [task setStandardError:pipe];
+
+    NSFileHandle *fileHandle = [pipe fileHandleForReading];
+    [task launch];
+    [task waitUntilExit];
+    NSData *outputData = [fileHandle readDataToEndOfFile];
+    NSString *outputString = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
+    
+    if (trim) {
+        outputString = [outputString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    }
+    NSLogger(@"[Command] ➜ %@ | Status: %d | Output: %@",
+              command, [task terminationStatus], outputString);
+    return outputString;
+}
+
+
 + (NSString *)generateTablePlusDeviceId{
 
-//    mac=$(ifconfig en0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}')
+
+//    mac=$(networksetup -getmacaddress en0| grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}')
 //    Serial=$(system_profiler SPHardwareDataType | grep Serial | awk '{print $4}')
 //    deviceID=$(echo -n "${mac}${Serial}" | md5)
 //    echo $deviceID
-
-    CWWiFiClient *wifiClient = [CWWiFiClient sharedWiFiClient];
-    CWInterface *wifiInterface = [wifiClient interface];
-    NSString *hardwareAddress = [wifiInterface hardwareAddress];
-    // f0:18:98:1b:24:20
-
-    NSString *serialNumber = nil;
-    
-#if (MAC_OS_X_VERSION_MAX_ALLOWED >= 120000) // Before macOS 12 Monterey
-    io_service_t platformExpert = IOServiceGetMatchingService(kIOMainPortDefault,
-                                                              IOServiceMatching("IOPlatformExpertDevice"));
-#else
-    // 在 macOS 12.0 之前的版本，使用其他适当的兼容方法
-    io_service_t platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault,
-                                                              IOServiceMatching("IOPlatformExpertDevice"));
-#endif
-
-
-
-    if (platformExpert) {
-        CFTypeRef serialNumberAsCFString =
-                IORegistryEntryCreateCFProperty(platformExpert,
-                                                CFSTR(kIOPlatformSerialNumberKey),
-                                                kCFAllocatorDefault, 0);
-        if (serialNumberAsCFString) {
-            // C02X51AJJG5J
-            serialNumber = CFBridgingRelease(serialNumberAsCFString);
-        }
-        IOObjectRelease(platformExpert);
-    }else{
-        return nil;
-    }
-    // ee4f1d1890b4eb49a5a4d7f195ca8b67
-    return [self calculateMD5:[hardwareAddress stringByAppendingString:serialNumber]];
+//    f0:18:98:1b:24:20C02X51AJJG5J > md5 = ee4f1d1890b4eb49a5a4d7f195ca8b67
+    NSString *mac = [self runCommand:@"networksetup -getmacaddress en0| grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'" trimWhitespace:YES];
+    NSString *Serial = [self runCommand:@"system_profiler SPHardwareDataType | grep Serial | awk '{print $4}'" trimWhitespace:YES];
+    return [self runCommand:[NSString stringWithFormat:@"printf '%%s' \"%@%@\" | md5", mac, Serial] trimWhitespace:YES];
+   
 }
 
 + (NSString *)generateSurgeDeviceId{
@@ -79,7 +76,7 @@
     CFRelease(uuidRef);
     IOObjectRelease(platformExpert);
     [rbx addObject:uuidString];
-    NSLog(@"IOPlatformUUID : %@",uuidString);
+    NSLogger(@"IOPlatformUUID : %@",uuidString);
     // 9B37DA4D-B136-5AAE-BED8-F16E5BB0E199 --> MD5 : E05B9A7B7518C259C5BF6D2F5ABF6BD7
 
     
@@ -89,7 +86,7 @@
     if (sysctlbyname("hw.model", model, &size, NULL, 0) == 0) {
         NSString *hwModel = [NSString stringWithUTF8String:model];
         [rbx addObject:hwModel];
-        NSLog(@"hw.model : %@",hwModel);
+        NSLogger(@"hw.model : %@",hwModel);
         // MacBookPro15,1
     }
     
@@ -98,7 +95,7 @@
     if (sysctlbyname("machdep.cpu.brand_string", model, &size, NULL, 0) == 0) {
         NSString *cpu = [NSString stringWithUTF8String:model];
         [rbx addObject:cpu];
-        NSLog(@"machdep.cpu.brand_string : %@",cpu);
+        NSLogger(@"machdep.cpu.brand_string : %@",cpu);
         // MacBookPro15,1
     }
     
@@ -109,7 +106,7 @@
         
         NSNumber *numberSignature = [NSNumber numberWithLongLong:signature];
         [rbx addObject:numberSignature];
-        NSLog(@"machdep.cpu.signature: %@", numberSignature);
+        NSLogger(@"machdep.cpu.signature: %@", numberSignature);
         // 591594
     }else{
         [rbx addObject:@0];
@@ -120,10 +117,10 @@
     if (sysctlbyname("hw.memsize", &memsize, &size_memsize, NULL, 0) == 0) {
         NSNumber *numberMemsize = [NSNumber numberWithLongLong:memsize];
         [rbx addObject:numberMemsize];
-        NSLog(@"hw.memsize: %@", numberMemsize);
+        NSLogger(@"hw.memsize: %@", numberMemsize);
     }else {
         [rbx addObject:@"#"];
-        NSLog(@"hw.memsize: %s", "#");
+        NSLogger(@"hw.memsize: %s", "#");
     }
     
     // /Users/voidm/Library/Preferences/com.nssurge.surge-mac.plist
@@ -132,7 +129,7 @@
     CWWiFiClient *wifiClient = [CWWiFiClient sharedWiFiClient];
     CWInterface *wifiInterface = [wifiClient interface];
     NSString *hardwareAddress = [wifiInterface hardwareAddress];
-    NSLog(@"Hardware Address: %@", hardwareAddress);
+    NSLogger(@"Hardware Address: %@", hardwareAddress);
     [rbx addObject:hardwareAddress];
 
     // f0:18:98:1b:24:20
@@ -144,10 +141,10 @@
     NSString *joinedString = [rbx componentsJoinedByString:@"/"];
     // 9B37DA4D-B136-5AAE-BED8-F16E5BB0E199/MacBookPro15,1/Intel(R) Core(TM) i7-8850H CPU @ 2.60GHz/591594/17179869184/f0:18:98:1b:24:20
     // E9EFB28F-053B-5C48-BAA0-E6A055AD806F/MacBookPro17,1/Apple M1/0/8589934592/3c:06:30:30:7d:35
-    NSLog(@"joinedString %@", joinedString);
+    NSLogger(@"joinedString %@", joinedString);
     NSString *deviceIdMD5 = [self calculateMD5:joinedString];
     // 36d7a97a91b82ce5bc8b2609d4e17dae
-    NSLog(@"deviceIdMD5 %@", deviceIdMD5);
+    NSLogger(@"deviceIdMD5 %@", deviceIdMD5);
     return deviceIdMD5;
 };
 
@@ -177,7 +174,7 @@
     CFErrorRef error = NULL;
     privateKey = SecKeyCreateRandomKey((__bridge CFDictionaryRef)parameters, &error);
     if (error != NULL) {       
-        NSLog(@"密钥生成失败: %@", error);
+        NSLogger(@"密钥生成失败: %@", error);
         return nil;
     }
     
@@ -241,7 +238,7 @@
     NSData *signedData = (__bridge NSData *)signedDataRef;
     
     if (error != NULL) {
-        NSLog(@"Signature generation failed: %@", (__bridge NSError *)error);
+        NSLogger(@"Signature generation failed: %@", (__bridge NSError *)error);
         if (signedDataRef != NULL) {
             CFRelease(signedDataRef);
         }
@@ -489,14 +486,14 @@
     SecCodeRef code = NULL;
     OSStatus status = SecCodeCopySelf(kSecCSDefaultFlags, &code);
     if (status != errSecSuccess) {
-        NSLog(@"[Error] Failed to get current app code: %d", (int)status);
+        NSLogger(@"[Error] Failed to get current app code: %d", (int)status);
         return NO;
     }
 
     CFDictionaryRef csInfo = NULL;
     status = SecCodeCopySigningInformation(code, kSecCSSigningInformation, &csInfo);
     if (status != errSecSuccess) {
-        NSLog(@"[Error] SecCodeCopySigningInformation failed with status = %d", (int)status);
+        NSLogger(@"[Error] SecCodeCopySigningInformation failed with status = %d", (int)status);
         if (code) CFRelease(code);
         return NO;
     }
@@ -505,14 +502,14 @@
     SecCSFlags flags = 0;
     CFNumberRef flagsNumber = (CFNumberRef)CFDictionaryGetValue(csInfo, kSecCodeInfoFlags);
     if (flagsNumber == NULL) {
-        NSLog(@">>>>>> [Error] kSecCodeInfoFlags is nil");
+        NSLogger(@"[Error] kSecCodeInfoFlags is nil");
         CFRelease(csInfo);
         CFRelease(code);
         return NO;
     }
 
     CFNumberGetValue(flagsNumber, kCFNumberSInt32Type, &flags);
-    NSLog(@">>>>>> Flags: %d", flags);
+    NSLogger(@"Flags: %d", flags);
 
     // 常量定义
     // ref: https://opensource.apple.com/source/xnu/xnu-4903.221.2/osfmk/kern/cs_blobs.h.auto.html
@@ -521,17 +518,17 @@
     const int CS_HARD = 0x00000002;    // 强制代码签名（hardened code）
 
     if (flags & CS_HARD) {
-        NSLog(@">>>>>> App has hardened code signature.");
+        NSLogger(@"App has hardened code signature.");
     }
 
     if (!(flags & CS_VALID) && !(flags & CS_RUNTIME)) {
-        NSLog(@">>>>>> [Error] App signature is not valid or does not have hardened runtime.");
+        NSLogger(@"[Error] App signature is not valid or does not have hardened runtime.");
         CFRelease(csInfo);
         CFRelease(code);
         return NO;
     }
 
-    NSLog(@">>>>>> Code signature is valid.");
+    NSLogger(@"Code signature is valid.");
     
     CFRelease(csInfo);
     CFRelease(code);
@@ -544,7 +541,7 @@
     for (NSRunningApplication *app in runningApps) {
         if ([[app localizedName] isEqualToString:name]) {
             pid_t pid = [app processIdentifier];
-            NSLog(@">>>>>> pid is %d",pid);
+            NSLogger(@"pid is %d",pid);
             return pid;
         }
     }

@@ -14,7 +14,7 @@
 #import <sys/sysctl.h>
 #include <mach/mach_types.h>
 #import <pthread.h>
-
+#import "Logger.h"
 
 int ret2 (void){
     printf(">>>>>> ret2\n");
@@ -75,10 +75,10 @@ int my_sysctl(int * name, u_int namelen, void * info, size_t * infosize, void * 
     if(namelen == 4 && name[0] == 1 && name[1] == 14 && name[2] == 1){
         struct kinfo_proc *info_ptr = (struct kinfo_proc *)info;
         if(info_ptr && (info_ptr->kp_proc.p_flag & P_TRACED) != 0){
-            NSLog(@">>>>>> [AntiAntiDebug] - sysctl query trace status.");
+            NSLogger(@"[AntiAntiDebug] - sysctl query trace status.");
             info_ptr->kp_proc.p_flag ^= P_TRACED;
             if((info_ptr->kp_proc.p_flag & P_TRACED) == 0){
-                NSLog(@">>>>>> [AntiAntiDebug] - trace status reomve success!");
+                NSLogger(@"[AntiAntiDebug] - trace status reomve success!");
             }
         }
     }
@@ -113,7 +113,7 @@ kern_return_t my_task_get_exception_ports
 //            #elif defined(__x86_64__)
 //            #endif
             old_flavors[i] = 9;
-            NSLog(@">>>>>> [AntiAntiDebug] - my_task_get_exception_ports reset old_flavors[i]=9");
+            NSLogger(@"[AntiAntiDebug] - my_task_get_exception_ports reset old_flavors[i]=9");
         }
     }
     return r;
@@ -137,7 +137,7 @@ kern_return_t my_task_swap_exception_ports(
     
     // 在这里实现反反调试逻辑，例如阻止特定的异常掩码或端口
    if (exception_mask & EXC_MASK_BREAKPOINT) {
-       NSLog(@">>>>>> [AntiAntiDebug] - my_task_swap_exception_ports Breakpoint exception detected, blocking task_swap_exception_ports");
+       NSLogger(@"[AntiAntiDebug] - my_task_swap_exception_ports Breakpoint exception detected, blocking task_swap_exception_ports");
        return KERN_FAILURE; // 返回错误码阻止调用
    }
    return orig_task_swap_exception_ports(task, exception_mask, new_port, new_behavior, new_flavor, old_masks, old_masks_count, old_ports, old_behaviors, old_flavors);
@@ -148,19 +148,19 @@ SecCodeCheckValidityWithErrors_ptr_t SecCodeCheckValidityWithErrors_ori = NULL;
 OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors) {
     // anchor apple generic and certificate leaf[subject.OU] = "J3CP9BBBN6"
     // NSString* fakeRequirement = [NSString stringWithFormat:@"identifier \"com.binarynights.ForkLift\""];
-    NSLog(@">>>>>> hk_SecCodeCheckValidityWithErrors  requirement = %@", requirement);
+    NSLogger(@"hk_SecCodeCheckValidityWithErrors  requirement = %@", requirement);
     return errSecSuccess;
 }
 SecCodeCopySigningInformation_ptr_t SecCodeCopySigningInformation_ori = NULL;
 
 
 OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
-    NSLog(@">>>>>> hk_SecItemAdd");
+    NSLogger(@"hk_SecItemAdd");
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(attributes, kSecAttrService);
     CFStringRef account = (CFStringRef)CFDictionaryGetValue(attributes, kSecAttrAccount);
     CFDataRef passwordData = (CFDataRef)CFDictionaryGetValue(attributes, kSecValueData);
     if (!service || !account || !passwordData) {
-        NSLog(@">>>>>> hk_SecItemAdd: Missing service or account or passwordData");
+        NSLogger(@"hk_SecItemAdd: Missing service or account or passwordData");
         return errSecParam;
     }
     CFIndex passwordLength = CFDataGetLength(passwordData);
@@ -187,21 +187,21 @@ OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
     if (status == errSecSuccess && result) {
        *result = item;
     }
-    NSLog(@">>>>>> hk_SecItemAdd Status = %d", status);
+    NSLogger(@"hk_SecItemAdd Status = %d", status);
     return status;
 }
 
 OSStatus hk_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate) {
-    NSLog(@">>>>>> hk_SecItemUpdate");
+    NSLogger(@"hk_SecItemUpdate");
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
     CFStringRef account = (CFStringRef)CFDictionaryGetValue(query, kSecAttrAccount);
     if (!service || !account) {
-        NSLog(@">>>>>> hk_SecItemUpdate: Missing service or account");
+        NSLogger(@"hk_SecItemUpdate: Missing service or account");
         return errSecParam;
     }
     CFDataRef newPasswordData = (CFDataRef)CFDictionaryGetValue(attributesToUpdate, kSecValueData);
     if (!newPasswordData) {
-        NSLog(@">>>>>> hk_SecItemUpdate: No new password provided");
+        NSLogger(@"hk_SecItemUpdate: No new password provided");
         return errSecParam;
     }
     const char *serviceCStr = [MemoryUtils CFStringToCString:service];
@@ -223,16 +223,16 @@ OSStatus hk_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpd
         );
         CFRelease(itemRef);  // 释放引用
     }
-    NSLog(@">>>>>> hk_SecItemUpdate Status = %d", status);
+    NSLogger(@"hk_SecItemUpdate Status = %d", status);
     return status;
 }
 
 OSStatus hk_SecItemDelete(CFDictionaryRef query) {
-    NSLog(@">>>>>> hk_SecItemDelete");
+    NSLogger(@"hk_SecItemDelete");
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
     CFStringRef account = (CFStringRef)CFDictionaryGetValue(query, kSecAttrAccount);
     if (!service || !account) {
-        NSLog(@">>>>>> hk_SecItemDelete: Missing service or account");
+        NSLogger(@"hk_SecItemDelete: Missing service or account");
         return errSecParam;
     }
     const char *serviceCStr = [MemoryUtils CFStringToCString:service];
@@ -249,17 +249,17 @@ OSStatus hk_SecItemDelete(CFDictionaryRef query) {
         status = SecKeychainItemDelete(itemRef);
         CFRelease(itemRef);
     }
-    NSLog(@">>>>>> hk_SecItemDelete Status = %d", status);
+    NSLogger(@"hk_SecItemDelete Status = %d", status);
     return status;
 }
 
 OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
-    NSLog(@">>>>>> hk_SecItemCopyMatching");
+    NSLogger(@"hk_SecItemCopyMatching");
     // 从查询字典中提取 service 和 account
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
     CFStringRef account = (CFStringRef)CFDictionaryGetValue(query, kSecAttrAccount);
     if (!service || !account) {
-        NSLog(@">>>>>> hk_SecItemCopyMatching: Missing service or account");
+        NSLogger(@"hk_SecItemCopyMatching: Missing service or account");
         return errSecParam;
     }
     const char *serviceCStr = [MemoryUtils CFStringToCString:service];
@@ -279,7 +279,7 @@ OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
         *result = passwordCFData;
         SecKeychainItemFreeContent(NULL, passwordData);
     }
-    NSLog(@">>>>>> hk_SecItemCopyMatching Status = %d", status);
+    NSLogger(@"hk_SecItemCopyMatching Status = %d", status);
     return status;
 }
 
@@ -302,16 +302,15 @@ NSString *love69(NSString *input) {
 //char *global_dylib_name = "libdylib_dobby_hook.dylib";
 
 
+// @Deprecated
 int destory_inject_thread(void){
-    // // Ref: https://juejin.cn/post/7277786940170518591
-    // At present, the injection thread is judged according to the thread name; it needs to be optimized in the future.
-    NSLog(@">>>>>> destory_inject_thread");
+    NSLogger(@"destory_inject_thread");
     task_t task = mach_task_self();
     thread_act_array_t threads;
     mach_msg_type_number_t threadCount;
 
     if (task_threads(task, &threads, &threadCount) != KERN_SUCCESS) {
-        NSLog(@">>>>>> Failed to get threads.");
+        NSLogger(@"Failed to get threads.");
         return -1;
     }
 
@@ -329,7 +328,7 @@ int destory_inject_thread(void){
             // On success, `pthread_getname_np` functions return 0; on error, they return a nonzero error number.
             char name[256];
             int nameFlag =pthread_getname_np(pthread, name, sizeof(name));
-            NSLog(@">>>>>> Thread-[%d] Information: Name: %s, NameFlag: %d, User Time: %d seconds, System Time: %d seconds, CPU Usage: %d%%, Scheduling Policy: %d, Run State: %d, Flags: %d, Suspend Count: %d, Sleep Time: %d seconds",
+            NSLogger(@"Thread-[%d] Information: Name: %s, NameFlag: %d, User Time: %d seconds, System Time: %d seconds, CPU Usage: %d%%, Scheduling Policy: %d, Run State: %d, Flags: %d, Suspend Count: %d, Sleep Time: %d seconds",
                   thread,
                   name,
                   nameFlag,
@@ -341,24 +340,16 @@ int destory_inject_thread(void){
                   info.flags,
                   info.suspend_count,
                   info.sleep_time);
-            if (nameFlag!=0) {
-                threadsToTerminate[terminateCount++] = threads[i];
-                #if defined(__arm64__) || defined(__aarch64__)
-                if (i+1 <threadCount) {
-                    threadsToTerminate[terminateCount++] = threads[i+1];
-                }
-                #endif
-            }
         }
     }
     
     for (int i = 0; i < terminateCount; i++) {
-        NSLog(@">>>>>> Need to kill the injected thread %d", threadsToTerminate[i]);
+        NSLogger(@"Need to kill the injected thread %d", threadsToTerminate[i]);
         if (thread_suspend(threadsToTerminate[i]) != KERN_SUCCESS) {
-            NSLog(@">>>>>> Failed to suspend thread.");
+            NSLogger(@"Failed to suspend thread.");
         }
         if (thread_terminate(threadsToTerminate[i]) != KERN_SUCCESS) {
-            NSLog(@">>>>>> Failed to terminate thread.");
+            NSLogger(@"Failed to terminate thread.");
         }
     }
        

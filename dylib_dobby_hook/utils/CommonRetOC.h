@@ -8,6 +8,7 @@
 #ifndef CommonRetOC_h
 #define CommonRetOC_h
 #import "HackProtocol.h"
+#import "Logger.h"
 
 @interface CommonRetOC : NSObject <HackProtocol>
 - (void)ret;

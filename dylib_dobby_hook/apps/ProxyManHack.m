@@ -169,7 +169,7 @@ intptr_t handleHelper(intptr_t a1, intptr_t a2, intptr_t a3) {
     NSDate *endTime = [NSDate date];
     // 计算时间差
     NSTimeInterval executionTime2 = [endTime timeIntervalSinceDate:startTime];
-    NSLog(@"DobbySymbolResolver Execution Time: %f seconds", executionTime2);
+    NSLogger(@"DobbySymbolResolver Execution Time: %f seconds", executionTime2);
     DobbyHook(isHideExpireLicenseBadge, ret1, nil);
 
 //    TODO: Undefined symbol: _DobbyImportTableReplace

@@ -33,31 +33,31 @@
 
 
 - (void)hk_updateCountdownView:(uint64_t)arg1  {
-    NSLog(@">>>>>> Swizzled hk_updateCountdownView method called");
-    NSLog(@">>>>>> self.className : %@", self.className);
+    NSLogger(@"Swizzled hk_updateCountdownView method called");
+    NSLogger(@"self.className : %@", self.className);
 //    SEL selector = NSSelectorFromString(@"trialTitleBarViewController");
 //    if ([self respondsToSelector:selector]) {
 //        id trialTitleBarViewController = [self performSelector:selector];
-//        NSLog(@">>>>>> trialTitleBarViewController : %@", trialTitleBarViewController);
+//        NSLogger(@"trialTitleBarViewController : %@", trialTitleBarViewController);
 //    }
 }
 
 - (void)hk_startUpdater {
-    NSLog(@">>>>>> Swizzled hk_startUpdater method called");
-    NSLog(@">>>>>> self.className : %@", self.className);
+    NSLogger(@"Swizzled hk_startUpdater method called");
+    NSLogger(@"self.className : %@", self.className);
  
 }
 
 int (*hook_TRTrialStatus_ori)(void);
 
 int hook_TRTrialStatus(void){
-    NSLog(@">>>>>> called hook_TRTrialStatus");
+    NSLogger(@"called hook_TRTrialStatus");
     return 9999;
 };
 
 - (void)hk_terminateExpiredTrialTimerDidFire:(id)arg1  {
-    NSLog(@">>>>>> Swizzled hk_terminateExpiredTrialTimerDidFire method called");
-    NSLog(@">>>>>> self.className : %@", self.className);
+    NSLogger(@"Swizzled hk_terminateExpiredTrialTimerDidFire method called");
+    NSLogger(@"self.className : %@", self.className);
 }
 
 

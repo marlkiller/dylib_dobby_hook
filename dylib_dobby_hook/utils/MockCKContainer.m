@@ -11,6 +11,7 @@
 #import "MockCKDatabase.h"
 #import <objc/runtime.h>
 #import <AppKit/AppKit.h>
+#import "Logger.h"
 //
 //@interface MockCKDeviceContext : NSObject
 //
@@ -69,7 +70,7 @@
 }
 
 - (instancetype)initWithIdentifier:(NSString *)identifier {
-    NSLog(@">>>>>> initWithIdentifier identifier = %@",identifier);
+    NSLogger(@"initWithIdentifier identifier = %@",identifier);
     if (self) {
         _identifier = [identifier copy];
         _privateDatabase = [[MockCKDatabase alloc] initDatabase];
@@ -78,18 +79,18 @@
     return self;
 }
 - (CKDatabase *)privateCloudDatabase {
-    NSLog(@">>>>>> privateCloudDatabase");
+    NSLogger(@"privateCloudDatabase");
     return (CKDatabase *)self.privateDatabase;
 }
 
 - (CKDatabase *)publicCloudDatabase {
-    NSLog(@">>>>>> publicCloudDatabase");
+    NSLogger(@"publicCloudDatabase");
     return (CKDatabase *)self.publicDatabase;
 }
 
 
 - (void)accountStatusWithCompletionHandler:(void (NS_SWIFT_SENDABLE ^)(CKAccountStatus accountStatus, NSError * error))completionHandler{
-    NSLog(@">>>>>> accountStatusWithCompletionHandler");
+    NSLogger(@"accountStatusWithCompletionHandler");
     CKAccountStatus mockAccountStatus = CKAccountStatusCouldNotDetermine;
     NSError *mockError = nil;
    

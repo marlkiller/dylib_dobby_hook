@@ -8,6 +8,9 @@ if [ "$#" -ne 2 ]; then
     exit 1
 fi
 
+if [[ "$dylib_path" != /* ]]; then
+    dylib_path="$(pwd)/$dylib_path"
+fi
 
 if [ ! -f "$dylib_path" ]; then
     echo -e "\033[31mError: [$dylib_path] does not exist.\033[0m"
@@ -36,4 +39,7 @@ check_sip_status() {
 }
 
 check_sip_status
+
+echo "dylib_path: $dylib_path"
+echo "app_path: $app_path"
 env DYLD_INSERT_LIBRARIES="$dylib_path" "${app_path}"

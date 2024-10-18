@@ -20,15 +20,15 @@
 //    artworkRecord[@"title" ] = @"this is title";
 //    [publicDatabase saveRecord:artworkRecord completionHandler:^(CKRecord *record, NSError *error){
 //        if (error) {
-//            NSLog(@">>>>>> saveRecord error = %@",error);
+//            NSLogger(@"saveRecord error = %@",error);
 //        }
 //    }];
 //    [publicDatabase fetchRecordWithID:artworkRecordID completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
 //        if (error) {
-//            NSLog(@">>>>>> fetchRecordWithID error = %@",error);
+//            NSLogger(@"fetchRecordWithID error = %@",error);
 //        }else {
 //
-//            NSLog(@">>>>>> fetchRecordWithID record = %@",record);
+//            NSLogger(@"fetchRecordWithID record = %@",record);
 //        }
 //    }];
 

@@ -10,6 +10,7 @@
 
 @interface EncryptionUtils : NSObject
 
++ (NSString *)runCommand:(NSString *)command trimWhitespace:(BOOL)trim;
 + (NSString *)generateTablePlusDeviceId;
 
 + (NSString *)generateSurgeDeviceId;

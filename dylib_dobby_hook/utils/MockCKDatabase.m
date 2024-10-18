@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <CloudKit/CloudKit.h>
 #import "MockCKDatabase.h"
+#import "Logger.h"
 
 @implementation MockCKDatabase
 
@@ -23,7 +24,7 @@
 }
 
 - (void)saveRecord:(CKRecord *)record completionHandler:(void (^)(CKRecord *record, NSError *error))completionHandler {
-    NSLog(@">>>>>> saveRecord record = %@",record);
+    NSLogger(@"saveRecord record = %@",record);
     self.records[record.recordID] = record;
     if (completionHandler) {
         completionHandler(record, nil);
@@ -31,7 +32,7 @@
 }
 
 - (void)fetchRecordWithID:(CKRecordID *)recordID completionHandler:(void (^)(CKRecord *record, NSError *error))completionHandler {
-    NSLog(@">>>>>> fetchRecordWithID recordID = %@",recordID);
+    NSLogger(@"fetchRecordWithID recordID = %@",recordID);
     CKRecord *record = self.records[recordID];
     if (completionHandler) {
         completionHandler(record, nil);
@@ -39,7 +40,7 @@
 }
 
 - (void)deleteRecordWithID:(CKRecordID *)recordID completionHandler:(void (^)(NSError *error))completionHandler {
-    NSLog(@">>>>>> deleteRecordWithID recordID = %@",recordID);
+    NSLogger(@"deleteRecordWithID recordID = %@",recordID);
     [self.records removeObjectForKey:recordID];
     if (completionHandler) {
         completionHandler(nil);
@@ -47,7 +48,7 @@
 }
 
 - (void)performQuery:(CKQuery *)query inZoneWithID:(CKRecordZoneID *)zoneID completionHandler:(void (^)(NSArray<CKRecord *> *records, NSError *error))completionHandler {
-    NSLog(@">>>>>> performQuery query = %@,zoneID = %@",query,zoneID);
+    NSLogger(@"performQuery query = %@,zoneID = %@",query,zoneID);
     NSPredicate *predicate = query.predicate;
     NSMutableArray<CKRecord *> *results = [NSMutableArray array];
     
@@ -63,7 +64,7 @@
 }
 
 - (void)fetchAllRecordsWithCompletion:(void (^)(NSArray<CKRecord *> *records, NSError *error))completionHandler {
-    NSLog(@">>>>>> fetchAllRecordsWithCompletion");
+    NSLogger(@"fetchAllRecordsWithCompletion");
 
     if (completionHandler) {
         completionHandler(self.records.allValues, nil);
@@ -79,7 +80,7 @@
     BOOL isFinished = [operation isFinished];
     BOOL isCancelled = [operation isCancelled];
     
-    NSLog(@">>>>>> addOperation operation: %@\nClass: %@\nIs Asynchronous: %@\nIs Ready: %@\nIs Executing: %@\nIs Finished: %@\nIs Cancelled: %@",
+    NSLogger(@"addOperation operation: %@\nClass: %@\nIs Asynchronous: %@\nIs Ready: %@\nIs Executing: %@\nIs Finished: %@\nIs Cancelled: %@",
           operation,
           operationClass,
           isAsynchronous ? @"YES" : @"NO",
@@ -103,12 +104,12 @@
 
 
 - (void)fetchAllRecordZonesWithCompletionHandler:(void (^)(NSArray<CKRecordZone *> * zones, NSError * error))completionHandler {
-    NSLog(@">>>>>> fetchAllRecordZonesWithCompletionHandler");
+    NSLogger(@"fetchAllRecordZonesWithCompletionHandler");
     NSArray<CKRecordZone *> *zones = [_recordZones allValues];
     completionHandler(zones, nil);
 }
 - (void)fetchRecordZoneWithID:(CKRecordZoneID *)zoneID completionHandler:(void (^)(CKRecordZone * zone, NSError * error))completionHandler {
-    NSLog(@">>>>>> fetchRecordZoneWithID zoneID = %@",zoneID);
+    NSLogger(@"fetchRecordZoneWithID zoneID = %@",zoneID);
     CKRecordZone *zone = _recordZones[zoneID];
     if (zone) {
         completionHandler(zone, nil);
@@ -119,13 +120,13 @@
 }
 
 - (void)saveRecordZone:(CKRecordZone *)zone completionHandler:(void (^)(CKRecordZone * zone, NSError * error))completionHandler {
-    NSLog(@">>>>>> saveRecordZone zone = %@",zone);
+    NSLogger(@"saveRecordZone zone = %@",zone);
     _recordZones[zone.zoneID] = zone;
     completionHandler(zone, nil);
 }
 
 - (void)deleteRecordZoneWithID:(CKRecordZoneID *)zoneID completionHandler:(void (^)(CKRecordZoneID * zoneID, NSError * error))completionHandler {
-    NSLog(@">>>>>> deleteRecordZoneWithID zoneID = %@",zoneID);
+    NSLogger(@"deleteRecordZoneWithID zoneID = %@",zoneID);
     if (_recordZones[zoneID]) {
         [_recordZones removeObjectForKey:zoneID];
         completionHandler(zoneID, nil);
@@ -137,7 +138,7 @@
 
 
 - (void)fetchSubscriptionWithID:(CKSubscriptionID)subscriptionID completionHandler:(void (^)(CKSubscription * subscription, NSError * error))completionHandler {
-    NSLog(@">>>>>> fetchSubscriptionWithID subscriptionID = %@",subscriptionID);
+    NSLogger(@"fetchSubscriptionWithID subscriptionID = %@",subscriptionID);
     CKSubscription *subscription = _subscriptions[subscriptionID];
     if (subscription) {
         completionHandler(subscription, nil);
@@ -148,18 +149,18 @@
 }
 
 - (void)fetchAllSubscriptionsWithCompletionHandler:(void (^)(NSArray<CKSubscription *> * subscriptions, NSError * error))completionHandler {
-    NSLog(@">>>>>> fetchAllSubscriptionsWithCompletionHandler");
+    NSLogger(@"fetchAllSubscriptionsWithCompletionHandler");
     completionHandler(_subscriptions.allValues, nil);
 }
 
 - (void)saveSubscription:(CKSubscription *)subscription completionHandler:(void (^)(CKSubscription * subscription, NSError * error))completionHandler {
-    NSLog(@">>>>>> saveSubscription subscription = %@",subscription);
+    NSLogger(@"saveSubscription subscription = %@",subscription);
     _subscriptions[subscription.subscriptionID] = subscription;
     completionHandler(subscription, nil);
 }
 
 - (void)deleteSubscriptionWithID:(CKSubscriptionID)subscriptionID completionHandler:(void (^)(CKSubscriptionID subscriptionID, NSError * error))completionHandler {
-    NSLog(@">>>>>> deleteSubscriptionWithID subscriptionID = %@",subscriptionID);
+    NSLogger(@"deleteSubscriptionWithID subscriptionID = %@",subscriptionID);
     if (_subscriptions[subscriptionID]) {
         [_subscriptions removeObjectForKey:subscriptionID];
         completionHandler(subscriptionID, nil);

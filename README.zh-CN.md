@@ -47,7 +47,7 @@
 | ProxyMan        | 5.      | ✔   | ✔   | https://proxyman.io/                         | ON  |                     |
 | Movist Pro      | 2.*     | ✔   | ✔   | https://movistprime.com/                     |     |                     |
 | Surge           | 5.8.*   | ✔   | ✔   | https://nssurge.com/                         | ON  |                     |
-| Infuse          | 7.7.*   | ✔   | ✔   | App Store                                    |     |                     |
+| Infuse          | 8.*   | ✔   | ✔   | App Store                                    |     |                     |
 | MacUpdater      | 3.      | ✔   | ✔   | https://www.corecode.io/macupdater/#download |     |                     |
 | CleanShotX      | 4.      | ✔   | ✔   | https://updates.getcleanshot.com/v3/         |     |                     |
 | ForkLift        | 4.      | ✔   | ✔   | https://binarynights.com/                    | ON  |                     |
@@ -129,11 +129,6 @@ cp -f source_bin source_bin_backup
 ./process_inject "$pid" "${YOUR_BUILD_PATH}/libdylib_dobby_hook.dylib"
 ```
 
-
-### 0x3 重新签名
-```shell
-sudo codesign -f -s - --all-architectures --deep "/Applications/xxx.app"
-```
 
 ## Sponsor
 

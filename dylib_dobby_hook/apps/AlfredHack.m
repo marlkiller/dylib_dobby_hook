@@ -45,7 +45,7 @@
     DobbyHook((void *)ptrace, (void *)my_ptrace, (void *)&orig_ptrace);
     
     void *symbol_address = DobbySymbolResolver("Alfred Framework", "_qrwG9chHdy1498");
-    NSLog(@">>>>>> [qrwG9chHdy1498] address: 0x%lx",symbol_address);
+    NSLogger(@"[qrwG9chHdy1498] address: 0x%lx",symbol_address);
     DobbyHook(symbol_address ,ret1, NULL);
 
     return YES;

@@ -69,7 +69,7 @@ static IMP decryptDataIMP;
     NSString *appDirectory = [applicationSupportDirectory stringByAppendingPathComponent:bundleIdentifier];
     NSString *licensePath = [appDirectory stringByAppendingPathComponent:@".licensemac"];
     
-    NSLog(@">>>>>> License file path: %@", licensePath);
+    NSLogger(@"License file path: %@", licensePath);
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL fileExists = [fileManager fileExistsAtPath:licensePath];
@@ -77,7 +77,7 @@ static IMP decryptDataIMP;
     if (!fileExists) {
         NSString *licenseContent = @"?";
         BOOL success = [licenseContent writeToFile:licensePath atomically:YES encoding:NSUTF8StringEncoding error:nil];
-        NSLog(@">>>>>> License file: %hhd",success);
+        NSLogger(@"License file: %hhd",success);
     }
     
     
@@ -169,10 +169,10 @@ static IMP decryptDataIMP;
                 },
             });
         }
-        NSLog(@">>>>>> [hk_dataTaskWithHTTPMethod] Intercept url: %@, req params: %@",URLString,parameters);
+        NSLogger(@"[hk_dataTaskWithHTTPMethod] Intercept url: %@, req params: %@",URLString,parameters);
         return dummyTask;
     }
-    NSLog(@">>>>>> [hk_dataTaskWithHTTPMethod] Allow to pass url: %@",URLString);
+    NSLogger(@"[hk_dataTaskWithHTTPMethod] Allow to pass url: %@",URLString);
     return ((id(*)(id, SEL,NSString *,NSString *,id,id,id,id,id,id))dataTaskWithRequestIMP)(self, _cmd,method,URLString,parameters,headers,uploadProgress,downloadProgress,success,failure);
 }
 
@@ -201,7 +201,7 @@ static IMP decryptDataIMP;
 + (id)hk_URLWithString:arg1{
     
     if ([arg1 hasPrefix:@"https://"] && [arg1 containsString:@"tableplus"]) {
-        NSLog(@">>>>>> hk_URLWithString Intercept requests %@",arg1);
+        NSLogger(@"hk_URLWithString Intercept requests %@",arg1);
         arg1 =  @"https://127.0.0.1";
     }
     id ret = ((id(*)(id, SEL,id))urlWithStringSeletorIMP)(self, _cmd,arg1);

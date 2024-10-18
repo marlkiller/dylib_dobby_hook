@@ -7,12 +7,13 @@
 
 #import <Foundation/Foundation.h>
 #import "URLSessionHook.h"
+#import "Logger.h"
 
 @implementation URLSessionHook
 
 - (void)resume {
     // 重写 resume 方法，使其不做任何事情
-    NSLog(@">>>>>> DummyURLSessionDataTask.resume");
+    NSLogger(@"DummyURLSessionDataTask.resume");
 }
 
 @end

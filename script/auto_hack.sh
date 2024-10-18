@@ -38,8 +38,9 @@ ALL_APPS_LIST=(
     "CleanShot X|Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
     "iStat Menus|Contents/Frameworks/Paddle.framework/Versions/A/Paddle"
     "Alfred 5|Contents/Preferences/Alfred Preferences.app/Contents/MacOS/Alfred Preferences"
+    "AirBuddy|Contents/Frameworks/Paddle.framework/Versions/A/Paddle|apps/airbuddy_hack.sh"
 
-    ## paddle:Movist Pro/Downie 4/Fork/BetterMouse/MindMac/Permute 3
+    ## paddle:Movist Pro/Downie 4/Fork/BetterMouse/MindMac/Permute 3/AirBuddy
     #"xx|/Applications/xx.app/Contents/Frameworks/Paddle.framework/Versions/A/Paddle"
 
     ## fixed with helper
@@ -122,8 +123,21 @@ inject_dobby_hook() {
 
 start() {
     find_paddle_apps
+    processed_apps=()
     for app_entry in "${ALL_APPS_LIST[@]}"; do
         IFS="|" read -r app_name inject_path script_after helper_name<<<"$app_entry"
+        # If inject_path is not provided, assign the default path.
+        if [[ " ${processed_apps[*]} " =~ " ${app_name} " ]]; then
+            printf "${YELLOW}⚠️  Skipping duplicate : ${GREEN}%s${NC}\n" "$app_name"
+            continue
+        fi
+        processed_apps+=("$app_name")
+        if [[ -z "$inject_path" ]]; then
+            inject_path="/Applications/$app_name.app/Contents/MacOS/$app_name"
+        elif [[ ! "$inject_path" = /* ]]; then
+            # If inject_path is relative, prefix it with `/Applications/$app_name.app/`.
+            inject_path="/Applications/$app_name.app/$inject_path"
+        fi
         inject_dobby_hook "$app_name" "$inject_path" "$script_after" "$helper_name"
     done
 }

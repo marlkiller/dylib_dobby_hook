@@ -10,12 +10,12 @@ env:
   LLVM_VERSION: 15.0.6  
 
 jobs:
-  delete_latest_release:
-    runs-on: ubuntu-latest
+  macos:
+    runs-on: macos-latest
     steps:
-    - name: checkout master
+    - name: checkout main
       uses: actions/checkout@master
-
+      
     - name: delete latest release
       uses: dev-drprasad/delete-tag-and-release@v0.2.1
       with:
@@ -23,13 +23,6 @@ jobs:
         tag_name: latest
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN }}  
-
-  macos:
-    runs-on: macos-latest
-    needs: delete_latest_release
-    steps:
-    - name: checkout dev
-      uses: actions/checkout@master
 
     - name: compile macos
       run: |

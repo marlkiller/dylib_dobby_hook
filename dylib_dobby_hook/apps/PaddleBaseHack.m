@@ -36,9 +36,11 @@ IMP dataTaskWithRequestIMP;
 //    BetterMouse
 //    Permute 3
     
-    
+    // double check
     if ([[Constant getCurrentAppName] containsString:@"com.bjango.istatmenus"]) {
-        // double check
+        return false;
+    }
+    if ([[Constant getCurrentAppName] containsString:@"codes.rambo.AirBuddy"]) {
         return false;
     }
     
@@ -55,17 +57,17 @@ IMP dataTaskWithRequestIMP;
 //
 
 - (NSNumber *) hook_trialDaysRemaining {
-    NSLog(@">>>>>> called hook_trialDaysRemaining");
+    NSLogger(@"called hook_trialDaysRemaining");
     return @9;
 }
 
 - (void) hook_viewDidLoad {
-    NSLog(@">>>>>> called hook_viewDidLoad");
+    NSLogger(@"called hook_viewDidLoad");
     [self valueForKey:@"window"];
     return ;
 }
 - (void) hook_windowDidLoad {
-    NSLog(@">>>>>> called hook_windowDidLoad");
+    NSLogger(@"called hook_windowDidLoad");
 //    [0]    _TtC9Licensing27CMLicensingWindowController
     NSWindow *window = [self valueForKey:@"window"];
 //    viewController    _TtC9Licensing25CMLicensingViewController
@@ -76,24 +78,24 @@ IMP dataTaskWithRequestIMP;
 }
 
 - (NSNumber *) hook_trialLength2 {
-    NSLog(@">>>>>> called hook_trialLength2");
+    NSLogger(@"called hook_trialLength2");
     return @9;
 }
 
 
 //- (BOOL) hook_isLicensed{
-//    NSLog(@">>>>>> called hook_isLicensed");
+//    NSLogger(@"called hook_isLicensed");
 //    return YES;
 //}
 //
 //- (BOOL) hook_activated{
-//    NSLog(@">>>>>> called hook_activated");
+//    NSLogger(@"called hook_activated");
 //    return YES;
 //}
 
 
 - (NSDate *) hook_activationDate{
-    NSLog(@">>>>>> called hook_activationDate");
+    NSLogger(@"called hook_activationDate");
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [[NSDateComponents alloc] init];
     [components setYear:2099];
@@ -106,25 +108,26 @@ IMP dataTaskWithRequestIMP;
     return date;
 }
 - (NSString *) hook_licenseCode{
-    NSLog(@">>>>>> called hook_licenseCode");
+    NSLogger(@"called hook_licenseCode");
     static NSString *uuidString = nil;
-    if (!uuidString) {
-        NSUUID *uuid = [NSUUID UUID];
-        uuidString = [uuid UUIDString];
-        NSLog(@">>>>>> UUID initialized: %@", uuidString);
-    }
-    return uuidString.copy;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        uuidString = [[NSUUID UUID] UUIDString];
+        NSLogger(@"UUID initialized: %@", uuidString);
+
+    });
+    return uuidString;
 //    return @"B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C";
 }
 
 - (NSString *) hook_activationEmail{
-    NSLog(@">>>>>> called hook_activationEmail");
+    NSLogger(@"called hook_activationEmail");
     return [Constant G_EMAIL_ADDRESS];
 }
 
 
 //- (id)hook_initWithProductID:(NSString *)productID andLicenseController:(id)licenseController {
-//    NSLog(@">>>>>> called hook_initWithProductID");
+//    NSLogger(@"called hook_initWithProductID");
 //    id ret =  ((id(*)(id, SEL, id,id))initWithProductIDIMP)(self, _cmd, productID,licenseController);
 //    return ret;
 //}
@@ -166,29 +169,31 @@ IMP dataTaskWithRequestIMP;
                 @"response": @{},
                 @"signature": @""
             };
+        }else if([urlString containsString:@"/3.2/product/data"]) {
+            // https://v3.paddleapi.com/3.2/product/data
+            respBody =@{
+                @"success": @YES,
+                @"response": @{},
+                @"signature": @""
+            };
         } else {
-            NSLog(@">>>>>> [hook_dataTaskWithRequest] Allow to pass url: %@",url);
+            NSLogger(@"[hook_dataTaskWithRequest] Allow to pass url: %@",url);
             return ((id(*)(id, SEL,id,id))dataTaskWithRequestIMP)(self, _cmd,request,completionHandler);
 
         }
-        NSLog(@">>>>>> [hook_dataTaskWithRequest] Intercept url: %@, request body: %@, response body: %@",url, reqBody,respBody);
+        NSLogger(@"[hook_dataTaskWithRequest] Intercept url: %@, request body: %@, response body: %@",url, reqBody,respBody);
         if (completionHandler) {
             wrapper(nil,respBody);
         }        
         return dummyTask;
 ;
     }
-    NSLog(@">>>>>> [hook_dataTaskWithRequest] Allow to pass url: %@",url);
+    NSLogger(@"[hook_dataTaskWithRequest] Allow to pass url: %@",url);
     return ((id(*)(id, SEL,id,id))dataTaskWithRequestIMP)(self, _cmd,request,completionHandler);
 }
 
 - (BOOL)hack {
-    
-    if ([[Constant getCurrentAppName] containsString:@"codes.rambo.AirBuddy"]) {
-        NSUserDefaults *defaults  = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:true forKey:@"AMSkipOnboarding"];
-        [defaults synchronize];
-    }
+        
     if ([[Constant getCurrentAppName] containsString:@"mindmac"]) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setObject:@"Basic" forKey:@"licenseType"];

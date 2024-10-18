@@ -32,15 +32,15 @@ static IMP displayRegisteredInfoIMP;
 
 
 //- (int)hk_productSubscriptionStillHaveTrialPeriod{
-//    NSLog(@">>>>>> Swizzled hk_productSubscriptionStillHaveTrialPeriod method called");
+//    NSLogger(@"Swizzled hk_productSubscriptionStillHaveTrialPeriod method called");
 //    return 0;
 //}
 //- (int)hk_isProductSubscriptionStillValid{
-//    NSLog(@">>>>>> Swizzled hk_isProductSubscriptionStillValid method called");
+//    NSLogger(@"Swizzled hk_isProductSubscriptionStillValid method called");
 //    return 1;
 //}
 //+ (void)hk_validate{
-//    NSLog(@">>>>>> Swizzled hk_validate method called");
+//    NSLogger(@"Swizzled hk_validate method called");
 //}
 
 

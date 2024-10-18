@@ -40,7 +40,7 @@ static IMP listenerIMP;
 // Ref: https://book.hacktricks.xyz/v/cn/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-ipc-inter-process-communication/macos-xpc/macos-xpc-authorization
 - (BOOL)hk_listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection {
 
-    NSLog(@">>>>>> hk_listener");
+    NSLogger(@"hk_listener");
 
     newConnection.exportedInterface = [NSXPCInterface interfaceWithProtocol:
                                            NSProtocolFromString(@"_TtP31com_binarynights_ForkLiftHelper21ForkLiftHelperProtcol_")
@@ -55,7 +55,7 @@ static IMP listenerIMP;
 OSStatus hk_SecCodeCopySigningInformation_forklift(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo) {
 
     OSStatus status = SecCodeCopySigningInformation_ori(codeRef, flags, signingInfo);
-    NSLog(@">>>>>> hk_SecCodeCopySigningInformation_ori status = %d",  status);
+    NSLogger(@"hk_SecCodeCopySigningInformation_ori status = %d",  status);
 
     CFMutableDictionaryRef fakeDict = CFDictionaryCreateMutableCopy(NULL, 0, *signingInfo);
 
@@ -86,9 +86,9 @@ OSStatus hk_SecCodeCopySigningInformation_forklift(SecCodeRef codeRef, SecCSFlag
     CFRelease(*signingInfo);
     *signingInfo = fakeDict;
     
-    NSLog(@">>>>>> hk_SecCodeCopySigningInformation_ori kSecCodeInfoFlags = %@", (CFNumberRef)CFDictionaryGetValue(*signingInfo, kSecCodeInfoFlags));
-    NSLog(@">>>>>> hk_SecCodeCopySigningInformation_ori entitlementsDict = %@", (CFDictionaryRef)CFDictionaryGetValue(*signingInfo, kSecCodeInfoEntitlementsDict));
-    NSLog(@">>>>>> hk_SecCodeCopySigningInformation_ori kSecCodeInfoTeamIdentifier = %@", (CFDictionaryRef)CFDictionaryGetValue(*signingInfo, kSecCodeInfoTeamIdentifier));
+    NSLogger(@"hk_SecCodeCopySigningInformation_ori kSecCodeInfoFlags = %@", (CFNumberRef)CFDictionaryGetValue(*signingInfo, kSecCodeInfoFlags));
+    NSLogger(@"hk_SecCodeCopySigningInformation_ori entitlementsDict = %@", (CFDictionaryRef)CFDictionaryGetValue(*signingInfo, kSecCodeInfoEntitlementsDict));
+    NSLogger(@"hk_SecCodeCopySigningInformation_ori kSecCodeInfoTeamIdentifier = %@", (CFDictionaryRef)CFDictionaryGetValue(*signingInfo, kSecCodeInfoTeamIdentifier));
 
     return errSecSuccess;
 }

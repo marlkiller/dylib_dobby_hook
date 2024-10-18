@@ -16,6 +16,7 @@
 #include <sys/sysctl.h>
 #import "HackProtocolDefault.h"
 #import "HackHelperProtocolDefault.h"
+#import "Logger.h"
 
 
 // 使用构造函数属性 (constructor attribute) 的方法
@@ -80,32 +81,32 @@ static BOOL _helper;
 // 当类第一次被使用时会自动调用这个方法
 + (void)initialize {
     if (self == [Constant class]) {
-        NSLog(@">>>>>> Constant initialize");
-        NSLog(@">>>>>> DobbyGetVersion: %s", DobbyGetVersion());
+        NSLogger(@"Constant initialize");
+        NSLogger(@"DobbyGetVersion: %s", DobbyGetVersion());
 
         NSBundle *app = [NSBundle mainBundle];
         _currentAppName = [[app bundleIdentifier] copy];
         _currentAppVersion =[ [app objectForInfoDictionaryKey:@"CFBundleShortVersionString"] copy];
         _currentAppCFBundleVersion = [[app objectForInfoDictionaryKey:@"CFBundleVersion"] copy];
-        NSLog(@">>>>>> AppName is [%s],Version is [%s], myAppCFBundleVersion is [%s].", _currentAppName.UTF8String, _currentAppVersion.UTF8String, _currentAppCFBundleVersion.UTF8String);
-        NSLog(@">>>>>> App Architecture is: %@", [Constant getSystemArchitecture]);
-        NSLog(@">>>>>> App DebuggerAttached is: %d", [Constant isDebuggerAttached]);
+        NSLogger(@"AppName is [%s],Version is [%s], myAppCFBundleVersion is [%s].", _currentAppName.UTF8String, _currentAppVersion.UTF8String, _currentAppCFBundleVersion.UTF8String);
+        NSLogger(@"App Architecture is: %@", [Constant getSystemArchitecture]);
+        NSLogger(@"App DebuggerAttached is: %d", [Constant isDebuggerAttached]);
         NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"Info" ofType:@"plist"];
-        NSLog(@">>>>>> plistPath is %@", plistPath);
+        NSLogger(@"plistPath is %@", plistPath);
         NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
 
         NSString *NSUserDefaultsPath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"Preferences/%@.plist", bundleIdentifier]];
-        NSLog(@">>>>>> NSUserDefaultsPath is %@", NSUserDefaultsPath);
+        NSLogger(@"NSUserDefaultsPath is %@", NSUserDefaultsPath);
         NSRange range = [[Constant getSystemArchitecture] rangeOfString:@"arm" options:NSCaseInsensitiveSearch];
         _arm = range.location != NSNotFound;
         
         // 这里不用 copy 的话, clion cmake 编译的产物会内存泄漏,字符串对象乱飞...不知道为什么
         // 返回包的完整路径。
         _currentAppPath = [[app bundlePath] copy];
-        NSLog(@">>>>>> [app bundlePath] %@",_currentAppPath);
+        NSLogger(@"[app bundlePath] %@",_currentAppPath);
         // /Library/PrivilegedHelperTools
         if ([_currentAppPath isEqualToString:@"/Library/PrivilegedHelperTools"]) {
-            NSLog(@">>>>>> helper is True");
+            NSLogger(@"helper is True");
             _helper = YES;
         }
         
@@ -209,9 +210,9 @@ static BOOL _helper;
     
     @try {
         NSArray<Class> *personClasses = [Constant getAllHackClasses];
-        NSLog(@">>>>>> Constant: Initiating doHack operation...");
+        NSLogger(@"Constant: Initiating doHack operation...");
         for (Class class in personClasses) {
-            NSLog(@">>>>>> Constant: Processing class - %@", NSStringFromClass(class));
+            NSLogger(@"Constant: Processing class - %@", NSStringFromClass(class));
             id<HackProtocol> it = [[class alloc] init];
             if ([it shouldInject:_currentAppName]) {
                 NSString *supportAppVersion = [it getSupportAppVersion];
@@ -223,14 +224,14 @@ static BOOL _helper;
                     return;
 
                 }else{
-                    NSLog(@">>>>>> [ERROR] Unsupported current appVersion !! Suppert appVersion: [%@] Current appVersion: [%@]",
+                    NSLogger(@"[ERROR] Unsupported current appVersion !! Suppert appVersion: [%@] Current appVersion: [%@]",
                           [it getSupportAppVersion], _currentAppVersion);
                 }
             }
         }
-        NSLog(@">>>>>>> [ERROR] Unsupported current app: [%@]",_currentAppName);
+        NSLogger(@"[ERROR] Unsupported current app: [%@]",_currentAppName);
     } @catch (NSException *exception) {
-        NSLog(@">>>>>> [Caught exception]: %@", exception);
+        NSLogger(@"[Caught exception]: %@", exception);
     }
 }
 @end

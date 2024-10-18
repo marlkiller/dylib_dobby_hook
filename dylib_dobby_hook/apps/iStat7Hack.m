@@ -81,7 +81,7 @@ IMP dataTaskWithRequestIMP2;
         }
 
         // Log the intercepted request and response body
-        NSLog(@">>>>>> [hook_dataTaskWithRequest] Intercepted URL: %@, Request Body: %@, Response Body: %@", url, reqBody, respBody);
+        NSLogger(@"[hook_dataTaskWithRequest] Intercepted URL: %@, Request Body: %@, Response Body: %@", url, reqBody, respBody);
 
         // Create a response and call the completion handler
         __auto_type resp = [[NSHTTPURLResponse alloc] initWithURL:url statusCode:200 HTTPVersion:@"1.1" headerFields:@{}];
@@ -93,7 +93,7 @@ IMP dataTaskWithRequestIMP2;
         return dummyTask;
     }
     
-    NSLog(@">>>>>> [hook_dataTaskWithRequest] Allowing URL: %@", url);
+    NSLogger(@"[hook_dataTaskWithRequest] Allowing URL: %@", url);
     return ((id(*)(id, SEL, NSMutableURLRequest *, void (^)(NSData *, NSURLResponse *, NSError *)))dataTaskWithRequestIMP2)(self, _cmd, request, completionHandler);
 }
 
@@ -101,7 +101,7 @@ IMP dataTaskWithRequestIMP2;
       validationInfo:(id)validationInfo
           completion:(void (^)(BOOL isValid, NSError *error))completion {
 
-    NSLog(@">>>>>> [hk_isLicenseValid] License is valid");
+    NSLogger(@"[hk_isLicenseValid] License is valid");
     // 検証が成功した場合
     completion(YES, nil);
 }
