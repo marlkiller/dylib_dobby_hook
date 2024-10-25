@@ -62,27 +62,7 @@ int hook_TRTrialStatus(void){
 
 
 - (BOOL)hack {
-    
-    
-    NSString *searchFilePath = [[Constant getCurrentAppPath] stringByAppendingString:@"/Contents/MacOS/Transmit"];
-
-    
-#if defined(__arm64__) || defined(__aarch64__)
-    NSString *searchMachineCode = @"F6 57 BD A9 F4 4F 01 A9 FD 7B 02 A9 FD 83 00 91 15 0C ?? ?? B5 72 ?? ?? A0 02 40 F9";
-#elif defined(__x86_64__)
-    NSString *searchMachineCode = @"55 48 89 E5 41 57 41 56 41 55 41 54 53 50 4C 8B ?? ?? ?? ?? ?? 49 8B 3E";
-
-#endif
     // void __cdecl -[TRDocument updateCountdownView](TRDocument *self, SEL a2)
-//    [MemoryUtils hookInstanceMethod:
-//                objc_getClass("TRDocument")
-//                originalSelector:NSSelectorFromString(@"updateCountdownView")
-//                swizzledClass:[self class]
-//                // swizzledSelector:NSSelectorFromString(@"hk_updateCountdownView:arg2:")
-//                swizzledSelector:NSSelectorFromString(@"hk_updateCountdownView:")
-//
-//    ];
-    
     [MemoryUtils hookInstanceMethod:
                 objc_getClass("SPUStandardUpdaterController")
                 originalSelector:NSSelectorFromString(@"startUpdater")
@@ -98,17 +78,19 @@ int hook_TRTrialStatus(void){
                 swizzledSelector:NSSelectorFromString(@"hk_terminateExpiredTrialTimerDidFire:")
 
     ];
+    
+#if defined(__arm64__) || defined(__aarch64__)
+    NSString *searchMachineCode = @"F6 57 BD A9 F4 4F 01 A9 FD 7B 02 A9 FD 83 00 91 15 0C ?? ?? B5 72 ?? ?? A0 02 40 F9";
+#elif defined(__x86_64__)
+    NSString *searchMachineCode = @"55 48 89 E5 41 57 41 56 41 55 41 54 53 50 4C 8B ?? ?? ?? ?? ?? 49 8B 3E";
+#endif
         
-    
-    int count = 1;
-    NSArray *globalOffsets =[MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)searchMachineCode count:(int)count];
-    uintptr_t globalOffset = [globalOffsets[0] unsignedIntegerValue];
-    uintptr_t fileOffset =[MemoryUtils getCurrentArchFileOffset: searchFilePath];
-    
-    int imageIndex = [MemoryUtils indexForImageWithName:@"Transmit"];
-    intptr_t _hook_TRTrialStatus = [MemoryUtils getPtrFromGlobalOffset:imageIndex targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
-    DobbyHook((void *)_hook_TRTrialStatus, (void *)hook_TRTrialStatus, (void *)&hook_TRTrialStatus_ori);
-    
+    [MemoryUtils hookWithMachineCode:@"/Contents/MacOS/Transmit"
+                             machineCode:searchMachineCode
+                               fake_func:(void *)hook_TRTrialStatus
+                                   count:1
+                            out_orig:(void *)&hook_TRTrialStatus_ori
+    ];
     
     // license info
 //    __text:000000010002FAFB ; void __cdecl -[TransmitDelegate showLicense:](TransmitDelegate *self, SEL, id)

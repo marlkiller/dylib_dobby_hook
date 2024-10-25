@@ -167,7 +167,8 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         "-framework CoreWLAN"
 
         # 加入额外的库
-        objc
+        # ld: warning: ignoring duplicate libraries: '-lobjc'
+        # objc
         c++
         c
         ${StaticLibs}

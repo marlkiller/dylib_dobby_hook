@@ -55,6 +55,10 @@
 
 - (void)startMonitorInjection:processName;
 
+
+- (void)hook_AllSecItem;
+- (void)hook_AllSecCode:teamIdentifier;
+
 @end
 
 #endif /* CommonRetOC_h */

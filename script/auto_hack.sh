@@ -33,6 +33,7 @@ ALL_APPS_LIST=(
     "Navicat Premium|Contents/Frameworks/EE.framework/Versions/A/EE"
     "Transmit"
     #"AnyGo"
+    "Shottr"
     "Infuse|Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator"
     "MacUpdater|Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
     "CleanShot X|Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"

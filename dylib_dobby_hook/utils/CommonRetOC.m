@@ -116,6 +116,27 @@
 }
 
 
+- (void)hook_AllSecItem{
+    NSLogger(@"hook_AllSecItem");
+    DobbyHook(SecItemAdd, hk_SecItemAdd, NULL);
+    DobbyHook(SecItemUpdate, hk_SecItemUpdate, NULL);
+    DobbyHook(SecItemDelete, hk_SecItemDelete, NULL);
+    DobbyHook(SecItemCopyMatching, hk_SecItemCopyMatching, NULL);
+}
+
+- (void)hook_AllSecCode:teamIdentifier{
+    NSLogger(@"teamIdentifier = %@",teamIdentifier);
+    teamIdentifier_ori = [teamIdentifier UTF8String];
+    DobbyHook(SecCodeCheckValidity, (void *)hk_SecCodeCheckValidity, (void *)&SecCodeCheckValidity_ori);
+    DobbyHook(SecCodeCheckValidityWithErrors, (void *)hk_SecCodeCheckValidityWithErrors, (void *)&SecCodeCheckValidityWithErrors_ori);
+    DobbyHook(SecCodeCopySigningInformation, (void *)hk_SecCodeCopySigningInformation, (void *)&SecCodeCopySigningInformation_ori);
+    DobbyHook(SecStaticCodeCheckValidity, (void *)hk_SecStaticCodeCheckValidity, (void *)&SecStaticCodeCheckValidity_ori);
+    DobbyHook(SecStaticCodeCheckValidityWithErrors, (void *)hk_SecStaticCodeCheckValidityWithErrors, (void *)&SecStaticCodeCheckValidityWithErrors_ori);
+//    TODO:Is it needed?
+//    SecTaskValidateForRequirement
+//    SecRequirementEvaluate
+}
+
 
 // TODO: 监听进程并执行线程注入
 - (void)startMonitorInjection:processName {
@@ -131,7 +152,7 @@
 //                    NSLogger(@"Failed to inject dylib into process %d", pid);
 //                }
             }
-            [NSThread sleepForTimeInterval:5.0];  // 每 5 秒检查一次
+            [NSThread sleepForTimeInterval:5.0];
         }
     });
 }

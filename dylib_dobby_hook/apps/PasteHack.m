@@ -40,12 +40,9 @@ int (*validSubscriptionOri)(void);
     //    DobbyHook(_cloudKit, ret1, (void *)&_cloudKitOri);
     
     [MemoryUtils hookInstanceMethod:objc_getClass("NSFileManager") originalSelector:NSSelectorFromString(@"ubiquityIdentityToken") swizzledClass:[self class] swizzledSelector:NSSelectorFromString(@"hook_ubiquityIdentityToken")];
-    
-    NSString *searchFilePath = [[Constant getCurrentAppPath] stringByAppendingString:@"/Contents/MacOS/Paste"];
-    uintptr_t fileOffset =[MemoryUtils getCurrentArchFileOffset: searchFilePath];
-    
+        
     // 有効なサブスクリプションかどうか
-    hookSubscription(searchFilePath, fileOffset);
+    hookSubscription(@"/Contents/MacOS/Paste");
     
     
     // これらの重要なiCloudとCloudKit関連のメソッドをフックすることで、開発者はアプリケーションが再署名された後に潜在的なクラッシュを適切に処理し、アプリケーションの他の部分が正常に動作し続けることを確保できます。これは、元のiCloudサービスに正常にアクセスできない場合の対応戦略です。
@@ -78,21 +75,19 @@ int (*validSubscriptionOri)(void);
     return YES;
 }
 
-void hookSubscription(NSString *searchFilePath, uintptr_t fileOffset) {
+void hookSubscription(NSString *searchFilePath) {
 
 #if defined(__arm64__) || defined(__aarch64__)
     NSString *sub_0x10031f878Code = @"F8 5F BC A9 F6 57 01 A9 F4 4F 02 A9 FD 7B 03 A9 FD C3 00 91 F5 03 01 AA F6 03 00 AA 57 1B 00 D0 F7 62 29 91";
 #elif defined(__x86_64__)
     NSString *sub_0x10031f878Code = @"55 48 89 E5 41 57 41 56 41 54 53 49 89 F7 49 89 FC 48 8D 3D";
 #endif
-    
-    NSArray *globalOffsets =[MemoryUtils searchMachineCodeOffsets:(NSString *)searchFilePath
-                                                      machineCode:sub_0x10031f878Code
-                                                            count:(int)1];
-    uintptr_t globalOffset = [globalOffsets[0] unsignedIntegerValue];
-    
-    intptr_t validSubscription = [MemoryUtils getPtrFromGlobalOffset:0 targetFunctionOffset:(uintptr_t)globalOffset reduceOffset:(uintptr_t)fileOffset];
-    DobbyHook((void *)validSubscription, (void *)ret1, (void *)&validSubscriptionOri);
+    [MemoryUtils hookWithMachineCode:searchFilePath
+                             machineCode:sub_0x10031f878Code
+                               fake_func:(void *)ret1
+                                   count:1
+                            out_orig:(void *)&validSubscriptionOri
+        ];
 }
 
 @end

@@ -9,7 +9,7 @@ BUILD_DIR="$PROJECT_ROOT/cmake-build-release"
 rm -rf "$BUILD_DIR"
 mkdir -p "$BUILD_DIR"
 cd "$BUILD_DIR"
-cmake "$PROJECT_ROOT"
+cmake -DCMAKE_BUILD_TYPE=Release "$PROJECT_ROOT" 
 make -j4
 make install
 

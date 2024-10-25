@@ -144,23 +144,103 @@ kern_return_t my_task_swap_exception_ports(
 }
 
 
+
+void logSecRequirement(SecRequirementRef requirement, SecCSFlags flags) {
+    CFStringRef requirementString = NULL;
+    if (requirement != NULL) {
+        OSStatus status = SecRequirementCopyString(requirement, kSecCSDefaultFlags, &requirementString);
+        if (status == errSecSuccess && requirementString != NULL) {
+            NSLogger(@"flags = %d, requirement = %@", flags, requirementString);
+        } else {
+            NSLogger(@"Failed to copy requirement string. Error code: %d", (int)status);
+        }
+    } else {
+        NSLogger(@"flags = %d, requirement = (null)", flags);
+    }
+    if (requirementString != NULL) {
+        CFRelease(requirementString);
+    }
+}
+
+SecCodeCheckValidity_ptr_t SecCodeCheckValidity_ori = NULL;
+OSStatus hk_SecCodeCheckValidity(SecCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement) {
+    NSLogger(@"flags = %d",flags);
+    logSecRequirement(requirement, flags);
+    return errSecSuccess;
+}
+
+
+SecStaticCodeCheckValidity_ptr_t SecStaticCodeCheckValidity_ori = NULL;
+OSStatus hk_SecStaticCodeCheckValidity(SecStaticCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement) {
+    NSLogger(@"flags = %d",flags);
+    logSecRequirement(requirement, flags);
+    return errSecSuccess;
+}
+
 SecCodeCheckValidityWithErrors_ptr_t SecCodeCheckValidityWithErrors_ori = NULL;
 OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors) {
     // anchor apple generic and certificate leaf[subject.OU] = "J3CP9BBBN6"
     // NSString* fakeRequirement = [NSString stringWithFormat:@"identifier \"com.binarynights.ForkLift\""];
-    NSLogger(@"hk_SecCodeCheckValidityWithErrors  requirement = %@", requirement);
+    NSLogger(@"requirement = %@", requirement);
+    logSecRequirement(requirement, flags);  
     return errSecSuccess;
 }
+
+SecStaticCodeCheckValidityWithErrors_ptr_t SecStaticCodeCheckValidityWithErrors_ori = NULL;
+OSStatus hk_SecStaticCodeCheckValidityWithErrors(SecStaticCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors) {
+    NSLogger(@"requirement = %@", requirement);
+    logSecRequirement(requirement, flags);
+    return errSecSuccess;
+}
+
+const char* teamIdentifier_ori = "TBD"; // Need to define before calling
 SecCodeCopySigningInformation_ptr_t SecCodeCopySigningInformation_ori = NULL;
+OSStatus hk_SecCodeCopySigningInformation(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo) {
+
+    OSStatus status = SecCodeCopySigningInformation_ori(codeRef, flags, signingInfo);
+    NSLogger(@"ori status = %d",  status);
+    CFMutableDictionaryRef fakeDict = CFDictionaryCreateMutableCopy(NULL, 0, *signingInfo);
+    SInt32 number = (SInt32) 65536;
+    CFNumberRef flagsVal = CFNumberCreate(NULL, kCFNumberSInt32Type, &number);
+    if (flagsVal) {
+        CFDictionarySetValue(fakeDict,  kSecCodeInfoFlags, flagsVal);
+        CFRelease(flagsVal);
+    }
+    CFStringRef teamId = CFStringCreateWithCString(NULL, teamIdentifier_ori, kCFStringEncodingUTF8);
+    if (teamId) {
+        CFDictionarySetValue(fakeDict,  kSecCodeInfoTeamIdentifier, teamId);
+        CFRelease(teamId);
+    }
+    NSDictionary *entitlementsDict = @{
+        @"com.apple.security.cs.allow-dyld-environment-variables": @0,
+        @"com.apple.security.cs.allow-jit": @1,
+        @"com.apple.security.cs.allow-unsigned-executable-memory": @1,
+        @"com.apple.security.cs.disable-executable-page-protection": @1,
+        @"com.apple.security.cs.disable-library-validation": @0,
+        @"com.apple.security.get-task-allow": @1
+    };
+    CFDictionarySetValue(fakeDict,  kSecCodeInfoEntitlementsDict, (__bridge const void *)(entitlementsDict));
+
+    CFRelease(*signingInfo);
+    *signingInfo = fakeDict;
+    
+    NSLogger(@"kSecCodeInfoFlags = %@", (CFNumberRef)CFDictionaryGetValue(*signingInfo, kSecCodeInfoFlags));
+    NSLogger(@"entitlementsDict = %@", (CFDictionaryRef)CFDictionaryGetValue(*signingInfo, kSecCodeInfoEntitlementsDict));
+    NSLogger(@"kSecCodeInfoTeamIdentifier = %@", (CFDictionaryRef)CFDictionaryGetValue(*signingInfo, kSecCodeInfoTeamIdentifier));
+    return errSecSuccess;
+}
 
 
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
     NSLogger(@"hk_SecItemAdd");
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(attributes, kSecAttrService);
     CFStringRef account = (CFStringRef)CFDictionaryGetValue(attributes, kSecAttrAccount);
     CFDataRef passwordData = (CFDataRef)CFDictionaryGetValue(attributes, kSecValueData);
     if (!service || !account || !passwordData) {
-        NSLogger(@"hk_SecItemAdd: Missing service or account or passwordData");
+        NSLogger(@"Missing service or account or passwordData");
         return errSecParam;
     }
     CFIndex passwordLength = CFDataGetLength(passwordData);
@@ -187,7 +267,7 @@ OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
     if (status == errSecSuccess && result) {
        *result = item;
     }
-    NSLogger(@"hk_SecItemAdd Status = %d", status);
+    NSLogger(@"Status = %d", status);
     return status;
 }
 
@@ -196,12 +276,12 @@ OSStatus hk_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpd
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
     CFStringRef account = (CFStringRef)CFDictionaryGetValue(query, kSecAttrAccount);
     if (!service || !account) {
-        NSLogger(@"hk_SecItemUpdate: Missing service or account");
+        NSLogger(@"Missing service or account");
         return errSecParam;
     }
     CFDataRef newPasswordData = (CFDataRef)CFDictionaryGetValue(attributesToUpdate, kSecValueData);
     if (!newPasswordData) {
-        NSLogger(@"hk_SecItemUpdate: No new password provided");
+        NSLogger(@"No new password provided");
         return errSecParam;
     }
     const char *serviceCStr = [MemoryUtils CFStringToCString:service];
@@ -223,7 +303,7 @@ OSStatus hk_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpd
         );
         CFRelease(itemRef);  // 释放引用
     }
-    NSLogger(@"hk_SecItemUpdate Status = %d", status);
+    NSLogger(@"Status = %d", status);
     return status;
 }
 
@@ -232,7 +312,7 @@ OSStatus hk_SecItemDelete(CFDictionaryRef query) {
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
     CFStringRef account = (CFStringRef)CFDictionaryGetValue(query, kSecAttrAccount);
     if (!service || !account) {
-        NSLogger(@"hk_SecItemDelete: Missing service or account");
+        NSLogger(@"Missing service or account");
         return errSecParam;
     }
     const char *serviceCStr = [MemoryUtils CFStringToCString:service];
@@ -249,7 +329,7 @@ OSStatus hk_SecItemDelete(CFDictionaryRef query) {
         status = SecKeychainItemDelete(itemRef);
         CFRelease(itemRef);
     }
-    NSLogger(@"hk_SecItemDelete Status = %d", status);
+    NSLogger(@"Status = %d", status);
     return status;
 }
 
@@ -259,7 +339,7 @@ OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
     CFStringRef account = (CFStringRef)CFDictionaryGetValue(query, kSecAttrAccount);
     if (!service || !account) {
-        NSLogger(@"hk_SecItemCopyMatching: Missing service or account");
+        NSLogger(@"Missing service or account");
         return errSecParam;
     }
     const char *serviceCStr = [MemoryUtils CFStringToCString:service];
@@ -279,10 +359,10 @@ OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
         *result = passwordCFData;
         SecKeychainItemFreeContent(NULL, passwordData);
     }
-    NSLogger(@"hk_SecItemCopyMatching Status = %d", status);
+    NSLogger(@"Status = %d", status);
     return status;
 }
-
+#pragma clang diagnostic pop
 
 // Why do you want to see here ???
 NSString *love69(NSString *input) {

@@ -107,12 +107,27 @@ extern task_swap_exception_ports_ptr_t orig_task_swap_exception_ports;
 
 
 /// Apple Sec..
+typedef OSStatus (*SecCodeCheckValidity_ptr_t)(SecCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement);
+OSStatus hk_SecCodeCheckValidity(SecCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement);
+extern SecCodeCheckValidity_ptr_t SecCodeCheckValidity_ori;
+
+
+typedef OSStatus (*SecStaticCodeCheckValidity_ptr_t)(SecStaticCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement);
+OSStatus hk_SecStaticCodeCheckValidity(SecStaticCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement);
+extern SecStaticCodeCheckValidity_ptr_t SecStaticCodeCheckValidity_ori;
+
 typedef OSStatus (*SecCodeCheckValidityWithErrors_ptr_t)(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors);
 OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors);
 extern SecCodeCheckValidityWithErrors_ptr_t SecCodeCheckValidityWithErrors_ori;
 
+typedef OSStatus (*SecStaticCodeCheckValidityWithErrors_ptr_t)(SecStaticCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors);
+OSStatus hk_SecStaticCodeCheckValidityWithErrors(SecStaticCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors);
+extern SecStaticCodeCheckValidityWithErrors_ptr_t SecStaticCodeCheckValidityWithErrors_ori;
 
+
+extern const char* teamIdentifier_ori;
 typedef OSStatus (*SecCodeCopySigningInformation_ptr_t)(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo);
+OSStatus hk_SecCodeCopySigningInformation(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo);
 extern SecCodeCopySigningInformation_ptr_t SecCodeCopySigningInformation_ori;
 
 

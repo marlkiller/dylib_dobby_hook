@@ -9,9 +9,7 @@
 #define Header_h
 
 #define NSLogger(fmt, ...) \
-    NSLog((@"[%@ | TID: %u] %s [Line %d] >>>>>> " fmt), \
-              [[NSThread currentThread] isMainThread] ? @"Main" : ([[NSThread currentThread] name] ?: @"Unnamed"), \
-              mach_thread_self(), \
+    NSLog((@"%s [Line %d] >>>>>> " fmt), \
               __PRETTY_FUNCTION__, \
               __LINE__, ##__VA_ARGS__)
 

@@ -20,6 +20,9 @@
 		38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC292B54CA4D00E6CB9E /* Constant.m */; };
 		38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */; };
 		9C99D64B2CB6CEF100B8A6D7 /* iStat7Hack.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C99D64A2CB6CEF100B8A6D7 /* iStat7Hack.m */; };
+		9CE4C5CE2CCA7AC400593C78 /* ShottrHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE4C5CD2CCA7AC400593C78 /* ShottrHack.m */; };
+		9CE4C5D12CCA7C3600593C78 /* JSONUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE4C5D02CCA7C3600593C78 /* JSONUtils.m */; };
+		9CE4C5D22CCA7C3600593C78 /* JSONUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CE4C5CF2CCA7C3600593C78 /* JSONUtils.h */; };
 		B50E935E2BBD024F0073FEAA /* PaddleBaseHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */; };
 		B513ADD72CB95D0B00F5DC97 /* LocalizationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B513ADD62CB95D0B00F5DC97 /* LocalizationManager.h */; };
 		B513ADD92CB95D4100F5DC97 /* LocalizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B513ADD82CB95D4100F5DC97 /* LocalizationManager.m */; };
@@ -85,6 +88,9 @@
 		38E793632B6C7AB8005677AA /* all_in_one.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = all_in_one.sh; sourceTree = "<group>"; };
 		38E793642B6C7FB6005677AA /* auto_hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = auto_hack.sh; sourceTree = "<group>"; };
 		9C99D64A2CB6CEF100B8A6D7 /* iStat7Hack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iStat7Hack.m; sourceTree = "<group>"; };
+		9CE4C5CD2CCA7AC400593C78 /* ShottrHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShottrHack.m; sourceTree = "<group>"; };
+		9CE4C5CF2CCA7C3600593C78 /* JSONUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSONUtils.h; sourceTree = "<group>"; };
+		9CE4C5D02CCA7C3600593C78 /* JSONUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSONUtils.m; sourceTree = "<group>"; };
 		B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaddleBaseHack.m; sourceTree = "<group>"; };
 		B513ADD62CB95D0B00F5DC97 /* LocalizationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalizationManager.h; sourceTree = "<group>"; };
 		B513ADD82CB95D4100F5DC97 /* LocalizationManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalizationManager.m; sourceTree = "<group>"; };
@@ -232,6 +238,8 @@
 		B581601C2BE8949B001DDB9B /* apps */ = {
 			isa = PBXGroup;
 			children = (
+				9CE4C5CF2CCA7C3600593C78 /* JSONUtils.h */,
+				9CE4C5D02CCA7C3600593C78 /* JSONUtils.m */,
 				B52BBA832CBFE1CE00F098A9 /* AirBuddyHack.m */,
 				B5EC63D72CBD39C700D92EEC /* AlfredHack.m */,
 				B5732BF02C82CD5900EC9E11 /* IDAHack.m */,
@@ -251,6 +259,7 @@
 				B53F9DEC2C4AA4EC00A6B32D /* CleanShotXHack.m */,
 				B5A7D30E2C548B71003D4C7F /* HackProtocolDefault.h */,
 				B5A7D3102C548BAB003D4C7F /* HackProtocolDefault.m */,
+				9CE4C5CD2CCA7AC400593C78 /* ShottrHack.m */,
 			);
 			path = apps;
 			sourceTree = "<group>";
@@ -320,6 +329,7 @@
 				B5822CA92CBFFC020062383F /* Logger.h in Headers */,
 				38350C022B53F78900DD52B3 /* dobby.h in Headers */,
 				B552CA362C54AC200095C9B9 /* CommonRetOC.h in Headers */,
+				9CE4C5D22CCA7C3600593C78 /* JSONUtils.h in Headers */,
 				38D1AC282B54C9C100E6CB9E /* Constant.h in Headers */,
 				38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */,
 				B57F200E2C5DD6D700C87201 /* MockCKDatabase.h in Headers */,
@@ -431,6 +441,8 @@
 				B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */,
 				3816BBB92B54FF090051CF39 /* MemoryUtils.m in Sources */,
 				38B83E312B5505B300919735 /* TablePlusHack.m in Sources */,
+				9CE4C5CE2CCA7AC400593C78 /* ShottrHack.m in Sources */,
+				9CE4C5D12CCA7C3600593C78 /* JSONUtils.m in Sources */,
 				B552CA382C54AC450095C9B9 /* CommonRetOC.m in Sources */,
 				B5FECEAE2BC4FC29008916D6 /* common_ret.m in Sources */,
 				38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */,
@@ -500,7 +512,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -568,6 +580,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXECUTABLE_PREFIX = lib;
 				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = "@executable_path/";
 				LIBRARY_SEARCH_PATHS = (
@@ -588,6 +601,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXECUTABLE_PREFIX = lib;
 				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = "@executable_path/";
 				LIBRARY_SEARCH_PATHS = (

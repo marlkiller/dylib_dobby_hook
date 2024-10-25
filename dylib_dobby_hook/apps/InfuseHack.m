@@ -44,10 +44,7 @@
                 swizzledSelector:@selector(ret1)
     ];
 
-    DobbyHook(SecItemAdd, hk_SecItemAdd, NULL);
-    DobbyHook(SecItemUpdate, hk_SecItemUpdate, NULL);
-    DobbyHook(SecItemDelete, hk_SecItemDelete, NULL);
-    DobbyHook(SecItemCopyMatching, hk_SecItemCopyMatching, NULL);
+    [self hook_AllSecItem];
     
     [MemoryUtils hookClassMethod:
          NSClassFromString(@"NSUbiquitousKeyValueStore")

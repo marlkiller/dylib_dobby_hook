@@ -23,9 +23,6 @@
 
 @implementation ForkLiftHack
 
-static IMP listenerIMP;
-
-
 - (NSString *)getAppName {
     // com.binarynights.ForkLiftHelper
     return @"com.binarynights.ForkLift";

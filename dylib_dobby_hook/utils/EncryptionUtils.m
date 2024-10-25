@@ -20,6 +20,7 @@
 #import <Cocoa/Cocoa.h>
 #import "Logger.h"
 
+
 @implementation EncryptionUtils
 
 + (NSString *)runCommand:(NSString *)command trimWhitespace:(BOOL)trim {
@@ -148,6 +149,9 @@
     return deviceIdMD5;
 };
 
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations" // CC_MD5
 + (NSString *)calculateMD5:(NSString *) input {
     const char *cStr = [input UTF8String];
     unsigned char digest[CC_MD5_DIGEST_LENGTH];
@@ -158,6 +162,7 @@
     }
     return output;
 }
+#pragma clang diagnostic pop
 
 
 + (NSDictionary *)generateKeyPair:(bool)is_pkcs8 {

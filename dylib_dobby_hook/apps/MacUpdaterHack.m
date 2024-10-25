@@ -26,15 +26,15 @@
 
 static IMP defaultStringIMP;
 static IMP defaultIntIMP;
-static IMP URLSessionIMP2;
-static IMP dataTaskWithRequest;
+//static IMP URLSessionIMP2;
+//static IMP dataTaskWithRequest;
 static IMP URLWithHostIMP;
 static IMP directoryContentsIMP;
-static IMP URLSessionIMP;
-static IMP fileChecksumSHAIMP;
+//static IMP URLSessionIMP;
+//static IMP fileChecksumSHAIMP;
 static IMP checksumSparkleFrameworkIMP;
 static IMP downloadURLWithSecurePOSTIMP;
-static Class stringClass;
+//static Class stringClass;
 static NSString* licenseCode = @"123456789";
 
 - (NSString *)getAppName {
@@ -52,9 +52,9 @@ static NSString* licenseCode = @"123456789";
     id ret = ((NSString *(*)(id,SEL))defaultStringIMP)(self,_cmd);
     
     if ([self isEqualTo:@"SavedV3PurchaseEmail"]) {
-        ret = [[Constant G_EMAIL_ADDRESS_FMT] performSelector:NSSelectorFromString(@"rot13")];
+        ret = [MemoryUtils invokeSelector:@"rot13" onTarget:[Constant G_EMAIL_ADDRESS_FMT]];
     } else if ([self isEqualTo:@"SavedV3PurchaseLicense"]) {
-        ret = [licenseCode performSelector:NSSelectorFromString(@"rot13")];
+        ret = [MemoryUtils invokeSelector:@"rot13" onTarget:licenseCode];
     }else if ([self isEqualTo:@"SavedPurchaseLicense"]) {
         //        NSString* ret = [@"123456789" performSelector:NSSelectorFromString(@"rot13")];
         //        return ret;
@@ -117,7 +117,7 @@ static NSString* licenseCode = @"123456789";
             //            id sharedInstance = sharedInstanceMethod(AppDelegateClz, selector);
             [invocation setTarget:self];
             [invocation setSelector:selector];
-            NSInteger *param1 = 0xc9;
+            int param1 = 0xc9;
             NSString *param2 = [Constant G_EMAIL_ADDRESS_FMT];
             NSString *param3 = licenseCode;
             [invocation setArgument:&param1 atIndex:2];
@@ -227,7 +227,7 @@ static NSString* licenseCode = @"123456789";
             if (modificationDate) {
                 NSDate *currentDate = [NSDate date];
                 // 缓存 config 30天
-                NSDate* fakaData = [NSData dataWithContentsOfFile:cacheConfigFile];
+                NSData* fakaData = [NSData dataWithContentsOfFile:cacheConfigFile];
                 NSTimeInterval timeInterval = [currentDate timeIntervalSinceDate:modificationDate];
                 NSTimeInterval oneMonthInterval = 30 * 24 * 60 * 60;
                 if (timeInterval < oneMonthInterval) {
@@ -254,17 +254,18 @@ static NSString* licenseCode = @"123456789";
     return ret;
 }
 
+-(void)hk_ensureCachedMinimumOS:arg1 versionToken:arg2{
+    NSLogger(@"arg1 = %@,arg2 = %@",arg1,arg2);
+}
 - (BOOL)hack {
-//  [BEGIN]
-//  下面这块代码是为了防止 clion 编译的 str 与 app 中的 str 不属于同一个 clz...
-//  xcode 编译则不需要这么抽象的写法, 不知道为什么
-//     stringClass = NSClassFromString(@"NSString");
-//     licenseEmail = [[stringClass alloc] initWithString:[Constant G_EMAIL_ADDRESS_FMT]];
-//     licenseCode = [[stringClass alloc] initWithString:@"123456789"];
-//     appPath = [[stringClass alloc] initWithString:[Constant getCurrentAppPath]];
-//  [END]
-
-////    -[AppDelegate purchaseInit]:
+    
+    // [AppInfo ensureCachedMinimumOS:versionToken:]
+//    [MemoryUtils hookInstanceMethod:NSClassFromString(@"AppInfo")
+//                   originalSelector:NSSelectorFromString(@"ensureCachedMinimumOS:versionToken:")
+//                   swizzledClass:[self class]
+//                   swizzledSelector:@selector(hk_ensureCachedMinimumOS:versionToken:)
+//    ];
+//  -[AppDelegate purchaseInit]:
     defaultStringIMP = [MemoryUtils hookInstanceMethod:NSClassFromString(@"__NSCFString")
                    originalSelector:NSSelectorFromString(@"defaultString")
                    swizzledClass:[self class]

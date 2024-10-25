@@ -20,7 +20,7 @@ int sum(int a, int b) {
     return a+b;
 }
 //函数指针用于保存被替换函数的地址
-static int (*sum_p)(int a, int b);
+//static int (*sum_p)(int a, int b);
 
 //新函数
 int mySum(int a,int b){

@@ -150,22 +150,24 @@ static BOOL _helper;
 
 
 + (BOOL)isDebuggerAttached {
-    BOOL isDebugging = NO;
-    // 获取当前进程的信息
-    NSProcessInfo *processInfo = [NSProcessInfo processInfo];
-    // 获取进程的环境变量
-    NSDictionary *environment = [processInfo environment];
-    // 检查环境变量中是否有调试器相关的标志
-    if (environment != nil) {
-        // 根据环境变量中是否包含特定的调试器标志来判断是否处于调试模式
-        if (environment[@"DYLD_INSERT_LIBRARIES"] ||
-            environment[@"MallocStackLogging"] ||
-            environment[@"NSZombieEnabled"] ||
-            environment[@"__XDEBUGGER_PRESENT"] != nil) {
-            isDebugging = YES;
-        }
-    }
-    return isDebugging;
+    int                 junk;
+    int                 mib[4];
+    struct kinfo_proc   info;
+    size_t              size;
+
+    info.kp_proc.p_flag = 0;
+
+    mib[0] = CTL_KERN;
+    mib[1] = KERN_PROC;
+    mib[2] = KERN_PROC_PID;
+    mib[3] = getpid();
+
+    size = sizeof(info);
+    junk = sysctl(mib, sizeof(mib) / sizeof(*mib), &info, &size, NULL, 0);
+    assert(junk == 0);
+
+    // If P_TRACED flag set, debugger running
+    return ( (info.kp_proc.p_flag & P_TRACED) != 0 );
 }
 
 
@@ -210,9 +212,9 @@ static BOOL _helper;
     
     @try {
         NSArray<Class> *personClasses = [Constant getAllHackClasses];
-        NSLogger(@"Constant: Initiating doHack operation...");
+        NSLogger(@"Initiating doHack operation...");
         for (Class class in personClasses) {
-            NSLogger(@"Constant: Processing class - %@", NSStringFromClass(class));
+            NSLogger(@"Processing class - %@", NSStringFromClass(class));
             id<HackProtocol> it = [[class alloc] init];
             if ([it shouldInject:_currentAppName]) {
                 NSString *supportAppVersion = [it getSupportAppVersion];

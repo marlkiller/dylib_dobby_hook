@@ -25,7 +25,7 @@
 
 @implementation ForkLiftHelperHack
 
-static IMP listenerIMP;
+//static IMP listenerIMP;
 
 
 - (NSString *)getAppName {
@@ -51,51 +51,16 @@ static IMP listenerIMP;
     return YES;
 }
 
-
-OSStatus hk_SecCodeCopySigningInformation_forklift(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo) {
-
-    OSStatus status = SecCodeCopySigningInformation_ori(codeRef, flags, signingInfo);
-    NSLogger(@"hk_SecCodeCopySigningInformation_ori status = %d",  status);
-
-    CFMutableDictionaryRef fakeDict = CFDictionaryCreateMutableCopy(NULL, 0, *signingInfo);
-
-    SInt32 number = (SInt32) 65536;
-    CFNumberRef flagsVal = CFNumberCreate(NULL, kCFNumberSInt32Type, &number);
-    if (flagsVal) {
-        CFDictionarySetValue(fakeDict,  kSecCodeInfoFlags, flagsVal);
-        CFRelease(flagsVal);
-    }
-   
-    CFStringRef teamId = CFStringCreateWithCString(NULL, "J3CP9BBBN6", kCFStringEncodingUTF8);
-    if (teamId) {
-        CFDictionarySetValue(fakeDict,  kSecCodeInfoTeamIdentifier, teamId);
-        CFRelease(teamId);
-    }
-    
-    
-    NSDictionary *entitlementsDict = @{
-        @"com.apple.security.cs.allow-dyld-environment-variables": @0,
-        @"com.apple.security.cs.allow-jit": @1,
-        @"com.apple.security.cs.allow-unsigned-executable-memory": @1,
-        @"com.apple.security.cs.disable-executable-page-protection": @1,
-        @"com.apple.security.cs.disable-library-validation": @0,
-        @"com.apple.security.get-task-allow": @1
-    };
-    CFDictionarySetValue(fakeDict,  kSecCodeInfoEntitlementsDict, (__bridge const void *)(entitlementsDict));
-
-    CFRelease(*signingInfo);
-    *signingInfo = fakeDict;
-    
-    NSLogger(@"hk_SecCodeCopySigningInformation_ori kSecCodeInfoFlags = %@", (CFNumberRef)CFDictionaryGetValue(*signingInfo, kSecCodeInfoFlags));
-    NSLogger(@"hk_SecCodeCopySigningInformation_ori entitlementsDict = %@", (CFDictionaryRef)CFDictionaryGetValue(*signingInfo, kSecCodeInfoEntitlementsDict));
-    NSLogger(@"hk_SecCodeCopySigningInformation_ori kSecCodeInfoTeamIdentifier = %@", (CFDictionaryRef)CFDictionaryGetValue(*signingInfo, kSecCodeInfoTeamIdentifier));
-
-    return errSecSuccess;
-}
  
 - (BOOL)hack {
-     DobbyHook(SecCodeCopySigningInformation, (void *)hk_SecCodeCopySigningInformation_forklift, (void *)&SecCodeCopySigningInformation_ori);
-     DobbyHook(SecCodeCheckValidityWithErrors, (void *)hk_SecCodeCheckValidityWithErrors, (void *)&SecCodeCheckValidityWithErrors_ori); 
+    
+    //  [self hook_AllSecCode:@"J3CP9BBBN6"];
+    // TODO: 可能是 dobby 的 bug, forklift helper 在 hook SecCodeCheckValidity 之后, 会导致出问题,
+    // 而 将 Dobbyhook 替换成 DobbyCodePatch, 则没有问题...
+    // 所以这里不用 hook_AllSecCode;    
+    teamIdentifier_ori = "J3CP9BBBN6";
+    DobbyHook(SecCodeCopySigningInformation, (void *)hk_SecCodeCopySigningInformation, (void *)&SecCodeCopySigningInformation_ori);
+    DobbyHook(SecCodeCheckValidityWithErrors, (void *)hk_SecCodeCheckValidityWithErrors, (void *)&SecCodeCheckValidityWithErrors_ori);
     
 //    Class ForkLiftHelper10HelperTool = NSClassFromString(@"_TtC31com_binarynights_ForkLiftHelper10HelperTool");
 //    SEL listenerSel = NSSelectorFromString(@"listener:shouldAcceptNewConnection:");

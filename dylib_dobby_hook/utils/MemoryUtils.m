@@ -15,6 +15,7 @@
 #import <AppKit/AppKit.h>
 #include <mach/mach_vm.h>
 #import "Logger.h"
+#import "dobby.h"
 
 @implementation MemoryUtils
 
@@ -27,7 +28,14 @@ const bool CACHE_MACHINE_CODE_OFFSETS = true;
 #endif
 NSString * CACHE_MACHINE_CODE_KEY = @"All-Offsets";
 
+static NSMutableDictionary<NSString *, NSNumber *> *fileOffsetCache = NULL;
 
++ (void)initialize {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        fileOffsetCache = [[NSMutableDictionary alloc] init];
+    });
+}
 + (NSString *)readStringAtAddress:(uintptr_t)address {
     const char *cString = (const char *)address;
     NSString *string = [NSString stringWithUTF8String:cString];
@@ -165,23 +173,23 @@ NSData *machineCode2Bytes(NSString *hexString) {
  * 特征吗搜索
  * ? 匹配所有
  */
-+ (NSArray *)searchMachineCodeOffsets:(NSString *)searchFilePath machineCode:(NSString *)searchMachineCode count:(int)count {
-    searchMachineCode = [searchMachineCode stringByReplacingOccurrencesOfString:@"." withString:@"?"];
++ (NSArray *)searchMachineCodeOffsets:(NSString *)fullFilePath machineCode:(NSString *)machineCode count:(int)count {
+    machineCode = [machineCode stringByReplacingOccurrencesOfString:@"." withString:@"?"];
 
     if (CACHE_MACHINE_CODE_OFFSETS) {
-        NSArray *cachedOffsets = [self loadMachineCodeOffsetsFromUserDefaults:searchMachineCode];
+        NSArray *cachedOffsets = [self loadMachineCodeOffsetsFromUserDefaults:machineCode];
         if (cachedOffsets) {
             return [cachedOffsets copy];
         }
     }
     
-    NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:searchFilePath];
+    NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:fullFilePath];
 
     NSMutableArray<NSNumber *> *offsets = [NSMutableArray array];
     NSData *fileData = [fileHandle readDataToEndOfFile];
     NSUInteger fileLength = [fileData length];
 
-    NSData *searchBytes = machineCode2Bytes(searchMachineCode);
+    NSData *searchBytes = machineCode2Bytes(machineCode);
     NSUInteger searchLength = [searchBytes length];
     NSUInteger matchCounter = 0;
     
@@ -210,14 +218,14 @@ NSData *machineCode2Bytes(NSString *hexString) {
     
     if (matchCounter==0) {
         NSString *message = [NSString stringWithFormat:@"searchFilePath: %@ \rmachineCode: %@",
-                                                searchFilePath,
-                                                searchMachineCode];
+                                                fullFilePath,
+                                                machineCode];
         
         [self exAlart:@"特征吗匹配 异常 ?!!!" message:message];
         return offsets;
     }
     if (CACHE_MACHINE_CODE_OFFSETS) {
-        [self saveMachineCodeOffsetsToUserDefaults :searchMachineCode offsets:offsets];
+        [self saveMachineCodeOffsetsToUserDefaults :machineCode offsets:offsets];
     }
     return [offsets copy];
 }
@@ -297,58 +305,46 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
 
 
 
-+ (uintptr_t)getPtrFromAddress:(uintptr_t)targetFunctionAddress {
-    return [self getPtrFromAddress:0 targetFunctionAddress:targetFunctionAddress];
+/**
+ * 根据  hopper|ida 中的绝对地址计算内存地址 , 这个方法好像是有点问题..
+ * _dyld_get_image_vmaddr_slide(0)：用于获取当前加载的动态库的虚拟内存起始地址（slide）。Slide 是一个偏移量，表示动态库在虚拟内存中的偏移位置。
+ */
++ (uintptr_t)getPtrFromAddress:(NSString *)searchFilePath targetFunctionAddress:(uintptr_t)targetFunctionAddress {
+    NSString *imageName = [searchFilePath lastPathComponent];
+    int imageIndex = [self indexForImageWithName:imageName];
+    uintptr_t result  = 0;
+//    if ([Constant isArm]) {
+//
+//    }
+    result = targetFunctionAddress + _dyld_get_image_vmaddr_slide(imageIndex);
+    NSLogger(@"0x%lx + 0x%lx = 0x%lx ", targetFunctionAddress, _dyld_get_image_vmaddr_slide(imageIndex), result);
+    return result;
 }
 
 /**
- * _dyld_get_image_vmaddr_slide(0)：这是一个函数，用于获取当前加载的动态库的虚拟内存起始地址（slide）。Slide 是一个偏移量，表示动态库在虚拟内存中的偏移位置。
- * 函数地址：这是你希望获取其内存地址的函数的地址。
- + 函数地址：将函数的地址加到 slide 上，这样就可以得到该函数在内存中的实际地址。
+ * 根据  hopper|ida 中的 global offsett 地址计算内存地址
  */
-+ (uintptr_t)getPtrFromAddress:(uint32_t)index targetFunctionAddress:(uintptr_t)targetFunctionAddress {
-
-    BOOL isDebugging = [Constant isDebuggerAttached];
-    intptr_t slide = 0;
-    if(!isDebugging){
-        // NSLogger(@"The current app running with debugging");
-        // 不知道为什么
-        // 如果是调试模式, 计算地址不需要 + _dyld_get_image_vmaddr_slide,否则会出错
-        slide = _dyld_get_image_vmaddr_slide(index);
-
-    }
-    return slide + targetFunctionAddress;
++ (uintptr_t)getPtrFromGlobalOffset:(NSString *)searchFilePath globalFunOffset:(uintptr_t)globalFunOffset {
+    NSString *fullFilePath = [[Constant getCurrentAppPath] stringByAppendingString:searchFilePath];
+    uintptr_t fileOffset = [self getCacheFileOffset:fullFilePath];
+    NSString *imageName = [searchFilePath lastPathComponent];
+    int imageIndex = [self indexForImageWithName:imageName];
+    intptr_t funAddress = [MemoryUtils getPtrFromGlobalOffset:imageIndex globalFunOffset:globalFunOffset fileOffset:(uintptr_t)fileOffset];
+    return funAddress;
 }
 
-+ (uintptr_t)getPtrFromGlobalOffset:(uint32_t)index targetFunctionOffset:(uintptr_t)targetFunctionOffset {
-    return [self getPtrFromGlobalOffset:index targetFunctionOffset:targetFunctionOffset reduceOffset:0x4000];
-}
-
-+ (uintptr_t)getPtrFromGlobalOffset:(uint32_t)index targetFunctionOffset:(uintptr_t)targetFunctionOffset reduceOffset:(uintptr_t)reduceOffset {
++ (uintptr_t)getPtrFromGlobalOffset:(uint32_t)index globalFunOffset:(uintptr_t)globalFunOffset fileOffset:(uintptr_t)fileOffset {
     
     // arm : 0x100000000 + 0xa91360 - 0x960000
     // x86 : baseAddress + 0x14ef90 - 0x4000
-    // local offset + reduceOffset = global offset
+    // local offset + fileOffset = global offset
     uintptr_t result  = 0;
-    if ([Constant isArm]) {
-        if([Constant isDebuggerAttached]){
-            uintptr_t result = ARCH_FAT_SIZE+targetFunctionOffset-reduceOffset;
-            NSLogger(@"0x%lx + 0x%lx - 0x%lx = 0x%lx",ARCH_FAT_SIZE,targetFunctionOffset,reduceOffset,result);
-            return result;
-
-        }
-        result = _dyld_get_image_vmaddr_slide(index)+ARCH_FAT_SIZE+targetFunctionOffset-reduceOffset;
-        NSLogger(@"0x%lx + 0x%lx + 0x%lx - 0x%lx = 0x%lx ",_dyld_get_image_vmaddr_slide(index),ARCH_FAT_SIZE,targetFunctionOffset,reduceOffset,result);
-        return result;
-
-    }else {
-        const struct mach_header *header = _dyld_get_image_header(index);
-        uintptr_t baseAddress = (uintptr_t)header;
-        result = baseAddress + targetFunctionOffset - reduceOffset;
-        NSLogger(@"0x%lx + 0x%lx - 0x%lx = 0x%lx ",baseAddress,targetFunctionOffset,reduceOffset,result);
-        return result;
-
-    }
+//    const struct mach_header *header = _dyld_get_image_header(index);
+//    uintptr_t baseAddress = (uintptr_t)header;
+//    result = baseAddress + globalFunOffset - fileOffset;
+//    NSLogger(@"add1 0x%lx + 0x%lx - 0x%lx = 0x%lx ",baseAddress,globalFunOffset,fileOffset,result);
+    result = _dyld_get_image_vmaddr_slide(index)+ARCH_FAT_SIZE+globalFunOffset-fileOffset;
+    NSLogger(@"0x%lx + 0x%lx + 0x%lx - 0x%lx = 0x%lx ",_dyld_get_image_vmaddr_slide(index),ARCH_FAT_SIZE,globalFunOffset,fileOffset,result);
     return result;
 }
 
@@ -360,7 +356,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         NSString *currentImageNameString = [NSString stringWithUTF8String:currentImageName];
         
         if ([currentImageNameString.lastPathComponent isEqualToString:imageName]) {
-            NSLogger(@"indexForImageWithName: %@ -> %d", imageName,i);
+            NSLogger(@"%@ -> %d", imageName,i);
             return i;
         }
     }
@@ -486,20 +482,6 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     }
 }
 
-/**
- 交换 OC 对象方法,返回原始函数地址
- [MemoryUtils hookInstanceMethod:
-             objc_getClass("_TtC8DevUtils16WindowController")
-             originalSelector:NSSelectorFromString(@"showUnregistered")
-             swizzledClass:[self class]
-             swizzledSelector:NSSelectorFromString(@"hk_showUnregistered")
- ];
-
- @param originalClass 原始类
- @param originalSelector 原始类的方法
- @param swizzledClass 替换类
- @param swizzledSelector 替换类的方法
- */
 + (IMP)hookInstanceMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
     Method originalMethod = class_getInstanceMethod(originalClass, originalSelector);
     Method swizzledMethod = class_getInstanceMethod(swizzledClass, swizzledSelector);
@@ -522,19 +504,6 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     return imp;
 }
 
-/**
- 交换 OC 类方法,返回原始函数地址
- [MemoryUtils hookClassMethod:
-             objc_getClass("GlobalFunction")
-             originalSelector:NSSelectorFromString(@"isInChina")
-             swizzledClass:[self class]
-             swizzledSelector:@selector(hk_isInChina)
- ];
- @param originalClass 原始类
- @param originalSelector 原始类的类方法
- @param swizzledClass 替换类
- @param swizzledSelector 替换类的类方法
- */
 + (IMP)hookClassMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
     Method originalMethod = class_getClassMethod(originalClass, originalSelector);
     Method swizzledMethod = class_getClassMethod(swizzledClass, swizzledSelector);
@@ -558,20 +527,6 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     return imp;
 }
 
-/**
- 替换 OC 对象方法,返回原始函数地址
- [MemoryUtils hookInstanceMethod:
-             objc_getClass("_TtC8DevUtils16WindowController")
-             originalSelector:NSSelectorFromString(@"showUnregistered")
-             swizzledClass:[self class]
-             swizzledSelector:NSSelectorFromString(@"hk_showUnregistered")
- ];
-
- @param originalClass 原始类
- @param originalSelector 原始类的方法
- @param swizzledClass 替换类
- @param swizzledSelector 替换类的方法
- */
 + (IMP)replaceInstanceMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
     Method originalMethod = class_getInstanceMethod(originalClass, originalSelector);
     IMP swizzledImplementation = class_getMethodImplementation(swizzledClass, swizzledSelector);
@@ -597,19 +552,6 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     return imp;
 }
 
-/**
- 替换 OC 类方法,返回原始函数地址
- [MemoryUtils hookClassMethod:
-             objc_getClass("GlobalFunction")
-             originalSelector:NSSelectorFromString(@"isInChina")
-             swizzledClass:[self class]
-             swizzledSelector:@selector(hk_isInChina)
- ];
- @param originalClass 原始类
- @param originalSelector 原始类的类方法
- @param swizzledClass 替换类
- @param swizzledSelector 替换类的类方法
- */
 + (IMP)replaceClassMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
     Method originalMethod = class_getClassMethod(originalClass, originalSelector);
     IMP swizzledImplementation = class_getMethodImplementation(swizzledClass, swizzledSelector);
@@ -635,23 +577,69 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     return imp;
 }
 
-/**
- * 获取Object C类中的Ivar 一般用在函数hook上 但是还想调用内部成员的情况下
- * @param slf 直接传self
- * @param ivarName 变量名称 self->ivarName 或者 [self appInstance]这种
- * @return 返回id包装类 可以自由转为任意对象或者直接调用
- */
-+ (id) getInstanceIvar:(Class)slf ivarName:(const char *)ivarName {
++ (id) getInstanceIvar:(id)slf ivarName:(const char *)ivarName {
     Class cls = object_getClass(slf);
-    Ivar v = class_getInstanceVariable(cls, ivarName);
-    id ret = object_getIvar(slf, v);
-    return ret;
+    Ivar ivar = class_getInstanceVariable(cls, ivarName);
+
+    if (!ivar) {
+        NSLogger(@"%@.%s is null", slf, ivarName);
+        return nil;
+    }
+    const char *ivarType = ivar_getTypeEncoding(ivar);
+    ptrdiff_t ivarOffset = ivar_getOffset(ivar);
+    void *ivarPointer = (__bridge void *)slf + ivarOffset;
+    id result = nil; 
+
+    if (strcmp(ivarType, @encode(int)) == 0) {
+        int value = *(int *)ivarPointer;
+        result = @(value);
+    } else if (strcmp(ivarType, @encode(float)) == 0) {
+        float value = *(float *)ivarPointer;
+        result = @(value);
+    } else if (strcmp(ivarType, @encode(BOOL)) == 0) {
+        BOOL value = *(BOOL *)ivarPointer;
+        result = @(value);
+    } else if (strcmp(ivarType, @encode(double)) == 0) {
+        double value = *(double *)ivarPointer;
+        result = @(value);
+    } else if (ivarType[0] == '@') {
+        result = object_getIvar(slf, ivar);
+    } else {
+        // swift: ivarType is empty
+        NSLogger(@"[WARN] Unsupported type: %s", ivarType);
+        result = object_getIvar(slf, ivar);
+    }
+    NSLogger(@"%@.%s :[%s] = %@", slf, ivarName,ivarType ,result);
+    return result;
 }
 
-+ (void) setInstanceIvar:(Class)slf ivarName:(const char *)ivarName value:(id)value {
++ (void) setInstanceIvar:(id)slf ivarName:(const char *)ivarName value:(id)value {
     Class cls = object_getClass(slf);
-    Ivar v = class_getInstanceVariable(cls, ivarName);
-    object_setIvar(slf, v, value);
+
+    Ivar ivar = class_getInstanceVariable(cls, ivarName);
+    if (!ivar) {
+        NSLogger(@"%@.%s is null ",slf,ivarName);
+        return;
+    };
+    const char *ivarType = ivar_getTypeEncoding(ivar);
+    ptrdiff_t ivarOffset = ivar_getOffset(ivar);
+    void *ivarPointer = (__bridge void *)slf + ivarOffset;
+    if (strcmp(ivarType, @encode(int)) == 0) {
+        *(int *)ivarPointer = [value intValue];
+    } else if (strcmp(ivarType, @encode(float)) == 0) {
+        *(float *)ivarPointer = [value floatValue];
+    } else if (strcmp(ivarType, @encode(BOOL)) == 0) {
+        *(BOOL *)ivarPointer = [value boolValue];
+    } else if (strcmp(ivarType, @encode(double)) == 0) {
+        *(double *)ivarPointer = [value doubleValue];
+    } else if (ivarType[0] == '@') {
+        object_setIvar(slf, ivar, value);
+    } else {
+        // swift: ivarType is empty
+        NSLogger(@"[WARN] Unsupported type: %s", ivarType);
+        object_setIvar(slf, ivar, value);
+    }
+    NSLogger(@"%@.%s :[%s] set to %@", slf, ivarName, ivarType, value);
 }
 
 + (char *)CFStringToCString:(CFStringRef)cfString {
@@ -673,4 +661,158 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     return cString;
 }
 
+
++ (id)invokeSelector:(NSString *)selectorName onTarget:(id)target, ... {
+    NSLogger(@"selectorName = %@, target = %@", selectorName, target);
+    SEL selector = NSSelectorFromString(selectorName);
+    if (![target respondsToSelector:selector]) {
+        NSLogger(@"Target does not respond to selector %@", selectorName);
+        return nil;
+    }
+
+    NSMethodSignature *signature = [target methodSignatureForSelector:selector];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+    invocation.target = target;
+    invocation.selector = selector;
+    // [invocation setArgument:&param1 atIndex:2];
+    va_list args;
+    va_start(args, target);
+    NSUInteger numberOfArguments = [signature numberOfArguments];
+        
+    // 输出所有参数
+    NSMutableArray *params = [NSMutableArray array];
+    for (NSUInteger i = 2; i < numberOfArguments; i++) {
+        id arg = va_arg(args, id);
+        [params addObject:arg ? arg : [NSNull null]];
+        [invocation setArgument:&arg atIndex:i];
+    }
+    
+    va_end(args);
+    NSLogger(@"Parameters: %@", params);
+    
+    [invocation invoke];
+    const char *returnType = [signature methodReturnType];
+    id returnValue = nil;
+    if (strcmp(returnType, "v") != 0) { // void
+        if (strcmp(returnType, "@") == 0) { // obj
+         // __unsafe_unretained 避免 ARC 环境下自动增加引用计数，避免对象生命周期管理错误。
+            id __unsafe_unretained objValue;
+            [invocation getReturnValue:&objValue];
+            returnValue = objValue ? objValue : nil;
+        } else if (strcmp(returnType, "#") == 0) { // Class
+            Class classValue;
+            [invocation getReturnValue:&classValue];
+            returnValue = classValue;
+        } else if (strcmp(returnType, ":") == 0) { // SEL
+            SEL selValue;
+            [invocation getReturnValue:&selValue];
+            returnValue = NSStringFromSelector(selValue);
+        } else if (strcmp(returnType, "c") == 0) { // char
+            char charValue;
+            [invocation getReturnValue:&charValue];
+            returnValue = @(charValue);
+        } else if (strcmp(returnType, "C") == 0) { // unsigned char
+            unsigned char ucharValue;
+            [invocation getReturnValue:&ucharValue];
+            returnValue = @(ucharValue);
+        } else if (strcmp(returnType, "i") == 0) { // int
+            int intValue;
+            [invocation getReturnValue:&intValue];
+            returnValue = @(intValue);
+        } else if (strcmp(returnType, "I") == 0) { // unsigned int
+            unsigned int uintValue;
+            [invocation getReturnValue:&uintValue];
+            returnValue = @(uintValue);
+        } else if (strcmp(returnType, "s") == 0) { // short
+            short shortValue;
+            [invocation getReturnValue:&shortValue];
+            returnValue = @(shortValue);
+        } else if (strcmp(returnType, "S") == 0) { // unsigned short
+            unsigned short ushortValue;
+            [invocation getReturnValue:&ushortValue];
+            returnValue = @(ushortValue);
+        } else if (strcmp(returnType, "l") == 0) { // long
+            long longValue;
+            [invocation getReturnValue:&longValue];
+            returnValue = @(longValue);
+        } else if (strcmp(returnType, "L") == 0) { // unsigned long
+            unsigned long ulongValue;
+            [invocation getReturnValue:&ulongValue];
+            returnValue = @(ulongValue);
+        } else if (strcmp(returnType, "q") == 0) { // long long
+            long long longValue;
+            [invocation getReturnValue:&longValue];
+            returnValue = @(longValue);
+        } else if (strcmp(returnType, "Q") == 0) { // unsigned long long
+            unsigned long long ulonglongValue;
+            [invocation getReturnValue:&ulonglongValue];
+            returnValue = @(ulonglongValue);
+        } else if (strcmp(returnType, "f") == 0) { // float
+            float floatValue;
+            [invocation getReturnValue:&floatValue];
+            returnValue = @(floatValue);
+        } else if (strcmp(returnType, "d") == 0) { // double
+            double doubleValue;
+            [invocation getReturnValue:&doubleValue];
+            returnValue = @(doubleValue);
+        } else if (strcmp(returnType, "B") == 0) { // BOOL
+            BOOL boolValue;
+            [invocation getReturnValue:&boolValue];
+            returnValue = @(boolValue);
+        } else if (strcmp(returnType, "*") == 0) { // C String
+            char *cStringValue;
+            [invocation getReturnValue:&cStringValue];
+            returnValue = cStringValue ? [NSString stringWithUTF8String:cStringValue] : nil;
+        } else {
+            NSLogger(@"Unsupported return type: %s", returnType);
+            return nil;
+        }
+    }
+    NSLogger(@"Returning type: %s, value: %@", returnType,returnValue);
+    return returnValue;
+}
+
+
++ (uintptr_t)getCacheFileOffset:(NSString *)searchFilePath {
+    NSNumber *cachedFileOffset = fileOffsetCache[searchFilePath];
+    if (cachedFileOffset) {
+        return [cachedFileOffset unsignedIntegerValue];
+    } else {
+        uintptr_t fileOffset = [MemoryUtils getCurrentArchFileOffset:searchFilePath];
+        fileOffsetCache[searchFilePath] = @(fileOffset);
+        return fileOffset;
+    }
+}
+
++ (void)hookWithMachineCode:(NSString *)searchFilePath
+               machineCode:(NSString *)machineCode
+                  fake_func:(void *)fake_func
+                      count:(int)count {
+    [self hookWithMachineCode:searchFilePath machineCode:machineCode fake_func:fake_func count:count out_orig:NULL];
+}
+
++ (void)hookWithMachineCode:(NSString *)searchFilePath
+               machineCode:(NSString *)machineCode
+                  fake_func:(void *)fake_func
+                      count:(int)count
+                   out_orig:(void **)out_orig{
+    
+    NSString *fullFilePath = [[Constant getCurrentAppPath] stringByAppendingString:searchFilePath];
+    uintptr_t fileOffset = [self getCacheFileOffset:fullFilePath];
+    NSArray<NSNumber *> *codeOffsets = [self searchMachineCodeOffsets:fullFilePath
+                                                          machineCode:machineCode
+                                                                 count:count];
+    
+    NSString *imageName = [searchFilePath lastPathComponent];
+    int imageIndex = [self indexForImageWithName:imageName];
+    int processedCount = 0;
+    for (NSNumber *globalFunOffset in codeOffsets) {
+        if (processedCount >= count) {
+            break;
+        }
+        intptr_t funAddress = [MemoryUtils getPtrFromGlobalOffset:imageIndex globalFunOffset:(uintptr_t)[globalFunOffset unsignedIntegerValue] fileOffset:(uintptr_t)fileOffset];
+        DobbyHook((void *)funAddress, fake_func, out_orig);
+        processedCount++;
+    }
+}
 @end
