@@ -238,8 +238,6 @@
 		B581601C2BE8949B001DDB9B /* apps */ = {
 			isa = PBXGroup;
 			children = (
-				9CE4C5CF2CCA7C3600593C78 /* JSONUtils.h */,
-				9CE4C5D02CCA7C3600593C78 /* JSONUtils.m */,
 				B52BBA832CBFE1CE00F098A9 /* AirBuddyHack.m */,
 				B5EC63D72CBD39C700D92EEC /* AlfredHack.m */,
 				B5732BF02C82CD5900EC9E11 /* IDAHack.m */,
@@ -285,6 +283,8 @@
 				B5EAA9E12C8C3FC3008C4089 /* URLSessionHook.m */,
 				B513ADD62CB95D0B00F5DC97 /* LocalizationManager.h */,
 				B513ADD82CB95D4100F5DC97 /* LocalizationManager.m */,
+				9CE4C5CF2CCA7C3600593C78 /* JSONUtils.h */,
+				9CE4C5D02CCA7C3600593C78 /* JSONUtils.m */,
 				B5822CA82CBFFC020062383F /* Logger.h */,
 			);
 			path = utils;

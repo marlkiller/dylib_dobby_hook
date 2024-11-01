@@ -24,7 +24,7 @@
 | Alfred          | 5.      | ✔   | ✔   | https://www.alfredapp.com/app/update5/prerelease.xml | ON  | weizi    |
 | Irvue           | 2023.   | ✔   | ✔   | App Store                                            | ON  | weizi    |
 | VidHub          | 1.7.10  | ✔   | ✔   | App Store                                            | ON  | weizi    |
-
+| iShot          | 2.5.*  | ✔   | ✔   | App Store                                            | ON  | weizi    |
 <details>
   <summary>(TODO) Details</summary>
 </details>

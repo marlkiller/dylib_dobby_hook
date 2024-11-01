@@ -23,7 +23,7 @@
     return [result isKindOfClass:[NSString class]] ? result : nil;
 }
 
-+ (NSString *)getJSONObject2String:(NSDictionary *)json {
++ (NSString *)jsonStringFromObject:(NSDictionary *)json {
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingWithoutEscapingSlashes error:nil];
     return jsonData ? [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] : nil;
 }

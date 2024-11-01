@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface JSONUtils : NSObject
 
 + (NSString *)getVFromJSON:(NSString *)jsonString keyName:(NSString *)keyName;
-+ (NSString *)getJSONObject2String:(NSDictionary *)json;
++ (NSString *)jsonStringFromObject:(NSDictionary *)json;
 
 @end
 
