@@ -28,6 +28,32 @@
 + (NSArray *)searchMachineCodeOffsets:(NSString *)fullFilePath machineCode:(NSString *)searchMachineCode count:(int)count;
 
 + (uintptr_t)getPtrFromAddress:(NSString *)searchFilePath targetFunctionAddress:(uintptr_t)targetFunctionAddress;
+/**
+ * Retrieves the first pointer address matching the specified machine code from the given file path.
+ *
+ * Example usage:
+ * NSNumber *funAddress = [MemoryUtils getPtrFromMachineCode:@"/Contents/MacOS/Surge" machineCode:@“55 48 89 E5 41 57 41 56 41”];
+ *
+ * @param searchFilePath The path to search for the machine code.
+ * @param machineCode The machine code to search for.
+ * @return An NSNumber containing the pointer address, or nil if not found.
+ */
++ (NSNumber *)getPtrFromMachineCode:(NSString *)searchFilePath machineCode:(NSString *)machineCode;
+
+/**
+ * Retrieves an array of pointer addresses matching the specified machine code from the given file path.
+ *
+ * Example usage:
+ * NSArray<NSNumber *> *funAddresses = [MemoryUtils getPtrFromMachineCode:@"/Contents/MacOS/Surge" machineCode:@"55 48 89 E5 41 57 41 56 41" count:6];
+ *
+ * @param searchFilePath The path to search for the machine code.
+ * @param machineCode The machine code to search for.
+ * @param count The maximum number of matching addresses to retrieve.
+ * @return An NSArray of NSNumber containing pointer addresses, or an empty array if none found.
+ */
++ (NSArray<NSNumber *> *)getPtrFromMachineCode:(NSString *)searchFilePath machineCode:(NSString *)machineCode count:(int)count;
+
+
 + (uintptr_t)getPtrFromGlobalOffset:(NSString *)searchFilePath globalFunOffset:(uintptr_t)globalFunOffset;
 + (uintptr_t)getPtrFromGlobalOffset:(uint32_t)index globalFunOffset:(uintptr_t)globalFunOffset fileOffset:(uintptr_t)fileOffset;
 

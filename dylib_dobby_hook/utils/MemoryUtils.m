@@ -333,6 +333,42 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     return funAddress;
 }
 
+
++ (NSNumber *)getPtrFromMachineCode:(NSString *)searchFilePath machineCode:(NSString *)machineCode {
+    NSArray<NSNumber *> *funAddresses = [self getPtrFromMachineCode:searchFilePath machineCode:machineCode count:1];
+    if (funAddresses.count > 0) {
+        return funAddresses[0];
+    }
+    return nil;
+}
+
++ (NSArray<NSNumber *> *)getPtrFromMachineCode:(NSString *)searchFilePath machineCode:(NSString *)machineCode count:(int)count  {
+    
+    NSString *fullFilePath = [[Constant getCurrentAppPath] stringByAppendingString:searchFilePath];
+    uintptr_t fileOffset = [self getCacheFileOffset:fullFilePath];
+    NSArray<NSNumber *> *codeOffsets = [self searchMachineCodeOffsets:fullFilePath
+                                                          machineCode:machineCode
+                                                                count:count];
+    
+    NSString *imageName = [searchFilePath lastPathComponent];
+    int imageIndex = [self indexForImageWithName:imageName];
+    NSMutableArray<NSNumber *> *funAddresses = [NSMutableArray array];
+    
+    int processedCount = 0;
+    for (NSNumber *globalFunOffset in codeOffsets) {
+        if (processedCount >= count) {
+            break;
+        }
+        uintptr_t funAddress = [MemoryUtils getPtrFromGlobalOffset:imageIndex
+                                                  globalFunOffset:(uintptr_t)[globalFunOffset unsignedIntegerValue]
+                                                       fileOffset:fileOffset];
+        [funAddresses addObject:@(funAddress)];
+        processedCount++;
+    }
+    
+    return [funAddresses copy];
+}
+    
 + (uintptr_t)getPtrFromGlobalOffset:(uint32_t)index globalFunOffset:(uintptr_t)globalFunOffset fileOffset:(uintptr_t)fileOffset {
     
     // arm : 0x100000000 + 0xa91360 - 0x960000
