@@ -73,3 +73,4 @@ cmake-build-release
 release/libdylib_dobby_hook.dylib
 .DS_Store
 dylib_dobby_hook.tar.gz
+.cache
