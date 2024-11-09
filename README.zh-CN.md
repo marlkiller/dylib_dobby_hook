@@ -26,7 +26,7 @@
 ## Feat
 
 1. 跨平台 [intel/apple] HOOK
-2. Xcode|Clion 集成开发调试环境
+2. Xcode|Clion|VSCode 集成开发调试环境
 3. 特征码搜索
 
 查看受支持应用程序的完整列表 [here](./supported-apps.md).

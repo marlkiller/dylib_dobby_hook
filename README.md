@@ -26,7 +26,7 @@ Directory Structure:
 ## Feat
 
 1. Cross-platform [intel/apple] HOOK
-2. Integrated development and debugging environment with Xcode|CLion
+2. Integrated development and debugging environment with Xcode|CLion|VSCode
 3. Signature code search
 
 Check the full list of supported apps [here](./supported-apps.md).
