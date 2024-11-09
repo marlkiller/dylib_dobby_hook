@@ -45,6 +45,7 @@ set(LINK_OPTION
         -x
 )
 
+# x86_64;arm64;arm64e
 set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
 set(CMAKE_OSX_DEPLOYMENT_TARGET "14.2")
 

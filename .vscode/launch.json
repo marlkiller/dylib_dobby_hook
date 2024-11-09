@@ -10,7 +10,6 @@
             "cwd": "${fileDirname}",
             "environment": [
                 {
-                    // Need to sip off environment
                     "name": "DYLD_INSERT_LIBRARIES",
                     "value": "${workspaceFolder}/release/libdylib_dobby_hook.dylib"
                 }
