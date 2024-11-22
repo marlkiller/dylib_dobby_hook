@@ -3,7 +3,7 @@
 [English](https://github.com/marlkiller/dylib_dobby_hook/blob/master/README.md) | [中文](https://github.com/marlkiller/dylib_dobby_hook/blob/master/README.zh-CN.md) |[Others..TODO]()
 
 
-This project is a macOS dylib project that integrates the Dobby Hook framework, aiming to enhance software through the use of the Dobby Hook framework.
+This project is a macOS dylib project, aiming to enhance software through the use of the Hook framework.
 
 Development Environment:
 

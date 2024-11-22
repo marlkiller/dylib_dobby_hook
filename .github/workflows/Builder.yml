@@ -41,7 +41,7 @@ jobs:
         token: ${{ secrets.TOKEN }}
         tag: latest
         body: |
-          A macOS dylib project based on the Dobby Hook framework, aimed at enhancing and extending the functionality of target software.
+          A macOS dylib project, aimed at enhancing and extending the functionality of target software.
 
           ## Latest Commit
           ${{ github.event.head_commit.message }}        

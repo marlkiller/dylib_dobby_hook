@@ -3,7 +3,7 @@
 [English](https://github.com/marlkiller/dylib_dobby_hook/blob/master/README.md) | [中文](https://github.com/marlkiller/dylib_dobby_hook/blob/master/README.zh-CN.md) |[Others..TODO]()
 
 
-该项目是一个 macOS dylib 项目，集成了 Dobby Hook 框架，旨在通过使用 Dobby Hook 框架对软件进行辅助增强。
+该项目是一个 macOS dylib 项目，旨在通过 Hook 对软件进行辅助增强。
 
 开发环境:
 
