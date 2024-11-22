@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "Constant.h"
-#import "dobby.h"
+#import "tinyhook.h"
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
 #import "common_ret.h"
@@ -34,10 +34,10 @@ int (*validSubscriptionOri)(void);
 
     // 有効なサブスクリプションをフックする
     //    intptr_t validSubscription = [MemoryUtils getPtrFromAddress:0x1002e14dc];
-    //    DobbyHook(validSubscription, validSubscriptionNew, (void *)&validSubscriptionOri);
+    //    tiny_hook(validSubscription, validSubscriptionNew, (void *)&validSubscriptionOri);
     // cloudkitをフックする
     //    intptr_t _cloudKit = [MemoryUtils getPtrFromAddress:0x1002b7a68];
-    //    DobbyHook(_cloudKit, ret1, (void *)&_cloudKitOri);
+    //    tiny_hook(_cloudKit, ret1, (void *)&_cloudKitOri);
     
     [MemoryUtils hookInstanceMethod:objc_getClass("NSFileManager") originalSelector:NSSelectorFromString(@"ubiquityIdentityToken") swizzledClass:[self class] swizzledSelector:NSSelectorFromString(@"hook_ubiquityIdentityToken")];
         

@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Constant.h"
-#import "dobby.h"
+#import "tinyhook.h"
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
 #import "HackProtocolDefault.h"
@@ -34,11 +34,12 @@
 }
 
 - (BOOL)hack {
-    void* showCleanShotAWC = DobbySymbolResolver(
-                        "/Contents/Frameworks/Legit.framework/Versions/A/Legit",
+
+    void* showCleanShotAWC = sym_solve(
+                        [MemoryUtils indexForImageWithName:@"Legit"],
                         "_$s5Legit0A9CleanShotC11productName03appE07website5email8delegate15updaterDelegate16cloudAPIDelegateACSS_S3SAA0aK0_pAA0a7UpdaterK0_pAA0a5CloudM0_ptcfc"
      );
-    DobbyHook(showCleanShotAWC, ret0, NULL);
+    tiny_hook(showCleanShotAWC, ret0, NULL);
     
 #if defined(__arm64__) || defined(__aarch64__)
     NSString *checkHex = @"A8 EC 78 D3 BF 00 43 F2 88 00 88 9A 07 BD 40 92 08 FC 50 D3 29 FC 50 D3 5F 00 04 EB";

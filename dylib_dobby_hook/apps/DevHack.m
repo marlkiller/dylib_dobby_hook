@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Constant.h"
-#import "dobby.h"
+#import "tinyhook.h"
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
 #include <mach-o/dyld.h>
@@ -256,7 +256,7 @@ static NSWindow *myWindow = nil;
 //    ];
     
         
-////    DobbyHook((void *)viewDidLoadImp, (void *)my_viewDidLoad, (void *)&viewDidLoadImp_ori);
+////    tiny_hook((void *)viewDidLoadImp, (void *)my_viewDidLoad, (void *)&viewDidLoadImp_ori);
 //    
 //    
 //    
@@ -322,7 +322,7 @@ IMP originalMethodIMP = nil;
 }
 
 
-// 通过 DobbyHook 来 hook viewDidLoad
+// 通过 tiny_hook 来 hook viewDidLoad
 int (*viewDidLoadImp_ori)(void);
 void my_viewDidLoad(id self, SEL _cmd) {
     // self：指向当前对象实例的指针。在实例方法中，self 指向调用该方法的对象实例。在类方法中，self 指向类本身。

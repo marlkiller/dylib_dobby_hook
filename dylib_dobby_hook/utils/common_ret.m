@@ -40,20 +40,6 @@ void ret(void){
 }
 
 
-void DobbyCodePatchRet(uintptr_t targetAddress) {
-    printf(">>>>> DobbyCodePatchRet\n");
-
-#if defined(__arm64__) || defined(__aarch64__)
-    uint8_t retHexARM[4] = {0xC0, 0x03, 0x5F, 0xD6}; // ret
-    DobbyCodePatch((void *)targetAddress, retHexARM, sizeof(retHexARM));
-#elif defined(__x86_64__)
-    uint8_t retHex[1] = {0xC3}; // ret
-    DobbyCodePatch((void *)targetAddress, retHex, sizeof(retHex));
-#else
-    printf(">>>>> Unsupported architecture\n");
-#endif
-}
-
 // hook ptrace
 // 通过 ptrace 来检测当前进程是否被调试，通过检查 PT_DENY_ATTACH 标记是否被设置来判断。如果检测到该标记，说明当前进程正在被调试，可以采取相应的反调试措施。
 ptrace_ptr_t orig_ptrace = NULL;

@@ -15,7 +15,7 @@
 | Permute         | 3.*     | ✔   | ✔   | https://software.charliemonroe.net/permute/          |     |          |
 | ProxyMan        | 5.      | ✔   | ✔   | https://proxyman.io/                                 | ON  |          |
 | Movist Pro      | 2.*     | ✔   | ✔   | https://movistprime.com/                             |     |          |
-| Surge           | 5.8.*   | ✔   | ✔   | https://nssurge.com/                                 | ON  |          |
+| Surge           | 5.*     | ✔   | ✔   | https://nssurge.com/                                 | ON  |          |
 | Infuse          | 8.*     | ✔   | ✔   | App Store                                            |     |          |
 | MacUpdater      | 3.      | ✔   | ✔   | https://www.corecode.io/macupdater/#download         |     |          |
 | CleanShotX      | 4.      | ✔   | ✔   | https://updates.getcleanshot.com/v3/                 |     |          |

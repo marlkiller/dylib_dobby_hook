@@ -15,6 +15,7 @@
 
 1. dylib_dobby_hook: 源码
 2. libs: 项目依赖的库
+   - [tinyhook](https://github.com/Antibioticss/tinyhook)
 3. release: build 后的成品库
 4. script:
     - auto_hack.sh: 一键脚本 `sudo bash auto_hack.sh`

@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "dobby.h"
+#import "tinyhook.h"
 #import "common_ret.h"
 #import "HackProtocolDefault.h"
 #import <objc/objc-exception.h>

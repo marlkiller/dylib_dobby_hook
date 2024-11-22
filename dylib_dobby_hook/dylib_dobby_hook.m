@@ -6,7 +6,7 @@
 //
 
 #import "dylib_dobby_hook.h"
-#import "dobby.h"
+#import "tinyhook.h"
 #import "Constant.h"
 #import "MemoryUtils.h"
 #import <Cocoa/Cocoa.h>
@@ -29,9 +29,9 @@ int mySum(int a,int b){
 void initTest(void){
     
     NSLogger(@"before %d", sum(1, 2));
-    NSLogger(@"%s", DobbyGetVersion());
-//    DobbyHook(sum, mySum, (void *)&sum_p);
-    DobbyHook(sum, mySum, nil);
+    // NSLogger(@"%s", DobbyGetVersion());
+//    tiny_hook(sum, mySum, (void *)&sum_p);
+    tiny_hook(sum, mySum, nil);
     NSLogger(@"after %d", sum(1, 2));
 //    NSLogger(@"origin %d", sum_p(1, 2));
     

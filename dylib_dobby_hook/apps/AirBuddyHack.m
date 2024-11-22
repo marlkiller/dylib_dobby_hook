@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Constant.h"
-#import "dobby.h"
+#import "tinyhook.h"
 #import "MemoryUtils.h"
 #include "common_ret.h"
 #include <sys/ptrace.h>
@@ -81,15 +81,15 @@ void hook_sub_10005ad20(void){
 
 - (BOOL)hack {
 
-    DobbyHook(SecCodeCheckValidityWithErrors, (void *)hk_SecCodeCheckValidityWithErrors, (void *)&SecCodeCheckValidityWithErrors_ori);
+    tiny_hook(SecCodeCheckValidityWithErrors, (void *)hk_SecCodeCheckValidityWithErrors, (void *)&SecCodeCheckValidityWithErrors_ori);
     if ([[Constant getCurrentAppName] containsString:@"codes.rambo.AirBuddyHelper"]) {
         NSLogger(@"this is codes.rambo.AirBuddyHelper");
         return YES;
     }
     
     // 程序使用ptrace来进行动态调试保护，使得执行lldb的时候出现Process xxxx exited with status = 45 (0x0000002d)错误。
-    // 使用 DobbyHook 替换 ptrace函数。
-    DobbyHook((void *)ptrace, (void *)my_ptrace, (void *)&orig_ptrace);
+    // 使用 tiny_hook 替换 ptrace函数。
+    tiny_hook((void *)ptrace, (void *)my_ptrace, (void *)&orig_ptrace);
     
     // AMSkipOnboarding
     // defaults write codes.rambo.AirBuddy hasCompletedOnboarding -bool YES

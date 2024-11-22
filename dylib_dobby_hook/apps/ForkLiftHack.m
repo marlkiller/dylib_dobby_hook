@@ -11,7 +11,7 @@
 #import <objc/runtime.h>
 #include <sys/ptrace.h>
 #import <CloudKit/CloudKit.h>
-#import "dobby.h"
+#import "tinyhook.h"
 #import "HackProtocolDefault.h"
 
 @interface ForkLiftHack : HackProtocolDefault

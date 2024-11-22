@@ -15,7 +15,7 @@
 #import <AppKit/AppKit.h>
 #include <mach/mach_vm.h>
 #import "Logger.h"
-#import "dobby.h"
+#import "tinyhook.h"
 
 @implementation MemoryUtils
 
@@ -847,7 +847,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
             break;
         }
         intptr_t funAddress = [MemoryUtils getPtrFromGlobalOffset:imageIndex globalFunOffset:(uintptr_t)[globalFunOffset unsignedIntegerValue] fileOffset:(uintptr_t)fileOffset];
-        DobbyHook((void *)funAddress, fake_func, out_orig);
+        tiny_hook((void *)funAddress, fake_func, out_orig);
         processedCount++;
     }
 }

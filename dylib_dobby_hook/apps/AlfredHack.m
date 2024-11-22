@@ -14,7 +14,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Constant.h"
-#import "dobby.h"
+#import "tinyhook.h"
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
 #include <sys/ptrace.h>
@@ -42,11 +42,11 @@
 
 - (BOOL)hack {
     
-    DobbyHook((void *)ptrace, (void *)my_ptrace, (void *)&orig_ptrace);
+    tiny_hook((void *)ptrace, (void *)my_ptrace, (void *)&orig_ptrace);
     
-    void *symbol_address = DobbySymbolResolver("Alfred Framework", "_qrwG9chHdy1498");
+    void *symbol_address = sym_solve([MemoryUtils indexForImageWithName:@"Alfred Framework"], "_qrwG9chHdy1498");
     NSLogger(@"[qrwG9chHdy1498] address: %p",symbol_address);
-    DobbyHook(symbol_address ,ret1, NULL);
+    tiny_hook(symbol_address ,ret1, NULL);
 
     return YES;
 }

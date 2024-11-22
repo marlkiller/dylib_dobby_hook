@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Constant.h"
-#import "dobby.h"
+#import "tinyhook.h"
 #import <mach-o/dyld.h>
 #import <objc/runtime.h>
 #import <Cocoa/Cocoa.h>
@@ -82,7 +82,7 @@ static BOOL _helper;
 + (void)initialize {
     if (self == [Constant class]) {
         NSLogger(@"Constant initialize");
-        NSLogger(@"DobbyGetVersion: %s", DobbyGetVersion());
+        // NSLogger(@"DobbyGetVersion: %s", DobbyGetVersion());
 
         NSBundle *app = [NSBundle mainBundle];
         _currentAppName = [[app bundleIdentifier] copy];

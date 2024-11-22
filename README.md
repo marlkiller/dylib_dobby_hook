@@ -15,6 +15,7 @@ Directory Structure:
 
 1. dylib_dobby_hook: Source code
 2. libs: Libraries that the project depends on
+   - [tinyhook](https://github.com/Antibioticss/tinyhook)
 3. release: Built product libraries
 4. script:
    - auto_hack.sh: One-click script `sudo bash auto_hack.sh`

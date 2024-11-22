@@ -12,7 +12,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Constant.h"
-#import "dobby.h"
+#import "tinyhook.h"
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
 #include <mach-o/dyld.h>
@@ -39,11 +39,6 @@ int ret1 (void);
 int ret0 (void);
 void ret(void);
 
-
-/**
- * DobbyCodePatchRet when DobbyHook fails.
- */
-void DobbyCodePatchRet(uintptr_t targetAddress);
 
 // AntiAntiDebug 反反调试相关
 typedef int (*ptrace_ptr_t)(int _request, pid_t _pid, caddr_t _addr, int _data);

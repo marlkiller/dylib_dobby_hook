@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Constant.h"
-#import "dobby.h"
+#import "tinyhook.h"
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
 #import "HackProtocolDefault.h"
@@ -102,15 +102,15 @@ intptr_t handleHelper(intptr_t a1, intptr_t a2, intptr_t a3) {
     // 计算时间差
     NSDate *startTime = [NSDate date];
    // 直接 hook 导入表函数,似乎更优雅
-    void* isHideExpireLicenseBadge = DobbySymbolResolver(
-                                     "/Contents/Frameworks/ProxymanCore.framework/Versions/A/ProxymanCore", "_$s12ProxymanCore16AppConfigurationC24isHideExpireLicenseBadgeSbvg"
+    void* isHideExpireLicenseBadge = sym_solve(
+                                     [MemoryUtils indexForImageWithName:@"ProxymanCore"], "_$s12ProxymanCore16AppConfigurationC24isHideExpireLicenseBadgeSbvg"
                                      );
     // 记录结束时间
     NSDate *endTime = [NSDate date];
     // 计算时间差
     NSTimeInterval executionTime2 = [endTime timeIntervalSinceDate:startTime];
-    NSLogger(@"DobbySymbolResolver Execution Time: %f seconds", executionTime2);
-    DobbyHook(isHideExpireLicenseBadge, ret1, nil);
+    NSLogger(@"sym_solve Execution Time: %f seconds", executionTime2);
+    tiny_hook(isHideExpireLicenseBadge, ret1, nil);
 
 //    TODO: Undefined symbol: _DobbyImportTableReplace
 //    DobbyImportTableReplace(

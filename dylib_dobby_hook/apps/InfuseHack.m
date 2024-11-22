@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Constant.h"
-#import "dobby.h"
+#import "tinyhook.h"
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
 #include <sys/ptrace.h>
@@ -35,7 +35,7 @@
 
 - (BOOL)hack {
    
-    DobbyHook((void *)ptrace, (void *)my_ptrace, (void *)&orig_ptrace);
+    tiny_hook((void *)ptrace, (void *)my_ptrace, (void *)&orig_ptrace);
 
     [MemoryUtils hookInstanceMethod:
                 objc_getClass("FCInAppPurchaseServiceFreemium")
