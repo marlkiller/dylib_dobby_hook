@@ -35,7 +35,7 @@
 
 - (BOOL)hack {
 
-    void* showCleanShotAWC = sym_solve(
+    void* showCleanShotAWC = symexp_solve(
                         [MemoryUtils indexForImageWithName:@"Legit"],
                         "_$s5Legit0A9CleanShotC11productName03appE07website5email8delegate15updaterDelegate16cloudAPIDelegateACSS_S3SAA0aK0_pAA0a7UpdaterK0_pAA0a5CloudM0_ptcfc"
      );

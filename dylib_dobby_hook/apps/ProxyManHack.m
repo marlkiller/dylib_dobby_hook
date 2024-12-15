@@ -102,7 +102,7 @@ intptr_t handleHelper(intptr_t a1, intptr_t a2, intptr_t a3) {
     // 计算时间差
     NSDate *startTime = [NSDate date];
    // 直接 hook 导入表函数,似乎更优雅
-    void* isHideExpireLicenseBadge = sym_solve(
+    void* isHideExpireLicenseBadge = symexp_solve(
                                      [MemoryUtils indexForImageWithName:@"ProxymanCore"], "_$s12ProxymanCore16AppConfigurationC24isHideExpireLicenseBadgeSbvg"
                                      );
     // 记录结束时间
