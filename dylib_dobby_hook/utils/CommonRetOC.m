@@ -118,10 +118,21 @@
 
 - (void)hook_AllSecItem{
     NSLogger(@"hook_AllSecItem");
-    tiny_hook(SecItemAdd, hk_SecItemAdd, NULL);
-    tiny_hook(SecItemUpdate, hk_SecItemUpdate, NULL);
-    tiny_hook(SecItemDelete, hk_SecItemDelete, NULL);
-    tiny_hook(SecItemCopyMatching, hk_SecItemCopyMatching, NULL);
+    
+//    FIXME: 有些 app tiny_hook 第三个参数不能传 null, 否则奔溃, 不知道为什么;
+//    VM Region Info: 0 is not in any region.  Bytes before following region: 4438192128
+//          REGION TYPE                    START - END         [ VSIZE] PRT/MAX SHRMOD  REGION DETAIL
+//          UNUSED SPACE AT START
+//    --->
+//          __TEXT                      108897000-10a4f2000    [ 28.4M] r-x/r-x SM=COW  /Applications/Navicat Premium.app/Contents/MacOS/Navicat Premium
+//
+//    Thread 0 Crashed::  Dispatch queue: com.apple.main-thread
+//    0   Security                              0x7ff814322df9 SecItemCopyMatching + 0
+    
+    tiny_hook(SecItemAdd, hk_SecItemAdd,  (void *)&SecItemAdd_ori);
+    tiny_hook(SecItemUpdate, hk_SecItemUpdate, (void *)&SecItemUpdate_ori);
+    tiny_hook(SecItemDelete, hk_SecItemDelete, (void *)&SecItemDelete_ori);
+    tiny_hook(SecItemCopyMatching, hk_SecItemCopyMatching,(void *)&SecItemCopyMatching_ori);
 }
 
 - (void)hook_AllSecCode:teamIdentifier{

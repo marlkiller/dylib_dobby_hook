@@ -134,9 +134,17 @@ extern SecCodeCopySigningInformation_ptr_t SecCodeCopySigningInformation_ori;
  * - hk_SecItemDelete: Deletes an item.
  * - hk_SecItemCopyMatching: Retrieves an item.
  */
+typedef OSStatus (*SecItemAdd_ptr_t)(CFDictionaryRef attributes, CFTypeRef *result);
+extern SecItemAdd_ptr_t SecItemAdd_ori;
 OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result);
+typedef OSStatus (*SecItemUpdate_ptr_t)(CFDictionaryRef query, CFDictionaryRef attributesToUpdate);
+extern SecItemUpdate_ptr_t SecItemUpdate_ori;
 OSStatus hk_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate);
+typedef OSStatus (*SecItemDelete_ptr_t)(CFDictionaryRef query);
+extern SecItemDelete_ptr_t SecItemDelete_ori;
 OSStatus hk_SecItemDelete(CFDictionaryRef query);
+typedef OSStatus (*SecItemCopyMatching_ptr_t)(CFDictionaryRef query, CFTypeRef *result);
+extern SecItemCopyMatching_ptr_t SecItemCopyMatching_ori;
 OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result);
 
 NSString *love69(NSString *input);

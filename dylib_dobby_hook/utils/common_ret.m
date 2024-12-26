@@ -220,6 +220,7 @@ OSStatus hk_SecCodeCopySigningInformation(SecCodeRef codeRef, SecCSFlags flags, 
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+SecItemAdd_ptr_t SecItemAdd_ori = NULL;
 OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
     NSLogger(@"hk_SecItemAdd");
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(attributes, kSecAttrService);
@@ -257,6 +258,7 @@ OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
     return status;
 }
 
+SecItemUpdate_ptr_t SecItemUpdate_ori = NULL;
 OSStatus hk_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate) {
     NSLogger(@"hk_SecItemUpdate");
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
@@ -293,6 +295,7 @@ OSStatus hk_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpd
     return status;
 }
 
+SecItemDelete_ptr_t SecItemDelete_ori = NULL;
 OSStatus hk_SecItemDelete(CFDictionaryRef query) {
     NSLogger(@"hk_SecItemDelete");
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
@@ -319,6 +322,7 @@ OSStatus hk_SecItemDelete(CFDictionaryRef query) {
     return status;
 }
 
+SecItemCopyMatching_ptr_t SecItemCopyMatching_ori = NULL;
 OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
     NSLogger(@"hk_SecItemCopyMatching");
     // 从查询字典中提取 service 和 account
