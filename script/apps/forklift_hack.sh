@@ -93,8 +93,8 @@ echo -e "${GREEN}🔍 Checking code signature before re-signing${NC}"
 sudo codesign -d -r- "$app_helper_path"
 
 echo -e "${GREEN}🔏 Re-signing $app_name and $helper_name...${NC}"
-sudo codesign -f -s - --all-architectures --deep "$app_path"
 sudo codesign -f -s - --all-architectures --deep "$app_helper_path"
+sudo codesign -f -s - --all-architectures --deep "$app_path"
 
 echo -e "${GREEN}🔍 Checking code signature after re-signing${NC}"
 sudo codesign -d -r- "$app_helper_path"

@@ -42,7 +42,7 @@ void ret(void){
 
 // hook ptrace
 // 通过 ptrace 来检测当前进程是否被调试，通过检查 PT_DENY_ATTACH 标记是否被设置来判断。如果检测到该标记，说明当前进程正在被调试，可以采取相应的反调试措施。
-ptrace_ptr_t orig_ptrace = NULL;
+PtraceFuncPtr orig_ptrace = NULL;
 int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data) {
     if(_request != 31){
         // 如果请求不是 PT_DENY_ATTACH，则调用原始的 ptrace 函数
@@ -55,7 +55,7 @@ int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data) {
 
 // hook sysctl
 // 通过 sysctl 去查看当前进程的信息，看有没有这个标记位即可检查当前调试状态。
-sysctl_ptr_t orig_sysctl = NULL;
+SysctlFuncPtr orig_sysctl = NULL;
 int my_sysctl(int * name, u_int namelen, void * info, size_t * infosize, void * newinfo, size_t newinfosize){
     int ret = orig_sysctl(name,namelen,info,infosize,newinfo,newinfosize);
     if(namelen == 4 && name[0] == 1 && name[1] == 14 && name[2] == 1){
@@ -74,7 +74,7 @@ int my_sysctl(int * name, u_int namelen, void * info, size_t * infosize, void * 
 // hook task_get_exception_ports
 // 通过 task_get_exception_ports 来检查当前任务的异常端口设置，以检测调试器的存在或者检查调试器是否修改了异常端口设置。如果发现异常端口被修改，可能表明调试器介入了目标进程的执行。
 // some app will crash with _dyld_debugger_notification
-task_get_exception_ports_ptr_t orig_task_get_exception_ports = NULL;
+TaskGetExceptionPortsFuncPtr orig_task_get_exception_ports = NULL;
 kern_return_t my_task_get_exception_ports
 (
  task_inspect_t task,
@@ -107,7 +107,7 @@ kern_return_t my_task_get_exception_ports
 
 // hook task_swap_exception_ports
 // 通过 task_swap_exception_ports 来动态修改异常处理端口设置，以防止调试器对异常消息进行拦截或修改。例如，恶意软件可以将异常端口设置为自定义的端口，从而阻止调试器捕获异常消息，使调试器无法获取目标进程的状态信息。
-task_swap_exception_ports_ptr_t orig_task_swap_exception_ports = NULL;
+TaskSwapExceptionPortsFuncPtr orig_task_swap_exception_ports = NULL;
 kern_return_t my_task_swap_exception_ports(
     task_t task,
     exception_mask_t exception_mask,
@@ -148,7 +148,7 @@ void logSecRequirement(SecRequirementRef requirement, SecCSFlags flags) {
     }
 }
 
-SecCodeCheckValidity_ptr_t SecCodeCheckValidity_ori = NULL;
+SecCodeCheckValidityFuncPtr SecCodeCheckValidity_ori = NULL;
 OSStatus hk_SecCodeCheckValidity(SecCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement) {
     NSLogger(@"flags = %d",flags);
     logSecRequirement(requirement, flags);
@@ -156,14 +156,14 @@ OSStatus hk_SecCodeCheckValidity(SecCodeRef staticCode, SecCSFlags flags, SecReq
 }
 
 
-SecStaticCodeCheckValidity_ptr_t SecStaticCodeCheckValidity_ori = NULL;
+SecStaticCodeCheckValidityFuncPtr SecStaticCodeCheckValidity_ori = NULL;
 OSStatus hk_SecStaticCodeCheckValidity(SecStaticCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement) {
     NSLogger(@"flags = %d",flags);
     logSecRequirement(requirement, flags);
     return errSecSuccess;
 }
 
-SecCodeCheckValidityWithErrors_ptr_t SecCodeCheckValidityWithErrors_ori = NULL;
+SecCodeCheckValidityWithErrorsFuncPtr SecCodeCheckValidityWithErrors_ori = NULL;
 OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors) {
     // anchor apple generic and certificate leaf[subject.OU] = "J3CP9BBBN6"
     // NSString* fakeRequirement = [NSString stringWithFormat:@"identifier \"com.binarynights.ForkLift\""];
@@ -172,7 +172,7 @@ OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags, Se
     return errSecSuccess;
 }
 
-SecStaticCodeCheckValidityWithErrors_ptr_t SecStaticCodeCheckValidityWithErrors_ori = NULL;
+SecStaticCodeCheckValidityWithErrorsFuncPtr SecStaticCodeCheckValidityWithErrors_ori = NULL;
 OSStatus hk_SecStaticCodeCheckValidityWithErrors(SecStaticCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors) {
     NSLogger(@"requirement = %@", requirement);
     logSecRequirement(requirement, flags);
@@ -180,7 +180,7 @@ OSStatus hk_SecStaticCodeCheckValidityWithErrors(SecStaticCodeRef code, SecCSFla
 }
 
 const char* teamIdentifier_ori = "TBD"; // Need to define before calling
-SecCodeCopySigningInformation_ptr_t SecCodeCopySigningInformation_ori = NULL;
+SecCodeCopySigningInformationFuncPtr SecCodeCopySigningInformation_ori = NULL;
 OSStatus hk_SecCodeCopySigningInformation(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo) {
 
     OSStatus status = SecCodeCopySigningInformation_ori(codeRef, flags, signingInfo);
@@ -220,7 +220,7 @@ OSStatus hk_SecCodeCopySigningInformation(SecCodeRef codeRef, SecCSFlags flags, 
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-SecItemAdd_ptr_t SecItemAdd_ori = NULL;
+SecItemAddFuncPtr SecItemAdd_ori = NULL;
 OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
     NSLogger(@"hk_SecItemAdd");
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(attributes, kSecAttrService);
@@ -258,7 +258,7 @@ OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
     return status;
 }
 
-SecItemUpdate_ptr_t SecItemUpdate_ori = NULL;
+SecItemUpdateFuncPtr SecItemUpdate_ori = NULL;
 OSStatus hk_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate) {
     NSLogger(@"hk_SecItemUpdate");
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
@@ -295,7 +295,7 @@ OSStatus hk_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpd
     return status;
 }
 
-SecItemDelete_ptr_t SecItemDelete_ori = NULL;
+SecItemDeleteFuncPtr SecItemDelete_ori = NULL;
 OSStatus hk_SecItemDelete(CFDictionaryRef query) {
     NSLogger(@"hk_SecItemDelete");
     CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
@@ -322,7 +322,7 @@ OSStatus hk_SecItemDelete(CFDictionaryRef query) {
     return status;
 }
 
-SecItemCopyMatching_ptr_t SecItemCopyMatching_ori = NULL;
+SecItemCopyMatchingFuncPtr SecItemCopyMatching_ori = NULL;
 OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
     NSLogger(@"hk_SecItemCopyMatching");
     // 从查询字典中提取 service 和 account

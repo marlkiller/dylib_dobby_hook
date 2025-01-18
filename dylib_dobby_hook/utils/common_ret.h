@@ -41,16 +41,16 @@ void ret(void);
 
 
 // AntiAntiDebug 反反调试相关
-typedef int (*ptrace_ptr_t)(int _request, pid_t _pid, caddr_t _addr, int _data);
+typedef int (*PtraceFuncPtr)(int _request, pid_t _pid, caddr_t _addr, int _data);
 int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data);
-extern ptrace_ptr_t orig_ptrace;
+extern PtraceFuncPtr orig_ptrace;
 
 
-typedef int (*sysctl_ptr_t)(int * name, u_int namelen, void * info, size_t * infosize, void * newinfo, size_t newinfosize);
+typedef int (*SysctlFuncPtr)(int * name, u_int namelen, void * info, size_t * infosize, void * newinfo, size_t newinfosize);
 int my_sysctl(int * name, u_int namelen, void * info, size_t * infosize, void * newinfo, size_t newinfosize);
-extern sysctl_ptr_t orig_sysctl;
+extern SysctlFuncPtr orig_sysctl;
 
-typedef kern_return_t (*task_get_exception_ports_ptr_t)(
+typedef kern_return_t (*TaskGetExceptionPortsFuncPtr)(
     task_inspect_t task,
     exception_mask_t exception_mask,
     exception_mask_array_t masks,
@@ -69,10 +69,10 @@ kern_return_t my_task_get_exception_ports
      exception_behavior_array_t old_behaviors,
      exception_flavor_array_t old_flavors
  );
-extern task_get_exception_ports_ptr_t orig_task_get_exception_ports;
+extern TaskGetExceptionPortsFuncPtr orig_task_get_exception_ports;
 
 
-typedef kern_return_t (*task_swap_exception_ports_ptr_t)(
+typedef kern_return_t (*TaskSwapExceptionPortsFuncPtr)(
     task_t task,
     exception_mask_t exception_mask,
     mach_port_t new_port,
@@ -97,33 +97,33 @@ kern_return_t my_task_swap_exception_ports
      exception_behavior_array_t old_behaviors,
      thread_state_flavor_array_t old_flavors
  );
-extern task_swap_exception_ports_ptr_t orig_task_swap_exception_ports;
+extern TaskSwapExceptionPortsFuncPtr orig_task_swap_exception_ports;
 
 
 
 /// Apple Sec..
-typedef OSStatus (*SecCodeCheckValidity_ptr_t)(SecCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement);
+typedef OSStatus (*SecCodeCheckValidityFuncPtr)(SecCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement);
 OSStatus hk_SecCodeCheckValidity(SecCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement);
-extern SecCodeCheckValidity_ptr_t SecCodeCheckValidity_ori;
+extern SecCodeCheckValidityFuncPtr SecCodeCheckValidity_ori;
 
 
-typedef OSStatus (*SecStaticCodeCheckValidity_ptr_t)(SecStaticCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement);
+typedef OSStatus (*SecStaticCodeCheckValidityFuncPtr)(SecStaticCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement);
 OSStatus hk_SecStaticCodeCheckValidity(SecStaticCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement);
-extern SecStaticCodeCheckValidity_ptr_t SecStaticCodeCheckValidity_ori;
+extern SecStaticCodeCheckValidityFuncPtr SecStaticCodeCheckValidity_ori;
 
-typedef OSStatus (*SecCodeCheckValidityWithErrors_ptr_t)(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors);
+typedef OSStatus (*SecCodeCheckValidityWithErrorsFuncPtr)(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors);
 OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors);
-extern SecCodeCheckValidityWithErrors_ptr_t SecCodeCheckValidityWithErrors_ori;
+extern SecCodeCheckValidityWithErrorsFuncPtr SecCodeCheckValidityWithErrors_ori;
 
-typedef OSStatus (*SecStaticCodeCheckValidityWithErrors_ptr_t)(SecStaticCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors);
+typedef OSStatus (*SecStaticCodeCheckValidityWithErrorsFuncPtr)(SecStaticCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors);
 OSStatus hk_SecStaticCodeCheckValidityWithErrors(SecStaticCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors);
-extern SecStaticCodeCheckValidityWithErrors_ptr_t SecStaticCodeCheckValidityWithErrors_ori;
+extern SecStaticCodeCheckValidityWithErrorsFuncPtr SecStaticCodeCheckValidityWithErrors_ori;
 
 
 extern const char* teamIdentifier_ori;
-typedef OSStatus (*SecCodeCopySigningInformation_ptr_t)(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo);
+typedef OSStatus (*SecCodeCopySigningInformationFuncPtr)(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo);
 OSStatus hk_SecCodeCopySigningInformation(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo);
-extern SecCodeCopySigningInformation_ptr_t SecCodeCopySigningInformation_ori;
+extern SecCodeCopySigningInformationFuncPtr SecCodeCopySigningInformation_ori;
 
 
 /// KeyChain
@@ -134,17 +134,17 @@ extern SecCodeCopySigningInformation_ptr_t SecCodeCopySigningInformation_ori;
  * - hk_SecItemDelete: Deletes an item.
  * - hk_SecItemCopyMatching: Retrieves an item.
  */
-typedef OSStatus (*SecItemAdd_ptr_t)(CFDictionaryRef attributes, CFTypeRef *result);
-extern SecItemAdd_ptr_t SecItemAdd_ori;
+typedef OSStatus (*SecItemAddFuncPtr)(CFDictionaryRef attributes, CFTypeRef *result);
+extern SecItemAddFuncPtr SecItemAdd_ori;
 OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result);
-typedef OSStatus (*SecItemUpdate_ptr_t)(CFDictionaryRef query, CFDictionaryRef attributesToUpdate);
-extern SecItemUpdate_ptr_t SecItemUpdate_ori;
+typedef OSStatus (*SecItemUpdateFuncPtr)(CFDictionaryRef query, CFDictionaryRef attributesToUpdate);
+extern SecItemUpdateFuncPtr SecItemUpdate_ori;
 OSStatus hk_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate);
-typedef OSStatus (*SecItemDelete_ptr_t)(CFDictionaryRef query);
-extern SecItemDelete_ptr_t SecItemDelete_ori;
+typedef OSStatus (*SecItemDeleteFuncPtr)(CFDictionaryRef query);
+extern SecItemDeleteFuncPtr SecItemDelete_ori;
 OSStatus hk_SecItemDelete(CFDictionaryRef query);
-typedef OSStatus (*SecItemCopyMatching_ptr_t)(CFDictionaryRef query, CFTypeRef *result);
-extern SecItemCopyMatching_ptr_t SecItemCopyMatching_ori;
+typedef OSStatus (*SecItemCopyMatchingFuncPtr)(CFDictionaryRef query, CFTypeRef *result);
+extern SecItemCopyMatchingFuncPtr SecItemCopyMatching_ori;
 OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result);
 
 NSString *love69(NSString *input);
