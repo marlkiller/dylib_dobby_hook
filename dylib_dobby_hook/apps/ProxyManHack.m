@@ -44,7 +44,7 @@ intptr_t getProxyManAppStruct(void) {
     intptr_t *licenseKey = (intptr_t *)(*licenseServer + 0x70);
     // 修改授权信息为激活状态
     *licenseKey = 0x0;
-    NSLogger(@"getProxyManAppStructOriginalAddress address: %p", (void*)getProxyManAppStructOriginalAddress);
+//    NSLogger(@"getProxyManAppStructOriginalAddress address: %p", (void*)getProxyManAppStructOriginalAddress);
     return app;
 }
 
