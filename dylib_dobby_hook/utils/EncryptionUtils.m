@@ -27,6 +27,9 @@
     NSTask *task = [[NSTask alloc] init];
     [task setLaunchPath:@"/bin/sh"];
     [task setArguments:@[@"-c", command]];
+    NSMutableDictionary *env = [[[NSProcessInfo processInfo] environment] mutableCopy];
+    [env removeObjectForKey:@"DYLD_INSERT_LIBRARIES"];
+    [task setEnvironment:env];
 
     NSPipe *pipe = [NSPipe pipe];
     [task setStandardOutput:pipe];
@@ -41,8 +44,10 @@
     if (trim) {
         outputString = [outputString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }
-    NSLogger(@"[Command] ➜ %@ | Status: %d | Output: %@",
-              command, [task terminationStatus], outputString);
+
+    // 日志输出，查看命令状态
+    NSLogger(@"[Command] ➜ %@ | Status: %d | Output: %@", command, [task terminationStatus], outputString);
+
     return outputString;
 }
 
