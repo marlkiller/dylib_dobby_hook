@@ -45,7 +45,7 @@ ALL_APPS_LIST=(
     #"xx|/Applications/xx.app/Contents/Frameworks/Paddle.framework/Versions/A/Paddle"
 
     ## fixed with helper
-    "IDA Professional 9.0|Contents/Frameworks/QtDBus.framework/Versions/5/QtDBus|apps/ida_hack.sh"
+    "IDA Professional 9.1|Contents/Frameworks/QtDBus.framework/Versions/5/QtDBus|apps/ida_hack.sh"
     "ForkLift|Contents/Frameworks/UniversalDetector.framework/Versions/A/UniversalDetector|apps/fix_helper_and_inject.sh|com.binarynights.ForkLiftHelper"
     "Proxyman|Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend|apps/fix_helper.sh|com.proxyman.NSProxy.HelperTool"
     #"Surge|/Applications/Surge.app/Contents/Frameworks/MMMarkdown.framework/Versions/A/MMMarkdown|apps/surge_hack.sh"

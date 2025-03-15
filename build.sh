@@ -23,7 +23,7 @@ FILES=(
 )
 EXCLUDE_FILES=(
   "Organismo-mac.framework"
-  "script/apps/IDA/plugins/patching" # Too Big
+  "script/apps/IDA/plugins/" # Too Big
 )
 
 ARCHIVE_NAME="dylib_dobby_hook.tar.gz"

@@ -31,16 +31,8 @@
     return @"9.";
 }
 - (BOOL)hack {
-    
-   
-    // libida32.dylib/libida64.dylib
-    // ED FD 42 5C F9 78 -> ED FD 42 CB F9 78
-
-
-    tiny_hook(objc_addExceptionHandler, (void *)ret0, NULL);
-    tiny_hook(objc_removeExceptionHandler, (void *)ret0, NULL);
-
-    
+    // tiny_hook(objc_addExceptionHandler, (void *)ret0, NULL);
+    // tiny_hook(objc_removeExceptionHandler, (void *)ret0, NULL);
     return YES;
 }
 

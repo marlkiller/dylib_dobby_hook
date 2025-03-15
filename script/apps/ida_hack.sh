@@ -14,7 +14,7 @@ mac_patch_helper_config="$PWD/../tools/patch.json"
 
 
 sudo chmod a+x $mac_patch_helper
-ida_path="/Applications/IDA Professional 9.0.app"
+ida_path="/Applications/IDA Professional 9.1.app"
 app_name=$(basename "$ida_path" .app)
 
 /usr/bin/xattr -cr "$mac_patch_helper"
@@ -55,4 +55,5 @@ fi
 
 
 # sudo codesign --force --deep --sign - /Applications/IDA\ Professional\ 9.0.app/Contents/MacOS/libida64.dylib
+# sudo codesign --force --deep --sign - /Applications/IDA\ Professional\ 9.0.app/Contents/MacOS/libida32.dylib
 # sudo codesign --force --deep --sign - /Applications/IDA\ Professional\ 9.0.app/Contents/MacOS/libida.dylib

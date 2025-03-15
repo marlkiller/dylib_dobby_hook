@@ -31,7 +31,7 @@
   },
   "IDA":{
     "patch":{
-      "/Applications/IDA Professional 9.0.app/Contents/MacOS/libida.dylib":{
+      "/Applications/IDA Professional 9.1.app/Contents/MacOS/libida.dylib":{
         "x86": {
           "ED FD 42 5C F9 78": "ED FD 42 CB F9 78"
         },
@@ -39,7 +39,7 @@
           "ED FD 42 5C F9 78": "ED FD 42 CB F9 78"
         }
       },
-      "/Applications/IDA Professional 9.0.app/Contents/MacOS/libida32.dylib":{
+      "/Applications/IDA Professional 9.1.app/Contents/MacOS/libida32.dylib":{
         "x86": {
           "ED FD 42 5C F9 78": "ED FD 42 CB F9 78"
         },
@@ -47,7 +47,7 @@
           "ED FD 42 5C F9 78": "ED FD 42 CB F9 78"
         }
       },
-      "/Applications/IDA Professional 9.0.app/Contents/MacOS/libida64.dylib":{
+      "/Applications/IDA Professional 9.1.app/Contents/MacOS/libida64.dylib":{
         "x86": {
           "ED FD 42 5C F9 78": "ED FD 42 CB F9 78"
         },
