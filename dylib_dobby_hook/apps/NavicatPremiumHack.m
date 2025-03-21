@@ -20,6 +20,7 @@
 
 
 static IMP displayRegisteredInfoIMP;
+static IMP subscriptionIsValidIMP;
 
 
 - (NSString *)getAppName {
@@ -49,7 +50,7 @@ static IMP displayRegisteredInfoIMP;
     [self hook_AllSecItem];
 
     [MemoryUtils hookInstanceMethod:
-                objc_getClass("IAPHelper")
+                objc_getClass("_TtC15Navicat_Premium9IAPHelper")
                 originalSelector:NSSelectorFromString(@"isProductSubscriptionStillValid")
                 swizzledClass:[self class]
                 swizzledSelector: @selector(ret1)
@@ -62,6 +63,12 @@ static IMP displayRegisteredInfoIMP;
                 swizzledSelector:@selector(ret)
     ];
 
+    [MemoryUtils hookClassMethod:
+                    objc_getClass("CCCore")
+                originalSelector:NSSelectorFromString(@"initializeRegistrationCallback")
+                   swizzledClass:[self class]
+                swizzledSelector:@selector(ret)
+    ];
 
     displayRegisteredInfoIMP = [MemoryUtils hookInstanceMethod:
                                     NSClassFromString(@"AboutNavicatWindowController")
@@ -69,8 +76,13 @@ static IMP displayRegisteredInfoIMP;
                       swizzledClass:[self class]
                    swizzledSelector: @selector(hk_displayRegisteredInfo)
     ];
-    
-    
+
+    subscriptionIsValidIMP = [MemoryUtils hookInstanceMethod:
+                    NSClassFromString(@"AppDelegate")
+                                              originalSelector:NSSelectorFromString(@"subscriptionIsValid:")
+                                                 swizzledClass:[self class]
+                                              swizzledSelector: @selector(hk_subscriptionIsValid)
+    ];
     return YES;
 }
 - (void)hk_displayRegisteredInfo {
@@ -83,4 +95,9 @@ static IMP displayRegisteredInfoIMP;
     }
 
 }
+
+- (void)hk_subscriptionIsValid {
+    ((void(*)(id, SEL, id))subscriptionIsValidIMP)(self, _cmd, @(1));
+}
+
 @end
