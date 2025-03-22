@@ -63,7 +63,7 @@ static IMP subscriptionIsValidIMP;
                 swizzledSelector:@selector(ret)
     ];
 
-    [MemoryUtils hookClassMethod:
+    [MemoryUtils replaceClassMethod:
                     objc_getClass("CCCore")
                 originalSelector:NSSelectorFromString(@"initializeRegistrationCallback")
                    swizzledClass:[self class]
@@ -81,7 +81,7 @@ static IMP subscriptionIsValidIMP;
                     NSClassFromString(@"AppDelegate")
                                               originalSelector:NSSelectorFromString(@"subscriptionIsValid:")
                                                  swizzledClass:[self class]
-                                              swizzledSelector: @selector(hk_subscriptionIsValid)
+                                            swizzledSelector: @selector(hk_subscriptionIsValid:)
     ];
     return YES;
 }
@@ -96,7 +96,7 @@ static IMP subscriptionIsValidIMP;
 
 }
 
-- (void)hk_subscriptionIsValid {
+- (void)hk_subscriptionIsValid:arg1{
     ((void(*)(id, SEL, id))subscriptionIsValidIMP)(self, _cmd, @(1));
 }
 
