@@ -25,7 +25,7 @@
 
 + (NSString *)runCommand:(NSString *)command trimWhitespace:(BOOL)trim {
     NSTask *task = [[NSTask alloc] init];
-    [task setLaunchPath:@"/bin/sh"];
+    [task setLaunchPath:@"/bin/bash"];
     [task setArguments:@[@"-c", command]];
     NSMutableDictionary *env = [[[NSProcessInfo processInfo] environment] mutableCopy];
     [env removeObjectForKey:@"DYLD_INSERT_LIBRARIES"];
@@ -62,8 +62,8 @@
 //    f0:18:98:1b:24:20C02X51AJJG5J > md5 = ee4f1d1890b4eb49a5a4d7f195ca8b67
     NSString *mac = [self runCommand:@"networksetup -getmacaddress en0| grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'" trimWhitespace:YES];
     NSString *Serial = [self runCommand:@"system_profiler SPHardwareDataType | grep Serial | awk '{print $4}'" trimWhitespace:YES];
-    return [self runCommand:[NSString stringWithFormat:@"printf '%%s' \"%@%@\" | md5", mac, Serial] trimWhitespace:YES];
-   
+    //    return [self runCommand:[NSString stringWithFormat:@"printf '%%s' \"%@%@\" | md5", mac, Serial] trimWhitespace:YES];
+    return [self runCommand:[NSString stringWithFormat:@"echo -n \"%@%@\" | md5", mac, Serial] trimWhitespace:YES];
 }
 
 + (NSString *)generateSurgeDeviceId{
@@ -521,8 +521,20 @@
     CFNumberGetValue(flagsNumber, kCFNumberSInt32Type, &flags);
     NSLogger(@"Flags: %d", flags);
 
-    // 常量定义
-    // ref: https://opensource.apple.com/source/xnu/xnu-4903.221.2/osfmk/kern/cs_blobs.h.auto.html
+//    flags : https://developer.apple.com/documentation/security/seccodesignatureflags/forcekill?language=objc
+//    codesign -d -vvv /xxx
+//    0x0    none    没有额外标志
+//    0x0001    kSecCodeSignatureHost    允许代码充当 动态代码加载的宿主（host），如插件或扩展
+//    0x0002    kSecCodeSignatureAdhoc    该签名是 临时签名（Ad-Hoc），即没有使用 Apple 颁发的证书签名
+//    0x0100    kSecCodeSignatureForceHard    强制启用 Hardened Runtime，即使没有在 codesign 选项中指定
+//    0x0200    kSecCodeSignatureForceKill    进程如果违反签名策略，将被 立即终止（kill）
+//    0x0400    kSecCodeSignatureForceExpiration    代码签名具有 有效期限制，过期后无法执行
+//    0x0800    kSecCodeSignatureRestrict    限制代码只能加载 Apple 认可的动态库或插件
+//    0x1000    kSecCodeSignatureEnforcement    强制执行代码签名检查，不允许加载未签名或签名不受信任的代码
+//    0x2000    kSecCodeSignatureLibraryValidation    启用动态库验证，防止加载未签名或不受信任的动态库
+//    0x10000    kSecCodeSignatureRuntime    启用 Hardened Runtime，增加代码完整性检查，防止调试、代码注入等攻击
+//    0x20000    kSecCodeSignatureLinkerSigned    代码已被 链接器（Linker）签名，适用于某些特殊情况下的代码签名
+    
     const int CS_VALID = 0x00000001;   // 签名是有效的
     const int CS_RUNTIME = 0x00010000; // 启用了 "hardened runtime" 的应用
     const int CS_HARD = 0x00000002;    // 强制代码签名（hardened code）
