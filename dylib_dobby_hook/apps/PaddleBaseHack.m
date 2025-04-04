@@ -27,6 +27,7 @@
 
 IMP initWithProductIDIMP;
 IMP dataTaskWithRequestIMP;
+IMP _dataTaskWithRequestIMP;
 
 - (BOOL)shouldInject:(NSString *)target {
     
@@ -192,7 +193,89 @@ IMP dataTaskWithRequestIMP;
     return ((id(*)(id, SEL,id,id))dataTaskWithRequestIMP)(self, _cmd,request,completionHandler);
 }
 
+
+
+
+- (id)hook__dataTaskWithRequest:(NSURLRequest *)request
+                       delegate:(id)delegate
+             completionHandler:(NSCompletionHandler)completionHandler {
+    NSURL *url = [request URL];
+    NSString *urlString = [url absoluteString];
+    if ([urlString containsString:@"licensing.charliemonroe.net"] && completionHandler) {
+        URLSessionHook *dummyTask = [[URLSessionHook alloc] init];
+
+        __auto_type wrapper = ^(NSError *error, NSDictionary *data) {
+            __auto_type resp = [[NSHTTPURLResponse alloc] initWithURL:url statusCode:200 HTTPVersion:@"1.1" headerFields:@{}];
+            NSData *body = [NSJSONSerialization dataWithJSONObject:data options:0 error: &error];
+            completionHandler(body, resp,error);
+        };
+        NSDictionary *respBody = @{};
+        NSString *reqBody = [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding];
+        if ([urlString containsString:@"/activate"]) {
+            NSString *productId = [EncryptionUtils  getTextBetween:@"product_id=" and:@"&" inString:reqBody];
+            respBody = @{
+                @"activation_id": [Constant G_EMAIL_ADDRESS],
+                @"allowed_uses": @"10",
+                @"expires": @NO,
+                @"expiry_date": @"2500-12-30",
+                @"license_data": @"D7BC2F5F-E9BC2E9E-B4DA2D3C-E7FF3E9F-D3FA6C7F",
+                @"product_id": productId,
+                @"times_used": @"1",
+                @"type": @"activation_license",
+                @"user_id": @""
+        }   ;
+        }
+        NSLogger(@"Intercept url: %@, request body: %@, response body: %@",url, reqBody,respBody);
+        wrapper(nil,respBody);
+        return dummyTask;
+        
+    }
+    NSLogger(@"Allow to pass request: %@", urlString);
+    return ((id(*)(id, SEL,id,id,id))_dataTaskWithRequestIMP)(self, _cmd,request,delegate,completionHandler);
+
+}
+
+
 - (BOOL)hack {
+    
+    if ([[Constant getCurrentAppName] containsString:@"com.charliemonroe.Downie-4"]) {
+        // fake license
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        // 获取用户的主目录 (~)
+        NSString *homeDirectory = NSHomeDirectory();
+        NSString *appSupportPath = [homeDirectory stringByAppendingPathComponent:@"Library/Application Support"];
+        NSString *targetPath = [appSupportPath stringByAppendingPathComponent:@"583749.cmlicense"];
+        // 检查文件是否存在
+        if (![fileManager fileExistsAtPath:targetPath]) {
+            const char bytes[] = {
+                0x62, 0x70, 0x6C, 0x69, 0x73, 0x74, 0x30, 0x30, 0xD4, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+                0x08, 0x55, 0x65, 0x6D, 0x61, 0x69, 0x6C, 0x57, 0x6C, 0x69, 0x63, 0x65, 0x6E, 0x73, 0x65, 0x5A,
+                0x61, 0x63, 0x74, 0x69, 0x76, 0x61, 0x74, 0x69, 0x6F, 0x6E, 0x5E, 0x61, 0x63, 0x74, 0x69, 0x76,
+                0x61, 0x74, 0x69, 0x6F, 0x6E, 0x44, 0x61, 0x74, 0x65, 0x5F, 0x10, 0x1D, 0x4B, 0x27, 0x65, 0x64,
+                0x20, 0x62, 0x79, 0x3A, 0x20, 0x6D, 0x61, 0x72, 0x6C, 0x6B, 0x69, 0x6C, 0x6C, 0x65, 0x72, 0x40,
+                0x76, 0x6F, 0x69, 0x64, 0x6D, 0x2E, 0x63, 0x6F, 0x6D, 0x5F, 0x10, 0x24, 0x35, 0x42, 0x42, 0x43,
+                0x36, 0x30, 0x42, 0x41, 0x2D, 0x42, 0x39, 0x46, 0x30, 0x2D, 0x34, 0x31, 0x30, 0x33, 0x2D, 0x38,
+                0x43, 0x41, 0x32, 0x2D, 0x32, 0x41, 0x44, 0x34, 0x45, 0x36, 0x39, 0x35, 0x35, 0x35, 0x35, 0x44,
+                0x5F, 0x10, 0x2C, 0x44, 0x37, 0x42, 0x43, 0x32, 0x46, 0x35, 0x46, 0x2D, 0x45, 0x39, 0x42, 0x43,
+                0x32, 0x45, 0x39, 0x45, 0x2D, 0x42, 0x34, 0x44, 0x41, 0x32, 0x44, 0x33, 0x43, 0x2D, 0x45, 0x37,
+                0x46, 0x46, 0x33, 0x45, 0x39, 0x46, 0x2D, 0x44, 0x33, 0x46, 0x41, 0x36, 0x43, 0x37, 0x46, 0x33,
+                0x41, 0xC6, 0xCF, 0xDA, 0xB0, 0x3B, 0x71, 0x5C, 0x08, 0x11, 0x17, 0x1F, 0x2A, 0x39, 0x59, 0x80,
+                0xAF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0xB8
+            };
+            NSError *writeError = nil;
+            [[NSData dataWithBytes:bytes length:sizeof(bytes)] writeToFile:targetPath
+                                                                   options:NSDataWritingAtomic
+                                                                     error:&writeError];
+        }
+        _dataTaskWithRequestIMP = [MemoryUtils hookInstanceMethod:
+                                       NSClassFromString(@"NSURLSession")
+                                                 originalSelector:NSSelectorFromString(@"_dataTaskWithRequest:delegate:completionHandler:")
+                                                    swizzledClass:[self class]
+                                                 swizzledSelector:NSSelectorFromString(@"hook__dataTaskWithRequest:delegate:completionHandler:")
+        ];
+    }
         
     if ([[Constant getCurrentAppName] containsString:@"mindmac"]) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
