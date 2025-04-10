@@ -409,7 +409,9 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     for (unsigned int i = 0; i < propertyCount; i++) {
         objc_property_t property = properties[i];
         const char *propertyName = property_getName(property);
-        NSLogger(@"- %@", [NSString stringWithUTF8String:propertyName]);
+        // 获取属性的类型信息
+        const char *propertyAttributes = property_getAttributes(property);
+        NSLogger(@"- Property: %s, Attributes: %s", propertyName, propertyAttributes);
     }
     free(properties);
     
@@ -420,7 +422,8 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     for (unsigned int i = 0; i < ivarCount; i++) {
         Ivar ivar = ivars[i];
         const char *ivarName = ivar_getName(ivar);
-        NSLogger(@"- %s", ivarName);
+        const char *ivarType = ivar_getTypeEncoding(ivar); // 获取实例变量的类型信息
+        NSLogger(@"- Instance Variable: %s, Type: %s", ivarName, ivarType);
     }
     free(ivars);
     
@@ -430,7 +433,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     NSLogger(@"Instance Methods for class %@", NSStringFromClass(cls));
     for (unsigned int i = 0; i < instanceMethodCount; i++) {
         Method method = instanceMethods[i];
-        NSLogger(@"- %@", NSStringFromSelector(method_getName(method)));
+        NSLogger(@"Instance Method - %@", NSStringFromSelector(method_getName(method)));
     }
     free(instanceMethods);
     
@@ -440,7 +443,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     NSLogger(@"Class Methods for class %@", NSStringFromClass(cls));
     for (unsigned int i = 0; i < methodCount; i++) {
         Method method = methods[i];
-        NSLogger(@"+ %@", NSStringFromSelector(method_getName(method)));
+        NSLogger(@"Class Method + %@", NSStringFromSelector(method_getName(method)));
     }
     free(methods);
 }
@@ -699,10 +702,10 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
 
 
 + (id)invokeSelector:(NSString *)selectorName onTarget:(id)target, ... {
-    NSLogger(@"selectorName = %@, target = %@", selectorName, target);
+    NSMutableString *logMessage = [NSMutableString stringWithFormat:@"%@.%@", target,selectorName];
     SEL selector = NSSelectorFromString(selectorName);
     if (![target respondsToSelector:selector]) {
-        NSLogger(@"Target does not respond to selector %@", selectorName);
+        [logMessage appendFormat:@"\nTarget does not respond to selector %@", selectorName];
         return nil;
     }
 
@@ -724,7 +727,8 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     }
     
     va_end(args);
-    NSLogger(@"Parameters: %@", params);
+    [logMessage appendFormat:@"\nParameters: %@", params];
+
     
     [invocation invoke];
     const char *returnType = [signature methodReturnType];
@@ -800,11 +804,13 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
             [invocation getReturnValue:&cStringValue];
             returnValue = cStringValue ? [NSString stringWithUTF8String:cStringValue] : nil;
         } else {
-            NSLogger(@"Unsupported return type: %s", returnType);
+            [logMessage appendFormat:@"\nUnsupported return type: %s", returnType];
+            NSLogger(@"%@", logMessage);
             return nil;
         }
     }
-    NSLogger(@"Returning type: %s, value: %@", returnType,returnValue);
+    [logMessage appendFormat:@"\nReturning type: %s, value: %@", returnType, returnValue];
+    NSLogger(@"%@", logMessage);
     return returnValue;
 }
 

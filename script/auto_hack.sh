@@ -40,6 +40,7 @@ ALL_APPS_LIST=(
     "iStat Menus|Contents/Frameworks/Paddle.framework/Versions/A/Paddle"
     "Alfred 5|Contents/Preferences/Alfred Preferences.app/Contents/MacOS/Alfred Preferences"
     "AirBuddy|Contents/Frameworks/Paddle.framework/Versions/A/Paddle|apps/airbuddy_hack.sh"
+    "BoltAI|Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
 
     ## paddle:Movist Pro/Downie 4/Fork/BetterMouse/MindMac/Permute 3/AirBuddy
     #"xx|/Applications/xx.app/Contents/Frameworks/Paddle.framework/Versions/A/Paddle"

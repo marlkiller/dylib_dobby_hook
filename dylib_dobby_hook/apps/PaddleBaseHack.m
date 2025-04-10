@@ -25,9 +25,9 @@
 
 @implementation PaddleBaseHack
 
-IMP initWithProductIDIMP;
-IMP dataTaskWithRequestIMP;
-IMP _dataTaskWithRequestIMP;
+static IMP initWithProductIDIMP;
+static IMP dataTaskWithRequestIMP;
+static IMP _dataTaskWithRequestIMP;
 
 - (BOOL)shouldInject:(NSString *)target {
     

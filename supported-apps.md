@@ -29,6 +29,7 @@
 | Irvue           | 2023.   | ✔   | ✔   | App Store                                            | ON  | weizi    |
 | VidHub          | 1.7.10  | ✔   | ✔   | App Store                                            | ON  | weizi    |
 | iShot          | 2.5.*  | ✔   | ✔   | App Store                                            | ON  | weizi    |
+| BoltAI          | 1.*  | ✔   | ✔   | https://boltai.com/                                    | ON  |     |
 <details>
   <summary>(TODO) Details</summary>
 </details>
