@@ -136,13 +136,29 @@
 }
 
 - (void)hook_AllSecCode:teamIdentifier{
-    NSLogger(@"teamIdentifier = %@",teamIdentifier);
-    teamIdentifier_ori = [teamIdentifier UTF8String];
-    tiny_hook(SecCodeCheckValidity, (void *)hk_SecCodeCheckValidity, (void *)&SecCodeCheckValidity_ori);
-    tiny_hook(SecCodeCheckValidityWithErrors, (void *)hk_SecCodeCheckValidityWithErrors, (void *)&SecCodeCheckValidityWithErrors_ori);
-    tiny_hook(SecCodeCopySigningInformation, (void *)hk_SecCodeCopySigningInformation, (void *)&SecCodeCopySigningInformation_ori);
-    tiny_hook(SecStaticCodeCheckValidity, (void *)hk_SecStaticCodeCheckValidity, (void *)&SecStaticCodeCheckValidity_ori);
-    tiny_hook(SecStaticCodeCheckValidityWithErrors, (void *)hk_SecStaticCodeCheckValidityWithErrors, (void *)&SecStaticCodeCheckValidityWithErrors_ori);
+    static dispatch_once_t onceToken;
+    static BOOL hasHooked = NO;
+    if (hasHooked) {
+        NSLogger(@"[Warning] hook_AllSecCode called multiple times! Skip hooking. teamIdentifier = %@", teamIdentifier);
+        return;
+    }
+    dispatch_once(&onceToken, ^{
+        hasHooked = YES;        
+        NSLogger(@"[Hook] hook_AllSecCode first time. teamIdentifier = %@", teamIdentifier);
+        teamIdentifier_ori = [teamIdentifier UTF8String];
+    //    Security`SecStaticCodeCheckValidity:
+    //        0x7ff8106bc4aa <+0>: pushq  %rbp
+    //        0x7ff8106bc4ab <+1>: movq   %rsp, %rbp
+    //        0x7ff8106bc4ae <+4>: xorl   %ecx, %ecx
+    //        0x7ff8106bc4b0 <+6>: popq   %rbp
+    //        0x7ff8106bc4b1 <+7>: jmp    0x7ff8106bc4b6            ; SecStaticCodeCheckValidityWithErrors
+//        tiny_hook(SecCodeCheckValidity, (void *)hk_SecCodeCheckValidity, (void *)&SecCodeCheckValidity_ori);
+//        tiny_hook(SecStaticCodeCheckValidity, (void *)hk_SecStaticCodeCheckValidity, (void *)&SecStaticCodeCheckValidity_ori);
+        tiny_hook(SecCodeCheckValidityWithErrors, (void *)hk_SecCodeCheckValidityWithErrors, (void *)&SecCodeCheckValidityWithErrors_ori);
+        tiny_hook(SecCodeCopySigningInformation, (void *)hk_SecCodeCopySigningInformation, (void *)&SecCodeCopySigningInformation_ori);
+        tiny_hook(SecStaticCodeCheckValidityWithErrors, (void *)hk_SecStaticCodeCheckValidityWithErrors, (void *)&SecStaticCodeCheckValidityWithErrors_ori);
+    });
+    
 //    TODO:Is it needed?
 //    SecTaskValidateForRequirement
 //    SecRequirementEvaluate

@@ -70,12 +70,12 @@ static IMP dataTaskWithRequestIMP;
     }
     id ret = ((id(*)(id,SEL,id)) objectForKeyIMP)(self,_cmd,key);
 
-    for (NSString *keyword in keywords) {
-        if ([[key lowercaseString] containsString:[keyword lowercaseString]]) {
-            NSLogger(@"[Hit Keyword] %@ = %@", key, val);
-            break;
-        }
-    }
+//    for (NSString *keyword in keywords) {
+//        if ([[key lowercaseString] containsString:[keyword lowercaseString]]) {
+//            NSLogger(@"[Hit Keyword] %@ = %@", key, val);
+//            break;
+//        }
+//    }
     return ret;
 }
 

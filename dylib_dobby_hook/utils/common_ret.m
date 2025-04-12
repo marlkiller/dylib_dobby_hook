@@ -39,6 +39,11 @@ void ret(void){
     printf(">>>>>> ret\n");
 }
 
+//void nop(void){
+//    uint8_t nopHex[1] = {0x90}; // nop
+//    uint8_t nopHexARM[4] = {0x1f,0x20,0x03,0xd5}; // nop
+//}
+
 
 // hook ptrace
 // 通过 ptrace 来检测当前进程是否被调试，通过检查 PT_DENY_ATTACH 标记是否被设置来判断。如果检测到该标记，说明当前进程正在被调试，可以采取相应的反调试措施。
@@ -185,6 +190,10 @@ OSStatus hk_SecCodeCopySigningInformation(SecCodeRef codeRef, SecCSFlags flags, 
 
     OSStatus status = SecCodeCopySigningInformation_ori(codeRef, flags, signingInfo);
     NSLogger(@"ori status = %d",  status);
+    if (status != errSecSuccess || *signingInfo == NULL) {
+        NSLogger(@"[Warning] ori failed or signingInfo is NULL");
+        return errSecSuccess;
+    }
     CFMutableDictionaryRef fakeDict = CFDictionaryCreateMutableCopy(NULL, 0, *signingInfo);
     SInt32 number = (SInt32) 65536;
     CFNumberRef flagsVal = CFNumberCreate(NULL, kCFNumberSInt32Type, &number);
