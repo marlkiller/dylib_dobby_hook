@@ -23,6 +23,7 @@
 
 @implementation CleanMyMacHack
 
+static IMP updateUIForCustomerIMP;
 - (NSString *)getAppName {
     return @"com.macpaw.CleanMyMac5";
 }
@@ -32,6 +33,16 @@
     return @"5.";
 }
 
+-(NSDate *) hk_expirationDate{
+    return [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 365];;
+}
+-(void) hk_updateUIForCustomer:(id)arg1 licenseValidationResult:(id)arg2{
+    // id MPALibLicenseValidationResult = [[NSClassFromString(@"MPALibLicenseValidationResult") alloc] init];
+    id MPALibLicenseValidationResult = class_createInstance(objc_getClass("MPALibLicenseValidationResult"), 0);
+    id MPACustomerImp = class_createInstance(objc_getClass("MPACustomerImp"), 0);
+    [MemoryUtils setInstanceIvar:MPACustomerImp ivarName:"_email" value:[Constant G_EMAIL_ADDRESS]];
+    ((void (*)(id, SEL,id,id)) updateUIForCustomerIMP)(self,_cmd,MPACustomerImp,MPALibLicenseValidationResult);
+}
 - (BOOL)hack {
     [self hook_AllSecCode:@"S8EX82NJP6"];
 
@@ -50,6 +61,20 @@
     uintptr_t patch1Ptr = [patch1Ptrs[0] unsignedIntegerValue];
     // int size = sizeof(patch1Target) / sizeof(patch1Target[0]);
     write_mem((void*)patch1Ptr,(uint8_t *)patch1Target,sizeof(patch1Target) / sizeof(patch1Target[0]));
+    
+    
+    updateUIForCustomerIMP = [MemoryUtils hookInstanceMethod:
+                                   NSClassFromString(@"MPAActivationInfoViewController")
+                   originalSelector:NSSelectorFromString(@"updateUIForCustomer:licenseValidationResult:")
+                      swizzledClass:[self class]
+                   swizzledSelector:NSSelectorFromString(@"hk_updateUIForCustomer:licenseValidationResult:")
+    ];
+    [MemoryUtils hookInstanceMethod:
+                                   NSClassFromString(@"MPALibLicenseValidationResult")
+                   originalSelector:NSSelectorFromString(@"expirationDate")
+                      swizzledClass:[self class]
+                   swizzledSelector:NSSelectorFromString(@"hk_expirationDate")
+    ];
     return YES;
 }
 
