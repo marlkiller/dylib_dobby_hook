@@ -70,13 +70,13 @@ sudo chmod a+rwx "$app_helper_path"
 /usr/bin/xattr -cr "$app_helper_path"
 
 echo -e "${GREEN}🔄 Removing old $helper_name files...${NC}"
-sudo launchctl unload "/Library/LaunchDaemons/com.binarynights.ForkLiftHelper.plist" 2>/dev/null
-sudo /usr/bin/killall -u root -9 "com.binarynights.ForkLiftHelper" 2>/dev/null
-sudo /bin/rm "/Library/LaunchDaemons/com.binarynights.ForkLiftHelper.plist" 2>/dev/null
-sudo /bin/rm "/Library/PrivilegedHelperTools/com.binarynights.ForkLiftHelper" 2>/dev/null
-sudo rm -rf "~/Library/Preferences/com.binarynights.ForkLift.plist" 2>/dev/null
-sudo rm -rf "~/Library/Application Support/com.binarynights.ForkLift" 2>/dev/null
-sudo /bin/rm "/Library/PrivilegedHelperTools/com.binarynights.ForkLiftHelper" 2>/dev/null
+sudo launchctl unload "/Library/LaunchDaemons/${helper_name}.plist" 2>/dev/null
+sudo /usr/bin/killall -u root -9 "${helper_name}" 2>/dev/null
+sudo /bin/rm "/Library/LaunchDaemons/${helper_name}.plist" 2>/dev/null
+sudo /bin/rm "/Library/PrivilegedHelperTools/${helper_name}" 2>/dev/null
+# sudo rm -rf "~/Library/Preferences/com.xx.plist" 2>/dev/null
+# sudo rm -rf "~/Library/Application Support/com.xx" 2>/dev/null
+sudo /bin/rm "/Library/PrivilegedHelperTools/${helper_name}" 2>/dev/null
 
 echo -e "${GREEN}🔧 Modifying Info.plist for $app_name...${NC}"
 identifier_name="identifier \\\"$helper_name\\\""
