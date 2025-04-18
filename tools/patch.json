@@ -29,6 +29,11 @@
         "/Applications/Proxyman.app/Contents/Library/LaunchServices/com.proxyman.NSProxy.HelperTool"
     ]
   },
+  "CleanMyMac_5":{
+    "helper_plist_resign":[
+        "/Applications/CleanMyMac_5.app/Contents/Library/LaunchServices/com.macpaw.CleanMyMac5.Agent"
+    ]
+  },
   "IDA":{
     "patch":{
       "/Applications/IDA Professional 9.1.app/Contents/MacOS/libida.dylib":{

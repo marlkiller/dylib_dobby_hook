@@ -46,6 +46,7 @@
 		B5A7D3142C549130003D4C7F /* ForkLiftHelperHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A7D3132C549130003D4C7F /* ForkLiftHelperHack.m */; };
 		B5A7D3172C5491A0003D4C7F /* HackHelperProtocolDefault.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A7D3152C5491A0003D4C7F /* HackHelperProtocolDefault.m */; };
 		B5A7D3182C5491A0003D4C7F /* HackHelperProtocolDefault.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A7D3162C5491A0003D4C7F /* HackHelperProtocolDefault.h */; };
+		B5ABA1512DB21A5100EE97A0 /* CleanMyMacAgentHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ABA1502DB21A5100EE97A0 /* CleanMyMacAgentHack.m */; };
 		B5B89BCB2C5DD49B00F61EB0 /* MockCKContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = B5B89BCA2C5DD49B00F61EB0 /* MockCKContainer.h */; };
 		B5B89BCD2C5DD4AB00F61EB0 /* MockCKContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B89BCC2C5DD4AB00F61EB0 /* MockCKContainer.m */; };
 		B5D0C0BB2C4B553500881398 /* ForkLiftHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D0C0BA2C4B553500881398 /* ForkLiftHack.m */; };
@@ -54,6 +55,7 @@
 		B5EAA9E22C8C3FC3008C4089 /* URLSessionHook.m in Sources */ = {isa = PBXBuildFile; fileRef = B5EAA9E12C8C3FC3008C4089 /* URLSessionHook.m */; };
 		B5EC63D82CBD39C700D92EEC /* AlfredHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5EC63D72CBD39C700D92EEC /* AlfredHack.m */; };
 		B5F06B1D2BEF591E0079E68D /* InfuseHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F06B1C2BEF591E0079E68D /* InfuseHack.m */; };
+		B5FD0D732DB20D1100989564 /* CleanMyMacHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FD0D722DB20D1100989564 /* CleanMyMacHack.m */; };
 		B5FE3B862BA2A571001AE437 /* TransmitHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FE3B842BA2A571001AE437 /* TransmitHack.m */; };
 		B5FECEAD2BC4FC29008916D6 /* common_ret.h in Headers */ = {isa = PBXBuildFile; fileRef = B5FECEAB2BC4FC29008916D6 /* common_ret.h */; };
 		B5FECEAE2BC4FC29008916D6 /* common_ret.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FECEAC2BC4FC29008916D6 /* common_ret.m */; };
@@ -124,6 +126,7 @@
 		B5A7D3132C549130003D4C7F /* ForkLiftHelperHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForkLiftHelperHack.m; sourceTree = "<group>"; };
 		B5A7D3152C5491A0003D4C7F /* HackHelperProtocolDefault.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HackHelperProtocolDefault.m; sourceTree = "<group>"; };
 		B5A7D3162C5491A0003D4C7F /* HackHelperProtocolDefault.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HackHelperProtocolDefault.h; sourceTree = "<group>"; };
+		B5ABA1502DB21A5100EE97A0 /* CleanMyMacAgentHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CleanMyMacAgentHack.m; sourceTree = "<group>"; };
 		B5B89BCA2C5DD49B00F61EB0 /* MockCKContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockCKContainer.h; sourceTree = "<group>"; };
 		B5B89BCC2C5DD4AB00F61EB0 /* MockCKContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockCKContainer.m; sourceTree = "<group>"; };
 		B5BE2D582C52A5E40056B3E2 /* build.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build.sh; sourceTree = "<group>"; };
@@ -136,6 +139,7 @@
 		B5EAA9E12C8C3FC3008C4089 /* URLSessionHook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = URLSessionHook.m; sourceTree = "<group>"; };
 		B5EC63D72CBD39C700D92EEC /* AlfredHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlfredHack.m; sourceTree = "<group>"; };
 		B5F06B1C2BEF591E0079E68D /* InfuseHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfuseHack.m; sourceTree = "<group>"; };
+		B5FD0D722DB20D1100989564 /* CleanMyMacHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CleanMyMacHack.m; sourceTree = "<group>"; };
 		B5FE3B842BA2A571001AE437 /* TransmitHack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransmitHack.m; sourceTree = "<group>"; };
 		B5FECEAB2BC4FC29008916D6 /* common_ret.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common_ret.h; sourceTree = "<group>"; };
 		B5FECEAC2BC4FC29008916D6 /* common_ret.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = common_ret.m; sourceTree = "<group>"; };
@@ -262,6 +266,7 @@
 				B5A7D3102C548BAB003D4C7F /* HackProtocolDefault.m */,
 				9CE4C5CD2CCA7AC400593C78 /* ShottrHack.m */,
 				B5938B232DA7E5D100FA82B0 /* BoltAIHack.m */,
+				B5FD0D722DB20D1100989564 /* CleanMyMacHack.m */,
 			);
 			path = apps;
 			sourceTree = "<group>";
@@ -300,6 +305,7 @@
 				B5A7D3162C5491A0003D4C7F /* HackHelperProtocolDefault.h */,
 				B5A7D3152C5491A0003D4C7F /* HackHelperProtocolDefault.m */,
 				B5A7D3132C549130003D4C7F /* ForkLiftHelperHack.m */,
+				B5ABA1502DB21A5100EE97A0 /* CleanMyMacAgentHack.m */,
 			);
 			path = helpers;
 			sourceTree = "<group>";
@@ -423,6 +429,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B57F20102C5DD70700C87201 /* MockCKDatabase.m in Sources */,
+				B5ABA1512DB21A5100EE97A0 /* CleanMyMacAgentHack.m in Sources */,
 				B50E935E2BBD024F0073FEAA /* PaddleBaseHack.m in Sources */,
 				B5B89BCD2C5DD4AB00F61EB0 /* MockCKContainer.m in Sources */,
 				B5D2ED3F2BC0252D0030CBCA /* DevHack.m in Sources */,
@@ -452,6 +459,7 @@
 				B552CA382C54AC450095C9B9 /* CommonRetOC.m in Sources */,
 				B5FECEAE2BC4FC29008916D6 /* common_ret.m in Sources */,
 				38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */,
+				B5FD0D732DB20D1100989564 /* CleanMyMacHack.m in Sources */,
 				B5FE3B862BA2A571001AE437 /* TransmitHack.m in Sources */,
 				B5732BF12C82CD5900EC9E11 /* IDAHack.m in Sources */,
 			);
@@ -518,7 +526,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -586,7 +594,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				EXECUTABLE_PREFIX = lib;
 				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = "@executable_path/";
 				LIBRARY_SEARCH_PATHS = (
@@ -607,7 +615,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				EXECUTABLE_PREFIX = lib;
 				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = "@executable_path/";
 				LIBRARY_SEARCH_PATHS = (

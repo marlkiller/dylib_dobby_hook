@@ -75,13 +75,12 @@ return @"1.0";
 
 - (BOOL)hack {
 
-#if
-defined(__arm64__) || defined(__aarch64__)
+#if defined(__arm64__) || defined(__aarch64__)
 // do arm something..
-#elif
-defined(__x86_64__)
+#elif defined(__x86_64__)
 // do x86 something..
 #endif
+
 return YES;
 }
 @end
