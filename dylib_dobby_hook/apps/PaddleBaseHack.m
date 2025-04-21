@@ -238,7 +238,7 @@ static IMP _dataTaskWithRequestIMP;
 
 - (BOOL)hack {
     
-    if ([[Constant getCurrentAppName] containsString:@"com.charliemonroe.Downie-4"]) {
+    if ([[Constant getCurrentAppName] containsString:@"com.charliemonroe"]) {
         // fake license
         NSFileManager *fileManager = [NSFileManager defaultManager];
         // 获取用户的主目录 (~)
