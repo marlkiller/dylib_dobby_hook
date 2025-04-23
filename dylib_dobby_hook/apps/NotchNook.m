@@ -29,7 +29,7 @@
     return @"";
 }
 
-static IMP hookNSUserDefaultsobjectForKeyIMP;
+static IMP hookNSUserDefaultsobjectForKeyIMP,initWithStringSeletorIMP;
 
 + (NSNumber *)updateTrialInitialTimeIfNeeded {
     NSString *defaultName = @"trialInitialTime";
@@ -46,8 +46,11 @@ static IMP hookNSUserDefaultsobjectForKeyIMP;
 }
 
 - (id)swizzled_objectForKey:(NSString *)defaultName {
-    if ([defaultName isEqualToString:@"trialInitialTime"]) {
-      return [NotchNook updateTrialInitialTimeIfNeeded];
+    //if ([defaultName isEqualToString:@"trialInitialTime"]) {
+    //  return [NotchNook updateTrialInitialTimeIfNeeded];
+    // }
+     if ([defaultName isEqualToString:@"keyActive"]) {
+       return [NSString stringWithFormat:@"{\"email\": \"%@\", \"key\": \"UnlockFullVersion\"}", @"NKR🦁"];
      }
     return ((id(*)(id, SEL, NSString *))hookNSUserDefaultsobjectForKeyIMP)(self, _cmd, defaultName);
 }
@@ -61,6 +64,21 @@ static IMP hookNSUserDefaultsobjectForKeyIMP;
                         swizzledSelector:@selector(swizzled_objectForKey:)
     ];
 
+  initWithStringSeletorIMP = [MemoryUtils hookInstanceMethod:
+         NSClassFromString(@"NSURL")
+                   originalSelector:NSSelectorFromString(@"initWithString:")
+                      swizzledClass:[self class]
+                swizzledSelector:@selector(hk_initWithString:)
+    ];
+
     return YES;
+}
+
+ -(id)hk_initWithString:arg1{
+   if ([arg1 containsString:@"lo.cafe/api/notchnook-verify-key-v2"]) {
+        arg1 = @"lol.lol";
+    }
+    id ret = ((id(*)(id, SEL,id))initWithStringSeletorIMP)(self, _cmd,arg1);
+    return ret;
 }
 @end
