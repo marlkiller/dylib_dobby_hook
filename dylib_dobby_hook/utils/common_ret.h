@@ -39,7 +39,7 @@ int ret1 (void);
 int ret0 (void);
 void ret(void);
 
-
+void printStackTrace(void);
 // AntiAntiDebug 反反调试相关
 typedef int (*PtraceFuncPtr)(int _request, pid_t _pid, caddr_t _addr, int _data);
 int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data);

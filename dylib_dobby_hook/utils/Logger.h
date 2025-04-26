@@ -8,9 +8,19 @@
 #ifndef Header_h
 #define Header_h
 
+//#ifdef DEBUG
+//#warning DEBUG is defined
+//#else
+//#warning DEBUG is NOT defined
+//#endif
+
+#ifdef DEBUG
 #define NSLogger(fmt, ...) \
     NSLog((@"%s [Line %d] >>>>>> " fmt), \
-              __PRETTY_FUNCTION__, \
-              __LINE__, ##__VA_ARGS__)
+          __PRETTY_FUNCTION__, \
+          __LINE__, ##__VA_ARGS__)
+#else
+#define NSLogger(fmt, ...) do {} while (0)
+#endif
 
 #endif /* Header_h */

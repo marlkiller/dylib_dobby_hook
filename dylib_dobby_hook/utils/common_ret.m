@@ -15,6 +15,8 @@
 #include <mach/mach_types.h>
 #import <pthread.h>
 #import "Logger.h"
+#import <Security/Security.h>
+#import <execinfo.h>
 
 int ret2 (void){
     printf(">>>>>> ret2\n");
@@ -44,6 +46,20 @@ void ret(void){
 //    uint8_t nopHexARM[4] = {0x1f,0x20,0x03,0xd5}; // nop
 //}
 
+
+void printStackTrace(void) {
+    void *buffer[100];
+    int size = backtrace(buffer, 100);
+    char **symbols = backtrace_symbols(buffer, size);
+    NSMutableString *stackTrace = [NSMutableString string];
+    if (symbols != NULL) {
+        for (int i = 0; i < size; i++) {
+            [stackTrace appendFormat:@"%s\n", symbols[i]];
+        }
+        free(symbols);
+    }
+    NSLogger(@"%@", stackTrace);
+}
 
 // hook ptrace
 // 通过 ptrace 来检测当前进程是否被调试，通过检查 PT_DENY_ATTACH 标记是否被设置来判断。如果检测到该标记，说明当前进程正在被调试，可以采取相应的反调试措施。
@@ -180,7 +196,12 @@ OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags, Se
 SecStaticCodeCheckValidityWithErrorsFuncPtr SecStaticCodeCheckValidityWithErrors_ori = NULL;
 OSStatus hk_SecStaticCodeCheckValidityWithErrors(SecStaticCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors) {
     NSLogger(@"requirement = %@", requirement);
-    logSecRequirement(requirement, flags);
+//    logSecRequirement(requirement, flags);    
+//    printStackTrace();
+//    CFURLRef path = NULL;
+//    SecCodeCopyPath(code, kSecCSDefaultFlags, &path);
+//    NSLogger(@"Verifying file at: %@", path);
+//    if(path) CFRelease(path);
     return errSecSuccess;
 }
 

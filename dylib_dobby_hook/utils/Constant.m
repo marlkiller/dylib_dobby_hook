@@ -22,7 +22,7 @@
 // 使用构造函数属性 (constructor attribute) 的方法
 // 这个方法会在 main 函数执行之前自动调用
 static void __attribute__ ((constructor)) initialize(void){
-    printf(">>>>>> Constant ((constructor)) initialize(void)\n");
+    // printf(">>>>>> Constant ((constructor)) initialize(void)\n");
 }
 
 @implementation Constant
