@@ -31,6 +31,7 @@
 | iShot          | 2.5.*  | ✔   | ✔   | App Store                                            | ON  | weizi    |
 | BoltAI          | 1.*  | ✔   | ✔   | https://boltai.com/                                    | ON  |     |
 | CleanMyMac_5    | 5.*  | ✔   | ✔   |                                                    | ON  |     |
+| NotchNook       | 1.*     | ✔   | ✔   | https://lo.cafe/notchnook                            | ON  | NKR00711    |
 <details>
   <summary>(TODO) Details</summary>
 </details>
