@@ -43,7 +43,7 @@ intptr_t getProxyManAppStruct(void) {
     // 得到 license 里面 112 偏移处的 licensekey 字段
     intptr_t *licenseKey = (intptr_t *)(*licenseServer + 0x70);
     // 修改授权信息为激活状态
-    *licenseKey = 0x0;
+    *licenseKey = 0x2;
 //    NSLogger(@"getProxyManAppStructOriginalAddress address: %p", (void*)getProxyManAppStructOriginalAddress);
     return app;
 }
@@ -73,9 +73,13 @@ intptr_t handleHelper(intptr_t a1, intptr_t a2, intptr_t a3) {
     NSTextField *registerAtLbl =  [MemoryUtils getInstanceIvar:self ivarName:"registerAtLbl"];
     NSView *expiredLicenseInfoStackView = [MemoryUtils getInstanceIvar:self ivarName:"expiredLicenseInfoStackView"];
     NSTextField *licenseUntilLbl = [MemoryUtils getInstanceIvar:self ivarName:"licenseUntilLbl"];
-    [expiredLicenseInfoStackView setHidden:true];
+    [expiredLicenseInfoStackView setHidden:TRUE];
     [licenseUntilLbl setStringValue:@"Saturday, Sep 01, 2050"];
     [registerAtLbl setStringValue:[Constant G_EMAIL_ADDRESS]];
+    NSView *LicenseInfoStackView = [MemoryUtils getInstanceIvar:self ivarName:"licenseInfoStackView"];
+    [LicenseInfoStackView setHidden:FALSE];
+    NSView *setappStackView = [MemoryUtils getInstanceIvar:self ivarName:"setappStackView"];
+    [setappStackView setHidden:TRUE];
 }
 - (BOOL)hack {
     viewDidLoadIMP = [MemoryUtils hookInstanceMethod:
