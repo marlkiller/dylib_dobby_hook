@@ -25,7 +25,7 @@
 
 @implementation PaddleBaseHack
 
-static IMP initWithProductIDIMP;
+//static IMP initWithProductIDIMP;
 static IMP dataTaskWithRequestIMP;
 static IMP _dataTaskWithRequestIMP;
 

@@ -27,7 +27,17 @@
   "Proxyman":{
     "helper_plist_resign":[
         "/Applications/Proxyman.app/Contents/Library/LaunchServices/com.proxyman.NSProxy.HelperTool"
-    ]
+    ],
+    "patch":{
+      "/Applications/Proxyman.app/Contents/Library/LaunchServices/com.proxyman.NSProxy.HelperTool":{
+        "x86": {
+          "55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC D8 00 00 00 48 89 CB 49 89 FF": "6A 01 58 C3"
+        },
+        "arm":{
+          "FF 83 04 D1 FC 6F 0D A9 F8 5F 0E A9 F6 57 0F A9 F4 4F 10 A9 FD 7B 11 A9 FD 43 04 91 F3 03 03 AA F5 03 00 AA 28 00 00 F0": "20 00 C0 D2 C0"
+        }
+      }
+    }
   },
   "CleanMyMac_5":{
     "helper_plist_resign":[

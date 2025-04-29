@@ -211,9 +211,9 @@ static BOOL _helper;
 + (void)doHack {
     
     @try {
-        NSArray<Class> *personClasses = [Constant getAllHackClasses];
+        NSArray<Class> *hackClasses = [Constant getAllHackClasses];
         NSLogger(@"Initiating doHack operation...");
-        for (Class class in personClasses) {
+        for (Class class in hackClasses) {
             NSLogger(@"Processing class - %@", NSStringFromClass(class));
             id<HackProtocol> it = [[class alloc] init];
             if ([it shouldInject:_currentAppName]) {

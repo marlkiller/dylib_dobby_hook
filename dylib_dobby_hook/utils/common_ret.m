@@ -169,6 +169,17 @@ void logSecRequirement(SecRequirementRef requirement, SecCSFlags flags) {
     }
 }
 
+static void logCodePath(SecStaticCodeRef code) {
+    CFURLRef path = NULL;
+    if (SecCodeCopyPath(code, kSecCSDefaultFlags, &path) == errSecSuccess && path) {
+        CFStringRef str = CFURLGetString(path);
+        NSLogger(@"[hook] code path: %@", (__bridge NSString *)str);
+        CFRelease(path);
+    } else {
+        NSLogger(@"[hook] code path: (failed to get path)");
+    }
+}
+
 SecCodeCheckValidityFuncPtr SecCodeCheckValidity_ori = NULL;
 OSStatus hk_SecCodeCheckValidity(SecCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement) {
     NSLogger(@"flags = %d",flags);
@@ -186,26 +197,33 @@ OSStatus hk_SecStaticCodeCheckValidity(SecStaticCodeRef staticCode, SecCSFlags f
 
 SecCodeCheckValidityWithErrorsFuncPtr SecCodeCheckValidityWithErrors_ori = NULL;
 OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors) {
-    // anchor apple generic and certificate leaf[subject.OU] = "J3CP9BBBN6"
-    // NSString* fakeRequirement = [NSString stringWithFormat:@"identifier \"com.binarynights.ForkLift\""];
-    NSLogger(@"requirement = %@", requirement);
-    logSecRequirement(requirement, flags);  
+    OSStatus result = SecCodeCheckValidityWithErrors_ori(code, flags, requirement, errors);
+    NSLogger(@"Params: code=%p, flags=0x%llx, requirement=%p, errors_ptr=%p, result=%d",
+             code, (uint64_t)flags, requirement, errors,result);
+    // logCodePath(code);
+    // logSecRequirement(requirement, flags);
+    if (errors && *errors) {
+        CFRelease(*errors);
+        *errors = NULL;
+    }
     return errSecSuccess;
 }
 
 SecStaticCodeCheckValidityWithErrorsFuncPtr SecStaticCodeCheckValidityWithErrors_ori = NULL;
 OSStatus hk_SecStaticCodeCheckValidityWithErrors(SecStaticCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors) {
-    NSLogger(@"requirement = %@", requirement);
-//    logSecRequirement(requirement, flags);    
-//    printStackTrace();
-//    CFURLRef path = NULL;
-//    SecCodeCopyPath(code, kSecCSDefaultFlags, &path);
-//    NSLogger(@"Verifying file at: %@", path);
-//    if(path) CFRelease(path);
+    OSStatus result = SecStaticCodeCheckValidityWithErrors_ori(code, flags, requirement, errors);
+    NSLogger(@"Params: code=%p, flags=0x%llx, requirement=%p, errors_ptr=%p, result=%d",
+             code, (uint64_t)flags, requirement, errors,result);
+    // logCodePath(code);
+    // logSecRequirement(requirement, flags);
+    if (errors && *errors) {
+        CFRelease(*errors);
+        *errors = NULL;
+    }
     return errSecSuccess;
 }
 
-const char* teamIdentifier_ori = "TBD"; // Need to define before calling
+const char* G_TEAM_IDENTITY_ORI = "TBD"; // Need to define before calling
 SecCodeCopySigningInformationFuncPtr SecCodeCopySigningInformation_ori = NULL;
 OSStatus hk_SecCodeCopySigningInformation(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo) {
 
@@ -216,13 +234,14 @@ OSStatus hk_SecCodeCopySigningInformation(SecCodeRef codeRef, SecCSFlags flags, 
         return errSecSuccess;
     }
     CFMutableDictionaryRef fakeDict = CFDictionaryCreateMutableCopy(NULL, 0, *signingInfo);
+    // NSLogger("signingInfo is %@",fakeDict);
     SInt32 number = (SInt32) 65536;
     CFNumberRef flagsVal = CFNumberCreate(NULL, kCFNumberSInt32Type, &number);
     if (flagsVal) {
         CFDictionarySetValue(fakeDict,  kSecCodeInfoFlags, flagsVal);
         CFRelease(flagsVal);
     }
-    CFStringRef teamId = CFStringCreateWithCString(NULL, teamIdentifier_ori, kCFStringEncodingUTF8);
+    CFStringRef teamId = CFStringCreateWithCString(NULL, G_TEAM_IDENTITY_ORI, kCFStringEncodingUTF8);
     if (teamId) {
         CFDictionarySetValue(fakeDict,  kSecCodeInfoTeamIdentifier, teamId);
         CFRelease(teamId);
@@ -399,8 +418,6 @@ NSString *love69(NSString *input) {
     }
     return output;
 }
-//char *global_dylib_name = "libdylib_dobby_hook.dylib";
-
 
 // @Deprecated
 int destory_inject_thread(void){

@@ -120,7 +120,7 @@ OSStatus hk_SecStaticCodeCheckValidityWithErrors(SecStaticCodeRef code, SecCSFla
 extern SecStaticCodeCheckValidityWithErrorsFuncPtr SecStaticCodeCheckValidityWithErrors_ori;
 
 
-extern const char* teamIdentifier_ori;
+extern const char* G_TEAM_IDENTITY_ORI;
 typedef OSStatus (*SecCodeCopySigningInformationFuncPtr)(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo);
 OSStatus hk_SecCodeCopySigningInformation(SecCodeRef codeRef, SecCSFlags flags, CFDictionaryRef *signingInfo);
 extern SecCodeCopySigningInformationFuncPtr SecCodeCopySigningInformation_ori;
@@ -148,10 +148,6 @@ extern SecItemCopyMatchingFuncPtr SecItemCopyMatching_ori;
 OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result);
 
 NSString *love69(NSString *input);
-
-//// 声明全局的邮件地址
-//extern char *global_dylib_name;
-//int inject_dylib(pid_t pid, const char *lib);
 
 int destory_inject_thread(void);
 

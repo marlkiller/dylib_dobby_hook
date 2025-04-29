@@ -28,4 +28,17 @@
     return jsonData ? [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] : nil;
 }
 
++ (NSDictionary *)dictionaryFromJsonString:(NSString *)jsonString {
+    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error = nil;
+    
+    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error];
+    
+    if (error) {
+        NSLog(@"Error parsing JSON: %@", error.localizedDescription);
+        return nil;
+    }
+    
+    return jsonDict;
+}
 @end

@@ -115,15 +115,6 @@ intptr_t handleHelper(intptr_t a1, intptr_t a2, intptr_t a3) {
     NSTimeInterval executionTime2 = [endTime timeIntervalSinceDate:startTime];
     NSLogger(@"sym_solve Execution Time: %f seconds", executionTime2);
     tiny_hook(isHideExpireLicenseBadge, ret1, nil);
-
-//    TODO: Undefined symbol: _DobbyImportTableReplace
-//    DobbyImportTableReplace(
-//                            "/Contents/Frameworks/ProxymanCore.framework/Versions/A/ProxymanCore",
-//                            "_$s12ProxymanCore16AppConfigurationC24isHideExpireLicenseBadgeSbvg",
-//                            (void *)ret1,
-//                            nil
-//                            );
-
     return YES;
 }
 

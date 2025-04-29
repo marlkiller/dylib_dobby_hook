@@ -145,7 +145,7 @@
     dispatch_once(&onceToken, ^{
         hasHooked = YES;        
         NSLogger(@"[Hook] hook_AllSecCode first time. teamIdentifier = %@", teamIdentifier);
-        teamIdentifier_ori = [teamIdentifier UTF8String];
+        G_TEAM_IDENTITY_ORI = [teamIdentifier UTF8String];
     //    Security`SecStaticCodeCheckValidity:
     //        0x7ff8106bc4aa <+0>: pushq  %rbp
     //        0x7ff8106bc4ab <+1>: movq   %rsp, %rbp

@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *)getVFromJSON:(NSString *)jsonString keyName:(NSString *)keyName;
 + (NSString *)jsonStringFromObject:(NSDictionary *)json;
++ (NSDictionary *)dictionaryFromJsonString:(NSString *)jsonString;
 
 @end
 
