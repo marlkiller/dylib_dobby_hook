@@ -30,20 +30,11 @@ if [ ! -d "$idapro_dir" ]; then
 fi
 
 plugins_dir="$idapro_dir/plugins"
-if [ ! -d "$plugins_dir" ]; then
-    cp -R "$PWD/apps/IDA/plugins" "$plugins_dir"
-    echo -e "${GREEN}✅ [${app_name}] - Copied plugins to ~/.idapro/plugins.${NC}"
-else
-    echo -e "${YELLOW}😒  ~/.idapro/plugins already exists.${NC}"
-    read -p "Do you want to overwrite it? (y/n) " answer
-    if [[ $answer =~ ^[Yy]$ ]]; then
-        rm -rf "$plugins_dir"
-        cp -R "$PWD/apps/IDA/plugins" "$plugins_dir"
-        echo -e "${GREEN}✅ [${app_name}] - Overwritten existing plugins with new ones.${NC}"
-    else
-        echo -e "${RED}❌ [${app_name}] - Skipped copying plugins.${NC}"
-    fi
-fi
+
+rm -rf "$plugins_dir"
+cp -R "$PWD/apps/IDA/plugins" "$plugins_dir"
+echo -e "${GREEN}✅ [${app_name}] - Overwritten existing plugins with new ones.${NC}"
+
 
 # 检查是否为 ARM 架构
 # if [ "$(uname -m)" = "arm64" ]; then

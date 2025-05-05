@@ -2,20 +2,14 @@
     "configurations": [
         {
             "name": "(lldb) Debug",
-            "type": "cppdbg",
+            "type": "lldb",
             "request": "launch",
-            "program": "/System/Applications/Calculator.app/Contents/MacOS/Calculator",
+            "program": "/Applications/DevUtils.app/Contents/MacOS/DevUtils",
             "args": [],
-            "stopAtEntry": false,
             "cwd": "${fileDirname}",
-            "environment": [
-                {
-                    "name": "DYLD_INSERT_LIBRARIES",
-                    "value": "${workspaceFolder}/release/libdylib_dobby_hook.dylib"
-                }
-            ],
-            "externalConsole": false,
-            "MIMode": "lldb",
+            "env": {
+                "DYLD_INSERT_LIBRARIES": "${workspaceFolder}/release/libdylib_dobby_hook.dylib"
+            },
             "preLaunchTask": "CMake: install"
         }
     ]

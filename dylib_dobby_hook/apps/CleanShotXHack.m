@@ -40,7 +40,12 @@
                         "_$s5Legit0A9CleanShotC11productName03appE07website5email8delegate15updaterDelegate16cloudAPIDelegateACSS_S3SAA0aK0_pAA0a7UpdaterK0_pAA0a5CloudM0_ptcfc"
      );
     tiny_hook(showCleanShotAWC, ret0, NULL);
-    
+
+    void *patch2 =
+        symexp_solve([MemoryUtils indexForImageWithName:@"Legit"],
+                     "_$s7SwCrypt2CCC3RSAC6verify_6derKey7padding6digest7saltLen10signedDataSb10Foundation0M0V_AnE19AsymmetricSAPaddingOAC15DigestAlgorithmOSiANtKFZ");
+    tiny_hook(patch2, ret1, NULL);
+    // TODO : mitm 把 valid 改成 true 就行了
 #if defined(__arm64__) || defined(__aarch64__)
     NSString *checkHex = @"A8 EC 78 D3 89 BC 40 92 BF 00 43 F2 27 01 88 9A 08 FC 50 D3 29 FC 50 D3 5F 00 04 EB"; // 27 01 88 9A 08 FC 50 D3 29 FC 50 D3 5F 00 04 EB is not necessary
 #elif defined(__x86_64__)
