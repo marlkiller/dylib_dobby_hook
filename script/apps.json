@@ -1,0 +1,242 @@
+{
+    "apps": [
+        {
+            "app_name": "DevUtils",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static"
+        },
+        {
+            "app_name": "Movist Pro",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static"
+        },
+        {
+            "app_name": "Downie 4",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static"
+        },
+        {
+            "app_name": "Fork",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static"
+        },
+        {
+            "app_name": "BetterMouse",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static"
+        },
+        {
+            "app_name": "MindMac",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static"
+        },
+        {
+            "app_name": "Permute 3",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static"
+        },
+        {
+            "app_name": "TablePlus",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static",
+            "inject_path": "$app_path/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
+        },
+        {
+            "app_name": "Paste",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static"
+        },
+        {
+            "app_name": "Transmit",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static"
+        },
+        {
+            "app_name": "Irvue",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static"
+        },
+        {
+            "app_name": "MediaCenter",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static"
+        },
+        {
+            "app_name": "Shottr",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static"
+        },
+        {
+            "app_name": "Infuse",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static",
+            "inject_path": "$app_path/Contents/Frameworks/Differentiator.framework/Versions/A/Differentiator"
+        },
+        {
+            "app_name": "MacUpdater",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static",
+            "inject_path": "$app_path/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
+        },
+        {
+            "app_name": "CleanShot X",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static",
+            "inject_path": "$app_path/Contents/Frameworks/LetsMove.framework/Versions/A/LetsMove"
+        },
+        {
+            "app_name": "iStat Menus",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static",
+            "inject_path": "$app_path/Contents/Frameworks/Paddle.framework/Versions/A/Paddle"
+        },
+        {
+            "app_name": "Alfred 5",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static",
+            "inject_path": "$app_path/Contents/Preferences/Alfred Preferences.app/Contents/MacOS/Alfred Preferences"
+        },
+        {
+            "app_name": "Navicat Premium",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_path": "$app_path/Contents/Frameworks/EE.framework/Versions/A/EE",
+            "inject_type": "static"
+        },
+        {
+            "app_name": "BoltAI",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_path": "$app_path/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle",
+            "inject_type": "static"
+        },
+        {
+            "app_name": "NotchNook",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_path": "$app_path/Contents/Frameworks/Lottie.framework/Versions/A/Lottie",
+            "inject_type": "static"
+        },
+        {
+            "app_name": "IDA Professional 9.1",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/ida",
+            "inject_path": "$app_path/Contents/Frameworks/QtDBus.framework/Versions/5/QtDBus",
+            "pre_script": "apps/ida_hack.sh",
+            "inject_type": "none",
+            "re_sign":true,
+            "other_patches": {
+                "/Applications/IDA Professional 9.1.app/Contents/MacOS/libida.dylib": {
+                    "x86": {
+                        "ED FD 42 5C F9 78": "ED FD 42 CB F9 78"
+                    },
+                    "arm": {
+                        "ED FD 42 5C F9 78": "ED FD 42 CB F9 78"
+                    }
+                },
+                "/Applications/IDA Professional 9.1.app/Contents/MacOS/libida32.dylib": {
+                    "x86": {
+                        "ED FD 42 5C F9 78": "ED FD 42 CB F9 78"
+                    },
+                    "arm": {
+                        "ED FD 42 5C F9 78": "ED FD 42 CB F9 78"
+                    }
+                },
+                "/Applications/IDA Professional 9.1.app/Contents/MacOS/libida64.dylib": {
+                    "x86": {
+                        "ED FD 42 5C F9 78": "ED FD 42 CB F9 78"
+                    },
+                    "arm": {
+                        "ED FD 42 5C F9 78": "ED FD 42 CB F9 78"
+                    }
+                }
+            }
+        },
+        {
+            "app_name": "AirBuddy",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static",
+            "inject_path": "$app_path/Contents/Frameworks/Paddle.framework/Versions/A/Paddle",
+            "services":[
+                {
+                    "service_type": "LoginItems",
+                    "service_name": "AirBuddyHelper",
+                    "inject_service": true,
+                    "fix_helper": false,
+                    "sm_privileged_executables": "codes.rambo.AirBuddy.Installer",
+                    "service_bin_path": "$app_path/Contents/Library/$service_type/AirBuddyHelper.app/Contents/MacOS/AirBuddyHelper"
+                }
+            ]
+        },
+        {
+            "app_name": "Proxyman",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static",
+            "inject_path": "$app_path/Contents/Frameworks/HexFiend.framework/Versions/A/HexFiend",
+            "services": [
+                {
+                    "service_type": "LaunchServices",
+                    "service_name": "com.proxyman.NSProxy.HelperTool",
+                    "inject_service": true,
+                    "fix_helper": true,
+                    "service_bin_path": "$app_path/Contents/Library/$service_type/$service_name",
+                    "patches": {
+                        
+                    }
+                }
+            ]
+        },
+        {
+            "app_name": "ForkLift",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static",
+            "inject_path": "$app_path/Contents/Frameworks/UniversalDetector.framework/Versions/A/UniversalDetector",
+            "services": [
+                {
+                    "service_type": "LaunchServices",
+                    "service_name": "com.binarynights.ForkLiftHelper",
+                    "inject_service": true,
+                    "fix_helper": true,
+                    "service_bin_path": "$app_path/Contents/Library/$service_type/$service_name"
+                }
+            ]
+        },
+        {
+            "app_name": "CleanMyMac_5",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static",
+            "inject_path": "$app_path/Contents/Frameworks/AccessibilityUtils.framework/Versions/A/AccessibilityUtils",
+            "services": [
+                {
+                    "service_type": "LaunchServices",
+                    "service_name": "com.macpaw.CleanMyMac5.Agent",
+                    "inject_service": false,
+                    "fix_helper": true,
+                    "service_bin_path": "$app_path/Contents/Library/$service_type/$service_name"
+                }
+            ]
+        }
+    ]
+}

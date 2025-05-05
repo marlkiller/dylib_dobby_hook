@@ -1,0 +1,202 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Application Injection Configuration",
+  "description": "Defines a list of macOS applications and their service injection settings, including paths, injection types, binaries, and patches.",
+  "type": "object",
+  "properties": {
+    "apps": {
+      "type": "array",
+      "description": "A list of applications to be configured for injection.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "app_name": {
+            "type": "string",
+            "description": "The name of the application, e.g., ForkLift."
+          },
+          "app_path": {
+            "type": "string",
+            "description": "The full path to the application, may include variable references like $app_name."
+          },
+          "app_bin_path": {
+            "type": "string",
+            "description": "Path to the main application binary, typically under Contents/MacOS."
+          },
+          "inject_path": {
+            "type": "string",
+            "description": "Path to the binary to be injected. Defaults to app_bin_path if not specified."
+          },
+          "inject_type": {
+            "type": "string",
+            "enum": [
+              "static",
+              "dynamic",
+              "process",
+              "none"
+            ],
+            "description": "Injection type to be used: static or dynamic or process"
+          },
+          "inject_param": {
+            "type": "string",
+            "default": "--inplace --weak --all-yes --no-strip-codesig",
+            "description": "Specifies the injection parameter as a string, default is '--inplace --weak --all-yes --no-strip-codesig'."
+          },
+          "re_sign": {
+            "type": "boolean",
+            "default": true,
+            "description": "Indicates whether the application should be re-signed after injection. Default is true."
+          },
+          "re_sign_param": {
+            "type": "string",
+            "default": "-f -s - --all-architectures --deep",
+            "description": "Specifies the re-signing parameters."
+          },
+          "re_sign_entitlements": {
+            "type": "boolean",
+            "default": false,
+            "description": "Indicates whether entitlements should be used during re-signing. Default is false."
+          },
+          "re_sign_entitlements_path": {
+            "type": "string",
+            "description": "Specifies the path to the entitlements file for re-signing. If not provided and re_sign_entitlements is true, entitlements will be exported from the source app."
+          },
+          "pre_script": {
+            "type": "string",
+            "description": "Specifies the path to a script to be executed before running this configuration. Optional."
+          },
+          "post_script": {
+            "type": "string",
+            "description": "Specifies the path to a script to be executed after running this configuration. Optional."
+          },
+          "other_patches": {
+            "type": "object",
+            "description": "Defines additional binary patches for specific files.",
+            "patternProperties": {
+              "^.*$": {
+                "type": "object",
+                "description": "Patch definitions for a specific binary file.",
+                "properties": {
+                  "x86": {
+                    "type": "object",
+                    "description": "Binary patch mappings for x86 architecture. Keys are original hex patterns; values are replacements.",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  },
+                  "arm": {
+                    "type": "object",
+                    "description": "Binary patch mappings for ARM architecture. Keys are original hex patterns; values are replacements.",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "services": {
+            "type": "array",
+            "description": "An array of related services for the application that may require patching or injection.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "service_type": {
+                  "type": "string",
+                  "enum": [
+                    "LaunchServices",
+                    "LaunchAgents",
+                    "LaunchDaemons",
+                    "LoginItems"
+                  ],
+                  "description": "The type of service, e.g., LaunchServices, LaunchAgents, LaunchDaemons, or LoginItems."
+                },
+                "service_name": {
+                  "type": "string",
+                  "description": "The name or identifier of the service, typically a bundle ID or executable name."
+                },
+                "sm_privileged_executables": {
+                  "type": "string",
+                  "description": "The bundle identifier of the privileged helper tool authorized to run with elevated privileges. Default is service_name."
+                },
+                "inject_service": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Inject the service binary. Default is false."
+                },
+                "inject_param": {
+                  "type": "string",
+                  "default": "--inplace --weak --all-yes --overwrite",
+                  "description": "Specifies the injection parameter as a string, default is '--weak --all-yes'."
+                },
+                "fix_helper": {
+                  "type": "boolean",
+                  "description": "Indicates whether this helper service requires path fixing or adjustment.",
+                  "default": true
+                },
+                "service_bin_path": {
+                  "type": "string",
+                  "description": "Path to the service binary, may include variables like $app_path, $service_type, or $service_name."
+                },
+                "re_sign_param": {
+                  "type": "string",
+                  "default": "-f -s - --all-architectures --deep",
+                  "description": "Specifies the re-signing parameters."
+                },
+                "re_sign_entitlements": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Indicates whether entitlements should be used during re-signing. Default is false."
+                },
+                "re_sign_entitlements_path": {
+                  "type": "string",
+                  "description": "Specifies the path to the entitlements file for re-signing the service. If not provided and re_sign_entitlements is true, entitlements will be exported from the source app."
+                },
+                "patches": {
+                  "type": "object",
+                  "description": "Platform-specific binary patch definitions to be applied.",
+                  "properties": {
+                    "x86": {
+                      "type": "object",
+                      "description": "Binary patch mappings for x86 architecture. Keys are original hex patterns; values are replacements.",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    },
+                    "arm": {
+                      "type": "object",
+                      "description": "Binary patch mappings for ARM architecture. Keys are original hex patterns; values are replacements.",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "service_type",
+                "service_name",
+                "fix_helper",
+                "service_bin_path"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "app_name",
+          "app_path",
+          "app_bin_path",
+          "inject_type"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "apps"
+  ],
+  "additionalProperties": false
+}
