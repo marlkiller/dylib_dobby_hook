@@ -33,6 +33,7 @@
 | CleanMyMac_5        | 5.*     | ✔   | ✔   |                                                        | ON  |          |
 | NotchNook           | 1.*     | ✔   | ✔   | <https://lo.cafe/notchnook>                            | ON  | NKR00711 |
 | Hopper Disassembler | 5.18.1  | ✔   | ✔   | <https://www.hopperapp.com/download.html>              | ON  |          |
+| Snipaste            | 2.10.6  | ✔   | ✔   | <https://www.snipaste.com/>                            | ON  |          |
 
 <details>
   <summary>(TODO) Details</summary>

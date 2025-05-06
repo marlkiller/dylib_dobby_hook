@@ -408,6 +408,18 @@ def process_service(service, app_context):
     run_cmd_ignore_output(
         f"sudo /bin/rm '/Library/PrivilegedHelperTools/{service_name}'"
     )
+    ## TODO bootout
+    # launchctl list | grep -i snipast
+    # 18965	0	application.com.Snipaste.113948205.113959944
+    # sudo launchctl procinfo 18965 | grep domain
+    # 18965	0	application.com.Snipaste.113948205.113959944
+    # Usage: launchctl bootout <domain-target> [service-path1, service-path2, ...] | <service-target>
+    # sudo launchctl bootout gui/$(id -u)/System/Library/LaunchDaemons/com.xxx.plist
+    # sudo launchctl bootout gui/$(id -u)/application.com.Snipaste.113948205.113959944
+    # run_cmd_ignore_output(
+    #     f"sudo launchctl bootout gui/{os.getuid()}/Library/LaunchDaemons/{service_name}.plist"
+    # )
+
     # if needed
     # run_cmd_ignore_output(f"sudo rm -rf '~/Library/Preferences/com.{service_name}.plist'")
     # run_cmd_ignore_output(f"sudo rm -rf '~/Library/Application Support/com.{service_name}'")
