@@ -165,22 +165,40 @@ static IMP _dataTaskWithRequestIMP;
                 @"signature": @""
             };
         } else if([urlString containsString:@"/3.2/license/deactivate"]) {
-            respBody =@{
-                @"success": @YES,
-                @"response": @{},
-                @"signature": @""
+            respBody = @{
+                @"success" : @YES,
+                @"response" : @ {
+                    @"product_id" : productId,
+                    @"times_used" : @1,
+                    @"type" : @"activation_license",
+                    @"allowed_uses" : @999,
+                    @"activation_id" : [Constant G_EMAIL_ADDRESS],
+                    @"expiry_date" : @"2026-12-31",
+                    @"expires" : @NO
+                },
+                @"signature" : @""
             };
-        }else if([urlString containsString:@"/3.2/product/data"]) {
-            // https://v3.paddleapi.com/3.2/product/data
-            respBody =@{
-                @"success": @YES,
-                @"response": @{},
-                @"signature": @""
+        } else if ([urlString containsString:@"/3.2/license/activations"]) {
+            respBody = @{
+                @"success" : @YES,
+                @"response" : @[
+                    @{
+                        @"activation_id" : [Constant G_EMAIL_ADDRESS],
+                        @"uuid" : @"B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C-B7EE3D3C",
+                        @"activated" : @"2024-06-02 21:26:07"
+                    }
+                ],
+                @"signature" : @""
+            };
+        } else if ([urlString containsString:@"/3.2/product/data"]) {
+            respBody = @{
+                @"success" : @YES,
+                @"response" : @ {},
+                @"signature" : @""
             };
         } else {
             NSLogger(@"[hook_dataTaskWithRequest] Allow to pass url: %@",url);
             return ((id(*)(id, SEL,id,id))dataTaskWithRequestIMP)(self, _cmd,request,completionHandler);
-
         }
         NSLogger(@"[hook_dataTaskWithRequest] Intercept url: %@, request body: %@, response body: %@",url, reqBody,respBody);
         if (completionHandler) {

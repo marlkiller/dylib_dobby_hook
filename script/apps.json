@@ -180,6 +180,7 @@
                 {
                     "service_type": "LoginItems",
                     "service_name": "AirBuddyHelper",
+                    "service_identity": "codes.rambo.AirBuddyHelper",
                     "inject_service": true,
                     "fix_helper": false,
                     "sm_privileged_executables": "codes.rambo.AirBuddy.Installer",

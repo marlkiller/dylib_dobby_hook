@@ -116,6 +116,10 @@
                   "type": "string",
                   "description": "The name or identifier of the service, typically a bundle ID or executable name."
                 },
+                "service_identity": {
+                  "type": "string",
+                  "description": "The identifier of the service,  Default is service_name"
+                },
                 "sm_privileged_executables": {
                   "type": "string",
                   "description": "The bundle identifier of the privileged helper tool authorized to run with elevated privileges. Default is service_name."

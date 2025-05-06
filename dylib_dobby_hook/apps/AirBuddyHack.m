@@ -37,41 +37,18 @@
 void (*sub_10005ad20_ori)(void);
 void hook_sub_10005ad20(void){
     NSLogger(@"hook_sub_10005bf30 is called");
-//    
-//    // cmp        byte [r13+0x99], 0x1
-//    // (lldb) po 0x00006000008eeda0
-//    // AirBuddy.LicenseStatusViewModel
 //    uint64_t registerValue;
 //#if defined(__arm64__) || defined(__aarch64__)
 //    asm("mov %0, x20" : "=r" (registerValue)); // 获取 x20 寄存器的值
 //#elif defined(__x86_64__)
-////    asm("mov %0, r13" : "=r" (registerValue));// x32 ??
 //    asm("movq %%r13, %0" : "=r" (registerValue));// 获取 r13 寄存器的值
 //#endif
-//    // 操作 寄存器+0x99 偏移
-//    uint8_t *addressToCompare = (uint8_t *)(registerValue + 0x99);
-//    uint8_t byteValue = *addressToCompare;
-//    NSLogger(@"byteValue :%d",byteValue);
-//    *addressToCompare = 0;
-//    byteValue = *addressToCompare;
-//    NSLogger(@"byteValue :%d",byteValue);
-//    // 转为 id 类型
-//    uint8_t *obj = (uint8_t *)(registerValue);
-//    id objId = (__bridge id)(void *)obj;
-//    NSLogger(@"objId %@",objId);
-//    [MemoryUtils inspectObjectWithAddress:(void *)obj];
-//    [MemoryUtils listAllPropertiesMethodsAndVariables:[objId class]];
-//
     
 #if defined(__arm64__) || defined(__aarch64__)
     __asm__ __volatile__(
         "strb wzr, [x20, #0x99]"
     );
 #elif defined(__x86_64__)
-//    __asm
-//        {
-//            mov byte ptr[r13+99h], 0
-//        }
     __asm__ (
          "movb $0, 0x99(%r13)"
     );

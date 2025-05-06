@@ -376,8 +376,9 @@ def process_service(service, app_context):
     app_path = app_context.get("app_path")
     app_framework_path = app_context.get("app_framework_path")
     service_name = service.get("service_name")
+    service_identity = service.get("service_identity", service_name)
+    sm_privileged_executables = service.get("sm_privileged_executables", service_identity)
     re_sign_flag = app_context.get("re_sign", True)
-    sm_privileged_executables = service.get("SMPrivilegedExecutables", service_name)
     service_bin_path = service.get("service_bin_path")
     inject_service = service.get("inject_service", False)
     fix_helper = service.get("fix_helper", True)
@@ -446,8 +447,8 @@ def process_service(service, app_context):
     # Handle re-signing
     if re_sign_flag:
         # Modify Info.plist
-        log_info(f"🔧 Modifying Info.plist for {service_name}...")
-        identifier_name = f'identifier \\"{service_name}\\"'
+        log_info(f"🔧 Modifying Info.plist for {service_identity}...")
+        identifier_name = f'identifier \\"{service_identity}\\"'
         requirements_name = identifier_name
         plist_path = f"{app_path}/Contents/Info.plist"
         run_cmd_or_raise(
