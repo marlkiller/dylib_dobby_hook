@@ -1,0 +1,85 @@
+#!/bin/bash
+
+# --- Configuration Variables ---
+APP_NAME="$1" # Application name passed as a script argument
+APP_SOURCE_PATH="/Applications/${APP_NAME}.app" # Path to the application to be packaged
+DMG_VOLNAME="${APP_NAME}" # Volume name for the mounted DMG
+DMG_TEMP_NAME="${APP_NAME}_temp.dmg" # Temporary writable DMG file name
+DMG_FINAL_NAME="${APP_NAME}.dmg" # Final output DMG file name
+LINK_TARGET="/Applications" # Target path for the shortcut
+LINK_NAME="Applications" # Shortcut name displayed inside the DMG
+
+# --- Check if the application name is provided ---
+if [ -z "$APP_NAME" ]; then
+    echo "❌ Application name is required. Usage: ./dmg_maker.sh <APP_NAME>"
+    exit 1
+fi
+
+# --- Check dependencies ---
+if ! command -v hdiutil &> /dev/null; then
+    echo "❌ 'hdiutil' is not installed. Please ensure this script is run on macOS."
+    exit 1
+fi
+
+# --- Check if the application path exists ---
+if [ ! -d "$APP_SOURCE_PATH" ]; then
+    echo "❌ Application path does not exist: $APP_SOURCE_PATH"
+    exit 1
+fi
+
+# --- Check if the target DMG file already exists ---
+if [ -f "$DMG_FINAL_NAME" ]; then
+    echo "⚠️ Target DMG file already exists: $DMG_FINAL_NAME"
+    read -p "Do you want to overwrite it? (Y/N): " user_input
+    if [[ "$user_input" != "Y" && "$user_input" != "y" ]]; then
+        echo "❌ Operation canceled."
+        exit 1
+    fi
+    echo "🗑️ Deleting existing DMG file: $DMG_FINAL_NAME"
+    rm -f "$DMG_FINAL_NAME"
+fi
+
+# --- Automatically calculate DMG size ---
+APP_SIZE=$(du -sh "$APP_SOURCE_PATH" | awk '{print $1}')
+APP_SIZE_MB=$(du -sm "$APP_SOURCE_PATH" | awk '{print $1}')
+DMG_SIZE=$(echo "$APP_SIZE_MB + 50" | bc)m # Add an extra 50MB of space
+echo "📏 Application size: $APP_SIZE, calculated DMG size: $DMG_SIZE"
+
+# --- Create temporary DMG ---
+echo "📦 Creating temporary DMG file: $DMG_TEMP_NAME"
+hdiutil create -size "$DMG_SIZE" -fs HFS+ -volname "$DMG_VOLNAME" "$DMG_TEMP_NAME" -ov
+
+# --- Mount temporary DMG ---
+echo "🔗 Mounting temporary DMG file: $DMG_TEMP_NAME"
+MOUNT_DIR=$(hdiutil attach "$DMG_TEMP_NAME" | grep -o '/Volumes/.*')
+if [ -z "$MOUNT_DIR" ]; then
+    echo "❌ Failed to mount temporary DMG file."
+    exit 1
+fi
+echo "📂 Mount point: $MOUNT_DIR"
+
+# --- Copy application to DMG ---
+echo "📂 Copying application to DMG: $APP_SOURCE_PATH -> $MOUNT_DIR"
+cp -R "$APP_SOURCE_PATH" "$MOUNT_DIR"
+
+# --- Create shortcut ---
+echo "🔗 Creating shortcut: $LINK_NAME -> $LINK_TARGET"
+ln -s "$LINK_TARGET" "$MOUNT_DIR/$LINK_NAME"
+
+# --- Unmount temporary DMG ---
+echo "🔒 Unmounting temporary DMG file: $MOUNT_DIR"
+hdiutil detach "$MOUNT_DIR"
+if [ $? -ne 0 ]; then
+    echo "❌ Failed to unmount. Please manually unmount: $MOUNT_DIR"
+    exit 1
+fi
+
+# --- Convert to final DMG ---
+echo "🚀 Converting to final DMG file: $DMG_FINAL_NAME"
+hdiutil convert "$DMG_TEMP_NAME" -format UDZO -o "$DMG_FINAL_NAME"
+
+# --- Clean up temporary files ---
+echo "🧹 Cleaning up temporary files: $DMG_TEMP_NAME"
+rm -f "$DMG_TEMP_NAME"
+
+echo "✅ DMG packaging completed: $DMG_FINAL_NAME"

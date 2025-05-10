@@ -280,7 +280,7 @@ def init_hack():
         log_error(f"Required file not found: {release_dylib}")
         raise FileNotFoundError(
             f"The required dylib file '{release_dylib}' does not exist. "
-            "Please run 'bash build.sh' to compile it."
+            "Please navigate to the project root directory and run 'bash build.sh' to compile the required files."
         )
 
     log_info(f"Setting permissions for: {insert_dylib}")
@@ -361,11 +361,11 @@ def export_entitlements(target_bin, entitlements_path=None):
     temp_entitlements_path = temp_entitlements.name
     temp_entitlements.close()
 
-    log_info(f"Exporting entitlements to temporary file: {temp_entitlements_path}")
+    log_info(f"Exporting entitlements to temporary file: {temp_entitlements_path}")    
+    # TODO warning: Specifying ':' in the path is deprecated and will not work in a future release
     run_cmd_ignore_error(
-        f"sudo codesign -d --entitlements - '{target_bin}' > '{temp_entitlements_path}'"
+        f"sudo codesign -d --entitlements :- '{target_bin}' > '{temp_entitlements_path}'"
     )
-
     return temp_entitlements_path
 
 

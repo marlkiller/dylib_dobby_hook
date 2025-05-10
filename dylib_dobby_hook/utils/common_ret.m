@@ -19,26 +19,26 @@
 #import <execinfo.h>
 
 int ret2 (void){
-    printf(">>>>>> ret2\n");
+    NSLogger("ret2");
     return 2;
 }
 int ret1 (void){
 //    uint8_t ret1Hex[6] = {0xB8, 0x01, 0x00, 0x00, 0x00, 0xC3}; // mov eax, 1; ret
 //    uint8_t ret1HexARM[8] = {0x20, 0x00, 0x80, 0xD2, 0xC0, 0x03, 0x5F, 0xD6}; // mov x0, #1; ret
-    printf(">>>>>> ret1\n");
+    NSLogger("ret1");
     return 1;
 }
 int ret0 (void){
 //    uint8_t ret0Hex[3] = {0x31, 0xC0, 0xC3}; // xor eax, eax; ret
 //    uint8_t ret0HexARM[8] = {0x00, 0x00, 0x80, 0xD2, 0xC0, 0x03, 0x5F, 0xD6}; // mov x0, #0; ret
-    printf(">>>>>> ret0\n");
+    NSLogger("ret0");
     return 0;
 }
 
 void ret(void){
 //    uint8_t retHex[1] = {0xC3}; // ret
 //    uint8_t retHexARM[4] = {0xC0, 0x03, 0x5F, 0xD6}; // ret
-    printf(">>>>>> ret\n");
+    NSLogger("ret");
 }
 
 //void nop(void){
@@ -50,7 +50,11 @@ void ret(void){
 void printStackTrace(void) {
     void *buffer[100];
     int size = backtrace(buffer, 100);
-    char **symbols = backtrace_symbols(buffer, size);
+    char** symbols = backtrace_symbols(buffer, size);
+    const struct mach_header* mainHeader = _dyld_get_image_header(0);
+    intptr_t mainSlide = _dyld_get_image_vmaddr_slide(0);
+    uintptr_t mainBase = (uintptr_t)mainHeader + mainSlide;
+
     NSMutableString *stackTrace = [NSMutableString string];
     if (symbols != NULL) {
         for (int i = 0; i < size; i++) {
@@ -58,7 +62,7 @@ void printStackTrace(void) {
         }
         free(symbols);
     }
-    NSLogger(@"%@", stackTrace);
+    NSLogger(@"mainBase: 0x%lx , mainSlide: 0x%lx\n%@", mainBase, mainSlide, stackTrace);
 }
 
 // hook ptrace
@@ -69,7 +73,7 @@ int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data) {
         // 如果请求不是 PT_DENY_ATTACH，则调用原始的 ptrace 函数
         return orig_ptrace(_request,_pid,_addr,_data);
     }
-    printf(">>>>>> [AntiAntiDebug] - ptrace request is PT_DENY_ATTACH\n");
+    NSLogger("[AntiAntiDebug] - ptrace request is PT_DENY_ATTACH");
     // 拒绝调试
     return 0;
 }
