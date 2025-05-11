@@ -4,14 +4,12 @@
 APP_NAME="$1" # Application name passed as a script argument
 APP_SOURCE_PATH="/Applications/${APP_NAME}.app" # Path to the application to be packaged
 DMG_VOLNAME="${APP_NAME}" # Volume name for the mounted DMG
-DMG_TEMP_NAME="${APP_NAME}_temp.dmg" # Temporary writable DMG file name
-DMG_FINAL_NAME="${APP_NAME}.dmg" # Final output DMG file name
 LINK_TARGET="/Applications" # Target path for the shortcut
 LINK_NAME="Applications" # Shortcut name displayed inside the DMG
 
 # --- Check if the application name is provided ---
 if [ -z "$APP_NAME" ]; then
-    echo "❌ Application name is required. Usage: ./dmg_maker.sh <APP_NAME>"
+    echo "❌ Application name is required. Usage: ./dmg_builder.sh <APP_NAME>"
     exit 1
 fi
 
@@ -26,6 +24,18 @@ if [ ! -d "$APP_SOURCE_PATH" ]; then
     echo "❌ Application path does not exist: $APP_SOURCE_PATH"
     exit 1
 fi
+
+# --- Get application version ---
+APP_VERSION=$(defaults read "${APP_SOURCE_PATH}/Contents/Info.plist" CFBundleShortVersionString 2>/dev/null)
+if [ -z "$APP_VERSION" ]; then
+    echo "❌ Failed to retrieve application version. Ensure the Info.plist file exists and is valid."
+    exit 1
+fi
+echo "📦 Application version: $APP_VERSION"
+
+# --- Set DMG file names ---
+DMG_TEMP_NAME="${APP_NAME}_temp.dmg" # Temporary writable DMG file name
+DMG_FINAL_NAME="${APP_NAME}_${APP_VERSION}.dmg" # Final output DMG file name with version
 
 # --- Check if the target DMG file already exists ---
 if [ -f "$DMG_FINAL_NAME" ]; then

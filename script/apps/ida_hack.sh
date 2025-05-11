@@ -9,16 +9,8 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 current_path=$PWD
-mac_patch_helper="$PWD/../tools/mac_patch_helper"
-mac_patch_helper_config="$PWD/../tools/patch.json"
-
-
-sudo chmod a+x $mac_patch_helper
 ida_path="/Applications/IDA Professional 9.1.app"
 app_name=$(basename "$ida_path" .app)
-
-/usr/bin/xattr -cr "$mac_patch_helper"
-$mac_patch_helper "IDA" $mac_patch_helper_config 
 
 echo -e "${GREEN}✅ [${app_name}] - Copying license file...${NC}"
 cp -f "$PWD/apps/IDA/idapro.hexlic" "$ida_path/Contents/MacOS/"

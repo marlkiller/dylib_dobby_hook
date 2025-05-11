@@ -202,7 +202,7 @@ OSStatus hk_SecStaticCodeCheckValidity(SecStaticCodeRef staticCode, SecCSFlags f
 SecCodeCheckValidityWithErrorsFuncPtr SecCodeCheckValidityWithErrors_ori = NULL;
 OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors) {
     OSStatus result = SecCodeCheckValidityWithErrors_ori(code, flags, requirement, errors);
-    NSLogger(@"Params: code=%p, flags=0x%llx, requirement=%p, errors_ptr=%p, result=%d",
+    NSLogger(@"Params: code=%p, flags=0x%llx, requirement=%p, errors_ptr=%p, ori_result=%d",
              code, (uint64_t)flags, requirement, errors,result);
     // logCodePath(code);
     // logSecRequirement(requirement, flags);
@@ -216,8 +216,8 @@ OSStatus hk_SecCodeCheckValidityWithErrors(SecCodeRef code, SecCSFlags flags, Se
 SecStaticCodeCheckValidityWithErrorsFuncPtr SecStaticCodeCheckValidityWithErrors_ori = NULL;
 OSStatus hk_SecStaticCodeCheckValidityWithErrors(SecStaticCodeRef code, SecCSFlags flags, SecRequirementRef requirement, CFErrorRef *errors) {
     OSStatus result = SecStaticCodeCheckValidityWithErrors_ori(code, flags, requirement, errors);
-    NSLogger(@"Params: code=%p, flags=0x%llx, requirement=%p, errors_ptr=%p, result=%d",
-             code, (uint64_t)flags, requirement, errors,result);
+    NSLogger(@"Params: code=%p, flags=0x%llx, requirement=%p, errors_ptr=%p, ori_result=%d",
+        code, (uint64_t)flags, requirement, errors, result);
     // logCodePath(code);
     // logSecRequirement(requirement, flags);
     if (errors && *errors) {

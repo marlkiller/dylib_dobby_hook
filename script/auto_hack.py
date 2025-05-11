@@ -317,6 +317,7 @@ def re_codesign(
     # Check signature after re-signing
     log_info(f"Checking signature after re-signing for: {target_bin}")
     run_cmd_ignore_error(f"sudo codesign -d -vvv --entitlements - '{target_bin}'")
+    run_cmd_ignore_error(f"sudo codesign --verify --verbose=1 '{target_bin}'")
 
 
 def remove_quarantine_attribute(target_bin):
@@ -362,9 +363,12 @@ def export_entitlements(target_bin, entitlements_path=None):
     temp_entitlements.close()
 
     log_info(f"Exporting entitlements to temporary file: {temp_entitlements_path}")    
-    # TODO warning: Specifying ':' in the path is deprecated and will not work in a future release
+    # warning: Specifying ':' in the path is deprecated and will not work in a future release
+    # run_cmd_ignore_error(
+    #     f"sudo codesign -d --entitlements :- '{target_bin}' > '{temp_entitlements_path}'"
+    # )
     run_cmd_ignore_error(
-        f"sudo codesign -d --entitlements :- '{target_bin}' > '{temp_entitlements_path}'"
+        f"sudo codesign -d --entitlements - --xml '{target_bin}' > '{temp_entitlements_path}'"
     )
     return temp_entitlements_path
 
@@ -377,6 +381,7 @@ def process_service(service, app_context):
     app_framework_path = app_context.get("app_framework_path")
     service_name = service.get("service_name")
     service_identity = service.get("service_identity", service_name)
+    fix_privileged_executables = service.get("fix_privileged_executables", True)
     sm_privileged_executables = service.get("sm_privileged_executables", service_identity)
     re_sign_flag = app_context.get("re_sign", True)
     service_bin_path = service.get("service_bin_path")
@@ -447,19 +452,20 @@ def process_service(service, app_context):
     # Handle re-signing
     if re_sign_flag:
         # Modify Info.plist
-        log_info(f"🔧 Modifying Info.plist for {service_identity}...")
-        identifier_name = f'identifier \\"{service_identity}\\"'
-        requirements_name = identifier_name
-        plist_path = f"{app_path}/Contents/Info.plist"
-        run_cmd_or_raise(
-            f"sudo /usr/libexec/PlistBuddy -c 'Print SMPrivilegedExecutables' '{plist_path}'"
-        )
-        run_cmd_ignore_output(
-            f"sudo /usr/libexec/PlistBuddy -c 'Set :SMPrivilegedExecutables:{sm_privileged_executables} \"{requirements_name}\"' '{plist_path}'"
-        )
-        run_cmd_or_raise(
-            f"sudo /usr/libexec/PlistBuddy -c 'Print SMPrivilegedExecutables' '{plist_path}'"
-        )
+        if fix_privileged_executables:
+            log_info(f"🔧 Modifying Info.plist for {service_identity}...")
+            identifier_name = f'identifier \\"{service_identity}\\"'
+            requirements_name = identifier_name
+            plist_path = f"{app_path}/Contents/Info.plist"
+            run_cmd_or_raise(
+                f"sudo /usr/libexec/PlistBuddy -c 'Print SMPrivilegedExecutables' '{plist_path}'"
+            )
+            run_cmd_ignore_output(
+                f"sudo /usr/libexec/PlistBuddy -c 'Set :SMPrivilegedExecutables:{sm_privileged_executables} \"{requirements_name}\"' '{plist_path}'"
+            )
+            run_cmd_or_raise(
+                f"sudo /usr/libexec/PlistBuddy -c 'Print SMPrivilegedExecutables' '{plist_path}'"
+            )
 
         log_info(f"Re-signing service: {service_name}")
         re_codesign(
@@ -579,10 +585,9 @@ def process_app(app):
     log_info(f"Starting processing for app: {app_name}\r\n{json.dumps(app, indent=4)}")
 
     pre_script = app.get("pre_script")
-    if app.get("pre_script", None):
-        log_info(f"Running pre_script for app: {app_name} at {pre_script}")
-        pre_script = app.get("pre_script")
-        run_cmd_or_raise(f"sudo bash {pre_script}")
+    if pre_script:
+        log_info(f"Running pre_script for app: {app_name}")
+        run_cmd_or_raise(f"{pre_script}")
 
     # other_patches
     other_patches = app.get("other_patches", [])
@@ -642,6 +647,12 @@ def process_app(app):
             os.remove(app_temp_entitlements_path)
 
     remove_quarantine_attribute(app_path)
+
+    post_script = app.get("post_script")
+    if post_script:
+        log_info(f"Running post_script for app: {app_name}")
+        run_cmd_or_raise(f"{post_script}")
+
     log_info(f"Finished processing for app: {app_name}")
     log_separator()
 

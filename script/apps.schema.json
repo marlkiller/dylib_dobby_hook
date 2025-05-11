@@ -62,11 +62,11 @@
           },
           "pre_script": {
             "type": "string",
-            "description": "Specifies the path to a script to be executed before running this configuration. Optional."
+            "description": "Specifies the script content to be executed before running this configuration.eg: 'sudo bash apps/ida_hack.sh'"
           },
           "post_script": {
             "type": "string",
-            "description": "Specifies the path to a script to be executed after running this configuration. Optional."
+            "description": "Specifies the script content to be executed after running this configuration."
           },
           "other_patches": {
             "type": "object",
@@ -108,9 +108,10 @@
                     "LaunchServices",
                     "LaunchAgents",
                     "LaunchDaemons",
-                    "LoginItems"
+                    "LoginItems",
+                    "SubApps"
                   ],
-                  "description": "The type of service, e.g., LaunchServices, LaunchAgents, LaunchDaemons, or LoginItems."
+                  "description": "The type of service, e.g., LaunchServices, LaunchAgents, LaunchDaemons, LoginItems or SubApps."
                 },
                 "service_name": {
                   "type": "string",
@@ -137,6 +138,11 @@
                 "fix_helper": {
                   "type": "boolean",
                   "description": "Indicates whether this helper service requires path fixing or adjustment.",
+                  "default": true
+                },
+                "fix_privileged_executables": {
+                  "type": "boolean",
+                  "description": "SMPrivilegedExecutables xxx/Info.plist ??, Default is true",
                   "default": true
                 },
                 "service_bin_path": {

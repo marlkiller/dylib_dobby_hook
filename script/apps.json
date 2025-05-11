@@ -140,7 +140,7 @@
             "app_path": "/Applications/$app_name.app",
             "app_bin_path": "$app_path/Contents/MacOS/ida",
             "inject_path": "$app_path/Contents/Frameworks/QtDBus.framework/Versions/5/QtDBus",
-            "pre_script": "apps/ida_hack.sh",
+            "pre_script": "sudo bash apps/ida_hack.sh",
             "inject_type": "none",
             "re_sign":true,
             "other_patches": {
@@ -183,6 +183,7 @@
                     "service_identity": "codes.rambo.AirBuddyHelper",
                     "inject_service": true,
                     "fix_helper": false,
+                    "fix_privileged_executables": false,
                     "sm_privileged_executables": "codes.rambo.AirBuddy.Installer",
                     "service_bin_path": "$app_path/Contents/Library/$service_type/AirBuddyHelper.app/Contents/MacOS/AirBuddyHelper"
                 }
