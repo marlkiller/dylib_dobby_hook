@@ -28,7 +28,6 @@
 		B513ADD72CB95D0B00F5DC97 /* LocalizationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B513ADD62CB95D0B00F5DC97 /* LocalizationManager.h */; };
 		B513ADD92CB95D4100F5DC97 /* LocalizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B513ADD82CB95D4100F5DC97 /* LocalizationManager.m */; };
 		B52BBA842CBFE1CE00F098A9 /* AirBuddyHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B52BBA832CBFE1CE00F098A9 /* AirBuddyHack.m */; };
-		B53522462C2FE4D4001CA305 /* MacUpdaterHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B53522452C2FE4D4001CA305 /* MacUpdaterHack.m */; };
 		B5369DCE2CC4C1D200A81211 /* irvueHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5369DCD2CC4C1D200A81211 /* irvueHack.m */; };
 		B5369DD02CC4C1DF00A81211 /* VidhubHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5369DCF2CC4C1DF00A81211 /* VidhubHack.m */; };
 		B53F9DED2C4AA4EC00A6B32D /* CleanShotXHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B53F9DEC2C4AA4EC00A6B32D /* CleanShotXHack.m */; };
@@ -103,7 +102,6 @@
 		B513ADD62CB95D0B00F5DC97 /* LocalizationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalizationManager.h; sourceTree = "<group>"; };
 		B513ADD82CB95D4100F5DC97 /* LocalizationManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalizationManager.m; sourceTree = "<group>"; };
 		B52BBA832CBFE1CE00F098A9 /* AirBuddyHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AirBuddyHack.m; sourceTree = "<group>"; };
-		B53522452C2FE4D4001CA305 /* MacUpdaterHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MacUpdaterHack.m; sourceTree = "<group>"; };
 		B5369DCD2CC4C1D200A81211 /* irvueHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = irvueHack.m; sourceTree = "<group>"; };
 		B5369DCF2CC4C1DF00A81211 /* VidhubHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VidhubHack.m; sourceTree = "<group>"; };
 		B53F9DEC2C4AA4EC00A6B32D /* CleanShotXHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CleanShotXHack.m; sourceTree = "<group>"; };
@@ -271,7 +269,6 @@
 				B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */,
 				B5D2ED3E2BC0252D0030CBCA /* DevHack.m */,
 				B546A6572BC4F0CD0012338D /* ProxyManHack.m */,
-				B53522452C2FE4D4001CA305 /* MacUpdaterHack.m */,
 				B53F9DEC2C4AA4EC00A6B32D /* CleanShotXHack.m */,
 				B5A7D30E2C548B71003D4C7F /* HackProtocolDefault.h */,
 				B5A7D3102C548BAB003D4C7F /* HackProtocolDefault.m */,
@@ -448,7 +445,6 @@
 				B5A7D3112C548BAB003D4C7F /* HackProtocolDefault.m in Sources */,
 				B546A6582BC4F0CD0012338D /* ProxyManHack.m in Sources */,
 				B58160172BE88569001DDB9B /* EncryptionUtils.m in Sources */,
-				B53522462C2FE4D4001CA305 /* MacUpdaterHack.m in Sources */,
 				B5A7D3142C549130003D4C7F /* ForkLiftHelperHack.m in Sources */,
 				38350BF82B53F73A00DD52B3 /* dylib_dobby_hook.m in Sources */,
 				B5A7D3172C5491A0003D4C7F /* HackHelperProtocolDefault.m in Sources */,
