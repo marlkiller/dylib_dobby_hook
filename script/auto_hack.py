@@ -20,7 +20,7 @@ GRAY = "\033[90m"
 
 # DEFAULT_INJECT_PARAM 参数说明 / Injection parameters:
 # --inplace             # 就地修改目标文件，不创建新副本 / Modify the original file directly (in-place editing)
-# --weak                # 以弱依赖方式注入动态库，失败不会导致崩溃 / Inject the dylib as a weak dependency (fail-safe)
+# --weak                # 以弱依赖方式注入动态库，失败不会导致崩溃 / insert_dylib will insert a LC_LOAD_WEAK_DYLIB load command instead of LC_LOAD_DYLIB.
 # --all-yes             # 所有提示默认选择“Yes”，适合自动化脚本 / Automatically answer "yes" to all prompts
 # --no-strip-codesig    # 保留原始签名，不去除 / Preserve the original code signature
 DEFAULT_INJECT_PARAM = "--inplace --weak --all-yes --no-strip-codesig"
@@ -39,25 +39,9 @@ apps_json_path = os.path.join(current_dir, "apps.json")
 apps_schema_path = os.path.join(current_dir, "apps.schema.json")
 insert_dylib = f"{current_dir}/../tools/insert_dylib"
 mac_patch_helper = f"{current_dir}/../tools/mac_patch_helper"
-dylib_name = "libdylib_dobby_hook.dylib"
-release_dylib = f"{current_dir}/../release/{dylib_name}"
+release_dylib = f"{current_dir}/../release/libdylib_dobby_hook.dylib"
+DEFAULT_DYLIB_NAME = "libdylib_dobby_hook.dylib"
 
-# Check and install jsonschema if not available
-try:
-    from jsonschema import validate, ValidationError  # Import validation library
-except ModuleNotFoundError:
-    print("jsonschema is not installed. Installing it now...")
-    subprocess.check_call(
-        [
-            sys.executable,
-            "-m",
-            "pip",
-            "install",
-            "jsonschema",
-            "--break-system-packages",
-        ]
-    )
-    from jsonschema import validate, ValidationError  # Retry import after installation
 
 with open(apps_schema_path, "r", encoding="utf-8") as schema_file:
     schema = json.load(schema_file)
@@ -85,6 +69,58 @@ def log_plain(message):
     """
     print(message)
 
+
+# Check and install jsonschema if not available
+def install_jsonschema():
+    """Attempt to install jsonschema using multiple methods with fallbacks"""
+    install_attempts = [
+        [
+            sys.executable,
+            "-m",
+            "pip",
+            "install",
+            "jsonschema",
+            "--break-system-packages",
+        ],
+        [sys.executable, "-m", "pip", "install", "jsonschema"],
+        [sys.executable, "-m", "pip", "install", "jsonschema", "--user"],
+    ]
+
+    log_info("jsonschema not found. Attempting installation...")
+
+    for i, attempt in enumerate(install_attempts, 1):
+        method_name = " ".join(attempt[3:])  # Get the install method part
+        log_info(f"Attempt {i}/{len(install_attempts)}: {method_name}")
+
+        try:
+            subprocess.check_call(attempt)
+            log_info(f"Successfully installed jsonschema via: {method_name}")
+            return True
+        except subprocess.CalledProcessError as e:
+            log_warning(f"Installation attempt failed ({method_name}): {str(e)}")
+            continue
+
+    log_error("All installation methods failed for jsonschema")
+    return False
+
+
+# Check and install jsonschema
+try:
+    from jsonschema import validate, ValidationError
+except ImportError:
+    if not install_jsonschema():
+        log_error(
+            "Critical: Could not install jsonschema. Please install manually: "
+            "'pip install jsonschema'"
+        )
+        sys.exit(1)
+    try:
+        from jsonschema import validate, ValidationError
+
+        log_info("Successfully imported jsonschema after installation")
+    except ImportError as e:
+        log_error(f"Failed to import jsonschema even after installation: {str(e)}")
+        sys.exit(1)
 
 def log_command(cmd):
     log_plain(f"➜ {cmd}")
@@ -380,6 +416,7 @@ def process_service(service, app_context):
     app_path = app_context.get("app_path")
     app_framework_path = app_context.get("app_framework_path")
     service_name = service.get("service_name")
+    dylib_name = app.get("dylib_name", DEFAULT_DYLIB_NAME)
     service_identity = service.get("service_identity", service_name)
     fix_privileged_executables = service.get("fix_privileged_executables", True)
     sm_privileged_executables = service.get("sm_privileged_executables", service_identity)
@@ -503,6 +540,7 @@ def handle_static_injection(app_name, app_bin_path, app):
     """
     inject_param = app.get("inject_param", DEFAULT_INJECT_PARAM)
     inject_path = app.get("inject_path", app_bin_path)
+    dylib_name = app.get("dylib_name", DEFAULT_DYLIB_NAME)
     log_info(f"Injecting dylib into app binary (static): {inject_path}")
     log_info(f"Checking signature before re-signing for: {app.get('app_path')}")
     run_cmd_ignore_error(
@@ -546,6 +584,7 @@ def process_app(app):
     re_sign_flag = app.get("re_sign", True)
     inject_type = app.get("inject_type", DEFAULT_INJECT_TYPE)
     app["app_framework_path"] = f"{app_path}/Contents/Frameworks"
+    dylib_name = app.get("dylib_name", DEFAULT_DYLIB_NAME)
     log_separator(app_name)
 
     if not os.path.exists(app_path):
@@ -599,7 +638,9 @@ def process_app(app):
     app_bundle_framework = f"{app_path}/Contents/Frameworks/"
     os.makedirs(app_bundle_framework, exist_ok=True)
     log_info(f"Copying dylib to: {app_bundle_framework}")
-    run_cmd_ignore_output(f'sudo cp -f "{release_dylib}" "{app_bundle_framework}"')
+    run_cmd_ignore_output(
+        f'sudo cp -f "{release_dylib}" "{app_bundle_framework}/{dylib_name}"'
+    )
 
     app_re_sign_param = app.get("re_sign_param", DEFAULT_RE_SIGN_PARAM)
     app_re_sign_entitlements = app.get("re_sign_entitlements", False)

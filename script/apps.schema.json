@@ -36,6 +36,10 @@
             ],
             "description": "Injection type to be used: static or dynamic or process"
           },
+          "dylib_name": {
+            "type": "string",
+            "description": "Default is libdylib_dobby_hook.dylib"
+          },
           "inject_param": {
             "type": "string",
             "default": "--inplace --weak --all-yes --no-strip-codesig",

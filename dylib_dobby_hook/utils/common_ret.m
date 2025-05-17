@@ -18,6 +18,26 @@
 #import <Security/Security.h>
 #import <execinfo.h>
 
+#ifdef __arm64__
+#define PATCH_SIZE 12
+#else
+#define PATCH_SIZE 14
+#endif
+#define MAX_BACKUP_SIZE 128
+
+typedef struct {
+    void* func;
+    uint8_t backup[PATCH_SIZE];
+} HookBackup;
+
+typedef struct {
+    void* func;
+    HookBackup* backup;
+} HookEntry;
+
+static HookEntry hook_entries[MAX_BACKUP_SIZE];
+static int hook_count = 0;
+
 int ret2 (void){
     NSLogger("ret2");
     return 2;
@@ -41,10 +61,53 @@ void ret(void){
     NSLogger("ret");
 }
 
-//void nop(void){
-//    uint8_t nopHex[1] = {0x90}; // nop
-//    uint8_t nopHexARM[4] = {0x1f,0x20,0x03,0xd5}; // nop
-//}
+// void nop(void){
+//     uint8_t nopHex[1] = {0x90}; // nop
+//     uint8_t nopHexARM[4] = {0x1f,0x20,0x03,0xd5}; // nop
+// }
+
+int tiny_hook_ex(void* func, void* dest, void** orig) {
+    if (!func || !dest) return -1;
+
+    for (int i = 0; i < hook_count; i++)
+        if (hook_entries[i].func == func) return -1;
+
+    if (hook_count >= MAX_BACKUP_SIZE) return -1;
+
+    HookBackup* backup = malloc(sizeof(HookBackup));
+    if (!backup || read_mem(backup->backup, func, PATCH_SIZE) != 0) {
+        if (backup) free(backup);
+        return -1;
+    }
+
+    backup->func = func;
+    if (tiny_hook(func, dest, orig) != 0) {
+        free(backup);
+        return -1;
+    }
+
+    hook_entries[hook_count++] = (HookEntry){func, backup};
+    return 0;
+}
+
+int tiny_unhook_ex(void* func) {
+    if (!func) return -1;
+
+    for (int i = 0; i < hook_count; i++) {
+        if (hook_entries[i].func == func) {
+            HookBackup* backup = hook_entries[i].backup;
+            int ret = write_mem(func, backup->backup, PATCH_SIZE);
+            
+            free(backup);
+            hook_entries[i] = hook_entries[--hook_count];
+            memset(&hook_entries[hook_count], 0, sizeof(HookEntry));
+            
+            return ret;
+        }
+    }
+    return -1;
+}
+
 
 
 void printStackTrace(void) {

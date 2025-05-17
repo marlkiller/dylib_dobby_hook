@@ -23,7 +23,7 @@ Directory Structure:
 5. tools:
    - insert_dylib: Open-source static injection tool
    - dynamic_inject: Dynamic injection tool [SIP OFF]
-   - process_inject: Process injection tool [BETA][SIP OFF]
+   - [process_inject](https://github.com/marlkiller/process_inject): Process injection tool [SIP OFF]
 
 ## Feat
 

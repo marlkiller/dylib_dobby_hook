@@ -39,6 +39,17 @@ int ret1 (void);
 int ret0 (void);
 void ret(void);
 
+/**
+ * Hook function and backup original.
+ */
+int tiny_hook_ex(void* func, void* dest, void** orig);
+
+/**
+ * Removes hook from a function, restoring original code.
+ */
+int tiny_unhook_ex(void* func);
+
+
 void printStackTrace(void);
 // AntiAntiDebug 反反调试相关
 typedef int (*PtraceFuncPtr)(int _request, pid_t _pid, caddr_t _addr, int _data);
