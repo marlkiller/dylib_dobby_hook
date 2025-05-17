@@ -77,10 +77,11 @@ int (*validSubscriptionOri)(void);
 
 void hookSubscription(NSString *searchFilePath) {
 
-#if defined(__arm64__) || defined(__aarch64__)
-    NSString *sub_0x10031f878Code = @"F8 5F BC A9 F6 57 01 A9 F4 4F 02 A9 FD 7B 03 A9 FD C3 00 91 F5 03 01 AA F6 03 00 AA 57 1B 00 D0 F7 62 29 91";
+//    objc_ivar_offset__TtC5Paste29SubscriptionSettingsViewModel__router
+#if defined(__arm64__) || defined(__aarch64__)    
+    NSString *sub_0x10031f878Code = @"F8 5F BC A9 F6 57 01 A9 F4 4F 02 A9 FD 7B 03 A9 FD C3 00 91 .. 03 01 AA .. 03 00 AA .. .. 00 .. .. .. .. 91 E0 03 16 AA ";
 #elif defined(__x86_64__)
-    NSString *sub_0x10031f878Code = @"55 48 89 E5 41 57 41 56 41 54 53 49 89 F7 49 89 FC 48 8D 3D";
+    NSString *sub_0x10031f878Code = @"55 48 89 E5 41 57 41 56 41 54 53 49 89 .. 49 89 .. 48 8D ..";
 #endif
     [MemoryUtils hookWithMachineCode:searchFilePath
                              machineCode:sub_0x10031f878Code

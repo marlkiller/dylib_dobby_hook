@@ -623,6 +623,28 @@ def process_app(app):
         return
     log_info(f"Starting processing for app: {app_name}\r\n{json.dumps(app, indent=4)}")
 
+    # Under SIP ON, no permission to operate the *.app directory, needs to be re_signed first
+    app_re_sign_param = app.get("re_sign_param", DEFAULT_RE_SIGN_PARAM)
+    app_re_sign_entitlements = app.get("re_sign_entitlements", False)
+    app_re_sign_entitlements_path = app.get("re_sign_entitlements_path")
+    app_temp_entitlements_path = None
+
+    app_temp_entitlements_path = None
+    if re_sign_flag and app_re_sign_entitlements:
+        app_temp_entitlements_path = export_entitlements(
+            app_path, app_re_sign_entitlements_path
+        )
+        app_re_sign_entitlements_path = app_temp_entitlements_path
+
+    if re_sign_flag:
+        log_info(f"Re-signing app: {app_name}")
+        re_codesign(
+            app_path,
+            app_re_sign_param,
+            app_re_sign_entitlements,
+            app_re_sign_entitlements_path,
+        )
+
     pre_script = app.get("pre_script")
     if pre_script:
         log_info(f"Running pre_script for app: {app_name}")
@@ -642,18 +664,6 @@ def process_app(app):
         f'sudo cp -f "{release_dylib}" "{app_bundle_framework}/{dylib_name}"'
     )
 
-    app_re_sign_param = app.get("re_sign_param", DEFAULT_RE_SIGN_PARAM)
-    app_re_sign_entitlements = app.get("re_sign_entitlements", False)
-    app_re_sign_entitlements_path = app.get("re_sign_entitlements_path")
-    app_temp_entitlements_path = None
-
-    app_temp_entitlements_path = None
-    if re_sign_flag and app_re_sign_entitlements:
-        app_temp_entitlements_path = export_entitlements(
-            app_path, app_re_sign_entitlements_path
-        )
-        app_re_sign_entitlements_path = app_temp_entitlements_path
-
     # Handle injection based on inject_type
     if inject_type == "static":
         log_warning(
@@ -661,14 +671,11 @@ def process_app(app):
         )
         log_warning("Press any key to continue...")
         input()
-        re_sign_flag = True  # Enable re-signing for static injection
         handle_static_injection(app_name, app_bin_path, app)
     elif inject_type == "dynamic":
         handle_dynamic_injection(app_name)
-        re_sign_flag = False  # Disable re-signing for dynamic injection
     elif inject_type == "process":
         handle_process_injection(app_name)
-        re_sign_flag = False  # Disable re-signing for process injection
     else:
         log_warning(f"Ignore inject_type '{inject_type}' for app: {app_name}")
 
