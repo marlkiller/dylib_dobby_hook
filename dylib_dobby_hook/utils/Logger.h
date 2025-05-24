@@ -23,4 +23,15 @@
 #define NSLogger(fmt, ...) do {} while (0)
 #endif
 
+#ifdef DEBUG
+#define CLogger(fmt, ...)                   \
+    printf("%s [Line %d] >>>>>> " fmt "\n", \
+        __PRETTY_FUNCTION__,                \
+        __LINE__, ##__VA_ARGS__)
+#else
+#define CLogger(fmt, ...) \
+    do {                  \
+    } while (0)
+#endif
+
 #endif /* Header_h */

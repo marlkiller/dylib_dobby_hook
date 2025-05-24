@@ -11,7 +11,8 @@
             "app_name": "Movist Pro",
             "app_path": "/Applications/$app_name.app",
             "app_bin_path": "$app_path/Contents/MacOS/$app_name",
-            "inject_type": "static"
+            "inject_type": "static",
+            "dylib_name": "lib_hack.dylib"
         },
         {
             "app_name": "Downie 4",

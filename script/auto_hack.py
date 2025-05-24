@@ -636,14 +636,15 @@ def process_app(app):
         )
         app_re_sign_entitlements_path = app_temp_entitlements_path
 
-    if re_sign_flag:
-        log_info(f"Re-signing app: {app_name}")
-        re_codesign(
-            app_path,
-            app_re_sign_param,
-            app_re_sign_entitlements,
-            app_re_sign_entitlements_path,
-        )
+    # TODO: App Store apps may lack permissions.?
+    # if re_sign_flag:
+    #     log_info(f"Re-signing app: {app_name}")
+    #     re_codesign(
+    #         app_path,
+    #         app_re_sign_param,
+    #         app_re_sign_entitlements,
+    #         app_re_sign_entitlements_path,
+    #     )
 
     pre_script = app.get("pre_script")
     if pre_script:

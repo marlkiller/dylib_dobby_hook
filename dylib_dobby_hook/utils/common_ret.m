@@ -18,16 +18,13 @@
 #import <Security/Security.h>
 #import <execinfo.h>
 
-#ifdef __arm64__
-#define PATCH_SIZE 12
-#else
-#define PATCH_SIZE 14
-#endif
+#define MAX_PATCH_SIZE 14
 #define MAX_BACKUP_SIZE 128
 
 typedef struct {
     void* func;
-    uint8_t backup[PATCH_SIZE];
+    size_t size;
+    uint8_t* backup;
 } HookBackup;
 
 typedef struct {
@@ -66,50 +63,88 @@ void ret(void){
 //     uint8_t nopHexARM[4] = {0x1f,0x20,0x03,0xd5}; // nop
 // }
 
-int tiny_hook_ex(void* func, void* dest, void** orig) {
-    if (!func || !dest) return -1;
+#define MB (1ll << 20)
+#define GB (1ll << 30)
+int get_jump_size(void* address, void* destination)
+{
+    long long distance = destination > address ? destination - address : address - destination;
+#ifdef __aarch64__
+    return distance < 128 * MB ? 4 : 12;
+#elif __x86_64__
+    return distance < 2 * GB ? 5 : 14;
+#endif
+}
+
+int tiny_hook_ex(void* func, void* dest, void** orig)
+{
+    NSLogger(@"called with func: %p, dest: %p, orig: %p", func, dest, orig);
 
     for (int i = 0; i < hook_count; i++)
-        if (hook_entries[i].func == func) return -1;
-
-    if (hook_count >= MAX_BACKUP_SIZE) return -1;
-
-    HookBackup* backup = malloc(sizeof(HookBackup));
-    if (!backup || read_mem(backup->backup, func, PATCH_SIZE) != 0) {
-        if (backup) free(backup);
+        if (hook_entries[i].func == func) {
+            NSLogger(@"Function already hooked: %p", func);
+            return -1;
+        }
+    if (hook_count >= MAX_BACKUP_SIZE) {
+        NSLogger(@"Hook backup size exceeded: %d", MAX_BACKUP_SIZE);
         return -1;
     }
-
+    size_t size = get_jump_size(func, dest);
+    if (size == 0 || size > MAX_PATCH_SIZE) {
+        NSLogger(@"Invalid jmp size: %zu", size);
+        return -1;
+    }
+    HookBackup* backup = malloc(sizeof(HookBackup));
+    backup->backup = malloc(size);
+    read_mem(backup->backup, func, size);
     backup->func = func;
+    backup->size = size;
     if (tiny_hook(func, dest, orig) != 0) {
+        NSLogger(@"Failed to hook function: %p", func);
+        free(backup->backup);
         free(backup);
         return -1;
     }
-
-    hook_entries[hook_count++] = (HookEntry){func, backup};
+    hook_entries[hook_count++] = (HookEntry) { func, backup };
     return 0;
 }
 
-int tiny_unhook_ex(void* func) {
-    if (!func) return -1;
-
+int tiny_unhook_ex(void* func)
+{
+    NSLogger(@"called with func: %p", func);
     for (int i = 0; i < hook_count; i++) {
         if (hook_entries[i].func == func) {
             HookBackup* backup = hook_entries[i].backup;
-            int ret = write_mem(func, backup->backup, PATCH_SIZE);
-            
+            int ret = write_mem(func, backup->backup, backup->size);
+            free(backup->backup);
             free(backup);
-            hook_entries[i] = hook_entries[--hook_count];
+            --hook_count;
+            if (i != hook_count) {
+                hook_entries[i] = hook_entries[hook_count];
+            }
             memset(&hook_entries[hook_count], 0, sizeof(HookEntry));
-            
             return ret;
         }
     }
+    NSLogger("Function not found: %p", func);
     return -1;
 }
 
 
-
+void unload_self(void)
+{
+    Dl_info info;
+    if (dladdr((const void*)&unload_self, &info)) {
+        void* handle = dlopen(info.dli_fname, RTLD_NOLOAD);
+        if (handle) {
+            NSLogger(@"Unloading dylib: %s", info.dli_fname);
+            dlclose(handle);
+        } else {
+            NSLogger(@"dlopen RTLD_NOLOAD failed: %s", dlerror());
+        }
+    } else {
+        NSLogger(@"dladdr failed");
+    }
+}
 void printStackTrace(void) {
     void *buffer[100];
     int size = backtrace(buffer, 100);

@@ -74,15 +74,37 @@ include_directories(
 )
 
 add_library(${PROJECT_NAME} SHARED
-        ${Main}
-        ${MainHeader}
-        ${UtilsHeader}
-        ${AppsHeader}
-        ${HelpersHeader}
-        ${Utils}
-        ${Apps}
-        ${Helpers}
+    ${Main}
+    ${Utils}
+    ${Apps}
+    ${Helpers}
 )
+
+if (ENABLE_HIKARI)
+    message(STATUS "🔒 Hikari LLVM obfuscation is enabled.")
+    # https://github.com/HikariObfuscator/Hikari/wiki/
+    set(_HIKARI_FLAGS
+        "SHELL:-mllvm -hikari"                       # 启用 Hikari 混淆 / Enable Hikari obfuscation pass
+        # "SHELL:-mllvm -enable-acdobf"              # 控制流分裂（可能导致崩溃）/ Control flow splitting (may crash)
+        "SHELL:-mllvm -enable-strcry"                # 加密字符串字面量 / Encrypt string literals
+        "SHELL:-mllvm -enable-cffobf"                # 控制流平坦化 / Control Flow Flattening
+        "SHELL:-mllvm -enable-subobf"                # 指令替换混淆 / Instruction substitution obfuscation
+        "SHELL:-mllvm -enable-fco"                   # 函数调用混淆 / Function Call Obfuscation
+        "SHELL:-mllvm -ah_objcruntime"               # Hook Objective-C Runtime 以防分析 / Hook ObjC runtime to prevent analysis
+        # "SHELL:-mllvm -enable-antihook"            # 禁用：会导致 exchangeMethod 崩溃 / Disabled: crashes exchangeMethod
+        "SHELL:-mllvm -ah_inline"                    # 将 Hook 内联注入函数中 / Inline hook logic into functions
+        "SHELL:-mllvm -enable-indibran"              # 使用间接跳转代替直接跳转 / Use indirect branches instead of direct jumps
+        "SHELL:-mllvm -indibran-enc-jump-target"     # 加密间接跳转的目标地址 / Encrypt targets of indirect jumps
+        "SHELL:-mllvm -ah_antirebind"                # 阻止 Objective-C 方法运行时重绑定 / Prevent ObjC method rebinding at runtime
+    )
+    # -- 🔒 Hikari LLVM flags: -mllvm -hikari -mllvm -enable-cffobf -mllvm -enable-subobf -mllvm -enable-fco -mllvm -ah_objcruntime -mllvm -enable-antihook -mllvm -ah_inline -mllvm -enable-indibran -mllvm -indibran-enc-jump-target -mllvm -ah_antirebind
+    string(REPLACE "SHELL:" "" _HIKARI_FLAGS_STR "${_HIKARI_FLAGS}")
+    string(REPLACE ";" " " _HIKARI_FLAGS_STR "${_HIKARI_FLAGS_STR}")
+    message(STATUS "🔒 Hikari LLVM flags: ${_HIKARI_FLAGS_STR}")
+    target_compile_options(${PROJECT_NAME} PRIVATE ${_HIKARI_FLAGS})
+endif()
+
+
 set_target_properties(${PROJECT_NAME} PROPERTIES
         
         EXECUTABLE_PREFIX "lib"
@@ -181,6 +203,26 @@ elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
 else ()
 endif ()
 
-# 如果想 DEBUG Live 调试, 得先执行 cmake_debugger.sh 脚本;
-# 将 install 后的 dylib link 到 app;
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_SOURCE_DIR}/release)
+# Explicitly declare header dependencies (for IDE and rebuild tracking)
+target_sources(${PROJECT_NAME} PRIVATE
+    ${MainHeader}
+    ${UtilsHeader}
+    ${AppsHeader}
+    ${HelpersHeader}
+)
+
+# Install headers for other projects to use (optional)
+# install(
+#     FILES
+#         ${MainHeader}
+#         ${UtilsHeader}
+#         ${AppsHeader}
+#         ${HelpersHeader}
+#     DESTINATION include/${PROJECT_NAME}  # Install path for headers
+# )
+
+# Install the built library (optional)
+install(TARGETS ${PROJECT_NAME} 
+    DESTINATION ${CMAKE_SOURCE_DIR}/release  # Library output path
+    # PUBLIC_HEADER DESTINATION include/${PROJECT_NAME}  # headers
+)
