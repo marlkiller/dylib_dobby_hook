@@ -8,7 +8,8 @@
 ## Build generated
 build/
 DerivedData/
- 
+xcode-build/
+
 ## Various settings
 *.pbxuser
 !default.pbxuser

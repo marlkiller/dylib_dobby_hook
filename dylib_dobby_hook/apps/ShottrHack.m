@@ -62,7 +62,7 @@ static IMP dataTaskWithRequestIMP;
         // Create the response body based on the URL
         respBody = @{
             @"hash": hash,
-            @"tier": @"1",
+            @"tier": @"F",
         };
 
         // Log the intercepted request and response body

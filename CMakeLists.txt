@@ -9,6 +9,7 @@ enable_language(OBJC)
 enable_language(OBJCXX)
 #enable_language(Swift)
 
+message(STATUS "CMake Generator: ${CMAKE_GENERATOR}")
 
 set(CMAKE_C_STANDARD 17)
 #set(CMAKE_C_EXTENSIONS ON)
@@ -97,7 +98,7 @@ if (ENABLE_HIKARI)
         "SHELL:-mllvm -indibran-enc-jump-target"     # 加密间接跳转的目标地址 / Encrypt targets of indirect jumps
         "SHELL:-mllvm -ah_antirebind"                # 阻止 Objective-C 方法运行时重绑定 / Prevent ObjC method rebinding at runtime
     )
-    # -- 🔒 Hikari LLVM flags: -mllvm -hikari -mllvm -enable-cffobf -mllvm -enable-subobf -mllvm -enable-fco -mllvm -ah_objcruntime -mllvm -enable-antihook -mllvm -ah_inline -mllvm -enable-indibran -mllvm -indibran-enc-jump-target -mllvm -ah_antirebind
+    # -- 🔒 Hikari LLVM flags: -mllvm -hikari -mllvm -enable-strcry -mllvm -enable-cffobf -mllvm -enable-subobf -mllvm -enable-fco -mllvm -ah_objcruntime -mllvm -ah_inline -mllvm -enable-indibran -mllvm -indibran-enc-jump-target -mllvm -ah_antirebind
     string(REPLACE "SHELL:" "" _HIKARI_FLAGS_STR "${_HIKARI_FLAGS}")
     string(REPLACE ";" " " _HIKARI_FLAGS_STR "${_HIKARI_FLAGS_STR}")
     message(STATUS "🔒 Hikari LLVM flags: ${_HIKARI_FLAGS_STR}")

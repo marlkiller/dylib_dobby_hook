@@ -122,6 +122,7 @@ except ImportError:
         log_error(f"Failed to import jsonschema even after installation: {str(e)}")
         sys.exit(1)
 
+
 def log_command(cmd):
     log_plain(f"➜ {cmd}")
 
@@ -398,7 +399,7 @@ def export_entitlements(target_bin, entitlements_path=None):
     temp_entitlements_path = temp_entitlements.name
     temp_entitlements.close()
 
-    log_info(f"Exporting entitlements to temporary file: {temp_entitlements_path}")    
+    log_info(f"Exporting entitlements to temporary file: {temp_entitlements_path}")
     # warning: Specifying ':' in the path is deprecated and will not work in a future release
     # run_cmd_ignore_error(
     #     f"sudo codesign -d --entitlements :- '{target_bin}' > '{temp_entitlements_path}'"
@@ -419,7 +420,9 @@ def process_service(service, app_context):
     dylib_name = app.get("dylib_name", DEFAULT_DYLIB_NAME)
     service_identity = service.get("service_identity", service_name)
     fix_privileged_executables = service.get("fix_privileged_executables", True)
-    sm_privileged_executables = service.get("sm_privileged_executables", service_identity)
+    sm_privileged_executables = service.get(
+        "sm_privileged_executables", service_identity
+    )
     re_sign_flag = app_context.get("re_sign", True)
     service_bin_path = service.get("service_bin_path")
     inject_service = service.get("inject_service", False)
@@ -658,12 +661,13 @@ def process_app(app):
         for path in other_patches:
             call_mac_patch_helper(False, path, other_patches[path])
 
-    app_bundle_framework = f"{app_path}/Contents/Frameworks/"
-    os.makedirs(app_bundle_framework, exist_ok=True)
-    log_info(f"Copying dylib to: {app_bundle_framework}")
-    run_cmd_ignore_output(
-        f'sudo cp -f "{release_dylib}" "{app_bundle_framework}/{dylib_name}"'
-    )
+    if inject_type != "none":
+        app_bundle_framework = f"{app_path}/Contents/Frameworks/"
+        os.makedirs(app_bundle_framework, exist_ok=True)
+        log_info(f"Copying dylib to: {app_bundle_framework}")
+        run_cmd_ignore_output(
+            f'sudo cp -f "{release_dylib}" "{app_bundle_framework}/{dylib_name}"'
+        )
 
     # Handle injection based on inject_type
     if inject_type == "static":
