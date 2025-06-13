@@ -106,9 +106,9 @@ cp -f source_bin source_bin_backup
 ```
 
 
-## Sponsor
+## Powered by
 
-[![JetBrains](jetbrains.svg)](https://www.jetbrains.com/?from=dylib_dobby_hook "JetBrains")
+[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSource)
 
 ## WARN
 
