@@ -30,10 +30,10 @@
 | VidHub              | 1.7.10  | ✔   | ✔   | App Store                                                   | ON  | weizi       |
 | iShot               | 2.5.*   | ✔   | ✔   | App Store                                                   | ON  | weizi       |
 | BoltAI              | 1.*     | ✔   | ✔   | <https://boltai.com/>                                       | ON  |             |
-| CleanMyMac_5        | 5.*     | ✔   | ✔   |                                                             | ON  |             |
+| CleanMyMac_5        | 5.1.0   | ✔   | ✔   |                                                             | ON  |             |
 | NotchNook           | 1.*     | ✔   | ✔   | <https://lo.cafe/notchnook>                                 | ON  | NKR00711    |
-| Hopper Disassembler | 5.18.1  | ✔   | ✔   | <https://www.hopperapp.com/download.html>                   | ON  |             |
-| Snipaste            | 2.10.6  | ✔   | ✔   | <https://www.snipaste.com/>                                 | ON  |             |
+| Hopper Disassembler | 5.*     | ✔   | ✔   | <https://www.hopperapp.com/download.html>                   | ON  |             |
+| Snipaste            | 2.*     | ✔   | ✔   | <https://www.snipaste.com/>                                 | ON  |             |
 | iMazing             | 3.2.0   | ✔   | ✔   | <https://downloads.imazing.com/com.DigiDNA.iMazing3Mac.xml> | ON  | Antibiotics |
 <details>
   <summary>(TODO) Details</summary>
