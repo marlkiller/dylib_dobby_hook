@@ -9,6 +9,7 @@
 #import "CommonRetOC.h"
 #import <CloudKit/CloudKit.h>
 #import "MockCKContainer.h"
+#import "URLSessionHook.h"
 #import "common_ret.h"
 #import "Logger.h"
 
@@ -53,7 +54,7 @@
     return @"";
 }
 
-
+- (void)firstLaunch {}
 
 - (BOOL)shouldInject:(NSString *)target {
     NSString *appName = [self getAppName];
@@ -118,17 +119,6 @@
 
 - (void)hook_AllSecItem{
     NSLogger(@"hook_AllSecItem");
-    
-//    FIXME: 有些 app tiny_hook 第三个参数不能传 null, 否则奔溃, 不知道为什么;
-//    VM Region Info: 0 is not in any region.  Bytes before following region: 4438192128
-//          REGION TYPE                    START - END         [ VSIZE] PRT/MAX SHRMOD  REGION DETAIL
-//          UNUSED SPACE AT START
-//    --->
-//          __TEXT                      108897000-10a4f2000    [ 28.4M] r-x/r-x SM=COW  /Applications/Navicat Premium.app/Contents/MacOS/Navicat Premium
-//
-//    Thread 0 Crashed::  Dispatch queue: com.apple.main-thread
-//    0   Security                              0x7ff814322df9 SecItemCopyMatching + 0
-    
     tiny_hook(SecItemAdd, hk_SecItemAdd,  (void *)&SecItemAdd_ori);
     tiny_hook(SecItemUpdate, hk_SecItemUpdate, (void *)&SecItemUpdate_ori);
     tiny_hook(SecItemDelete, hk_SecItemDelete, (void *)&SecItemDelete_ori);
@@ -164,24 +154,9 @@
 //    SecRequirementEvaluate
 }
 
+- (void)record_NSURL:filter{
+    [URLSessionHook record_NSURL:filter];
+};
 
-// TODO: 监听进程并执行线程注入
-- (void)startMonitorInjection:processName {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        while (true) {
-            @autoreleasepool {
-//                pid_t pid = [EncryptionUtils getProcessIDByName:processName];
-//                kern_return_t result = inject_dylib(pid, nil);
-//                if (result == KERN_SUCCESS) {
-//                    NSLogger(@"Successfully injected dylib into process %d", pid);
-//                    return;
-//                } else {
-//                    NSLogger(@"Failed to inject dylib into process %d", pid);
-//                }
-            }
-            [NSThread sleepForTimeInterval:5.0];
-        }
-    });
-}
 
 @end

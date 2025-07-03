@@ -27,6 +27,8 @@ static void __attribute__ ((constructor)) initialize(void){
 
 @implementation Constant
 
+NSString *const CRACKED_MSG = @"CURRENT CRACKED VERSION — NO FUCKING API. NO FUCKIN’ RESPECT. BUY THE LEGIT ONE, POSER.";
+
 static NSString *_G_EMAIL_ADDRESS = @"X'rq ol: zneyxvyyre@ibvqz.pbz";;
 static NSString *_G_EMAIL_ADDRESS_FMT = @"zneyxvyyre@ibvqz.pbz";;
 static NSString *_G_DYLIB_NAME = @"libdylib_dobby_hook.dylib";
@@ -208,6 +210,28 @@ static BOOL _helper;
     return NO;
 }
 
+
+BOOL canShowAlert(void) {
+    NSString *path = [[[NSProcessInfo processInfo] arguments] firstObject];
+    
+    // 检查路径
+    if ([path hasPrefix:@"/System/Library/"] || [path hasPrefix:@"/usr/bin/"]) {
+        NSLogger(@"Path starts with /usr/bin/, UI alert not allowed.");
+        return NO;
+    }
+    
+    if ([Constant isHelper]) {
+        NSLogger(@"Process is a helper, UI alert not allowed.");
+        return NO;
+    }
+//    NSApplicationActivationPolicyRegular： 普通应用，能在 Dock 中显示，接受用户输入。例如：Safari、Mail。
+//    NSApplicationActivationPolicyAccessory： 辅助应用，不在 Dock 中显示，但可以在菜单栏中显示图标。通常用于后台工具。
+//    NSApplicationActivationPolicyProhibited： 被禁止激活的应用，不显示在 Dock 中，也无法接受输入。常用于后台服务。
+    BOOL isForeground = [NSRunningApplication currentApplication].activationPolicy == NSApplicationActivationPolicyRegular;
+    NSLogger(@"Is current application canShowAlert: %@", isForeground ? @"YES" : @"NO");
+    return isForeground;
+}
+
 + (void)doHack {
     
     @try {
@@ -222,6 +246,9 @@ static BOOL _helper;
                     supportAppVersion.length==0 ||
                     _currentAppVersion==NULL  ||
                     (_currentAppVersion!=NULL && [_currentAppVersion hasPrefix:supportAppVersion]) ) {
+                    if ([Constant isFirstOpen] && canShowAlert()) {
+                        [it firstLaunch];
+                    }
                     [it hack];
                     return;
 

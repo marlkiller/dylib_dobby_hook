@@ -7,6 +7,7 @@
 
 #ifndef encryp_utils_h
 #define encryp_utils_h
+#import <Foundation/Foundation.h>
 
 @interface EncryptionUtils : NSObject
 

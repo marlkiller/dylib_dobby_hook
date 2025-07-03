@@ -38,6 +38,8 @@
 		B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */; };
 		B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */; };
 		B5732BF12C82CD5900EC9E11 /* IDAHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5732BF02C82CD5900EC9E11 /* IDAHack.m */; };
+		B57584392E0D698A001F7C9E /* MockKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = B57584382E0D698A001F7C9E /* MockKeychain.h */; };
+		B575843B2E0D69AA001F7C9E /* MockKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = B575843A2E0D69AA001F7C9E /* MockKeychain.m */; };
 		B57F200E2C5DD6D700C87201 /* MockCKDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = B57F200D2C5DD6D700C87201 /* MockCKDatabase.h */; };
 		B57F20102C5DD70700C87201 /* MockCKDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = B57F200F2C5DD70700C87201 /* MockCKDatabase.m */; };
 		B58160172BE88569001DDB9B /* EncryptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = B58160112BE88569001DDB9B /* EncryptionUtils.m */; };
@@ -94,7 +96,6 @@
 		38D1AC292B54CA4D00E6CB9E /* Constant.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constant.m; sourceTree = "<group>"; };
 		38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackProtocol.h; sourceTree = "<group>"; };
 		38E2ECD22DC48DCA00D76D10 /* ProxymanHelperHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProxymanHelperHack.m; sourceTree = "<group>"; };
-		38E793632B6C7AB8005677AA /* all_in_one.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = all_in_one.sh; sourceTree = "<group>"; };
 		38E793642B6C7FB6005677AA /* auto_hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = auto_hack.sh; sourceTree = "<group>"; };
 		9C99D64A2CB6CEF100B8A6D7 /* iStat7Hack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iStat7Hack.m; sourceTree = "<group>"; };
 		9CE4C5CD2CCA7AC400593C78 /* ShottrHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShottrHack.m; sourceTree = "<group>"; };
@@ -114,8 +115,8 @@
 		B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevUtilsHack.m; sourceTree = "<group>"; };
 		B56968C62BEA4E2A0022FAC6 /* libdylib_dobby_hook.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libdylib_dobby_hook.dylib; sourceTree = "<group>"; };
 		B5732BF02C82CD5900EC9E11 /* IDAHack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDAHack.m; sourceTree = "<group>"; };
-		B57AEDB92C5009E400B9C5FB /* surge_hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = surge_hack.sh; sourceTree = "<group>"; };
-		B57AEDBA2C5009E400B9C5FB /* forklift_hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = forklift_hack.sh; sourceTree = "<group>"; };
+		B57584382E0D698A001F7C9E /* MockKeychain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockKeychain.h; sourceTree = "<group>"; };
+		B575843A2E0D69AA001F7C9E /* MockKeychain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockKeychain.m; sourceTree = "<group>"; };
 		B57AEDBB2C5009F200B9C5FB /* dtrace_kill.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = dtrace_kill.d; sourceTree = "<group>"; };
 		B57AEDBC2C5009F200B9C5FB /* SMJobBlessUtil-python3.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "SMJobBlessUtil-python3.py"; sourceTree = "<group>"; };
 		B57AEDBD2C5009F200B9C5FB /* mac_patch_helper */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = mac_patch_helper; sourceTree = "<group>"; };
@@ -236,7 +237,6 @@
 			isa = PBXGroup;
 			children = (
 				B5BE2D572C52A4530056B3E2 /* apps */,
-				38E793632B6C7AB8005677AA /* all_in_one.sh */,
 				38E793642B6C7FB6005677AA /* auto_hack.sh */,
 			);
 			path = script;
@@ -306,6 +306,8 @@
 				9CE4C5CF2CCA7C3600593C78 /* JSONUtils.h */,
 				9CE4C5D02CCA7C3600593C78 /* JSONUtils.m */,
 				B5822CA82CBFFC020062383F /* Logger.h */,
+				B57584382E0D698A001F7C9E /* MockKeychain.h */,
+				B575843A2E0D69AA001F7C9E /* MockKeychain.m */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -325,10 +327,6 @@
 		B5BE2D572C52A4530056B3E2 /* apps */ = {
 			isa = PBXGroup;
 			children = (
-				B59751F52C9DAF8600617629 /* fix_helper.sh */,
-				B59751F62C9DB54E00617629 /* fix_helper_and_inject.sh */,
-				B57AEDBA2C5009E400B9C5FB /* forklift_hack.sh */,
-				B57AEDB92C5009E400B9C5FB /* surge_hack.sh */,
 			);
 			path = apps;
 			sourceTree = "<group>";
@@ -347,6 +345,7 @@
 				B5A7D30F2C548B71003D4C7F /* HackProtocolDefault.h in Headers */,
 				B5B89BCB2C5DD49B00F61EB0 /* MockCKContainer.h in Headers */,
 				38350BF62B53F73A00DD52B3 /* dylib_dobby_hook.h in Headers */,
+				B57584392E0D698A001F7C9E /* MockKeychain.h in Headers */,
 				3816BBB72B54FED80051CF39 /* MemoryUtils.h in Headers */,
 				B5A7D3182C5491A0003D4C7F /* HackHelperProtocolDefault.h in Headers */,
 				B5822CA92CBFFC020062383F /* Logger.h in Headers */,
@@ -366,11 +365,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 38350BFB2B53F73A00DD52B3 /* Build configuration list for PBXNativeTarget "dylib_dobby_hook" */;
 			buildPhases = (
-				38350C052B53F90300DD52B3 /* Run Script */,
 				38350BEE2B53F73A00DD52B3 /* Headers */,
 				38350BEF2B53F73A00DD52B3 /* Sources */,
 				38350BF02B53F73A00DD52B3 /* Frameworks */,
 				38350C032B53F86A00DD52B3 /* CopyFiles */,
+				38350C052B53F90300DD52B3 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -431,7 +430,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"What can be done here?\"\n";
+			shellScript = "RELEASE_DIR=\"${PROJECT_DIR}/release\"\ncp -f \"${BUILT_PRODUCTS_DIR}/libdylib_dobby_hook.dylib\" \"$RELEASE_DIR/\"\necho \"✅ Copied ${BUILT_PRODUCTS_DIR}/libdylib_dobby_hook.dylib to $RELEASE_DIR/\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -478,6 +477,7 @@
 				B5FD0D732DB20D1100989564 /* CleanMyMacHack.m in Sources */,
 				B5FE3B862BA2A571001AE437 /* TransmitHack.m in Sources */,
 				B5732BF12C82CD5900EC9E11 /* IDAHack.m in Sources */,
+				B575843B2E0D69AA001F7C9E /* MockKeychain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -610,7 +610,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXECUTABLE_PREFIX = lib;
 				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = "@executable_path/";
 				LIBRARY_SEARCH_PATHS = (
@@ -631,7 +631,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXECUTABLE_PREFIX = lib;
 				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = "@executable_path/";
 				LIBRARY_SEARCH_PATHS = (

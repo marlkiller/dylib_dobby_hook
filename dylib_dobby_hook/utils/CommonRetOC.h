@@ -53,12 +53,10 @@
  */
 + (id)hook_defaultContainer;
 
-- (void)startMonitorInjection:processName;
-
-
 - (void)hook_AllSecItem;
 - (void)hook_AllSecCode:teamIdentifier;
 
+- (void)record_NSURL:filter;
 @end
 
 #endif /* CommonRetOC_h */

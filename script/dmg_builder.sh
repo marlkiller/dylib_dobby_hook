@@ -34,8 +34,9 @@ fi
 echo "📦 Application version: $APP_VERSION"
 
 # --- Set DMG file names ---
-DMG_TEMP_NAME="${APP_NAME}_temp.dmg" # Temporary writable DMG file name
-DMG_FINAL_NAME="${APP_NAME}_${APP_VERSION}.dmg" # Final output DMG file name with version
+DMG_OUTPUT_DIR=~/Downloads
+DMG_TEMP_NAME="${DMG_OUTPUT_DIR}/${APP_NAME}_temp.dmg"
+DMG_FINAL_NAME="${DMG_OUTPUT_DIR}/${APP_NAME}_${APP_VERSION}.dmg"
 
 # --- Check if the target DMG file already exists ---
 if [ -f "$DMG_FINAL_NAME" ]; then

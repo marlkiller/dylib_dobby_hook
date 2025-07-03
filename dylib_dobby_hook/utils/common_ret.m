@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Constant.h"
 #import "MemoryUtils.h"
+#import "MockKeychain.h"
 #include <mach-o/dyld.h>
 #include <sys/ptrace.h>
 #import <sys/sysctl.h>
@@ -271,16 +272,16 @@ void logSecRequirement(SecRequirementRef requirement, SecCSFlags flags) {
     }
 }
 
-static void logCodePath(SecStaticCodeRef code) {
-    CFURLRef path = NULL;
-    if (SecCodeCopyPath(code, kSecCSDefaultFlags, &path) == errSecSuccess && path) {
-        CFStringRef str = CFURLGetString(path);
-        NSLogger(@"[hook] code path: %@", (__bridge NSString *)str);
-        CFRelease(path);
-    } else {
-        NSLogger(@"[hook] code path: (failed to get path)");
-    }
-}
+//static void logCodePath(SecStaticCodeRef code) {
+//    CFURLRef path = NULL;
+//    if (SecCodeCopyPath(code, kSecCSDefaultFlags, &path) == errSecSuccess && path) {
+//        CFStringRef str = CFURLGetString(path);
+//        NSLogger(@"[hook] code path: %@", (__bridge NSString *)str);
+//        CFRelease(path);
+//    } else {
+//        NSLogger(@"[hook] code path: (failed to get path)");
+//    }
+//}
 
 SecCodeCheckValidityFuncPtr SecCodeCheckValidity_ori = NULL;
 OSStatus hk_SecCodeCheckValidity(SecCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement) {
@@ -373,136 +374,151 @@ OSStatus hk_SecCodeCopySigningInformation(SecCodeRef codeRef, SecCSFlags flags, 
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 SecItemAddFuncPtr SecItemAdd_ori = NULL;
 OSStatus hk_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
-    NSLogger(@"hk_SecItemAdd");
-    CFStringRef service = (CFStringRef)CFDictionaryGetValue(attributes, kSecAttrService);
-    CFStringRef account = (CFStringRef)CFDictionaryGetValue(attributes, kSecAttrAccount);
-    CFDataRef passwordData = (CFDataRef)CFDictionaryGetValue(attributes, kSecValueData);
-    if (!service || !account || !passwordData) {
-        NSLogger(@"Missing service or account or passwordData");
-        return errSecParam;
-    }
-    CFIndex passwordLength = CFDataGetLength(passwordData);
-    char *passwordBuffer = (char *)malloc(passwordLength + 1);
-    if (passwordBuffer == NULL) {
-        return errSecAllocate;
-    }
-    CFDataGetBytes(passwordData, CFRangeMake(0, CFDataGetLength(passwordData)), (UInt8 *)passwordBuffer);
-    passwordBuffer[CFDataGetLength(passwordData)] = '\0';
-
-    const char * serviceCStr = [MemoryUtils CFStringToCString:service];
-    const char * accountCStr = [MemoryUtils CFStringToCString:account];
+    NSDictionary *attrs = (__bridge NSDictionary *)attributes;
+    BOOL returnPersistentRef = [attrs[@"r_PersistentRef"] boolValue];
+    NSData *persistentRef = nil;
+    SecKeychainItemRef ref = NULL;
+    OSStatus status = [[MockKeychain sharedStore] addItem:attrs
+                                           returningRef:returnPersistentRef ? NULL : &ref
+                                         persistentRef:returnPersistentRef ? &persistentRef : NULL];
     
-    SecKeychainItemRef item = NULL;
-    OSStatus status = SecKeychainAddGenericPassword(
-        NULL,                      
-        (UInt32)strlen(serviceCStr), serviceCStr,
-        (UInt32)strlen(accountCStr), accountCStr,
-        (UInt32)strlen(passwordBuffer), passwordBuffer,
-        &item
-    );
-    
-    free(passwordBuffer);
     if (status == errSecSuccess && result) {
-       *result = item;
+        if (returnPersistentRef) {
+            *result = CFBridgingRetain(persistentRef);
+        } else if (ref) {
+            *result = ref;
+        }
+    } else if (ref) {
+        CFRelease(ref);
     }
-    NSLogger(@"Status = %d", status);
+    
+    NSLogger(@"status=%d, attrs=%@, result=%@",
+             status, attrs, result ? (__bridge id)*result : nil);
     return status;
 }
 
 SecItemUpdateFuncPtr SecItemUpdate_ori = NULL;
-OSStatus hk_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate) {
-    NSLogger(@"hk_SecItemUpdate");
-    CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
-    CFStringRef account = (CFStringRef)CFDictionaryGetValue(query, kSecAttrAccount);
-    if (!service || !account) {
-        NSLogger(@"Missing service or account");
-        return errSecParam;
-    }
-    CFDataRef newPasswordData = (CFDataRef)CFDictionaryGetValue(attributesToUpdate, kSecValueData);
-    if (!newPasswordData) {
-        NSLogger(@"No new password provided");
-        return errSecParam;
-    }
-    const char *serviceCStr = [MemoryUtils CFStringToCString:service];
-    const char *accountCStr = [MemoryUtils CFStringToCString:account];
-    SecKeychainItemRef itemRef = NULL;
-    OSStatus status = SecKeychainFindGenericPassword(
-        NULL,
-        (UInt32)strlen(serviceCStr), serviceCStr,
-        (UInt32)strlen(accountCStr), accountCStr,
-        NULL, NULL, &itemRef
-    );
-    if (status == errSecSuccess) {
-        CFIndex newPasswordLength = CFDataGetLength(newPasswordData);
-        const UInt8 *newPasswordBytes = CFDataGetBytePtr(newPasswordData);
-        status = SecKeychainItemModifyAttributesAndData(
-            itemRef,
-            NULL,
-            (UInt32)newPasswordLength, newPasswordBytes
-        );
-        CFRelease(itemRef);  // 释放引用
-    }
-    NSLogger(@"Status = %d", status);
+OSStatus hk_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attrsToUpdate) {
+    NSDictionary *q = (__bridge NSDictionary *)query;
+    NSDictionary *upd = (__bridge NSDictionary *)attrsToUpdate;
+    OSStatus status = [[MockKeychain sharedStore] updateItems:q withAttributes:upd];
+    NSLogger(@"status = %d, query = %@, attrsToUpdate = %@",status, q, upd);
     return status;
 }
 
 SecItemDeleteFuncPtr SecItemDelete_ori = NULL;
 OSStatus hk_SecItemDelete(CFDictionaryRef query) {
-    NSLogger(@"hk_SecItemDelete");
-    CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
-    CFStringRef account = (CFStringRef)CFDictionaryGetValue(query, kSecAttrAccount);
-    if (!service || !account) {
-        NSLogger(@"Missing service or account");
-        return errSecParam;
-    }
-    const char *serviceCStr = [MemoryUtils CFStringToCString:service];
-    const char *accountCStr = [MemoryUtils CFStringToCString:account];
-    
-    SecKeychainItemRef itemRef = NULL;
-    OSStatus status = SecKeychainFindGenericPassword(
-        NULL,                       // 默认 Keychain
-        (UInt32)strlen(serviceCStr), serviceCStr,
-        (UInt32)strlen(accountCStr), accountCStr,
-        NULL, NULL, &itemRef
-    );
-    if (status == errSecSuccess && itemRef) {
-        status = SecKeychainItemDelete(itemRef);
-        CFRelease(itemRef);
-    }
-    NSLogger(@"Status = %d", status);
+    NSDictionary *q = (__bridge NSDictionary *)query;
+    OSStatus status = [[MockKeychain sharedStore] deleteItems:q];
+    NSLogger(@"status = %d, query = %@",status, q);
     return status;
 }
+
 
 SecItemCopyMatchingFuncPtr SecItemCopyMatching_ori = NULL;
-OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
-    NSLogger(@"hk_SecItemCopyMatching");
-    // 从查询字典中提取 service 和 account
-    CFStringRef service = (CFStringRef)CFDictionaryGetValue(query, kSecAttrService);
-    CFStringRef account = (CFStringRef)CFDictionaryGetValue(query, kSecAttrAccount);
-    if (!service || !account) {
-        NSLogger(@"Missing service or account");
-        return errSecParam;
-    }
-    const char *serviceCStr = [MemoryUtils CFStringToCString:service];
-    const char *accountCStr = [MemoryUtils CFStringToCString:account];
 
-    // 查找与 service 和 account 匹配的密码项
-    UInt32 passwordLength;
-    void *passwordData = NULL;
-    OSStatus status = SecKeychainFindGenericPassword(
-        NULL,                       // 默认 Keychain
-        (UInt32)strlen(serviceCStr), serviceCStr,
-        (UInt32)strlen(accountCStr), accountCStr,
-        &passwordLength, &passwordData, NULL
-    );
-    if (status == errSecSuccess && result) {
-        CFDataRef passwordCFData = CFDataCreate(NULL, (const UInt8 *)passwordData, passwordLength);
-        *result = passwordCFData;
-        SecKeychainItemFreeContent(NULL, passwordData);
+OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
+    NSDictionary *q = (__bridge NSDictionary *)query;
+    OSStatus status;
+    
+    // 1. 解析返回控制标志
+    BOOL wantRef   = [q[(__bridge id)kSecReturnPersistentRef] boolValue];
+    BOOL wantAttrs = [q[(__bridge id)kSecReturnAttributes]    boolValue];
+    BOOL wantData  = [q[(__bridge id)kSecReturnData]          boolValue];
+    BOOL matchAll  = [q[(__bridge id)kSecMatchLimit] isEqual:(__bridge id)kSecMatchLimitAll];
+    BOOL needPack  = wantRef || wantAttrs || wantData;
+
+    // 2. 构造匹配条件
+    static NSSet *controlKeys;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        controlKeys = [NSSet setWithArray:@[
+            (__bridge id)kSecReturnAttributes,
+            (__bridge id)kSecReturnData,
+            (__bridge id)kSecReturnRef,
+            (__bridge id)kSecReturnPersistentRef,
+            (__bridge id)kSecMatchLimit,
+            (__bridge id)kSecMatchLimitAll
+        ]];
+    });
+    NSMutableDictionary *searchQuery = [NSMutableDictionary dictionary];
+    [q enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if (![controlKeys containsObject:key]) {
+            searchQuery[key] = obj;
+        }
+    }];
+
+    // 3. 执行匹配
+    NSArray<NSDictionary *> *matches = [[MockKeychain sharedStore] itemsMatching:searchQuery];
+    if (matches.count == 0) {
+        status = errSecItemNotFound;
+        NSLogger(@"status=%d, query=%@, result=nil", status, q);
+        return status;
     }
-    NSLogger(@"Status = %d", status);
+    NSArray *candidates = matchAll ? matches : @[matches.firstObject];
+    // 特殊处理：只请求 kSecReturnData 时，直接返回 NSData（避免后续打包 NSDictionary）
+    if (wantData && !wantAttrs && !wantRef && !matchAll) {
+        NSData *data = candidates.firstObject[(__bridge id)kSecValueData];
+        if (result && data) {
+            *result = (__bridge_retained CFTypeRef)data;
+        }
+        status = data ? errSecSuccess : errSecItemNotFound;
+        NSLogger(@"[r_Data] status=%d, query=%@, result=%@", status, q, data);
+        return status;
+    }
+
+    // 继续处理其他组合返回类型
+    NSMutableArray *packed = needPack ? [NSMutableArray arrayWithCapacity:candidates.count] : nil;
+    for (NSDictionary *item in candidates) {
+        // 仅请求 persistent ref，直接返回
+        if (wantRef && !wantAttrs && !wantData) {
+            [packed addObject:item[(__bridge id)kSecValuePersistentRef]];
+            continue;
+        }
+
+        // 组合打包
+        if (needPack) {
+            NSMutableDictionary *e = [NSMutableDictionary dictionary];
+            // 添加属性（去除 v_Data）
+            if (wantAttrs) {
+                [item enumerateKeysAndObjectsUsingBlock:^(id k, id v, BOOL *s){
+                    if (![k isEqual:(__bridge id)kSecValueData]) {
+                        e[k] = v;
+                    }
+                }];
+            }
+            // 添加 v_Data
+            if (wantData) {
+                id d = item[(__bridge id)kSecValueData];
+                if (d) e[(__bridge id)kSecValueData] = d;
+            }
+            // 添加 persistentRef
+            if (wantRef) {
+                id r = item[(__bridge id)kSecValuePersistentRef];
+                if (r) e[(__bridge id)kSecValuePersistentRef] = r;
+            }
+            [packed addObject:e];
+        }
+    }
+    // 打包结果
+    id outObj = needPack
+                ? (matchAll ? (id)packed : packed.firstObject)
+                : (id)candidates.firstObject;
+    if (result) {
+        *result = (__bridge_retained CFTypeRef)outObj;
+    }
+    status = errSecSuccess;
+
+    // 5. 最终日志：只输出 status, query, result
+    NSLogger(@"status=%d, query=%@, result=%@",
+             status,
+             q,
+             outObj);
     return status;
 }
+
+
+
 #pragma clang diagnostic pop
 
 // Why do you want to see here ???

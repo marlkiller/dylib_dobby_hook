@@ -97,8 +97,8 @@ static IMP originalNeedsAttentionTypeIMP;
     [MemoryUtils getInstanceIvar:self ivarName:"_libLicenseInfo"];
     [MemoryUtils setInstanceIvar:self ivarName:"_libValidationStatus" value:@1];
 
-    id lic = [MemoryUtils getInstanceIvar:self ivarName:"_license"];
-    id status = [MemoryUtils invokeSelector:@"status" onTarget:lic];
+    // id lic = [MemoryUtils getInstanceIvar:self ivarName:"_license"];
+    // id status = [MemoryUtils invokeSelector:@"status" onTarget:lic];
     // v19 = (char *)-[MPALicense status](v18, "status");
     // if ( (unsigned __int64)(v19 - 1) >= 3 ) return 0
     // result = 7 4 2[(_QWORD)v19 - 1];
@@ -112,11 +112,11 @@ static IMP originalNeedsAttentionTypeIMP;
     [self hook_AllSecCode:@"S8EX82NJP6"];
     // 000000010029e5bf         db         "fetchCompanionAppActivationEligibilityWithCallback:", 0 ; DATA XREF=sub_100066fe4+592, sub_10006a04c+788, 0x100354e80
 #if defined(__arm64__) || defined(__aarch64__)
-    NSString* patch1Ori = @"61 00 00 54 1B 00 80 52 14 00 00 14";
-    uint8_t patch1Target[12] = { 0x1F, 0x20, 0x03, 0xD5, 0x3B, 0x00, 0x80, 0x52, 0x14, 0x00, 0x00, 0x14 };
+    NSString* patch1Ori = @"61 00 00 54 1A 00 80 52 13 00 00 14";
+    uint8_t patch1Target[12] = { 0x1F, 0x20, 0x03, 0xD5, 0x3A, 0x00, 0x80, 0x52, 0x13, 0x00, 0x00, 0x14 };
 #elif defined(__x86_64__)
-    NSString* patch1Ori = @"75 05 45 31 F6 EB 54 80";
-    uint8_t patch1Target[9] = { 0x49, 0xC7, 0xC6, 0x01, 0x00, 0x00, 0x00, 0xEB, 0x52 };
+    NSString* patch1Ori = @"83 F8 01 75 09 45 31 E4";
+    uint8_t patch1Target[8] = { 0x45, 0x31, 0xE4, 0x90, 0x90, 0x41, 0xB4, 0x01 };
 #endif
 
     NSArray* patch1Ptrs = [MemoryUtils getPtrFromMachineCode:(NSString*)@"/Contents/MacOS/CleanMyMac_5"

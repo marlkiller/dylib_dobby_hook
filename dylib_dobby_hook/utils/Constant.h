@@ -9,6 +9,8 @@
 
 @interface Constant : NSObject
 
+extern NSString *const CRACKED_MSG;
+
 + (NSString *)G_EMAIL_ADDRESS;
 + (NSString *)G_EMAIL_ADDRESS_FMT;
 + (NSString *)G_DYLIB_NAME;
