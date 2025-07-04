@@ -544,6 +544,7 @@ def handle_static_injection(app_name, app_bin_path, app):
     inject_param = app.get("inject_param", DEFAULT_INJECT_PARAM)
     inject_path = app.get("inject_path", app_bin_path)
     dylib_name = app.get("dylib_name", DEFAULT_DYLIB_NAME)
+    dylib_path = app.get("dylib_path",f'@rpath/{dylib_name}')
     log_info(f"Injecting dylib into app binary (static): {inject_path}")
     log_info(f"Checking signature before re-signing for: {app.get('app_path')}")
     run_cmd_ignore_error(
@@ -551,7 +552,7 @@ def handle_static_injection(app_name, app_bin_path, app):
     )
     if not check_dylib_exist(inject_path, dylib_name):
         run_cmd_or_raise(
-            f"sudo {insert_dylib} {inject_param} '@rpath/{dylib_name}' '{inject_path}'"
+            f"sudo {insert_dylib} {inject_param} '{dylib_path}' '{inject_path}'"
         )
     # Process services only for static type
     services = app.get("services", [])

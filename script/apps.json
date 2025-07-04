@@ -241,6 +241,22 @@
             "app_bin_path": "$app_path/Contents/MacOS/$app_name",
             "inject_type": "static",
             "dylib_name": "lib_hack.dylib"
+        },
+        {
+            "app_name": "Live Wallpaper",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static",
+            "dylib_name": "lib_hack.dylib"
+        },
+        {
+            "app_name": "SenPlayer",
+            "app_path": "/Applications/$app_name.app",
+            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
+            "inject_type": "static",
+            "inject_param": "--inplace --all-yes --no-strip-codesig",
+            "dylib_name": "lib_hack.dylib",
+            "dylib_path": "@executable_path/../Frameworks/$dylib_name"
         }
     ]
 }
