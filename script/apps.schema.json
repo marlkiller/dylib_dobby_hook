@@ -40,6 +40,10 @@
             "type": "string",
             "description": "Default is libdylib_dobby_hook.dylib"
           },
+          "dylib_path": {
+            "type": "string",
+            "description": "Default is @rpath/{dylib_name}"
+          },
           "inject_param": {
             "type": "string",
             "default": "--inplace --weak --all-yes --no-strip-codesig",
