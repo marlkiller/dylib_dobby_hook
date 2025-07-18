@@ -663,7 +663,7 @@ def process_app(app):
             call_mac_patch_helper(False, path, other_patches[path])
 
     if inject_type != "none":
-        app_bundle_framework = f"{app_path}/Contents/Frameworks/"
+        app_bundle_framework = f"{app_path}/Contents/Frameworks"
         os.makedirs(app_bundle_framework, exist_ok=True)
         log_info(f"Copying dylib to: {app_bundle_framework}")
         run_cmd_ignore_output(

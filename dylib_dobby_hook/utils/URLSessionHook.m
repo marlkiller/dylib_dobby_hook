@@ -10,6 +10,7 @@
 #import <dlfcn.h>
 #import <mach-o/dyld.h>
 #import "Logger.h"
+#import <Network/Network.h>
 
 #include <stdio.h>
 #include <unistd.h>
@@ -605,6 +606,15 @@ static NSURLSessionDataTask *(*original_dataTaskWithRequest_completionHandler)(i
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
+static NSString *const P_HTTP  = @"🌐  HTTP";
+static NSString *const P_HTTPS = @"🔒  HTTPS";
+static NSString *const F_REQ   = @"⬆️  Request";
+static NSString *const F_RES   = @"⬇️  Response";
+static NSString *const F_REQ_NW   = @"⬆️  NW Request";
+static NSString *const F_RES_NW   = @"⬇️  NW Response";
+
+
+
 static NSMutableDictionary<NSValue *, NSMutableData *> *sslResponseCaches;
 static NSMutableSet<NSValue *> *sslResponseCompleteConnections;
 
@@ -630,27 +640,15 @@ static void clear_cache_for_conn(SSLContextRef conn) {
     }
 }
 
-void log_connection(uintptr_t sockfd, const char *direction,const void *data, size_t len) {
-    NSString *output = [[NSString alloc] initWithBytes:data length:len encoding:NSUTF8StringEncoding];
-    if (output) {
-        NSString *tag = nil;
-        if (strstr(direction, "HTTPS")) {
-            tag = @"🔒 [HTTPS]";
-        } else {
-            tag = @"🌐 [HTTP]";
-        }
 
-        NSString *arrow = [NSString stringWithUTF8String:direction];
-        if ([arrow containsString:@"Request"]) {
-            arrow = @"⬆️ Request";
-        } else if ([arrow containsString:@"Response"]) {
-            arrow = @"⬇️ Response";
-        } else {
-            arrow = @"⬇️ ????";
-        }
-        NSLogger(@"\n%@ %@ [ID: %lu]\n%@", tag, arrow, sockfd, output);
+void log_connection(uintptr_t id, NSString *proto, NSString *flow, const void *data, size_t len) {
+    NSString *out = [[NSString alloc] initWithBytes:data length:len encoding:NSUTF8StringEncoding];
+    if (out) {
+        NSLogger(@"\n%@ %@ [ID: %lu]\n%@", proto, flow, id, out);
     }
 }
+
+
 
 
 // 判断是否 HTTP 请求（简单判断）
@@ -677,7 +675,7 @@ int is_http_data(const void *buf, size_t len) {
 // Hook SSLWrite 处理 HTTPS 请求日志
 static OSStatus hk_SSLWrite(SSLContextRef conn, const void *data, size_t len, size_t *processed) {
     if (is_http_data(data, len)) {
-        log_connection((intptr_t)conn, "HTTPS Request", data, len);
+        log_connection((intptr_t)conn, P_HTTPS,F_REQ, data, len);
     }
     return SSLWrite(conn, data, len, processed);
 }
@@ -689,7 +687,7 @@ static OSStatus hk_SSLRead(SSLContextRef conn, void *data, size_t len, size_t *p
         NSValue *key = [NSValue valueWithPointer:conn];
         @synchronized (sslResponseCompleteConnections) {
             if ([sslResponseCompleteConnections containsObject:key]) {
-                log_connection((uintptr_t)conn, "HTTPS Response Body", data, *processed);
+                log_connection((uintptr_t)conn, P_HTTPS,F_RES, data, *processed);
             } else {
                 NSMutableData *cache = cache_for_conn(conn);
                 [cache appendBytes:data length:*processed];
@@ -699,7 +697,7 @@ static OSStatus hk_SSLRead(SSLContextRef conn, void *data, size_t len, size_t *p
                     NSRange headerEndRange = [cachedStr rangeOfString:@"\r\n\r\n"];
                     if (headerEndRange.location != NSNotFound) {
                         NSData *fullResponse = [cache copy];
-                        log_connection((uintptr_t)conn, "HTTPS Response",fullResponse.bytes, fullResponse.length);
+                        log_connection((uintptr_t)conn, P_HTTPS,F_RES,fullResponse.bytes, fullResponse.length);
                         [cache setLength:0];
                         [sslResponseCompleteConnections addObject:key];
                     }
@@ -715,7 +713,7 @@ static OSStatus hk_SSLRead(SSLContextRef conn, void *data, size_t len, size_t *p
 // Hook send 处理 HTTP 请求日志
 ssize_t hk_send(int sockfd, const void *buf, size_t len, int flags) {
     if (is_http_data(buf, len)) {
-        log_connection(sockfd, "HTTP Request", buf, len);
+        log_connection(sockfd, P_HTTP,F_REQ, buf, len);
     }
     return send(sockfd, buf, len, flags);
 }
@@ -729,20 +727,81 @@ ssize_t hk_recv(int sockfd, void *buf, size_t len, int flags) {
         if (strstr(cbuf, "HTTP/") || strstr(cbuf, "200 OK")) {
             const char *header_end = strstr(cbuf, "\r\n\r\n");
             size_t log_len = header_end ? (header_end - cbuf) + 4 : MIN(ret, 1024);
-            log_connection(sockfd, "HTTP Response",  buf, log_len);
+            log_connection(sockfd, P_HTTP,F_RES,  buf, log_len);
         }
     }
     return ret;
 }
 
 
-//#define ENABLE_TRAFFIC_HOOKS
+// void hk_nw_connection_send(
+//     nw_connection_t connection,
+//     dispatch_data_t content,
+//     nw_content_context_t context,
+//     bool is_complete,
+//     void (^completion)(nw_error_t error)
+// ) {
+//     size_t len = dispatch_data_get_size(content);
+//     char *copiedBuf = malloc(len + 1);
+//     __block size_t offset = 0;
+//     dispatch_data_apply(content, ^bool(dispatch_data_t region, size_t region_offset, const void *region_data, size_t region_size) {
+//         memcpy(copiedBuf + offset, region_data, region_size);
+//         offset += region_size;
+//         return true;
+//     });
+//     copiedBuf[len] = '\0';
 
+//     if (is_http_data(copiedBuf, len)) {
+//         log_connection((uintptr_t)connection, P_HTTPS,F_REQ_NW, copiedBuf, len);
+//     }
+
+//     // 调用原函数
+//     nw_connection_send(connection, content, context, is_complete, completion);
+
+//     free(copiedBuf);
+// }
+
+// void hk_nw_connection_receive(
+//     nw_connection_t connection,
+//                               uint32_t min_len,
+//                               uint32_t max_len,
+//     void (^completion)(dispatch_data_t, nw_content_context_t, bool, nw_error_t)
+// ) {
+//     void (^wrapped_completion)(dispatch_data_t, nw_content_context_t, bool, nw_error_t) =
+//     ^(dispatch_data_t content, nw_content_context_t context, bool is_complete, nw_error_t error) {
+
+//         size_t len = dispatch_data_get_size(content);
+//         char *buf = malloc(len + 1);
+//         __block size_t offset = 0;
+
+//         dispatch_data_apply(content, ^bool(dispatch_data_t region, size_t region_offset, const void *region_data, size_t region_size) {
+//             memcpy(buf + offset, region_data, region_size);
+//             offset += region_size;
+//             return true;
+//         });
+//         buf[len] = '\0';
+
+//         if (is_http_data(buf, len)) {
+//             log_connection((uintptr_t)connection, P_HTTPS,F_RES_NW, buf, len);
+//         }
+
+//         free(buf);
+
+//         // 调用原始 block
+//         completion(content, context, is_complete, error);
+//     };
+
+//     // 调用原始函数
+//     nw_connection_receive(connection, min_len, max_len, wrapped_completion);
+// }
+//#define ENABLE_TRAFFIC_HOOKS
 #ifdef ENABLE_TRAFFIC_HOOKS
     DYLD_INTERPOSE(hk_send, send);
     DYLD_INTERPOSE(hk_recv, recv);
     DYLD_INTERPOSE(hk_SSLRead, SSLRead);
     DYLD_INTERPOSE(hk_SSLWrite, SSLWrite);
+    // DYLD_INTERPOSE(hk_nw_connection_send, nw_connection_send);
+    // DYLD_INTERPOSE(hk_nw_connection_receive, nw_connection_receive);
 #endif
 
 

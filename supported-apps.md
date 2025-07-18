@@ -32,6 +32,11 @@
 | BoltAI              | 1.*     | ✔   | ✔   | <https://boltai.com/>                                       | ON  |             |
 | CleanMyMac_5        | 5.1.1   | ✔   | ✔   |                                                             | ON  |             |
 | NotchNook           | 1.*     | ✔   | ✔   | <https://lo.cafe/notchnook>                                 | ON  | NKR00711    |
+|ProgressiveDownloader| *       | ✔   | ✔   | <https://www.macpsd.net/>                                   |     | NKR00711    |
+| Bartender 5         | *.      | ✔   | ✔   | <https://www.macbartender.com/>                             |     | NKR00711    |
+| DeskWidge           | *       | ✔   | ✔   | App Store                                                   |     | ooooooio    |
+| SenPlayer           | 5.6.3   | ✔   | ✔   | App Store                                                   |     | ooooooio    |
+| LiveWallpaper       | *       | ✔   | ✔   | App Store                                                   |     | ooooooio    |
 | Hopper Disassembler | 5.*     | ✔   | ✔   | <https://www.hopperapp.com/download.html>                   | ON  |             |
 | Snipaste            | 2.*     | ✔   | ✔   | <https://www.snipaste.com/>                                 | ON  |             |
 | iMazing             | 3.2.0   | ✔   | ✔   | <https://downloads.imazing.com/com.DigiDNA.iMazing3Mac.xml> | ON  | Antibiotics |

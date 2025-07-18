@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08869D0F2E1AF15900B079A0 /* NotchNook.m in Sources */ = {isa = PBXBuildFile; fileRef = 08869D0E2E1AF15900B079A0 /* NotchNook.m */; };
+		08869D112E1AF16B00B079A0 /* ProgressiveDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 08869D102E1AF16B00B079A0 /* ProgressiveDownloader.m */; };
+		08869D152E1D125100B079A0 /* Bartender.m in Sources */ = {isa = PBXBuildFile; fileRef = 08869D142E1D125100B079A0 /* Bartender.m */; };
 		2847DC932E0E792000D72519 /* DeskWidgetHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2847DC922E0E791A00D72519 /* DeskWidgetHack.m */; };
 		2853DED92E17A39E0045A97A /* LiveWallpaperHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2853DED82E17A39E0045A97A /* LiveWallpaperHack.m */; };
 		2853DEDB2E17A41F0045A97A /* SenPlayerHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2853DEDA2E17A41A0045A97A /* SenPlayerHack.m */; };
@@ -82,6 +85,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		08869D0E2E1AF15900B079A0 /* NotchNook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotchNook.m; sourceTree = "<group>"; };
+		08869D102E1AF16B00B079A0 /* ProgressiveDownloader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProgressiveDownloader.m; sourceTree = "<group>"; };
+		08869D142E1D125100B079A0 /* Bartender.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Bartender.m; sourceTree = "<group>"; };
 		2847DC922E0E791A00D72519 /* DeskWidgetHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeskWidgetHack.m; sourceTree = "<group>"; };
 		2853DED82E17A39E0045A97A /* LiveWallpaperHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveWallpaperHack.m; sourceTree = "<group>"; };
 		2853DEDA2E17A41A0045A97A /* SenPlayerHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SenPlayerHack.m; sourceTree = "<group>"; };
@@ -132,8 +138,6 @@
 		B5822CA82CBFFC020062383F /* Logger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
 		B5938B212DA7E45300FA82B0 /* ishotHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ishotHack.m; sourceTree = "<group>"; };
 		B5938B232DA7E5D100FA82B0 /* BoltAIHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BoltAIHack.m; sourceTree = "<group>"; };
-		B59751F52C9DAF8600617629 /* fix_helper.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = fix_helper.sh; sourceTree = "<group>"; };
-		B59751F62C9DB54E00617629 /* fix_helper_and_inject.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = fix_helper_and_inject.sh; sourceTree = "<group>"; };
 		B5A7D30E2C548B71003D4C7F /* HackProtocolDefault.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackProtocolDefault.h; sourceTree = "<group>"; };
 		B5A7D3102C548BAB003D4C7F /* HackProtocolDefault.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HackProtocolDefault.m; sourceTree = "<group>"; };
 		B5A7D3132C549130003D4C7F /* ForkLiftHelperHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForkLiftHelperHack.m; sourceTree = "<group>"; };
@@ -262,6 +266,7 @@
 				B5369DCD2CC4C1D200A81211 /* irvueHack.m */,
 				B52BBA832CBFE1CE00F098A9 /* AirBuddyHack.m */,
 				B5EC63D72CBD39C700D92EEC /* AlfredHack.m */,
+				08869D142E1D125100B079A0 /* Bartender.m */,
 				B5732BF02C82CD5900EC9E11 /* IDAHack.m */,
 				9C99D64A2CB6CEF100B8A6D7 /* iStat7Hack.m */,
 				B5D0C0BA2C4B553500881398 /* ForkLiftHack.m */,
@@ -270,6 +275,8 @@
 				B5FE3B842BA2A571001AE437 /* TransmitHack.m */,
 				382A25842B6918DF0083F28C /* PasteHack.m */,
 				38B83E302B5505B300919735 /* TablePlusHack.m */,
+				08869D0E2E1AF15900B079A0 /* NotchNook.m */,
+				08869D102E1AF16B00B079A0 /* ProgressiveDownloader.m */,
 				B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */,
 				B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */,
 				B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */,
@@ -456,6 +463,7 @@
 				2853DEDB2E17A41F0045A97A /* SenPlayerHack.m in Sources */,
 				B58160172BE88569001DDB9B /* EncryptionUtils.m in Sources */,
 				B5A7D3142C549130003D4C7F /* ForkLiftHelperHack.m in Sources */,
+				08869D152E1D125100B079A0 /* Bartender.m in Sources */,
 				38350BF82B53F73A00DD52B3 /* dylib_dobby_hook.m in Sources */,
 				B5A7D3172C5491A0003D4C7F /* HackHelperProtocolDefault.m in Sources */,
 				B53F9DED2C4AA4EC00A6B32D /* CleanShotXHack.m in Sources */,
@@ -467,8 +475,10 @@
 				B5D0C0BB2C4B553500881398 /* ForkLiftHack.m in Sources */,
 				B5F06B1D2BEF591E0079E68D /* InfuseHack.m in Sources */,
 				B5EAA9E22C8C3FC3008C4089 /* URLSessionHook.m in Sources */,
+				08869D112E1AF16B00B079A0 /* ProgressiveDownloader.m in Sources */,
 				B513ADD92CB95D4100F5DC97 /* LocalizationManager.m in Sources */,
 				B52BBA842CBFE1CE00F098A9 /* AirBuddyHack.m in Sources */,
+				08869D0F2E1AF15900B079A0 /* NotchNook.m in Sources */,
 				B55407272B653DCB005C08E6 /* NavicatPremiumHack.m in Sources */,
 				3816BBB92B54FF090051CF39 /* MemoryUtils.m in Sources */,
 				38B83E312B5505B300919735 /* TablePlusHack.m in Sources */,

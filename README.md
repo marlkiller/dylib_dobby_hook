@@ -43,6 +43,9 @@ cd script
 sudo bash auto_hack.sh
 ```
 
+> **Tip:** For a more convenient experience, you can use our GUI Quick Injection App.  
+> [Download AutoHackGUI](https://github.com/marlkiller/AutoHackGUI-Releases/releases/)
+
 ## Develop
 
 ### 0x0

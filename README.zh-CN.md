@@ -43,6 +43,9 @@ cd script
 sudo bash auto_hack.sh
 ```
 
+> **提示：** 推荐使用 GUI 快捷注入工具，操作更简单。  
+> [下载 AutoHackGUI](https://github.com/marlkiller/AutoHackGUI-Releases/releases/)
+
 ## Develop
 
 ### 0x0
