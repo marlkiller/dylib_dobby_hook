@@ -232,9 +232,51 @@ BOOL canShowAlert(void) {
     return isForeground;
 }
 
+/// Initialize behavior based on environment variables.
+///
+/// This function checks for specific environment variables to enable
+/// optional runtime features and pass configuration values to components
+/// such as URLSessionHook.
+///
+/// Supported environment variables:
+///
+/// - URLSESSION_HOOK_ENABLE:
+///     If set to "1", enables URLSession hook by invoking
+///     +[URLSessionHook record_NSURL:].
+///
+/// - NSURLSESSION_MAX_BODY_LEN:
+///     Optional. Integer value to override the default max body length captured.
+///
+/// - NSURLSESSION_FILTER:
+///     Optional. A string passed to +[URLSessionHook record_NSURL:] for filtering logic.
+///
+void initEnv(void){
+    NSDictionary *env = [[NSProcessInfo processInfo] environment];
+    NSString *enableHook = env[@"URLSESSION_HOOK_ENABLE"];
+    if ([enableHook isEqualToString:@"1"]) {
+        Class cls = NSClassFromString(@"URLSessionHook");
+
+        NSString *maxBodyLenStr = env[@"NSURLSESSION_MAX_BODY_LEN"];
+        if (maxBodyLenStr) {
+            SEL sel = NSSelectorFromString(@"setMaxBodyLength:");
+            if (cls && [cls respondsToSelector:sel])
+                ((void (*)(id, SEL, NSUInteger))objc_msgSend)(cls, sel, maxBodyLenStr.integerValue);
+        }
+        NSString *filterStr = env[@"NSURLSESSION_FILTER"];
+        if (filterStr && [[filterStr stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet] length] == 0) {
+            filterStr = nil;
+        }
+        SEL sel = NSSelectorFromString(@"record_NSURL:");
+        if (cls && [cls respondsToSelector:sel])
+            ((void (*)(id, SEL, id))objc_msgSend)(cls, sel, filterStr);
+    }
+}
 + (void)doHack {
     
     @try {
+        
+        initEnv();
+        
         NSArray<Class> *hackClasses = [Constant getAllHackClasses];
         NSLogger(@"Initiating doHack operation...");
         for (Class class in hackClasses) {

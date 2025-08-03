@@ -463,6 +463,22 @@ OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
             *result = (__bridge_retained CFTypeRef)data;
         }
         status = data ? errSecSuccess : errSecItemNotFound;
+//        if (data) {
+//            NSMutableString *hex = [NSMutableString stringWithCapacity:data.length * 2];
+//            const unsigned char *bytes = data.bytes;
+//            for (NSUInteger i = 0; i < data.length; i++) {
+//                [hex appendFormat:@"%02x", bytes[i]];
+//            }
+//            NSLogger(@"[r_Data] hex = %@", hex);
+//            id obj = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+///            Class cls = NSClassFromString(@"RDSignedDataContainer");
+///            obj = class_createInstance(cls, 0);
+///            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:obj];
+//            if (obj) {
+//                // Parsed object: <FIRInstallationsStoredItem: 0x60000076c540>
+//                NSLogger(@"Parsed object: %@", obj);
+//            }
+//        }
         NSLogger(@"[r_Data] status=%d, query=%@, result=%@", status, q, data);
         return status;
     }

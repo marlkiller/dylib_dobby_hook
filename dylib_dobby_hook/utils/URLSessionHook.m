@@ -38,6 +38,7 @@
 static NSString *G_FILTER = nil;
 static NSString *G_HANDLER_KEY = @"G_HANDLER_KEY";
 static NSString *G_COMPLETION_HANDLER_KEY = @"G_COMPLETION_HANDLER_KEY";
+static NSUInteger G_MAX_BODY_LEN = 1024 * 2;  // Default
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -46,6 +47,14 @@ static NSString *G_COMPLETION_HANDLER_KEY = @"G_COMPLETION_HANDLER_KEY";
     return self;
 }
 
++ (void)setMaxBodyLength:(NSUInteger)len {
+    if (len > 0) {
+        G_MAX_BODY_LEN = len;
+        NSLog(@"G_MAX_BODY_LEN set to: %lu", G_MAX_BODY_LEN);
+    } else {
+        NSLog(@"Invalid G_MAX_BODY_LEN: %lu", len);
+    }
+}
 static void swizzleClassMethod(Class cls, SEL originalSel, SEL swizzledSel) {
     Method orig = class_getClassMethod(cls, originalSel);
     Method swiz = class_getClassMethod(cls, swizzledSel);
@@ -99,7 +108,7 @@ static void swizzleClassMethod(Class cls, SEL originalSel, SEL swizzledSel) {
     }
     NSString *scheme = request.URL.scheme.lowercaseString;
     if (!([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"])) {
-        NSLogger(@"Skipping non-HTTP(s) request: %@://%@", scheme, request.URL.host);
+        NSLog(@"Skipping non-HTTP(s) request: %@://%@", scheme, request.URL.host);
         return NO;
     }
     NSString *urlString = request.URL.absoluteString;
@@ -125,9 +134,9 @@ static void swizzleClassMethod(Class cls, SEL originalSel, SEL swizzledSel) {
             [log appendFormat:@"👤 Delegate: %@\n", NSStringFromClass([delegate class])];
             const char *imageName = class_getImageName([delegate class]);
             if (imageName) {
-                [log appendFormat:@"  ├─ Module: %s\n", imageName];
+                [log appendFormat:@" └─ Module: %s\n", imageName];
             } else {
-                [log appendString:@"  ├─ Module: Unknown\n"];
+                [log appendString:@" └─ Module: Unknown\n"];
             }
             return;
         }
@@ -165,7 +174,7 @@ static void swizzleClassMethod(Class cls, SEL originalSel, SEL swizzledSel) {
     // 头部信息
     NSDictionary<NSString *, NSString *> *headers = request.allHTTPHeaderFields;
     if (headers.count > 0) {
-        [log appendFormat:@"📤 Request Headers: %@\n", [self compactJSONStringFromDictionary:headers]];
+        [log appendFormat:@"📤 Request Headers:\n%@\n", [self prettyPrintHeaders:headers]];
     }
     
     // 请求体处理
@@ -200,8 +209,8 @@ static void swizzleClassMethod(Class cls, SEL originalSel, SEL swizzledSel) {
         else if ([contentType containsString:@"application/json"]) {
             NSString *jsonString = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
             if (jsonString) {
-                if (jsonString.length > 1024) {
-                    [log appendFormat:@"📝 Request JSON: [truncated 1KB] \n%@...\n", [jsonString substringToIndex:1024]];
+                if (jsonString.length > G_MAX_BODY_LEN) {
+                    [log appendFormat:@"📝 Request JSON: [truncated %lu] \n%@...\n",G_MAX_BODY_LEN, [jsonString substringToIndex:G_MAX_BODY_LEN]];
                 } else {
                     [log appendFormat:@"📝 Request JSON: \n%@\n", jsonString];
                 }
@@ -212,8 +221,8 @@ static void swizzleClassMethod(Class cls, SEL originalSel, SEL swizzledSel) {
         else {
             NSString *bodyString = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
             if (bodyString) {
-                if (bodyString.length > 1024) {
-                    [log appendFormat:@"📝 Request Body: [truncated 1KB] \n%@...\n", [bodyString substringToIndex:1024]];
+                if (bodyString.length > G_MAX_BODY_LEN) {
+                    [log appendFormat:@"📝 Request Body: [truncated %lu] \n%@...\n", G_MAX_BODY_LEN,[bodyString substringToIndex:G_MAX_BODY_LEN]];
                 } else {
                     [log appendFormat:@"📝 Request Body: \n%@\n", bodyString];
                 }
@@ -264,18 +273,41 @@ static void swizzleClassMethod(Class cls, SEL originalSel, SEL swizzledSel) {
                                                        options:0
                                                          error:&jsonError];
     if (!jsonData) {
-        NSLogger(@"JSON 序列化失败: %@", jsonError);
+        NSLog(@"JSON 序列化失败: %@", jsonError);
         return nil;
     }
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
+- (NSString *)prettyPrintHeaders:(NSDictionary<NSString *, NSString *> *)headers{
+    if (headers.count == 0) return @"(no headers)";
+    
+    NSArray *keys = [[headers allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+    
+    NSUInteger maxKeyLen = 0;
+    for (NSString *key in keys) {
+        maxKeyLen = MAX(maxKeyLen, key.length);
+    }
+    
+    NSMutableString *result = [NSMutableString string];
+    for (NSString *key in keys) {
+        NSString *value = headers[key];
+        [result appendFormat:@"  %-*s: %@\n", (int)maxKeyLen, [key UTF8String], value];
+    }
+    
+    return [result copy];
+}
+
+
+static NSInteger sessionCounter = 0;
 // [URLSessionHook startLoading]
 - (void)startLoading {
     NSMutableURLRequest *request = [self.request mutableCopy];
     [NSURLProtocol setProperty:@YES forKey:G_HANDLER_KEY inRequest:request];
 
     NSMutableString *log = [NSMutableString string];
+    sessionCounter++;
+    [log appendFormat:@"\n──────────────────────────── Request #%ld ────────────────────────────\n", (long)sessionCounter];
     [log appendString:@"⌛ ..."];
     [self logRequestDetails:log forRequest:request];
     NSURLSessionConfiguration *tempConfig = [NSURLSessionConfiguration ephemeralSessionConfiguration];
@@ -304,7 +336,7 @@ static void swizzleClassMethod(Class cls, SEL originalSel, SEL swizzledSel) {
         if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
             NSDictionary *headers = [(NSHTTPURLResponse *)response allHeaderFields];
             if (headers.count > 0) {
-                [log appendFormat:@"📤 Response Headers: %@\n", [self compactJSONStringFromDictionary:headers]];
+                [log appendFormat:@"📤 Response Headers:\n%@\n", [self prettyPrintHeaders:headers]];
             }
         }
                     
@@ -323,8 +355,8 @@ static void swizzleClassMethod(Class cls, SEL originalSel, SEL swizzledSel) {
             if (contentType && [contentType containsString:@"application/json"]) {
                 NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                 if (jsonString) {
-                    if (jsonString.length > 1024) {
-                        [log appendFormat:@"📝 Response JSON: [truncated 1KB] \n%@...\n", [jsonString substringToIndex:1024]];
+                    if (jsonString.length > G_MAX_BODY_LEN) {
+                        [log appendFormat:@"📝 Response JSON: [truncated %lu] \n%@...\n",G_MAX_BODY_LEN, [jsonString substringToIndex:G_MAX_BODY_LEN]];
                     } else {
                         [log appendFormat:@"📝 Response JSON: \n%@\n", jsonString];
                     }
@@ -338,8 +370,8 @@ static void swizzleClassMethod(Class cls, SEL originalSel, SEL swizzledSel) {
                                     [contentType containsString:@"html"])) {
                 NSString *bodyString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                 if (bodyString) {
-                    if (bodyString.length > 512) {
-                        [log appendFormat:@"📝 Response Body: [truncated 1KB] \n%@...\n", [bodyString substringToIndex:512]];
+                    if (bodyString.length > G_MAX_BODY_LEN) {
+                        [log appendFormat:@"📝 Response Body: [truncated %lu] \n%@...\n",G_MAX_BODY_LEN, [bodyString substringToIndex:G_MAX_BODY_LEN]];
                     } else {
                         [log appendFormat:@"📝 Response Body: \n%@\n", bodyString];
                     }
@@ -348,14 +380,14 @@ static void swizzleClassMethod(Class cls, SEL originalSel, SEL swizzledSel) {
                 }
             } else {
                 // 二进制数据预览
-                const NSUInteger previewLength = MIN(32, data.length);
+                const NSUInteger previewLength = MIN(G_MAX_BODY_LEN, data.length);
                 NSMutableString *hexPreview = [NSMutableString string];
                 const unsigned char *bytes = data.bytes;
                 for (NSUInteger i = 0; i < previewLength; i++) {
                     [hexPreview appendFormat:@"%02x ", bytes[i]];
                 }
                 
-                [log appendFormat:@"📦 Response Binary: %lu bytes [%s%s]\n",
+                [log appendFormat:@"📦 Response Binary: %lu bytes \n[%s%s]\n",
                  (unsigned long)data.length,
                  [hexPreview UTF8String],
                  data.length > previewLength ? "..." : ""];
@@ -364,8 +396,8 @@ static void swizzleClassMethod(Class cls, SEL originalSel, SEL swizzledSel) {
             [log appendString:@"📭 Empty Response\n"];
         }
         
-        [log appendString:@"--------------------------------\n"];
-        NSLogger(@"%@", log);
+        [log appendFormat:@"──────────────────────────── End of Request #%ld ────────────────────────────\n", (long)sessionCounter];
+        NSLog(@"%@", log);
         
         // 回调客户端
         if (error) {
@@ -397,7 +429,7 @@ static void swizzleClassMethod(Class cls, SEL originalSel, SEL swizzledSel) {
         if ([self._task respondsToSelector:@selector(cancel)]) {
             [self._task cancel];
         }else{
-            NSLogger("WARN cancel: %@",self.request.URL);
+            NSLog(@"WARN cancel: %@",self.request.URL);
         }
         self._task = nil;
     }
@@ -406,7 +438,7 @@ static void swizzleClassMethod(Class cls, SEL originalSel, SEL swizzledSel) {
         if ([self._session respondsToSelector:@selector(invalidateAndCancel)]) {
             [self._session invalidateAndCancel];
         }else {
-            NSLogger("WARN invalidateAndCancel: %@",self.request.URL);
+            NSLog(@"WARN invalidateAndCancel: %@",self.request.URL);
         }
         self._session = nil;
     }
@@ -490,8 +522,8 @@ NSMutableString* logHandlerAddress(id completionHandler) {
                 uintptr_t offsetInModule = (uintptr_t)invokePtr - (uintptr_t)info.dli_fbase;
                 uintptr_t slide = _dyld_get_image_vmaddr_slide(i);
                 uintptr_t staticAddress = (uintptr_t)invokePtr - slide;
-                [log appendFormat:@"  ├─ Module: %s\n", imageName];
-                [log appendFormat:@"  ├─ Address: Runtime=%p | Offset=0x%lx | Static=0x%lx\n", invokePtr, offsetInModule, staticAddress];
+                [log appendFormat:@" ├─ Module: %s\n", imageName];
+                [log appendFormat:@" └─ Address: Runtime=%p | Offset=0x%lx | Static=0x%lx\n", invokePtr, offsetInModule, staticAddress];
                 break;
             }
         }
@@ -644,7 +676,7 @@ static void clear_cache_for_conn(SSLContextRef conn) {
 void log_connection(uintptr_t id, NSString *proto, NSString *flow, const void *data, size_t len) {
     NSString *out = [[NSString alloc] initWithBytes:data length:len encoding:NSUTF8StringEncoding];
     if (out) {
-        NSLogger(@"\n%@ %@ [ID: %lu]\n%@", proto, flow, id, out);
+        NSLog(@"\n%@ %@ [ID: %lu]\n%@", proto, flow, id, out);
     }
 }
 
@@ -726,7 +758,7 @@ ssize_t hk_recv(int sockfd, void *buf, size_t len, int flags) {
         const char *cbuf = (const char *)buf;
         if (strstr(cbuf, "HTTP/") || strstr(cbuf, "200 OK")) {
             const char *header_end = strstr(cbuf, "\r\n\r\n");
-            size_t log_len = header_end ? (header_end - cbuf) + 4 : MIN(ret, 1024);
+            size_t log_len = header_end ? (header_end - cbuf) + 4 : MIN(ret, G_MAX_BODY_LEN);
             log_connection(sockfd, P_HTTP,F_RES,  buf, log_len);
         }
     }
@@ -815,6 +847,7 @@ ssize_t hk_recv(int sockfd, void *buf, size_t len, int flags) {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
+        NSLog(@"record with filter = %@", filter);
 
 #ifdef ENABLE_TRAFFIC_HOOKS
         signal(SIGUSR1, SIG_IGN);

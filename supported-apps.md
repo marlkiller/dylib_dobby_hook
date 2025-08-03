@@ -42,6 +42,7 @@
 | iMazing             | 3.2.0   | ✔   | ✔   | <https://downloads.imazing.com/com.DigiDNA.iMazing3Mac.xml> | ON  | Antibiotics |
 | DeskWidget          | 2.*     | ✔   | ✔   | App Store                                                   | ON  |             |
 | Sketch              | 2025.*  | ✔   | ✔   | https://www.sketch.com/downloads/mac/                       | ON  |             |
+| PDF Expert          | 3.*     | ✔   | ✔   | https://pdfexpert.com/downloads                             | ON  |             |
 <details>
   <summary>(TODO) Details</summary>
 </details>

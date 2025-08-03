@@ -18,7 +18,7 @@
 
 @end
 
-IMP dataTaskWithRequestIMP2;
+static IMP dataTaskWithRequestIMP2;
 
 @implementation iStat7Hack
 

@@ -44,6 +44,9 @@ static IMP _dataTaskWithRequestIMP;
     if ([[Constant getCurrentAppName] containsString:@"codes.rambo.AirBuddy"]) {
         return false;
     }
+    if ([[Constant getCurrentAppName] containsString:@"com.readdle.PDFExpert-Mac"]) {
+        return false;
+    }
     
     int paddleIndex = [MemoryUtils indexForImageWithName:@"Paddle"];
     if (paddleIndex > 0) {

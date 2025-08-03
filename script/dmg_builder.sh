@@ -1,17 +1,27 @@
 #!/bin/bash
 
 # --- Configuration Variables ---
-APP_NAME="$1" # Application name passed as a script argument
-APP_SOURCE_PATH="/Applications/${APP_NAME}.app" # Path to the application to be packaged
-DMG_VOLNAME="${APP_NAME}" # Volume name for the mounted DMG
+APP_NAME_ARG="$1" # Application name or path passed as a script argument
 LINK_TARGET="/Applications" # Target path for the shortcut
 LINK_NAME="Applications" # Shortcut name displayed inside the DMG
 
-# --- Check if the application name is provided ---
-if [ -z "$APP_NAME" ]; then
-    echo "❌ Application name is required. Usage: ./dmg_builder.sh <APP_NAME>"
+# --- Check if the argument is provided ---
+if [ -z "$APP_NAME_ARG" ]; then
+    echo "❌ Application name or path is required. Usage: ./dmg_builder.sh <APP_NAME_OR_PATH>"
     exit 1
 fi
+
+# --- Determine source path ---
+if [[ "$APP_NAME_ARG" == *".app" ]]; then
+    # User provided a full path to .app bundle
+    APP_SOURCE_PATH="$APP_NAME_ARG"
+    APP_NAME=$(basename "$APP_NAME_ARG" .app)
+else
+    # User provided just the application name
+    APP_NAME="$APP_NAME_ARG"
+    APP_SOURCE_PATH="/Applications/${APP_NAME}.app"
+fi
+DMG_VOLNAME="${APP_NAME}" # Volume name for the mounted DMG
 
 # --- Check dependencies ---
 if ! command -v hdiutil &> /dev/null; then
@@ -31,7 +41,7 @@ if [ -z "$APP_VERSION" ]; then
     echo "❌ Failed to retrieve application version. Ensure the Info.plist file exists and is valid."
     exit 1
 fi
-echo "📦 Application version: $APP_VERSION"
+echo "📦 Application: $APP_NAME | Version: $APP_VERSION | Source: $APP_SOURCE_PATH"
 
 # --- Set DMG file names ---
 DMG_OUTPUT_DIR=~/Downloads
