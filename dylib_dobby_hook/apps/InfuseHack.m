@@ -36,6 +36,12 @@
 - (BOOL)hack {
    
     tiny_hook((void *)ptrace, (void *)my_ptrace, (void *)&orig_ptrace);
+    [MemoryUtils hookInstanceMethod:
+                objc_getClass("_TtC6infuse31InAppPurchaseServiceFreemiumSK2")
+                originalSelector:NSSelectorFromString(@"iapVersionStatus")
+                swizzledClass:[self class]
+                swizzledSelector:@selector(ret1)
+    ];
 
     [MemoryUtils hookInstanceMethod:
                 objc_getClass("FCInAppPurchaseServiceFreemium")
