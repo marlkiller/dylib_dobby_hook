@@ -55,12 +55,36 @@
 
 
 + (uintptr_t)getPtrFromGlobalOffset:(NSString *)searchFilePath globalFunOffset:(uintptr_t)globalFunOffset;
+/**
+ * @brief Calculates the in-memory address of a symbol from its offsets.
+ * @param index The image index of the module.
+ * @param globalFunOffset The offset of the function within its Mach-O file slice.
+ * @param fileOffset The offset of the Mach-O file slice within the fat binary.
+ * @return The final in-memory address of the symbol.
+ */
 + (uintptr_t)getPtrFromGlobalOffset:(uint32_t)index globalFunOffset:(uintptr_t)globalFunOffset fileOffset:(uintptr_t)fileOffset;
 
 + (int)indexForImageWithName:(NSString *)imageName;
 
-+ (void)listAllPropertiesMethodsAndVariables:(Class) cls;
-+ (void)inspectObjectWithAddress:(void *)address;
+/**
+ Dump runtime info of an ObjC or Swift object or class.
+
+ @param o Pointer to an object instance (pass NULL if dumping a class)
+ @param className Name of the class (pass NULL if dumping an instance)
+
+ Logs:
+   - Language: ObjC or Swift
+   - Type: Instance or Class
+   - Size, properties, ivars, and first few methods
+
+ Example usage:
+   // Dump an instance
+   [RuntimeDumper dumpObjcSwift:someObject className:NULL];
+
+   // Dump a class
+   [RuntimeDumper dumpObjcSwift:NULL className:"MyApp.MyClass"];
+ */
++ (void)dumpOSObjClz:(void *)o className:(char*)className;
 + (void)exAlart:(NSString *)title message:(NSString *)message;
 
 /**

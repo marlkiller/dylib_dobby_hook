@@ -43,6 +43,26 @@
     uintptr_t setAppPatchPtr = [setAppPatchPtrs[0] unsignedIntegerValue];
     write_mem((void*)setAppPatchPtr,(uint8_t *)setAppPatchTarget,sizeof(setAppPatchTarget) / sizeof(setAppPatchTarget[0]));
 
-return YES;
+//
+//#if defined(__arm64__) || defined(__aarch64__)
+//    NSString* devHex = @"20 00 80 52 C0 03 5F D6 FF 83 01 D1 FA 67 01 A9 F8 5F 02 A9 F6 57 03 A9 F4 4F 04 A9";
+//    uintptr_t devAddr = 0x3c10;
+//#elif defined(__x86_64__)
+//    NSString* devHex = @"55 48 89 E5 B8 01 00 00 00 5D C3 55 48 89 E5 41 57 41 56 41 55 41 54 53 48 83 EC 28";
+//    uintptr_t devAddr = 0x3340;
+//#endif
+//
+//    NSArray* devPtrs1 = [MemoryUtils getPtrFromMachineCode:(NSString*)@"/Contents/Frameworks/Sparkle.framework/Versions/A/Sparkle"
+//                                machineCode:(NSString*)devHex
+//                                    count:(int)1];
+//    uintptr_t devPtrs2 = [MemoryUtils getPtrFromAddress:(NSString*)@"/Contents/Frameworks/Sparkle.framework/Versions/A/Sparkle"
+//                                    targetFunctionAddress:(uintptr_t)devAddr];
+//    // /Contents/Frameworks/Sparkle.framework/Versions/A/Sparkle > +[SPUDownloadData supportsSecureCoding]:
+//    IMP imp = method_getImplementation(class_getClassMethod(objc_getClass("SPUDownloadData"), @selector(supportsSecureCoding)));
+//    NSLogger(@"+[SPUDownloadData supportsSecureCoding] From Hex is 0x%llx", [devPtrs1[0] unsignedLongLongValue]);
+//    NSLogger(@"+[SPUDownloadData supportsSecureCoding] From VA is 0x%lx", devPtrs2);
+//    NSLogger(@"+[SPUDownloadData supportsSecureCoding] IMP: %p", imp);
+
+    return YES;
 }
 @end

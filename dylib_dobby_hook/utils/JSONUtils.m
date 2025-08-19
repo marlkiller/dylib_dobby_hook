@@ -6,6 +6,7 @@
 //
 
 #import "JSONUtils.h"
+#import "Logger.h"
 
 @implementation JSONUtils
 
@@ -35,7 +36,7 @@
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error];
     
     if (error) {
-        NSLog(@"Error parsing JSON: %@", error.localizedDescription);
+        NSLogger(@"Error parsing JSON: %@", error.localizedDescription);
         return nil;
     }
     

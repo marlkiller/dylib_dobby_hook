@@ -438,7 +438,8 @@ OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
             (__bridge id)kSecReturnRef,
             (__bridge id)kSecReturnPersistentRef,
             (__bridge id)kSecMatchLimit,
-            (__bridge id)kSecMatchLimitAll
+            (__bridge id)kSecMatchLimitAll,
+            (__bridge id)kSecAttrSynchronizable
         ]];
     });
     NSMutableDictionary *searchQuery = [NSMutableDictionary dictionary];
@@ -455,6 +456,26 @@ OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
         NSLogger(@"status=%d, query=%@, result=nil", status, q);
         return status;
     }
+
+    void (^printNSData)(NSString*, NSData*) = ^(NSString* name,NSData* data) {
+        if (data) {
+            NSMutableString* hex = [NSMutableString stringWithCapacity:data.length * 2];
+            const unsigned char* bytes = data.bytes;
+            for (NSUInteger i = 0; i < data.length; i++) {
+                [hex appendFormat:@"%02x", bytes[i]];
+            }
+            NSLogger(@"[%@] hex = %@", name,hex);
+            id obj = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+            //            Class cls = NSClassFromString(@"RDSignedDataContainer");
+            //            obj = class_createInstance(cls, 0);
+            //            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:obj];
+            if (obj) {
+                // Parsed object: <FIRInstallationsStoredItem: 0x60000076c540>
+                NSLogger(@"[%@]Parsed object: %@", name, obj);
+            }
+        }
+    };
+
     NSArray *candidates = matchAll ? matches : @[matches.firstObject];
     // 特殊处理：只请求 kSecReturnData 时，直接返回 NSData（避免后续打包 NSDictionary）
     if (wantData && !wantAttrs && !wantRef && !matchAll) {
@@ -463,22 +484,7 @@ OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
             *result = (__bridge_retained CFTypeRef)data;
         }
         status = data ? errSecSuccess : errSecItemNotFound;
-//        if (data) {
-//            NSMutableString *hex = [NSMutableString stringWithCapacity:data.length * 2];
-//            const unsigned char *bytes = data.bytes;
-//            for (NSUInteger i = 0; i < data.length; i++) {
-//                [hex appendFormat:@"%02x", bytes[i]];
-//            }
-//            NSLogger(@"[r_Data] hex = %@", hex);
-//            id obj = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-///            Class cls = NSClassFromString(@"RDSignedDataContainer");
-///            obj = class_createInstance(cls, 0);
-///            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:obj];
-//            if (obj) {
-//                // Parsed object: <FIRInstallationsStoredItem: 0x60000076c540>
-//                NSLogger(@"Parsed object: %@", obj);
-//            }
-//        }
+        printNSData(@"r_Data", data);
         NSLogger(@"[r_Data] status=%d, query=%@, result=%@", status, q, data);
         return status;
     }
@@ -506,16 +512,20 @@ OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
             // 添加 v_Data
             if (wantData) {
                 id d = item[(__bridge id)kSecValueData];
-                if (d) e[(__bridge id)kSecValueData] = d;
+                if (d)e[(__bridge id)kSecValueData] = d;
+                printNSData(@"v_Data", d);
             }
             // 添加 persistentRef
             if (wantRef) {
                 id r = item[(__bridge id)kSecValuePersistentRef];
                 if (r) e[(__bridge id)kSecValuePersistentRef] = r;
             }
+            printNSData(@"v_PersistentRef", e[@"v_PersistentRef"]);
             [packed addObject:e];
         }
     }
+
+    
     // 打包结果
     id outObj = needPack
                 ? (matchAll ? (id)packed : packed.firstObject)

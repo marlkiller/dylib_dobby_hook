@@ -17,7 +17,7 @@
 #ifdef DEBUG
 #define NSLogger(fmt, ...) \
     NSLog((@"%s [Line %d] >>>>>> " fmt), \
-          __PRETTY_FUNCTION__, \
+          __func__, \
           __LINE__, ##__VA_ARGS__)
 #else
 #define NSLogger(fmt, ...) do {} while (0)

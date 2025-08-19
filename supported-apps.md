@@ -43,6 +43,7 @@
 | DeskWidget          | 2.*     | ✔   | ✔   | App Store                                                   | ON  |             |
 | Sketch              | 2025.*  | ✔   | ✔   | https://www.sketch.com/downloads/mac/                       | ON  |             |
 | PDF Expert          | 3.*     | ✔   | ✔   | https://pdfexpert.com/downloads                             | ON  |             |
+| Screens 5           | 5.*     | ✔   | ✔   | App Store                                                   | ON  |             |
 <details>
   <summary>(TODO) Details</summary>
 </details>

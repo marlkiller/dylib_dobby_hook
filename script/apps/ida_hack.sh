@@ -37,6 +37,6 @@ echo -e "${GREEN}✅ [${app_name}] - Overwritten existing plugins with new ones.
 # fi
 
 
-# sudo codesign --force --deep --sign - /Applications/IDA\ Professional\ 9.0.app/Contents/MacOS/libida64.dylib
-# sudo codesign --force --deep --sign - /Applications/IDA\ Professional\ 9.0.app/Contents/MacOS/libida32.dylib
-# sudo codesign --force --deep --sign - /Applications/IDA\ Professional\ 9.0.app/Contents/MacOS/libida.dylib
+codesign --force --deep --sign - /Applications/IDA\ Professional\ 9.1.app/Contents/MacOS/libida64.dylib
+codesign --force --deep --sign - /Applications/IDA\ Professional\ 9.1.app/Contents/MacOS/libida32.dylib
+codesign --force --deep --sign - /Applications/IDA\ Professional\ 9.1.app/Contents/MacOS/libida.dylib

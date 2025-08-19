@@ -55,6 +55,7 @@
 
 - (void)hook_AllSecItem;
 - (void)hook_AllSecCode:teamIdentifier;
+- (void)hook_AllCloudKit;
 
 - (void)record_NSURL:filter;
 @end

@@ -68,11 +68,11 @@ static BOOL _helper;
 + (BOOL) isFirstOpen {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; // 获取当前的版本号
-    NSString *storedVersion = [defaults objectForKey:@"appVersion"]; // 获取存储的版本号
+    NSString *storedVersion = [defaults objectForKey:@"inject_appVersion"]; // 获取存储的版本号
 
     if (!storedVersion || ![storedVersion isEqualToString:currentVersion]) {
         // 这是第一次打开，或者是升级后第一次打开，你可以做一些初始化的操作
-        [defaults setObject:currentVersion forKey:@"appVersion"]; // 更新版本号
+        [defaults setObject:currentVersion forKey:@"inject_appVersion"]; // 更新版本号
         [defaults synchronize]; // 同步到磁盘
         return true;
     }

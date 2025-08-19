@@ -39,7 +39,7 @@
 
     [MemoryUtils hookInstanceMethod:
                 objc_getClass("FCInAppPurchaseServiceFreemium")
-                originalSelector:NSSelectorFromString(@"iapVersionStatus")
+                originalSelector:NSSelectorFromString(@"iapStatusWithExpirationDate:")
                 swizzledClass:[self class]
                 swizzledSelector:@selector(ret1)
     ];

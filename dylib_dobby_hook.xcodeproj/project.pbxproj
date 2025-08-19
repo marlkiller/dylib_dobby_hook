@@ -52,6 +52,8 @@
 		B5822CA92CBFFC020062383F /* Logger.h in Headers */ = {isa = PBXBuildFile; fileRef = B5822CA82CBFFC020062383F /* Logger.h */; };
 		B5938B222DA7E45300FA82B0 /* ishotHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5938B212DA7E45300FA82B0 /* ishotHack.m */; };
 		B5938B242DA7E5D100FA82B0 /* BoltAIHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5938B232DA7E5D100FA82B0 /* BoltAIHack.m */; };
+		B59D6A2A2E503ED90004D71D /* MockUbiquitousKeyValueStore.h in Headers */ = {isa = PBXBuildFile; fileRef = B59D6A292E503ED90004D71D /* MockUbiquitousKeyValueStore.h */; };
+		B59D6A2C2E503F010004D71D /* MockUbiquitousKeyValueStore.m in Sources */ = {isa = PBXBuildFile; fileRef = B59D6A2B2E503F010004D71D /* MockUbiquitousKeyValueStore.m */; };
 		B5A7D30F2C548B71003D4C7F /* HackProtocolDefault.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A7D30E2C548B71003D4C7F /* HackProtocolDefault.h */; };
 		B5A7D3112C548BAB003D4C7F /* HackProtocolDefault.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A7D3102C548BAB003D4C7F /* HackProtocolDefault.m */; };
 		B5A7D3142C549130003D4C7F /* ForkLiftHelperHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A7D3132C549130003D4C7F /* ForkLiftHelperHack.m */; };
@@ -138,6 +140,8 @@
 		B5822CA82CBFFC020062383F /* Logger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
 		B5938B212DA7E45300FA82B0 /* ishotHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ishotHack.m; sourceTree = "<group>"; };
 		B5938B232DA7E5D100FA82B0 /* BoltAIHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BoltAIHack.m; sourceTree = "<group>"; };
+		B59D6A292E503ED90004D71D /* MockUbiquitousKeyValueStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockUbiquitousKeyValueStore.h; sourceTree = "<group>"; };
+		B59D6A2B2E503F010004D71D /* MockUbiquitousKeyValueStore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockUbiquitousKeyValueStore.m; sourceTree = "<group>"; };
 		B5A7D30E2C548B71003D4C7F /* HackProtocolDefault.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackProtocolDefault.h; sourceTree = "<group>"; };
 		B5A7D3102C548BAB003D4C7F /* HackProtocolDefault.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HackProtocolDefault.m; sourceTree = "<group>"; };
 		B5A7D3132C549130003D4C7F /* ForkLiftHelperHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForkLiftHelperHack.m; sourceTree = "<group>"; };
@@ -234,7 +238,6 @@
 			children = (
 				B57AEDBB2C5009F200B9C5FB /* dtrace_kill.d */,
 				B57AEDBD2C5009F200B9C5FB /* mac_patch_helper */,
-				B57AEDBE2C5009F200B9C5FB /* patch.json */,
 				B57AEDBC2C5009F200B9C5FB /* SMJobBlessUtil-python3.py */,
 				38350C072B53F96100DD52B3 /* insert_dylib */,
 			);
@@ -298,6 +301,8 @@
 		B581601D2BE894A2001DDB9B /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				B59D6A2B2E503F010004D71D /* MockUbiquitousKeyValueStore.m */,
+				B59D6A292E503ED90004D71D /* MockUbiquitousKeyValueStore.h */,
 				38D1AC272B54C9C100E6CB9E /* Constant.h */,
 				38D1AC292B54CA4D00E6CB9E /* Constant.m */,
 				B58160162BE88569001DDB9B /* EncryptionUtils.h */,
@@ -351,6 +356,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B59D6A2A2E503ED90004D71D /* MockUbiquitousKeyValueStore.h in Headers */,
 				B5EAA9E02C8C3FAF008C4089 /* URLSessionHook.h in Headers */,
 				B513ADD72CB95D0B00F5DC97 /* LocalizationManager.h in Headers */,
 				B5FECEAD2BC4FC29008916D6 /* common_ret.h in Headers */,
@@ -486,6 +492,7 @@
 				B5369DD02CC4C1DF00A81211 /* VidhubHack.m in Sources */,
 				B5938B222DA7E45300FA82B0 /* ishotHack.m in Sources */,
 				2853DED92E17A39E0045A97A /* LiveWallpaperHack.m in Sources */,
+				B59D6A2C2E503F010004D71D /* MockUbiquitousKeyValueStore.m in Sources */,
 				38E2ECD32DC48DCA00D76D10 /* ProxymanHelperHack.m in Sources */,
 				9CE4C5D12CCA7C3600593C78 /* JSONUtils.m in Sources */,
 				B5938B242DA7E5D100FA82B0 /* BoltAIHack.m in Sources */,

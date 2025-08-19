@@ -42,7 +42,7 @@ static IMP displayRegisteredInfoIMP;
                                               swizzledSelector:@selector(ishot_hk_displayRegisteredInfo)
            ];
     
-    //NSLog(@"displayRegisteredInfoIMP : %p",displayRegisteredInfoIMP);
+    //NSLogger(@"displayRegisteredInfoIMP : %p",displayRegisteredInfoIMP);
     ishot_istrial();
     
     return YES;

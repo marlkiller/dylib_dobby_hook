@@ -134,10 +134,8 @@
             "app_name": "IDA Professional 9.1",
             "app_path": "/Applications/$app_name.app",
             "app_bin_path": "$app_path/Contents/MacOS/ida",
-            "inject_path": "$app_path/Contents/Frameworks/QtDBus.framework/Versions/5/QtDBus",
-            "pre_script": "sudo bash apps/ida_hack.sh",
             "inject_type": "none",
-            "re_sign":true,
+            "re_sign":false,
             "other_patches": {
                 "/Applications/IDA Professional 9.1.app/Contents/MacOS/libida.dylib": {
                     "x86": {
@@ -163,7 +161,8 @@
                         "ED FD 42 5C F9 78": "ED FD 42 CB F9 78"
                     }
                 }
-            }
+            },
+            "post_script": "sudo bash apps/ida_hack.sh"
         },
         {
             "app_name": "AirBuddy",

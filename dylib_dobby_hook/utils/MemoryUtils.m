@@ -313,11 +313,12 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     NSString *imageName = [searchFilePath lastPathComponent];
     int imageIndex = [self indexForImageWithName:imageName];
     uintptr_t result  = 0;
-//    if ([Constant isArm]) {
-//
-//    }
-    result = targetFunctionAddress + _dyld_get_image_vmaddr_slide(imageIndex);
-    NSLogger(@"0x%lx + 0x%lx = 0x%lx ", targetFunctionAddress, _dyld_get_image_vmaddr_slide(imageIndex), result);
+    result = targetFunctionAddress + _dyld_get_image_vmaddr_slide(imageIndex);    
+    NSLogger(@"[Ptr Resolver] Image '%@' -> Final: 0x%lx (VA:0x%lx + ASLR:0x%lx)",
+            [searchFilePath lastPathComponent],
+            result,
+            targetFunctionAddress,
+            _dyld_get_image_vmaddr_slide(imageIndex));
     return result;
 }
 
@@ -368,21 +369,47 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     
     return [funAddresses copy];
 }
-    
-+ (uintptr_t)getPtrFromGlobalOffset:(uint32_t)index globalFunOffset:(uintptr_t)globalFunOffset fileOffset:(uintptr_t)fileOffset {
-    
-    // arm : 0x100000000 + 0xa91360 - 0x960000
-    // x86 : baseAddress + 0x14ef90 - 0x4000
-    // local offset + fileOffset = global offset
-    uintptr_t result  = 0;
-//    const struct mach_header *header = _dyld_get_image_header(index);
-//    uintptr_t baseAddress = (uintptr_t)header;
-//    result = baseAddress + globalFunOffset - fileOffset;
-//    NSLogger(@"add1 0x%lx + 0x%lx - 0x%lx = 0x%lx ",baseAddress,globalFunOffset,fileOffset,result);
-    result = _dyld_get_image_vmaddr_slide(index)+ARCH_FAT_SIZE+globalFunOffset-fileOffset;
-    NSLogger(@"0x%lx + 0x%lx + 0x%lx - 0x%lx = 0x%lx ",_dyld_get_image_vmaddr_slide(index),ARCH_FAT_SIZE,globalFunOffset,fileOffset,result);
+
+
++ (uintptr_t)getPtrFromGlobalOffset:(uint32_t)index globalFunOffset:(uintptr_t)globalFunOffset fileOffset:(uintptr_t)fileOffset
+{
+    // Retrieve the base address of the loaded image, which includes the ASLR slide.
+    const struct mach_header* header = _dyld_get_image_header(index);
+    if (!header) {
+        NSLogger(@"Error: Could not retrieve image header for index %u.", index);
+        return 0;
+    }
+    uintptr_t baseAddress = (uintptr_t)header;
+    // Base address + function offset - file slice offset.
+    uintptr_t result = baseAddress + globalFunOffset - fileOffset;
+    NSLogger(@"[Ptr Resolver] Image #%u -> Final: 0x%lx (Base:0x%lx + SymOff:0x%lx - FileOff:0x%lx)",
+        index,
+        (unsigned long)result,
+        baseAddress,
+        (unsigned long)globalFunOffset,
+        (unsigned long)fileOffset);
     return result;
 }
+
+// + (uintptr_t)getPtrFromGlobalOffset:(uint32_t)index globalFunOffset:(uintptr_t)globalFunOffset fileOffset:(uintptr_t)fileOffset {
+    
+//     // arm : 0x100000000 + 0xa91360 - 0x960000
+//     // x86 : baseAddress + 0x14ef90 - 0x4000
+//     // local offset + fileOffset = global offset
+//     uintptr_t result  = 0;
+// //    const struct mach_header *header = _dyld_get_image_header(index);
+// //    uintptr_t baseAddress = (uintptr_t)header;
+// //    result = baseAddress + globalFunOffset - fileOffset;
+// //    NSLogger(@"add1 0x%lx + 0x%lx - 0x%lx = 0x%lx ",baseAddress,globalFunOffset,fileOffset,result);
+//     result = _dyld_get_image_vmaddr_slide(index)+ARCH_FAT_SIZE+globalFunOffset-fileOffset;
+//     NSLogger(@"(imageSlide:0x%lx)+(fatSize:0x%lx)+(symOffset:0x%lx)-(archFileOffset:0x%lx) = (result:0x%lx)",
+//         _dyld_get_image_vmaddr_slide(index),
+//         (unsigned long)ARCH_FAT_SIZE,
+//         (unsigned long)globalFunOffset,
+//         (unsigned long)fileOffset,
+//         (unsigned long)result);
+//     return result;
+// }
 
 
 + (int)indexForImageWithName:(NSString *)imageName {
@@ -401,85 +428,131 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
 }
 
 
-+ (void) listAllPropertiesMethodsAndVariables:(Class) cls {
-    // 获取类的属性列表
++ (void)dumpOSObjClz:(void *)o className:(char *)className {
+    NSMutableString *log = [NSMutableString string];
+
+    Class cls = NULL;
+    const char *actualClassName = NULL;
+    BOOL isObjectInstance = NO;
+    id obj = (__bridge id)o;
+
+    if (obj) {
+        cls = object_getClass(obj);
+        actualClassName = class_getName(cls);
+        isObjectInstance = YES;
+    } else if (className) {
+        cls = objc_getClass(className);
+        actualClassName = className;
+        isObjectInstance = NO;
+    } else {
+        [log appendString:@"Both object and className are nil\n"];
+        NSLogger(@"%@", log);
+        return;
+    }
+    if (!cls) {
+        [log appendFormat:@"Class '%s' not found\n", className];
+        NSLogger(@"%@", log);
+        return;
+    }
+    
+    bool isSwift = false;
+    if ((strstr(actualClassName, ".") ||
+          strstr(actualClassName, "_TtC") ||
+          strstr(actualClassName, "$s"))) {
+        isSwift = true;
+    }
+
+    if (isObjectInstance) {
+        [log appendFormat:@"\n=== Object: %p, Class: %s, Size: %zu bytes, Lang: %s ===\n",
+                         obj, actualClassName, class_getInstanceSize(cls),
+                         isSwift ? "Swift" : "ObjC"];
+    } else {
+        [log appendFormat:@"\n=== Class: %s, Size: %zu bytes, Lang: %s ===\n",
+                         actualClassName, class_getInstanceSize(cls),
+                         isSwift ? "Swift" : "ObjC"];
+    }
+    // 属性
     unsigned int propertyCount;
     objc_property_t *properties = class_copyPropertyList(cls, &propertyCount);
-    NSLogger(@"Properties for class %@", NSStringFromClass(cls));
-    for (unsigned int i = 0; i < propertyCount; i++) {
-        objc_property_t property = properties[i];
-        const char *propertyName = property_getName(property);
-        // 获取属性的类型信息
-        const char *propertyAttributes = property_getAttributes(property);
-        NSLogger(@"- Property: %s, Attributes: %s", propertyName, propertyAttributes);
+    if (propertyCount > 0) {
+        [log appendFormat:@"Properties(%u):\n", propertyCount];
+        for (unsigned int i = 0; i < propertyCount; i++) {
+            objc_property_t property = properties[i];
+            const char *name = property_getName(property);
+            char *type = property_copyAttributeValue(property, "T");
+            [log appendFormat:@"  Prop[%d]: %s, Type: %s\n", i,
+                              name, type ? type : "unknown"];
+            if (type) free(type);
+        }
     }
-    free(properties);
-    
-    // 获取类的实例变量列表
+    if (properties) free(properties);
+
+    // ivar
     unsigned int ivarCount;
     Ivar *ivars = class_copyIvarList(cls, &ivarCount);
-    NSLogger(@"Instance Variables for class %@", NSStringFromClass(cls));
-    for (unsigned int i = 0; i < ivarCount; i++) {
-        Ivar ivar = ivars[i];
-        const char *ivarName = ivar_getName(ivar);
-        const char *ivarType = ivar_getTypeEncoding(ivar); // 获取实例变量的类型信息
-        NSLogger(@"- Instance Variable: %s, Type: %s", ivarName, ivarType);
+    if (ivarCount > 0) {
+        [log appendFormat:@"Ivars(%u):\n", ivarCount];
+        for (unsigned int i = 0; i < ivarCount; i++) {
+            Ivar ivar = ivars[i];
+            const char *name = ivar_getName(ivar);
+            const char *typeEncoding = ivar_getTypeEncoding(ivar);
+            ptrdiff_t offset = ivar_getOffset(ivar);
+
+            if (isObjectInstance && obj) {
+                void *ivarPtr = (char *)(__bridge void *)obj + offset;
+                NSMutableString *hexString = [NSMutableString string];
+
+                size_t objSize = class_getInstanceSize(cls);
+                size_t bytesToRead = MIN(16, objSize - offset);
+                if (bytesToRead > 0 && offset >= 0 && offset < objSize) {
+                    unsigned char *bytes = (unsigned char *)ivarPtr;
+                    for (size_t j = 0; j < bytesToRead; j++) {
+                        [hexString appendFormat:@"%02x ", bytes[j]];
+                    }
+                } else {
+                    [hexString appendString:@"(out of bounds)"];
+                }
+
+                [log appendFormat:@"  Ivar[%d]: %s, Type: %s, Offset: 0x%lx, Hex: %@\n",
+                                  i,
+                                  name ? name : "(unnamed)",
+                                  typeEncoding ? typeEncoding : "(null)",
+                                  offset, hexString];
+            } else {
+                [log appendFormat:@"  Ivar[%d]: %s, Type: %s, Offset: 0x%lx\n",
+                                  i,
+                                  name ? name : "(unnamed)",
+                                  typeEncoding ? typeEncoding : "(null)",
+                                  offset];
+            }
+        }
     }
-    free(ivars);
-    
-    // 获取类的实例方法列表
-    unsigned int instanceMethodCount;
-    Method *instanceMethods = class_copyMethodList(cls, &instanceMethodCount);
-    NSLogger(@"Instance Methods for class %@", NSStringFromClass(cls));
-    for (unsigned int i = 0; i < instanceMethodCount; i++) {
-        Method method = instanceMethods[i];
-        NSLogger(@"Instance Method - %@", NSStringFromSelector(method_getName(method)));
-    }
-    free(instanceMethods);
-    
-    // 获取类的方法列表
+    if (ivars) free(ivars);
+
     unsigned int methodCount;
-    Method *methods = class_copyMethodList(object_getClass(cls), &methodCount);
-    NSLogger(@"Class Methods for class %@", NSStringFromClass(cls));
-    for (unsigned int i = 0; i < methodCount; i++) {
-        Method method = methods[i];
-        NSLogger(@"Class Method + %@", NSStringFromSelector(method_getName(method)));
-    }
-    free(methods);
-}
-
-+ (void)inspectObjectWithAddress:(void *)address {
-    id object = (__bridge id)address;
-    // LicenseModel *license = (__bridge LicenseModel *)addressPtr;
+    unsigned int max_displayCount = 50;
+    Method *methods = class_copyMethodList(cls, &methodCount);
     
-    // 获取对象的十六进制地址
-    uintptr_t ptrValue = (uintptr_t)address;
-    NSLogger(@"Address: 0x%lx", ptrValue);
-    
-    // 获取对象的类名
-    NSString *className = NSStringFromClass([object class]);
-    NSLogger(@"Class: %@", className);
+    if (methodCount > 0) {
+        [log appendFormat:@"Methods(%u, showing first 5):\n", methodCount];
+        unsigned int displayCount = MIN(methodCount, max_displayCount);
+        for (unsigned int i = 0; i < displayCount; i++) {
+            Method method = methods[i];
+            SEL selector = method_getName(method);
+            const char *name = sel_getName(selector);
+            IMP implementation = method_getImplementation(method);
 
-    // %@ 格式说明符将其作为对象进行输出。在此情况下，NSLog 将会调用对象的 description 方法来获取其字符串表示形式，并将其输出到控制台。
-    NSLogger(@"className.description: %@", address);
-    NSString *objectDescription = [object description];
-    NSLogger(@"Object Description: %@", objectDescription);
-
-    // 获取对象的属性与值
-    unsigned int count;
-    objc_property_t *properties = class_copyPropertyList([object class], &count);
-
-    for (unsigned int i = 0; i < count; i++) {
-        objc_property_t property = properties[i];
-        NSString *propertyName = [NSString stringWithUTF8String:property_getName(property)];
-
-        id propertyValue = [object valueForKey:propertyName];
-        NSLogger(@"Property: %@, Value: %@", propertyName, propertyValue);
+            [log appendFormat:@"  Method[%d]: %s, IMP: %p\n", i, name, implementation];
+        }
+        if (methodCount > max_displayCount) {
+            [log appendFormat:@"  ... and %u more methods\n", methodCount - 5];
+        }
     }
+    if (methods) free(methods);
 
-    free(properties);
+    [log appendString:@"=== End dumpOSObjClz ===\n"];
+    NSLogger(@"%@", log);
 }
-
 
 + (void)exAlart:(NSString *)title message:(NSString *)message {
     
@@ -643,7 +716,10 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         result = @(value);
     } else if (ivarType[0] == '@') {
         result = object_getIvar(slf, ivar);
-    } else {
+    } else if (strcmp(ivarType, @encode(long long)) == 0) {
+        long long value = *(long long *)ivarPointer;
+        result = @(value);
+    }else {
         // swift: ivarType is empty
         NSLogger(@"[WARN] Unsupported type: %s", ivarType);
         result = object_getIvar(slf, ivar);
@@ -673,6 +749,8 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         *(double *)ivarPointer = [value doubleValue];
     } else if (ivarType[0] == '@') {
         object_setIvar(slf, ivar, value);
+    }  else if (strcmp(ivarType, @encode(long long)) == 0) {
+        *(long long *)ivarPointer = [value longLongValue];
     } else {
         // swift: ivarType is empty
         NSLogger(@"[WARN] Unsupported type: %s", ivarType);

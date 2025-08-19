@@ -9,6 +9,7 @@
 #import "CommonRetOC.h"
 #import <CloudKit/CloudKit.h>
 #import "MockCKContainer.h"
+#import "MockUbiquitousKeyValueStore.h"
 #import "URLSessionHook.h"
 #import "common_ret.h"
 #import "Logger.h"
@@ -72,9 +73,9 @@
 
 
 + (id)hook_defaultStore{
-    NSLogger(@"hook_defaultStore");
-    // return [NSUserDefaults standardUserDefaults];
-    return NULL;
+     NSLogger(@"hook_defaultStore");
+     return [MockUbiquitousKeyValueStore defaultStore];
+//    return class_createInstance([NSUbiquitousKeyValueStore class], 0);
 }
 
 
@@ -124,6 +125,29 @@
     tiny_hook(SecItemDelete, hk_SecItemDelete, (void *)&SecItemDelete_ori);
     tiny_hook(SecItemCopyMatching, hk_SecItemCopyMatching,(void *)&SecItemCopyMatching_ori);
 }
+
+- (void)hook_AllCloudKit{
+    NSLogger(@"hook_AllCloudKit");
+    [MemoryUtils hookClassMethod:
+            NSClassFromString(@"NSUbiquitousKeyValueStore")
+                originalSelector:NSSelectorFromString(@"defaultStore")
+                   swizzledClass:[self class]
+                swizzledSelector:@selector(hook_defaultStore)];
+
+    [MemoryUtils hookClassMethod:
+            NSClassFromString(@"CKContainer")
+                originalSelector:NSSelectorFromString(@"containerWithIdentifier:")
+                   swizzledClass:[self class]
+                swizzledSelector:@selector(hook_containerWithIdentifier:)];
+    [MemoryUtils hookClassMethod:
+            NSClassFromString(@"CKContainer")
+                originalSelector:NSSelectorFromString(@"defaultContainer")
+                   swizzledClass:[self class]
+                swizzledSelector:@selector(hook_defaultContainer)
+
+    ];
+}
+
 
 - (void)hook_AllSecCode:teamIdentifier{
     static dispatch_once_t onceToken;
