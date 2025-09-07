@@ -12,16 +12,21 @@
 #import <stdlib.h>
 #import <sys/types.h>
 #import <sys/sysctl.h>
+#if TARGET_OS_OSX
 #import <CoreWLAN/CoreWLAN.h>
+#endif
 #import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonCryptor.h>
 #import <CommonCrypto/CommonCrypto.h>
+#if TARGET_OS_OSX
 #import <Cocoa/Cocoa.h>
+#endif
 #import "Logger.h"
 
 
 @implementation EncryptionUtils
 
+#if TARGET_OS_OSX
 + (NSString *)runCommand:(NSString *)command trimWhitespace:(BOOL)trim {
     NSTask *task = [[NSTask alloc] init];
     [task setLaunchPath:@"/bin/bash"];
@@ -50,6 +55,14 @@
     return outputString;
 }
 
+#else
++ (NSString *)runCommand:(NSString *)command trimWhitespace:(BOOL)trim {
+    return nil;
+}
+
+#endif
+
+
 
 + (NSString *)generateTablePlusDeviceId{
 
@@ -65,6 +78,7 @@
     return [self runCommand:[NSString stringWithFormat:@"echo -n \"%@%@\" | md5", mac, Serial] trimWhitespace:YES];
 }
 
+#if TARGET_OS_OSX
 + (NSString *)generateSurgeDeviceId{
     
     NSMutableArray *rbx = [NSMutableArray array];
@@ -140,7 +154,7 @@
     // f0:18:98:1b:24:20
     
     if (!ActivationCompatibilityMode) {
-        // com.nssurge.surge-mac.nsa.wifimac: e05b9a7b7518c259c5bf6d2f5abf6bd7/f0:18:98:1b:24:20       
+        // com.nssurge.surge-mac.nsa.wifimac: e05b9a7b7518c259c5bf6d2f5abf6bd7/f0:18:98:1b:24:20
     }
     
     NSString *joinedString = [rbx componentsJoinedByString:@"/"];
@@ -152,6 +166,12 @@
     NSLogger(@"deviceIdMD5 %@", deviceIdMD5);
     return deviceIdMD5;
 };
+#else
++ (NSString *)generateSurgeDeviceId{
+    return nil;
+};
+#endif
+
 
 
 #pragma clang diagnostic push
@@ -235,7 +255,7 @@
     return [inputString substringWithRange:resultRange];
 }
 
-
+#if TARGET_OS_OSX
 + (BOOL)isCodeSignatureValid {
     
     SecCodeRef code = NULL;
@@ -301,18 +321,20 @@
     CFRelease(code);
     return YES;
 }
+#endif
 
 
-+ (pid_t)getProcessIDByName:(NSString *)name {
-    NSArray *runningApps = [[NSWorkspace sharedWorkspace] runningApplications];
-    for (NSRunningApplication *app in runningApps) {
-        if ([[app localizedName] isEqualToString:name]) {
-            pid_t pid = [app processIdentifier];
-            NSLogger(@"pid is %d",pid);
-            return pid;
-        }
-    }
-    return -1; // 进程未找到
-}
+
+//+ (pid_t)getProcessIDByName:(NSString *)name {
+//    NSArray *runningApps = [[NSWorkspace sharedWorkspace] runningApplications];
+//    for (NSRunningApplication *app in runningApps) {
+//        if ([[app localizedName] isEqualToString:name]) {
+//            pid_t pid = [app processIdentifier];
+//            NSLogger(@"pid is %d",pid);
+//            return pid;
+//        }
+//    }
+//    return -1; // 进程未找到
+//}
 
 @end

@@ -45,10 +45,26 @@ set(LINK_OPTION
         -Xlinker
         -x
 )
+# Set the target OS (mac or ios), can be overridden with -DTARGET_OS=...
+if(NOT DEFINED TARGET_OS)
+  set(TARGET_OS "mac")
+endif()
 
-# x86_64;arm64;arm64e
-set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
-set(CMAKE_OSX_DEPLOYMENT_TARGET "14.2")
+message(STATUS "🎯 Target OS: ${TARGET_OS}")
+
+if(TARGET_OS STREQUAL "mac")
+    message(STATUS "Configuring for macOS")
+    # x86_64;arm64;arm64e
+    set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "14.2")
+else()
+    message(STATUS "Configuring for iOS")
+    set(CMAKE_SYSTEM_NAME "iOS")
+    set(CMAKE_OSX_ARCHITECTURES "arm64;arm64e")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "18.5")
+    # set_target_properties(${PROJECT_NAME} PROPERTIES XCODE_ATTRIBUTE_SDKROOT "iphoneos")
+endif()
+
 
 file(GLOB Main ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/*.m)
 file(GLOB MainHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/*.h)
@@ -59,19 +75,19 @@ file(GLOB Utils
 )
 file(GLOB UtilsHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/utils/*.h)
 
-file(GLOB Apps ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/apps/*.m)
-file(GLOB AppsHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/apps/*.h)
+file(GLOB Apps ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/apps/*.m)
+file(GLOB AppsHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/apps/*.h)
 
-file(GLOB Helpers ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/helpers/*.m)
-file(GLOB HelpersHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/helpers/*.h)
+file(GLOB Helpers ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/helpers/*.m)
+file(GLOB HelpersHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/helpers/*.h)
 
-file(GLOB StaticLibs ${CMAKE_SOURCE_DIR}/libs/*.a)
+file(GLOB StaticLibs ${CMAKE_SOURCE_DIR}/libs/${TARGET_OS}/*.a)
 
 include_directories(
         ${CMAKE_SOURCE_DIR}/dylib_dobby_hook
-        ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/apps
-        ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/helpers
         ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/utils
+        ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/apps
+        ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/helpers
 )
 
 add_library(${PROJECT_NAME} SHARED
@@ -180,7 +196,11 @@ target_compile_options(${PROJECT_NAME} PRIVATE ${COMPILE_OPTION})
 target_link_options(${PROJECT_NAME} PRIVATE ${LINK_OPTION})
 
 # Xcode 在引入这些库的头文件时会自动加入编译，但是CLion不会，所以需要手动设置一下这个库。
-target_link_libraries(${PROJECT_NAME} PUBLIC
+
+
+if(TARGET_OS STREQUAL "mac")
+    # Link macOS-specific frameworks
+    target_link_libraries(${PROJECT_NAME} PUBLIC
         "-framework Foundation"
         "-framework CoreFoundation"
         "-framework AppKit"
@@ -196,7 +216,21 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         c++
         c
         ${StaticLibs}
-)
+    )
+else()
+    # Link iOS-specific frameworks
+    target_link_libraries(${PROJECT_NAME} PUBLIC
+        "-framework Foundation"
+        "-framework CoreFoundation"
+        "-framework UIKit"
+        "-framework IOKit"
+        "-framework CloudKit"
+        "-framework Security"
+        c++
+        c
+        ${StaticLibs}
+    )
+endif()
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_definitions(-DDEBUG)

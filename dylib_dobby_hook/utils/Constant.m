@@ -10,7 +10,9 @@
 #import "tinyhook.h"
 #import <mach-o/dyld.h>
 #import <objc/runtime.h>
+#if TARGET_OS_OSX
 #import <Cocoa/Cocoa.h>
+#endif
 #import "common_ret.h"
 #include <mach-o/arch.h>
 #include <sys/sysctl.h>
@@ -211,6 +213,7 @@ static BOOL _helper;
 }
 
 
+#if TARGET_OS_OSX
 BOOL canShowAlert(void) {
     NSString *path = [[[NSProcessInfo processInfo] arguments] firstObject];
     
@@ -231,6 +234,12 @@ BOOL canShowAlert(void) {
     NSLogger(@"Is current application canShowAlert: %@", isForeground ? @"YES" : @"NO");
     return isForeground;
 }
+#else
+BOOL canShowAlert(void) {
+    return NO;
+}
+#endif
+
 
 /// Initialize behavior based on environment variables.
 ///

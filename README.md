@@ -4,7 +4,7 @@
 [English](https://github.com/marlkiller/dylib_dobby_hook/blob/master/README.md) | [中文](https://github.com/marlkiller/dylib_dobby_hook/blob/master/README.zh-CN.md) |[Others..TODO]()
 
 
-This project is a macOS dylib project, aiming to enhance software through the use of the Hook framework.
+This project is a macOS/IOS dylib project, aiming to enhance software through the use of the Hook framework.
 
 Development Environment:
 
@@ -92,11 +92,30 @@ return YES;
 
 ### 0x2 Build & Inject
 
-After compilation, we will get our dylib patch.
-Then write a shell script to inject.
+#### Build
+We provide a unified build script that supports both **cmake** and **xcode** build systems, with configurable build type, Hikari support, and target OS.
 
 ```shell
+# ./build.sh -s xcode -t Debug -h OFF -o mac
+usage() {
+  echo "Usage: $0 [-s cmake|xcode] [-t Debug|Release] [-h ON|OFF] [-o mac|ios]"
+  echo "  -s  Build system: cmake (default) or xcode"
+  echo "  -t  Build type: Debug or Release (default: Release)"
+  echo "  -h  Enable Hikari: ON or OFF (default: OFF)"
+  echo "  -o  Target OS: mac (default) or ios"
+  exit 1
+}
+```
 
+After compilation, you will obtain the patched dylib output under your specified build path.
+
+
+#### Inject
+
+Injection is separated into **macOS** and **iOS**.
+
+```shell
+# macOS
 ## Static Injection
 cp -f source_bin source_bin_backup 
 "${insert_dylib}" --weak --all-yes "${YOUR_BUILD_PATH}/libdylib_dobby_hook.dylib" "source_bin_backup" "source_bin"
@@ -108,6 +127,10 @@ cp -f source_bin source_bin_backup
 ./process_inject "$pid" "${YOUR_BUILD_PATH}/libdylib_dobby_hook.dylib"
 ```
 
+```shell
+# IOS
+TODO
+```
 
 ## Powered by
 

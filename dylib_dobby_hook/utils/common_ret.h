@@ -16,23 +16,25 @@
 #import "MemoryUtils.h"
 #import <objc/runtime.h>
 #include <mach-o/dyld.h>
+#if TARGET_OS_OSX
 #include <sys/ptrace.h>
+#include <libproc.h>
+#include <mach/i386/thread_status.h>
+
+#endif
 #import <objc/message.h>
 #import "common_ret.h"
 #include <sys/xattr.h>
 #import <CommonCrypto/CommonCrypto.h>
 #import "EncryptionUtils.h"
-#import <sys/ptrace.h>
 #import <sys/sysctl.h>
 #include <dlfcn.h>
-#include <libproc.h>
 #import <Foundation/Foundation.h>
 #import <sys/sysctl.h>
 #include <sys/ioctl.h>
 #include <mach/mach.h>
 #include <mach/thread_act.h>
 #include <mach/mach_types.h>
-#include <mach/i386/thread_status.h>
 
 #if !defined(_DYLD_INTERPOSING_H_)
 #define _DYLD_INTERPOSING_H_
@@ -64,16 +66,16 @@ int ret2 (void);
 int ret1 (void);
 int ret0 (void);
 void ret(void);
-
-/**
- * Hook function and backup original.
- */
-int tiny_hook_ex(void* func, void* dest, void** orig);
-
-/**
- * Removes hook from a function, restoring original code.
- */
-int tiny_unhook_ex(void* func);
+//
+///**
+// * Hook function and backup original.
+// */
+//int tiny_hook_ex(void* func, void* dest, void** orig);
+//
+///**
+// * Removes hook from a function, restoring original code.
+// */
+//int tiny_unhook_ex(void* func);
 
 void unload_self(void);
 
@@ -137,8 +139,7 @@ kern_return_t my_task_swap_exception_ports
  );
 extern TaskSwapExceptionPortsFuncPtr orig_task_swap_exception_ports;
 
-
-
+#if TARGET_OS_OSX
 /// Apple Sec..
 typedef OSStatus (*SecCodeCheckValidityFuncPtr)(SecCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement);
 OSStatus hk_SecCodeCheckValidity(SecCodeRef staticCode, SecCSFlags flags, SecRequirementRef requirement);
@@ -164,6 +165,7 @@ OSStatus hk_SecCodeCopySigningInformation(SecCodeRef codeRef, SecCSFlags flags, 
 extern SecCodeCopySigningInformationFuncPtr SecCodeCopySigningInformation_ori;
 
 
+
 /// KeyChain
 /**
  * Fallbacks for SecItem APIs using SecKeychain due to code signature issues.
@@ -184,6 +186,10 @@ OSStatus hk_SecItemDelete(CFDictionaryRef query);
 typedef OSStatus (*SecItemCopyMatchingFuncPtr)(CFDictionaryRef query, CFTypeRef *result);
 extern SecItemCopyMatchingFuncPtr SecItemCopyMatching_ori;
 OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result);
+#endif
+
+
+
 
 NSString *love69(NSString *input);
 

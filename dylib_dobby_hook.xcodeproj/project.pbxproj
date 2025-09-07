@@ -3,19 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		08869D0F2E1AF15900B079A0 /* NotchNook.m in Sources */ = {isa = PBXBuildFile; fileRef = 08869D0E2E1AF15900B079A0 /* NotchNook.m */; };
-		08869D112E1AF16B00B079A0 /* ProgressiveDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 08869D102E1AF16B00B079A0 /* ProgressiveDownloader.m */; };
-		08869D152E1D125100B079A0 /* Bartender.m in Sources */ = {isa = PBXBuildFile; fileRef = 08869D142E1D125100B079A0 /* Bartender.m */; };
 		2847DC932E0E792000D72519 /* DeskWidgetHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2847DC922E0E791A00D72519 /* DeskWidgetHack.m */; };
 		2853DED92E17A39E0045A97A /* LiveWallpaperHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2853DED82E17A39E0045A97A /* LiveWallpaperHack.m */; };
 		2853DEDB2E17A41F0045A97A /* SenPlayerHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2853DEDA2E17A41A0045A97A /* SenPlayerHack.m */; };
 		3816BBB72B54FED80051CF39 /* MemoryUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 3816BBB62B54FED80051CF39 /* MemoryUtils.h */; };
 		3816BBB92B54FF090051CF39 /* MemoryUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3816BBB82B54FF090051CF39 /* MemoryUtils.m */; };
-		381F420A2BFC9F8E00E357AE /* libtinyhook.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 381F42092BFC9F8E00E357AE /* libtinyhook.a */; };
 		381F420E2BFC9FBF00E357AE /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 381F420D2BFC9FB900E357AE /* libc++.tbd */; };
 		382A25862B6918DF0083F28C /* PasteHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 382A25842B6918DF0083F28C /* PasteHack.m */; };
 		38350BF62B53F73A00DD52B3 /* dylib_dobby_hook.h in Headers */ = {isa = PBXBuildFile; fileRef = 38350BF52B53F73A00DD52B3 /* dylib_dobby_hook.h */; };
@@ -31,6 +28,41 @@
 		9CE4C5D12CCA7C3600593C78 /* JSONUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE4C5D02CCA7C3600593C78 /* JSONUtils.m */; };
 		9CE4C5D22CCA7C3600593C78 /* JSONUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CE4C5CF2CCA7C3600593C78 /* JSONUtils.h */; };
 		B50E935E2BBD024F0073FEAA /* PaddleBaseHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */; };
+		B5105EF32E6B1D7400333727 /* MockUbiquitousKeyValueStore.h in Headers */ = {isa = PBXBuildFile; fileRef = B59D6A292E503ED90004D71D /* MockUbiquitousKeyValueStore.h */; };
+		B5105EF42E6B1D7400333727 /* URLSessionHook.h in Headers */ = {isa = PBXBuildFile; fileRef = B5EAA9DF2C8C3FAF008C4089 /* URLSessionHook.h */; };
+		B5105EF52E6B1D7400333727 /* LocalizationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B513ADD62CB95D0B00F5DC97 /* LocalizationManager.h */; };
+		B5105EF62E6B1D7400333727 /* common_ret.h in Headers */ = {isa = PBXBuildFile; fileRef = B5FECEAB2BC4FC29008916D6 /* common_ret.h */; };
+		B5105EF72E6B1D7400333727 /* EncryptionUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = B58160162BE88569001DDB9B /* EncryptionUtils.h */; };
+		B5105EF92E6B1D7400333727 /* MockCKContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = B5B89BCA2C5DD49B00F61EB0 /* MockCKContainer.h */; };
+		B5105EFA2E6B1D7400333727 /* dylib_dobby_hook.h in Headers */ = {isa = PBXBuildFile; fileRef = 38350BF52B53F73A00DD52B3 /* dylib_dobby_hook.h */; };
+		B5105EFB2E6B1D7400333727 /* MockKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = B57584382E0D698A001F7C9E /* MockKeychain.h */; };
+		B5105EFC2E6B1D7400333727 /* MemoryUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 3816BBB62B54FED80051CF39 /* MemoryUtils.h */; };
+		B5105EFE2E6B1D7400333727 /* Logger.h in Headers */ = {isa = PBXBuildFile; fileRef = B5822CA82CBFFC020062383F /* Logger.h */; };
+		B5105EFF2E6B1D7400333727 /* tinyhook.h in Headers */ = {isa = PBXBuildFile; fileRef = 38350C012B53F78900DD52B3 /* tinyhook.h */; };
+		B5105F002E6B1D7400333727 /* CommonRetOC.h in Headers */ = {isa = PBXBuildFile; fileRef = B552CA352C54AC200095C9B9 /* CommonRetOC.h */; };
+		B5105F012E6B1D7400333727 /* JSONUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CE4C5CF2CCA7C3600593C78 /* JSONUtils.h */; };
+		B5105F022E6B1D7400333727 /* Constant.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC272B54C9C100E6CB9E /* Constant.h */; };
+		B5105F042E6B1D7400333727 /* MockCKDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = B57F200D2C5DD6D700C87201 /* MockCKDatabase.h */; };
+		B5105F062E6B1D7400333727 /* MockCKDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = B57F200F2C5DD70700C87201 /* MockCKDatabase.m */; };
+		B5105F0A2E6B1D7400333727 /* MockCKContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B89BCC2C5DD4AB00F61EB0 /* MockCKContainer.m */; };
+		B5105F0F2E6B1D7400333727 /* EncryptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = B58160112BE88569001DDB9B /* EncryptionUtils.m */; };
+		B5105F132E6B1D7400333727 /* dylib_dobby_hook.m in Sources */ = {isa = PBXBuildFile; fileRef = 38350BF72B53F73A00DD52B3 /* dylib_dobby_hook.m */; };
+		B5105F202E6B1D7400333727 /* URLSessionHook.m in Sources */ = {isa = PBXBuildFile; fileRef = B5EAA9E12C8C3FC3008C4089 /* URLSessionHook.m */; };
+		B5105F242E6B1D7400333727 /* LocalizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B513ADD82CB95D4100F5DC97 /* LocalizationManager.m */; };
+		B5105F2A2E6B1D7400333727 /* MemoryUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3816BBB82B54FF090051CF39 /* MemoryUtils.m */; };
+		B5105F302E6B1D7400333727 /* MockUbiquitousKeyValueStore.m in Sources */ = {isa = PBXBuildFile; fileRef = B59D6A2B2E503F010004D71D /* MockUbiquitousKeyValueStore.m */; };
+		B5105F332E6B1D7400333727 /* JSONUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE4C5D02CCA7C3600593C78 /* JSONUtils.m */; };
+		B5105F362E6B1D7400333727 /* CommonRetOC.m in Sources */ = {isa = PBXBuildFile; fileRef = B552CA372C54AC450095C9B9 /* CommonRetOC.m */; };
+		B5105F372E6B1D7400333727 /* common_ret.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FECEAC2BC4FC29008916D6 /* common_ret.m */; };
+		B5105F382E6B1D7400333727 /* Constant.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC292B54CA4D00E6CB9E /* Constant.m */; };
+		B5105F3E2E6B1D7400333727 /* MockKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = B575843A2E0D69AA001F7C9E /* MockKeychain.m */; };
+		B5105F402E6B1D7400333727 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 381F420D2BFC9FB900E357AE /* libc++.tbd */; };
+		B5105F592E6B28E000333727 /* HackHelperProtocolDefault.m in Sources */ = {isa = PBXBuildFile; fileRef = B5105F562E6B27FA00333727 /* HackHelperProtocolDefault.m */; };
+		B5105F5A2E6B28E000333727 /* HackProtocolDefault.m in Sources */ = {isa = PBXBuildFile; fileRef = B5105F502E6B27A300333727 /* HackProtocolDefault.m */; };
+		B5105F5B2E6B28F900333727 /* HackHelperProtocolDefault.h in Headers */ = {isa = PBXBuildFile; fileRef = B5105F552E6B27FA00333727 /* HackHelperProtocolDefault.h */; };
+		B5105F5C2E6B28F900333727 /* HackProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = B5105F532E6B27E600333727 /* HackProtocol.h */; };
+		B5105F5D2E6B28F900333727 /* HackProtocolDefault.h in Headers */ = {isa = PBXBuildFile; fileRef = B5105F4F2E6B27A300333727 /* HackProtocolDefault.h */; };
+		B5105F5F2E6B298500333727 /* DevHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5105F5E2E6B298500333727 /* DevHack.m */; };
 		B513ADD72CB95D0B00F5DC97 /* LocalizationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B513ADD62CB95D0B00F5DC97 /* LocalizationManager.h */; };
 		B513ADD92CB95D4100F5DC97 /* LocalizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B513ADD82CB95D4100F5DC97 /* LocalizationManager.m */; };
 		B52BBA842CBFE1CE00F098A9 /* AirBuddyHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B52BBA832CBFE1CE00F098A9 /* AirBuddyHack.m */; };
@@ -84,18 +116,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B5105F412E6B1D7400333727 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		08869D0E2E1AF15900B079A0 /* NotchNook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotchNook.m; sourceTree = "<group>"; };
-		08869D102E1AF16B00B079A0 /* ProgressiveDownloader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProgressiveDownloader.m; sourceTree = "<group>"; };
-		08869D142E1D125100B079A0 /* Bartender.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Bartender.m; sourceTree = "<group>"; };
 		2847DC922E0E791A00D72519 /* DeskWidgetHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeskWidgetHack.m; sourceTree = "<group>"; };
 		2853DED82E17A39E0045A97A /* LiveWallpaperHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveWallpaperHack.m; sourceTree = "<group>"; };
 		2853DEDA2E17A41A0045A97A /* SenPlayerHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SenPlayerHack.m; sourceTree = "<group>"; };
 		3816BBB62B54FED80051CF39 /* MemoryUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryUtils.h; sourceTree = "<group>"; };
 		3816BBB82B54FF090051CF39 /* MemoryUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MemoryUtils.m; sourceTree = "<group>"; };
-		381F42092BFC9F8E00E357AE /* libtinyhook.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libtinyhook.a; sourceTree = "<group>"; };
 		381F420D2BFC9FB900E357AE /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		382A25842B6918DF0083F28C /* PasteHack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasteHack.m; sourceTree = "<group>"; };
 		38350BF22B53F73A00DD52B3 /* libdylib_dobby_hook.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libdylib_dobby_hook.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -114,6 +152,13 @@
 		9CE4C5CF2CCA7C3600593C78 /* JSONUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSONUtils.h; sourceTree = "<group>"; };
 		9CE4C5D02CCA7C3600593C78 /* JSONUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSONUtils.m; sourceTree = "<group>"; };
 		B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaddleBaseHack.m; sourceTree = "<group>"; };
+		B5105F462E6B1D7400333727 /* libdylib_dobby_hook.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libdylib_dobby_hook.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5105F4F2E6B27A300333727 /* HackProtocolDefault.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackProtocolDefault.h; sourceTree = "<group>"; };
+		B5105F502E6B27A300333727 /* HackProtocolDefault.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HackProtocolDefault.m; sourceTree = "<group>"; };
+		B5105F532E6B27E600333727 /* HackProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackProtocol.h; sourceTree = "<group>"; };
+		B5105F552E6B27FA00333727 /* HackHelperProtocolDefault.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackHelperProtocolDefault.h; sourceTree = "<group>"; };
+		B5105F562E6B27FA00333727 /* HackHelperProtocolDefault.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HackHelperProtocolDefault.m; sourceTree = "<group>"; };
+		B5105F5E2E6B298500333727 /* DevHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevHack.m; sourceTree = "<group>"; };
 		B513ADD62CB95D0B00F5DC97 /* LocalizationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalizationManager.h; sourceTree = "<group>"; };
 		B513ADD82CB95D4100F5DC97 /* LocalizationManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalizationManager.m; sourceTree = "<group>"; };
 		B52BBA832CBFE1CE00F098A9 /* AirBuddyHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AirBuddyHack.m; sourceTree = "<group>"; };
@@ -132,7 +177,6 @@
 		B57AEDBB2C5009F200B9C5FB /* dtrace_kill.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = dtrace_kill.d; sourceTree = "<group>"; };
 		B57AEDBC2C5009F200B9C5FB /* SMJobBlessUtil-python3.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "SMJobBlessUtil-python3.py"; sourceTree = "<group>"; };
 		B57AEDBD2C5009F200B9C5FB /* mac_patch_helper */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = mac_patch_helper; sourceTree = "<group>"; };
-		B57AEDBE2C5009F200B9C5FB /* patch.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = patch.json; sourceTree = "<group>"; };
 		B57F200D2C5DD6D700C87201 /* MockCKDatabase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockCKDatabase.h; sourceTree = "<group>"; };
 		B57F200F2C5DD70700C87201 /* MockCKDatabase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockCKDatabase.m; sourceTree = "<group>"; };
 		B58160112BE88569001DDB9B /* EncryptionUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncryptionUtils.m; sourceTree = "<group>"; };
@@ -166,13 +210,42 @@
 		B5FECEAC2BC4FC29008916D6 /* common_ret.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = common_ret.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B5105F472E6B1D7400333727 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				libtinyhook.a,
+			);
+			target = B5105EF12E6B1D7400333727 /* dylib_dobby_hook_ios */;
+		};
+		B5105F4B2E6B1FDA00333727 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				libtinyhook.a,
+			);
+			target = B5105EF12E6B1D7400333727 /* dylib_dobby_hook_ios */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		B5105EE62E6B12D400333727 /* mac */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (B5105F472E6B1D7400333727 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = mac; sourceTree = "<group>"; };
+		B5105EE92E6B12E000333727 /* ios */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (B5105F4B2E6B1FDA00333727 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ios; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		38350BF02B53F73A00DD52B3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				381F420E2BFC9FBF00E357AE /* libc++.tbd in Frameworks */,
-				381F420A2BFC9F8E00E357AE /* libtinyhook.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5105F3F2E6B1D7400333727 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5105F402E6B1D7400333727 /* libc++.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				38350BF22B53F73A00DD52B3 /* libdylib_dobby_hook.dylib */,
+				B5105F462E6B1D7400333727 /* libdylib_dobby_hook.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -216,8 +290,8 @@
 			isa = PBXGroup;
 			children = (
 				B581601D2BE894A2001DDB9B /* utils */,
-				B5A7D3122C54911C003D4C7F /* helpers */,
-				B581601C2BE8949B001DDB9B /* apps */,
+				B5105F4C2E6B277500333727 /* ios */,
+				B5105EE42E6B122700333727 /* mac */,
 				38350BF52B53F73A00DD52B3 /* dylib_dobby_hook.h */,
 				38350BF72B53F73A00DD52B3 /* dylib_dobby_hook.m */,
 				38350C012B53F78900DD52B3 /* tinyhook.h */,
@@ -228,7 +302,8 @@
 		38350BFE2B53F76800DD52B3 /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				381F42092BFC9F8E00E357AE /* libtinyhook.a */,
+				B5105EE92E6B12E000333727 /* ios */,
+				B5105EE62E6B12D400333727 /* mac */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -261,6 +336,44 @@
 			path = release;
 			sourceTree = "<group>";
 		};
+		B5105EE42E6B122700333727 /* mac */ = {
+			isa = PBXGroup;
+			children = (
+				B5A7D3122C54911C003D4C7F /* helpers */,
+				B581601C2BE8949B001DDB9B /* apps */,
+			);
+			path = mac;
+			sourceTree = "<group>";
+		};
+		B5105F4C2E6B277500333727 /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				B5105F4E2E6B278A00333727 /* helpers */,
+				B5105F4D2E6B278600333727 /* apps */,
+			);
+			path = ios;
+			sourceTree = "<group>";
+		};
+		B5105F4D2E6B278600333727 /* apps */ = {
+			isa = PBXGroup;
+			children = (
+				B5105F532E6B27E600333727 /* HackProtocol.h */,
+				B5105F4F2E6B27A300333727 /* HackProtocolDefault.h */,
+				B5105F502E6B27A300333727 /* HackProtocolDefault.m */,
+				B5105F5E2E6B298500333727 /* DevHack.m */,
+			);
+			path = apps;
+			sourceTree = "<group>";
+		};
+		B5105F4E2E6B278A00333727 /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B5105F552E6B27FA00333727 /* HackHelperProtocolDefault.h */,
+				B5105F562E6B27FA00333727 /* HackHelperProtocolDefault.m */,
+			);
+			path = helpers;
+			sourceTree = "<group>";
+		};
 		B581601C2BE8949B001DDB9B /* apps */ = {
 			isa = PBXGroup;
 			children = (
@@ -269,7 +382,6 @@
 				B5369DCD2CC4C1D200A81211 /* irvueHack.m */,
 				B52BBA832CBFE1CE00F098A9 /* AirBuddyHack.m */,
 				B5EC63D72CBD39C700D92EEC /* AlfredHack.m */,
-				08869D142E1D125100B079A0 /* Bartender.m */,
 				B5732BF02C82CD5900EC9E11 /* IDAHack.m */,
 				9C99D64A2CB6CEF100B8A6D7 /* iStat7Hack.m */,
 				B5D0C0BA2C4B553500881398 /* ForkLiftHack.m */,
@@ -279,7 +391,6 @@
 				382A25842B6918DF0083F28C /* PasteHack.m */,
 				38B83E302B5505B300919735 /* TablePlusHack.m */,
 				08869D0E2E1AF15900B079A0 /* NotchNook.m */,
-				08869D102E1AF16B00B079A0 /* ProgressiveDownloader.m */,
 				B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */,
 				B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */,
 				B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */,
@@ -377,12 +488,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B5105EF22E6B1D7400333727 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5105F5B2E6B28F900333727 /* HackHelperProtocolDefault.h in Headers */,
+				B5105F5C2E6B28F900333727 /* HackProtocol.h in Headers */,
+				B5105F5D2E6B28F900333727 /* HackProtocolDefault.h in Headers */,
+				B5105EF32E6B1D7400333727 /* MockUbiquitousKeyValueStore.h in Headers */,
+				B5105EF42E6B1D7400333727 /* URLSessionHook.h in Headers */,
+				B5105EF52E6B1D7400333727 /* LocalizationManager.h in Headers */,
+				B5105EF62E6B1D7400333727 /* common_ret.h in Headers */,
+				B5105EF72E6B1D7400333727 /* EncryptionUtils.h in Headers */,
+				B5105EF92E6B1D7400333727 /* MockCKContainer.h in Headers */,
+				B5105EFA2E6B1D7400333727 /* dylib_dobby_hook.h in Headers */,
+				B5105EFB2E6B1D7400333727 /* MockKeychain.h in Headers */,
+				B5105EFC2E6B1D7400333727 /* MemoryUtils.h in Headers */,
+				B5105EFE2E6B1D7400333727 /* Logger.h in Headers */,
+				B5105EFF2E6B1D7400333727 /* tinyhook.h in Headers */,
+				B5105F002E6B1D7400333727 /* CommonRetOC.h in Headers */,
+				B5105F012E6B1D7400333727 /* JSONUtils.h in Headers */,
+				B5105F022E6B1D7400333727 /* Constant.h in Headers */,
+				B5105F042E6B1D7400333727 /* MockCKDatabase.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		38350BF12B53F73A00DD52B3 /* dylib_dobby_hook */ = {
+		38350BF12B53F73A00DD52B3 /* dylib_dobby_hook_mac */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 38350BFB2B53F73A00DD52B3 /* Build configuration list for PBXNativeTarget "dylib_dobby_hook" */;
+			buildConfigurationList = 38350BFB2B53F73A00DD52B3 /* Build configuration list for PBXNativeTarget "dylib_dobby_hook_mac" */;
 			buildPhases = (
 				38350BEE2B53F73A00DD52B3 /* Headers */,
 				38350BEF2B53F73A00DD52B3 /* Sources */,
@@ -394,9 +530,34 @@
 			);
 			dependencies = (
 			);
-			name = dylib_dobby_hook;
+			fileSystemSynchronizedGroups = (
+				B5105EE62E6B12D400333727 /* mac */,
+			);
+			name = dylib_dobby_hook_mac;
 			productName = dylib_dobby_hook;
 			productReference = 38350BF22B53F73A00DD52B3 /* libdylib_dobby_hook.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+		B5105EF12E6B1D7400333727 /* dylib_dobby_hook_ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B5105F432E6B1D7400333727 /* Build configuration list for PBXNativeTarget "dylib_dobby_hook_ios" */;
+			buildPhases = (
+				B5105EF22E6B1D7400333727 /* Headers */,
+				B5105F052E6B1D7400333727 /* Sources */,
+				B5105F3F2E6B1D7400333727 /* Frameworks */,
+				B5105F412E6B1D7400333727 /* CopyFiles */,
+				B5105F422E6B1D7400333727 /* Run Script */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B5105EE62E6B12D400333727 /* mac */,
+			);
+			name = dylib_dobby_hook_ios;
+			productName = dylib_dobby_hook;
+			productReference = B5105F462E6B1D7400333727 /* libdylib_dobby_hook.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -426,13 +587,33 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				38350BF12B53F73A00DD52B3 /* dylib_dobby_hook */,
+				38350BF12B53F73A00DD52B3 /* dylib_dobby_hook_mac */,
+				B5105EF12E6B1D7400333727 /* dylib_dobby_hook_ios */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
 		38350C052B53F90300DD52B3 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "RELEASE_DIR=\"${PROJECT_DIR}/release\"\ncp -f \"${BUILT_PRODUCTS_DIR}/libdylib_dobby_hook.dylib\" \"$RELEASE_DIR/\"\necho \"✅ Copied ${BUILT_PRODUCTS_DIR}/libdylib_dobby_hook.dylib to $RELEASE_DIR/\"\n";
+		};
+		B5105F422E6B1D7400333727 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -469,7 +650,6 @@
 				2853DEDB2E17A41F0045A97A /* SenPlayerHack.m in Sources */,
 				B58160172BE88569001DDB9B /* EncryptionUtils.m in Sources */,
 				B5A7D3142C549130003D4C7F /* ForkLiftHelperHack.m in Sources */,
-				08869D152E1D125100B079A0 /* Bartender.m in Sources */,
 				38350BF82B53F73A00DD52B3 /* dylib_dobby_hook.m in Sources */,
 				B5A7D3172C5491A0003D4C7F /* HackHelperProtocolDefault.m in Sources */,
 				B53F9DED2C4AA4EC00A6B32D /* CleanShotXHack.m in Sources */,
@@ -481,7 +661,6 @@
 				B5D0C0BB2C4B553500881398 /* ForkLiftHack.m in Sources */,
 				B5F06B1D2BEF591E0079E68D /* InfuseHack.m in Sources */,
 				B5EAA9E22C8C3FC3008C4089 /* URLSessionHook.m in Sources */,
-				08869D112E1AF16B00B079A0 /* ProgressiveDownloader.m in Sources */,
 				B513ADD92CB95D4100F5DC97 /* LocalizationManager.m in Sources */,
 				B52BBA842CBFE1CE00F098A9 /* AirBuddyHack.m in Sources */,
 				08869D0F2E1AF15900B079A0 /* NotchNook.m in Sources */,
@@ -503,6 +682,29 @@
 				B5FE3B862BA2A571001AE437 /* TransmitHack.m in Sources */,
 				B5732BF12C82CD5900EC9E11 /* IDAHack.m in Sources */,
 				B575843B2E0D69AA001F7C9E /* MockKeychain.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5105F052E6B1D7400333727 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5105F592E6B28E000333727 /* HackHelperProtocolDefault.m in Sources */,
+				B5105F5A2E6B28E000333727 /* HackProtocolDefault.m in Sources */,
+				B5105F062E6B1D7400333727 /* MockCKDatabase.m in Sources */,
+				B5105F0A2E6B1D7400333727 /* MockCKContainer.m in Sources */,
+				B5105F0F2E6B1D7400333727 /* EncryptionUtils.m in Sources */,
+				B5105F132E6B1D7400333727 /* dylib_dobby_hook.m in Sources */,
+				B5105F202E6B1D7400333727 /* URLSessionHook.m in Sources */,
+				B5105F242E6B1D7400333727 /* LocalizationManager.m in Sources */,
+				B5105F2A2E6B1D7400333727 /* MemoryUtils.m in Sources */,
+				B5105F302E6B1D7400333727 /* MockUbiquitousKeyValueStore.m in Sources */,
+				B5105F5F2E6B298500333727 /* DevHack.m in Sources */,
+				B5105F332E6B1D7400333727 /* JSONUtils.m in Sources */,
+				B5105F362E6B1D7400333727 /* CommonRetOC.m in Sources */,
+				B5105F372E6B1D7400333727 /* common_ret.m in Sources */,
+				B5105F382E6B1D7400333727 /* Constant.m in Sources */,
+				B5105F3E2E6B1D7400333727 /* MockKeychain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,10 +843,11 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
+					"$(PROJECT_DIR)/libs/mac",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -662,11 +865,68 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs",
+					"$(PROJECT_DIR)/libs/mac",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		B5105F442E6B1D7400333727 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = PF34J7Z7XR;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXECUTABLE_PREFIX = lib;
+				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = "@executable_path/";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libs",
+					"$(PROJECT_DIR)/libs/ios",
+					"$(PROJECT_DIR)/libs/mac",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		B5105F452E6B1D7400333727 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = PF34J7Z7XR;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXECUTABLE_PREFIX = lib;
+				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = "@executable_path/";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libs",
+					"$(PROJECT_DIR)/libs/ios",
+					"$(PROJECT_DIR)/libs/mac",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -682,11 +942,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		38350BFB2B53F73A00DD52B3 /* Build configuration list for PBXNativeTarget "dylib_dobby_hook" */ = {
+		38350BFB2B53F73A00DD52B3 /* Build configuration list for PBXNativeTarget "dylib_dobby_hook_mac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				38350BFC2B53F73A00DD52B3 /* Debug */,
 				38350BFD2B53F73A00DD52B3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B5105F432E6B1D7400333727 /* Build configuration list for PBXNativeTarget "dylib_dobby_hook_ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B5105F442E6B1D7400333727 /* Debug */,
+				B5105F452E6B1D7400333727 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

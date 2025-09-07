@@ -10,7 +10,9 @@
 #import <CloudKit/CloudKit.h>
 #import "MockCKDatabase.h"
 #import <objc/runtime.h>
+#if TARGET_OS_OSX
 #import <AppKit/AppKit.h>
+#endif
 #import "Logger.h"
 //
 //@interface MockCKDeviceContext : NSObject

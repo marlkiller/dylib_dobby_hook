@@ -11,6 +11,7 @@
 
 @interface MockKeychain : NSObject
 
+#if TARGET_OS_OSX
 @property (nonatomic, strong) NSMutableArray<NSMutableDictionary *> *items;
 + (instancetype)sharedStore;
 //@property (nonatomic, strong) NSMutableDictionary<NSData *, NSMutableDictionary *> *persistentRefMap;
@@ -18,7 +19,8 @@
 - (NSArray<NSDictionary *> *)itemsMatching:(NSDictionary *)query;
 - (OSStatus)updateItems:(NSDictionary *)query withAttributes:(NSDictionary *)attributes;
 - (OSStatus)deleteItems:(NSDictionary *)query;
-
+#else
+#endif
 
 @end
 

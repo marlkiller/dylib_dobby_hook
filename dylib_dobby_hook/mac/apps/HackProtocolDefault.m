@@ -7,7 +7,10 @@
 
 #import <Foundation/Foundation.h>
 #import "HackProtocolDefault.h"
+#if TARGET_OS_OSX
 #import <Cocoa/Cocoa.h>
+#endif
+
 #import <LocalizationManager.h>
 @implementation HackProtocolDefault
 

@@ -21,9 +21,12 @@
 
 + (NSString *)getTextBetween:(NSString *)startText and:(NSString *)endText inString:(NSString *)inputString;
 
+#if TARGET_OS_OSX
 + (BOOL)isCodeSignatureValid;
+#endif
 
-+ (pid_t)getProcessIDByName:(NSString *)name;
+
+//+ (pid_t)getProcessIDByName:(NSString *)name;
 
 @end
 #endif /* encryp_utils_h */

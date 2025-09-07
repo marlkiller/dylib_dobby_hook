@@ -4,7 +4,7 @@
 [English](https://github.com/marlkiller/dylib_dobby_hook/blob/master/README.md) | [中文](https://github.com/marlkiller/dylib_dobby_hook/blob/master/README.zh-CN.md) |[Others..TODO]()
 
 
-该项目是一个 macOS dylib 项目，旨在通过 Hook 对软件进行辅助增强。
+该项目是一个 macOS/IOS dylib 项目，旨在通过 Hook 对软件进行辅助增强。
 
 开发环境:
 
@@ -93,11 +93,29 @@ return YES;
 
 ### 0x2 Build & 注入
 
-编译后, 会得到一个我们的 dylib 补丁  
-然后编写 shell 脚本,来注入
+#### Build
+我们提供了一个统一的构建脚本，支持 cmake 和 xcode 两种构建系统，并可灵活配置构建类型、是否启用 Hikari 混淆，以及目标操作系统。
 
 ```shell
+# ./build.sh -s xcode -t Debug -h OFF -o mac
+usage() {
+  echo "Usage: $0 [-s cmake|xcode] [-t Debug|Release] [-h ON|OFF] [-o mac|ios]"
+  echo "  -s  Build system: cmake (default) or xcode"
+  echo "  -t  Build type: Debug or Release (default: Release)"
+  echo "  -h  Enable Hikari: ON or OFF (default: OFF)"
+  echo "  -o  Target OS: mac (default) or ios"
+  exit 1
+}
+```
 
+完成编译后，你将在指定的构建路径下获得生成的补丁 dylib。
+
+#### Inject
+
+注入分别支持 **macOS** 与 **iOS**.
+
+```shell
+# macOS
 ## 静态注入
 cp -f source_bin source_bin_backup 
 "${insert_dylib}" --weak --all-yes "${YOUR_BUILD_PATH}/libdylib_dobby_hook.dylib" "source_bin_backup" "source_bin"
@@ -109,10 +127,14 @@ cp -f source_bin source_bin_backup
 ./process_inject "$pid" "${YOUR_BUILD_PATH}/libdylib_dobby_hook.dylib"
 ```
 
+```shell
+# IOS
+TODO
+```
 
-## Sponsor
+## Powered by
 
-[![JetBrains](jetbrains.svg)](https://www.jetbrains.com/?from=dylib_dobby_hook "JetBrains")
+[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSource)
 
 ## WARN
 

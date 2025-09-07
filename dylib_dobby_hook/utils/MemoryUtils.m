@@ -12,8 +12,11 @@
 #import "mach-o/getsect.h"
 #import <mach-o/dyld.h>
 #import <objc/runtime.h>
+#if TARGET_OS_OSX
 #import <AppKit/AppKit.h>
 #include <mach/mach_vm.h>
+#endif
+
 #import "Logger.h"
 #import "tinyhook.h"
 
@@ -70,6 +73,7 @@ static NSMutableDictionary<NSString *, NSNumber *> *fileOffsetCache = NULL;
     return [codeString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
+#if TARGET_OS_OSX
 + (void)writeMachineCodeString:(NSString *)codeString toAddress:(uintptr_t)address {
     NSString *trimmedCodeString = [codeString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         NSArray<NSString *> *byteStrings = [trimmedCodeString componentsSeparatedByString:@" "];
@@ -104,6 +108,12 @@ static NSMutableDictionary<NSString *, NSNumber *> *fileOffsetCache = NULL;
         }
         
 }
+#else
++ (void)writeMachineCodeString:(NSString *)codeString toAddress:(uintptr_t)address {
+    
+}
+#endif
+
 
 
 NSData *machineCode2Bytes(NSString *hexString) {
@@ -428,6 +438,25 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
 }
 
 
+
+BOOL isSwiftClassName(const char *name) {
+    if (!name) return NO;
+    // Swift 5+ 的 mangling 规则
+    // 新版本: $s, $S 开头
+    // 旧版本: _T, _Tt 开头
+    if (strncmp(name, "$s", 2) == 0 ||
+           strncmp(name, "$S", 2) == 0 ||
+           strncmp(name, "_T", 2) == 0 ||
+           strncmp(name, "_Tt", 3) == 0 ||
+           strchr(name, '.') != NULL ||
+           strstr(name, "SwiftObject") != NULL ||
+           strstr(name, "_TtCs") != NULL) {
+           return YES;
+       }
+    return NO;
+}
+
+
 + (void)dumpOSObjClz:(void *)o className:(char *)className {
     NSMutableString *log = [NSMutableString string];
 
@@ -455,21 +484,15 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         return;
     }
     
-    bool isSwift = false;
-    if ((strstr(actualClassName, ".") ||
-          strstr(actualClassName, "_TtC") ||
-          strstr(actualClassName, "$s"))) {
-        isSwift = true;
-    }
-
+    bool isSwift = isSwiftClassName(actualClassName);
+   
     if (isObjectInstance) {
         [log appendFormat:@"\n=== Object: %p, Class: %s, Size: %zu bytes, Lang: %s ===\n",
                          obj, actualClassName, class_getInstanceSize(cls),
-                         isSwift ? "Swift" : "ObjC"];
+                  isSwift?"Swift":"Objective-C"];
     } else {
-        [log appendFormat:@"\n=== Class: %s, Size: %zu bytes, Lang: %s ===\n",
-                         actualClassName, class_getInstanceSize(cls),
-                         isSwift ? "Swift" : "ObjC"];
+        [log appendFormat:@"\n=== Class: %s, Size: %zu bytes ===\n",
+                         actualClassName, class_getInstanceSize(cls)];
     }
     // 属性
     unsigned int propertyCount;
@@ -489,6 +512,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
 
     // ivar
     unsigned int ivarCount;
+    unsigned int hexMaxLen = 8;
     Ivar *ivars = class_copyIvarList(cls, &ivarCount);
     if (ivarCount > 0) {
         [log appendFormat:@"Ivars(%u):\n", ivarCount];
@@ -501,9 +525,10 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
             if (isObjectInstance && obj) {
                 void *ivarPtr = (char *)(__bridge void *)obj + offset;
                 NSMutableString *hexString = [NSMutableString string];
-
+                NSString *objDesc = nil;
+                
                 size_t objSize = class_getInstanceSize(cls);
-                size_t bytesToRead = MIN(16, objSize - offset);
+                size_t bytesToRead = MIN(hexMaxLen, objSize - offset);
                 if (bytesToRead > 0 && offset >= 0 && offset < objSize) {
                     unsigned char *bytes = (unsigned char *)ivarPtr;
                     for (size_t j = 0; j < bytesToRead; j++) {
@@ -512,18 +537,56 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
                 } else {
                     [hexString appendString:@"(out of bounds)"];
                 }
+                
+                if (!typeEncoding || typeEncoding[0] == '\0') {
+                    // swift 获取不到 ivar 类型, 尝试输出 ASCII
+                    size_t maxLen = 32;
+                    size_t objSize = class_getInstanceSize(cls);
+                    size_t bytesToRead = MIN(maxLen, objSize - offset);
 
-                [log appendFormat:@"  Ivar[%d]: %s, Type: %s, Offset: 0x%lx, Hex: %@\n",
-                                  i,
-                                  name ? name : "(unnamed)",
-                                  typeEncoding ? typeEncoding : "(null)",
-                                  offset, hexString];
+                    if (bytesToRead > 0 && offset >= 0 && offset < objSize) {
+                        unsigned char *bytes = (unsigned char *)ivarPtr;
+                        // 第一个字节可见 ASCII
+                        if (bytes[0] >= 0x20 && bytes[0] <= 0x7E) {
+                            NSMutableString *str = [NSMutableString string];
+                            for (size_t j = 0; j < bytesToRead; j++) {
+                                if (bytes[j] == 0) break; // 遇到 0 停止
+                                unichar c = bytes[j];
+                                if (c >= 0x20 && c <= 0x7E) {
+                                    [str appendFormat:@"%c", c];
+                                } else {
+                                    [str appendString:@"."];
+                                }
+                            }
+                            objDesc = [NSString stringWithFormat:@"\"%@\"", str];
+                        } else {
+                            objDesc = nil; // 或者直接不显示
+                        }
+                    }
+                }else if(typeEncoding[0] == '@'){
+                    id ivarObj = object_getIvar(obj, ivar);
+                    if (ivarObj) {
+                        objDesc = [NSString stringWithFormat:@"<%@: %p : %@>",
+                                   NSStringFromClass(object_getClass(ivarObj)),
+                                   ivarObj,
+                                   [ivarObj description]];
+                    } else {
+                        objDesc = @"nil";
+                    }
+                }
+                [log appendFormat:@"  Ivar[%d]: %s, Type: %s, Offset: 0x%lx, Hex: %@%@\n",
+                                 i,
+                                 name ? name : "(unnamed)",
+                                 typeEncoding ? typeEncoding : "(null)",
+                                 offset,
+                                 hexString,
+                                 objDesc ? [NSString stringWithFormat:@", Value: %@", objDesc] : @""];
             } else {
                 [log appendFormat:@"  Ivar[%d]: %s, Type: %s, Offset: 0x%lx\n",
-                                  i,
-                                  name ? name : "(unnamed)",
-                                  typeEncoding ? typeEncoding : "(null)",
-                                  offset];
+                                 i,
+                                 name ? name : "(unnamed)",
+                                 typeEncoding ? typeEncoding : "(null)",
+                                 offset];
             }
         }
     }
@@ -534,8 +597,8 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     Method *methods = class_copyMethodList(cls, &methodCount);
     
     if (methodCount > 0) {
-        [log appendFormat:@"Methods(%u, showing first 5):\n", methodCount];
         unsigned int displayCount = MIN(methodCount, max_displayCount);
+        [log appendFormat:@"Methods(%u, showing first %u):\n", methodCount,displayCount];
         for (unsigned int i = 0; i < displayCount; i++) {
             Method method = methods[i];
             SEL selector = method_getName(method);
@@ -554,6 +617,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     NSLogger(@"%@", log);
 }
 
+#if TARGET_OS_OSX
 + (void)exAlart:(NSString *)title message:(NSString *)message {
     
     
@@ -567,7 +631,7 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     NSAlert *alert = [[NSAlert alloc] init];
     [alert setInformativeText:message];
     [alert setMessageText:title];
-    [alert addButtonWithTitle:@"OK"];    
+    [alert addButtonWithTitle:@"OK"];
     [alert addButtonWithTitle:@"Commit Issue"];
     [alert addButtonWithTitle:@"Exit!!"];
     NSDictionary *attributes = @{
@@ -593,6 +657,12 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
         exit(0);
     }
 }
+#else
++ (void)exAlart:(NSString *)title message:(NSString *)message {
+    
+}
+#endif
+
 
 + (IMP)hookInstanceMethod:(Class)originalClass originalSelector:(SEL)originalSelector swizzledClass:(Class)swizzledClass swizzledSelector:(SEL)swizzledSelector {
     Method originalMethod = class_getInstanceMethod(originalClass, originalSelector);
@@ -719,10 +789,11 @@ NSArray<NSDictionary *> *getArchitecturesInfoForFile(NSString *filePath) {
     } else if (strcmp(ivarType, @encode(long long)) == 0) {
         long long value = *(long long *)ivarPointer;
         result = @(value);
-    }else {
+    } else {
         // swift: ivarType is empty
-        NSLogger(@"[WARN] Unsupported type: %s", ivarType);
+        NSLogger(@"[WARN] Unsupported type: %s :[%s] = %@",  ivarName,ivarType ,result);
         result = object_getIvar(slf, ivar);
+        return result;
     }
     NSLogger(@"%@.%s :[%s] = %@", slf, ivarName,ivarType ,result);
     return result;

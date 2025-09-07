@@ -11,7 +11,9 @@
 #import "MemoryUtils.h"
 #import "MockKeychain.h"
 #include <mach-o/dyld.h>
+#if TARGET_OS_OSX
 #include <sys/ptrace.h>
+#endif
 #import <sys/sysctl.h>
 #include <mach/mach_types.h>
 #import <pthread.h>
@@ -22,19 +24,19 @@
 #define MAX_PATCH_SIZE 14
 #define MAX_BACKUP_SIZE 128
 
-typedef struct {
-    void* func;
-    size_t size;
-    uint8_t* backup;
-} HookBackup;
-
-typedef struct {
-    void* func;
-    HookBackup* backup;
-} HookEntry;
-
-static HookEntry hook_entries[MAX_BACKUP_SIZE];
-static int hook_count = 0;
+//typedef struct {
+//    void* func;
+//    size_t size;
+//    uint8_t* backup;
+//} HookBackup;
+//
+//typedef struct {
+//    void* func;
+//    HookBackup* backup;
+//} HookEntry;
+//
+//static HookEntry hook_entries[MAX_BACKUP_SIZE];
+//static int hook_count = 0;
 
 int ret2 (void){
     NSLogger("ret2");
@@ -64,71 +66,71 @@ void ret(void){
 //     uint8_t nopHexARM[4] = {0x1f,0x20,0x03,0xd5}; // nop
 // }
 
-#define MB (1ll << 20)
-#define GB (1ll << 30)
-int get_jump_size(void* address, void* destination)
-{
-    long long distance = destination > address ? destination - address : address - destination;
-#ifdef __aarch64__
-    return distance < 128 * MB ? 4 : 12;
-#elif __x86_64__
-    return distance < 2 * GB ? 5 : 14;
-#endif
-}
-
-int tiny_hook_ex(void* func, void* dest, void** orig)
-{
-    NSLogger(@"called with func: %p, dest: %p, orig: %p", func, dest, orig);
-
-    for (int i = 0; i < hook_count; i++)
-        if (hook_entries[i].func == func) {
-            NSLogger(@"Function already hooked: %p", func);
-            return -1;
-        }
-    if (hook_count >= MAX_BACKUP_SIZE) {
-        NSLogger(@"Hook backup size exceeded: %d", MAX_BACKUP_SIZE);
-        return -1;
-    }
-    size_t size = get_jump_size(func, dest);
-    if (size == 0 || size > MAX_PATCH_SIZE) {
-        NSLogger(@"Invalid jmp size: %zu", size);
-        return -1;
-    }
-    HookBackup* backup = malloc(sizeof(HookBackup));
-    backup->backup = malloc(size);
-    read_mem(backup->backup, func, size);
-    backup->func = func;
-    backup->size = size;
-    if (tiny_hook(func, dest, orig) != 0) {
-        NSLogger(@"Failed to hook function: %p", func);
-        free(backup->backup);
-        free(backup);
-        return -1;
-    }
-    hook_entries[hook_count++] = (HookEntry) { func, backup };
-    return 0;
-}
-
-int tiny_unhook_ex(void* func)
-{
-    NSLogger(@"called with func: %p", func);
-    for (int i = 0; i < hook_count; i++) {
-        if (hook_entries[i].func == func) {
-            HookBackup* backup = hook_entries[i].backup;
-            int ret = write_mem(func, backup->backup, backup->size);
-            free(backup->backup);
-            free(backup);
-            --hook_count;
-            if (i != hook_count) {
-                hook_entries[i] = hook_entries[hook_count];
-            }
-            memset(&hook_entries[hook_count], 0, sizeof(HookEntry));
-            return ret;
-        }
-    }
-    NSLogger("Function not found: %p", func);
-    return -1;
-}
+//#define MB (1ll << 20)
+//#define GB (1ll << 30)
+//int get_jump_size(void* address, void* destination)
+//{
+//    long long distance = destination > address ? destination - address : address - destination;
+//#ifdef __aarch64__
+//    return distance < 128 * MB ? 4 : 12;
+//#elif __x86_64__
+//    return distance < 2 * GB ? 5 : 14;
+//#endif
+//}
+//
+//int tiny_hook_ex(void* func, void* dest, void** orig)
+//{
+//    NSLogger(@"called with func: %p, dest: %p, orig: %p", func, dest, orig);
+//
+//    for (int i = 0; i < hook_count; i++)
+//        if (hook_entries[i].func == func) {
+//            NSLogger(@"Function already hooked: %p", func);
+//            return -1;
+//        }
+//    if (hook_count >= MAX_BACKUP_SIZE) {
+//        NSLogger(@"Hook backup size exceeded: %d", MAX_BACKUP_SIZE);
+//        return -1;
+//    }
+//    size_t size = get_jump_size(func, dest);
+//    if (size == 0 || size > MAX_PATCH_SIZE) {
+//        NSLogger(@"Invalid jmp size: %zu", size);
+//        return -1;
+//    }
+//    HookBackup* backup = malloc(sizeof(HookBackup));
+//    backup->backup = malloc(size);
+//    read_mem(backup->backup, func, size);
+//    backup->func = func;
+//    backup->size = size;
+//    if (tiny_hook(func, dest, orig) != 0) {
+//        NSLogger(@"Failed to hook function: %p", func);
+//        free(backup->backup);
+//        free(backup);
+//        return -1;
+//    }
+//    hook_entries[hook_count++] = (HookEntry) { func, backup };
+//    return 0;
+//}
+//
+//int tiny_unhook_ex(void* func)
+//{
+//    NSLogger(@"called with func: %p", func);
+//    for (int i = 0; i < hook_count; i++) {
+//        if (hook_entries[i].func == func) {
+//            HookBackup* backup = hook_entries[i].backup;
+//            int ret = write_mem(func, backup->backup, backup->size);
+//            free(backup->backup);
+//            free(backup);
+//            --hook_count;
+//            if (i != hook_count) {
+//                hook_entries[i] = hook_entries[hook_count];
+//            }
+//            memset(&hook_entries[hook_count], 0, sizeof(HookEntry));
+//            return ret;
+//        }
+//    }
+//    NSLogger("Function not found: %p", func);
+//    return -1;
+//}
 
 
 void unload_self(void)
@@ -253,8 +255,7 @@ kern_return_t my_task_swap_exception_ports(
    return orig_task_swap_exception_ports(task, exception_mask, new_port, new_behavior, new_flavor, old_masks, old_masks_count, old_ports, old_behaviors, old_flavors);
 }
 
-
-
+#if TARGET_OS_OSX
 void logSecRequirement(SecRequirementRef requirement, SecCSFlags flags) {
     CFStringRef requirementString = NULL;
     if (requirement != NULL) {
@@ -367,7 +368,6 @@ OSStatus hk_SecCodeCopySigningInformation(SecCodeRef codeRef, SecCSFlags flags, 
     NSLogger(@"kSecCodeInfoTeamIdentifier = %@", (CFDictionaryRef)CFDictionaryGetValue(*signingInfo, kSecCodeInfoTeamIdentifier));
     return errSecSuccess;
 }
-
 
 
 #pragma clang diagnostic push
@@ -546,6 +546,10 @@ OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
 
 
 #pragma clang diagnostic pop
+#endif
+
+
+
 
 // Why do you want to see here ???
 NSString *love69(NSString *input) {

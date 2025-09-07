@@ -16,6 +16,7 @@
 @property (atomic, assign) BOOL _isFinished;
 @property (nonatomic, strong) NSLock *lock;
 
+NSMutableString* logHandlerAddress(id completionHandler);
 
 struct BlockLayout {
     void *isa;

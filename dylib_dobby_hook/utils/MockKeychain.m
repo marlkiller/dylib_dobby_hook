@@ -9,6 +9,7 @@
 
 @implementation MockKeychain
 
+#if TARGET_OS_OSX
 + (instancetype)sharedStore {
     static MockKeychain *store;
     static dispatch_once_t onceToken;
@@ -159,4 +160,7 @@
     [self saveToDisk];
     return errSecSuccess;
 }
+#else
+#endif
+
 @end

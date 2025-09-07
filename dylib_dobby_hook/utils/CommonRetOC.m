@@ -117,7 +117,7 @@
 
 }
 
-
+#if TARGET_OS_OSX
 - (void)hook_AllSecItem{
     NSLogger(@"hook_AllSecItem");
     tiny_hook(SecItemAdd, hk_SecItemAdd,  (void *)&SecItemAdd_ori);
@@ -125,6 +125,12 @@
     tiny_hook(SecItemDelete, hk_SecItemDelete, (void *)&SecItemDelete_ori);
     tiny_hook(SecItemCopyMatching, hk_SecItemCopyMatching,(void *)&SecItemCopyMatching_ori);
 }
+
+#else
+- (void)hook_AllSecItem{
+    NSLogger(@"hook_AllSecItem");
+}
+#endif
 
 - (void)hook_AllCloudKit{
     NSLogger(@"hook_AllCloudKit");
@@ -148,7 +154,7 @@
     ];
 }
 
-
+#if TARGET_OS_OSX
 - (void)hook_AllSecCode:teamIdentifier{
     static dispatch_once_t onceToken;
     static BOOL hasHooked = NO;
@@ -157,7 +163,7 @@
         return;
     }
     dispatch_once(&onceToken, ^{
-        hasHooked = YES;        
+        hasHooked = YES;
         NSLogger(@"[Hook] hook_AllSecCode first time. teamIdentifier = %@", teamIdentifier);
         G_TEAM_IDENTITY_ORI = [teamIdentifier UTF8String];
     //    Security`SecStaticCodeCheckValidity:
@@ -177,6 +183,12 @@
 //    SecTaskValidateForRequirement
 //    SecRequirementEvaluate
 }
+#else
+- (void)hook_AllSecCode:teamIdentifier{
+    
+}
+#endif
+
 
 - (void)record_NSURL:filter{
     [URLSessionHook record_NSURL:filter];

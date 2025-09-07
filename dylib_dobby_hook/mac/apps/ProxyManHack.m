@@ -50,22 +50,6 @@ intptr_t getProxyManAppStruct(void) {
 
 
 
-
-/**
- *  通杀掉ProxyMan 的 Helper Check函数
- */
-intptr_t handleHelper(intptr_t a1, intptr_t a2, intptr_t a3) {
-    intptr_t *v7 = (void *) a1 + 40;
-    intptr_t *v6 = (void *) a1 + 32;
-    intptr_t v6_1 = *v6; //版本号
-    intptr_t v7_1 = *v7;
-    intptr_t *v8 = (void *) v7_1 + 16;
-    intptr_t v8_1 = *v8;
-    void (*v8Call)(intptr_t, int, intptr_t) = (void *) v8_1;// 让Helper版本识别正确
-    v8Call(v7_1, 1, v6_1);
-    return v6_1;
-}
-
 - (void) hook_viewDidLoad{
     ((void*(*)(id, SEL))viewDidLoadIMP)(self, _cmd);
     // objc_ivar_offset__TtC8Proxyman25PremiumPlanViewController_registerAtLbl:
@@ -103,18 +87,18 @@ intptr_t handleHelper(intptr_t a1, intptr_t a2, intptr_t a3) {
 
     
     
-    // 计算时间差
-    NSDate *startTime = [NSDate date];
-   // 直接 hook 导入表函数,似乎更优雅
-    void* isHideExpireLicenseBadge = symexp_solve(
-                                     [MemoryUtils indexForImageWithName:@"ProxymanCore"], "_$s12ProxymanCore16AppConfigurationC24isHideExpireLicenseBadgeSbvg"
-                                     );
-    // 记录结束时间
-    NSDate *endTime = [NSDate date];
-    // 计算时间差
-    NSTimeInterval executionTime2 = [endTime timeIntervalSinceDate:startTime];
-    NSLogger(@"sym_solve Execution Time: %f seconds", executionTime2);
-    tiny_hook(isHideExpireLicenseBadge, ret1, nil);
+//    // 计算时间差
+//    NSDate *startTime = [NSDate date];
+//   // 直接 hook 导入表函数,似乎更优雅
+//    void* isHideExpireLicenseBadge = symexp_solve(
+//                                     [MemoryUtils indexForImageWithName:@"ProxymanCore"], "_$s12ProxymanCore16AppConfigurationC24isHideExpireLicenseBadgeSbvg"
+//                                     );
+//    // 记录结束时间
+//    NSDate *endTime = [NSDate date];
+//    // 计算时间差
+//    NSTimeInterval executionTime2 = [endTime timeIntervalSinceDate:startTime];
+//    NSLogger(@"sym_solve Execution Time: %f seconds", executionTime2);
+//    tiny_hook(isHideExpireLicenseBadge, ret1, nil);
     return YES;
 }
 

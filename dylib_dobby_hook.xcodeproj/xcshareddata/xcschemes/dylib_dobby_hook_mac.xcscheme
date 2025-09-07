@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1620"
+   LastUpgradeVersion = "1640"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
-      buildImplicitDependencies = "YES">
+      buildImplicitDependencies = "YES"
+      buildArchitectures = "Automatic">
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -16,7 +17,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "38350BF12B53F73A00DD52B3"
                BuildableName = "libdylib_dobby_hook.dylib"
-               BlueprintName = "dylib_dobby_hook"
+               BlueprintName = "dylib_dobby_hook_mac"
                ReferencedContainer = "container:dylib_dobby_hook.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -30,7 +31,7 @@
       shouldAutocreateTestPlan = "YES">
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -63,7 +64,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "38350BF12B53F73A00DD52B3"
             BuildableName = "libdylib_dobby_hook.dylib"
-            BlueprintName = "dylib_dobby_hook"
+            BlueprintName = "dylib_dobby_hook_mac"
             ReferencedContainer = "container:dylib_dobby_hook.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
