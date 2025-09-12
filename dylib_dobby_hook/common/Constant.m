@@ -240,12 +240,11 @@ BOOL canShowAlert(void) {
 }
 #endif
 
-
 /// Initialize behavior based on environment variables.
 ///
 /// This function checks for specific environment variables to enable
 /// optional runtime features and pass configuration values to components
-/// such as URLSessionHook.
+/// such as URLSessionHook or AppInspector.
 ///
 /// Supported environment variables:
 ///
@@ -259,8 +258,14 @@ BOOL canShowAlert(void) {
 /// - NSURLSESSION_FILTER:
 ///     Optional. A string passed to +[URLSessionHook record_NSURL:] for filtering logic.
 ///
+/// - APPINSPECTOR_ENABLE:
+///     If set to "1", invokes +[AppInspector showInspector] at startup
+///     to display the inspector window.
+///
 void initEnv(void){
     NSDictionary *env = [[NSProcessInfo processInfo] environment];
+
+    // URLSessionHook
     NSString *enableHook = env[@"URLSESSION_HOOK_ENABLE"];
     if ([enableHook isEqualToString:@"1"]) {
         Class cls = NSClassFromString(@"URLSessionHook");
@@ -268,16 +273,30 @@ void initEnv(void){
         NSString *maxBodyLenStr = env[@"NSURLSESSION_MAX_BODY_LEN"];
         if (maxBodyLenStr) {
             SEL sel = NSSelectorFromString(@"setMaxBodyLength:");
-            if (cls && [cls respondsToSelector:sel])
+            if (cls && [cls respondsToSelector:sel]) {
                 ((void (*)(id, SEL, NSUInteger))objc_msgSend)(cls, sel, maxBodyLenStr.integerValue);
+            }
         }
+
         NSString *filterStr = env[@"NSURLSESSION_FILTER"];
-        if (filterStr && [[filterStr stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet] length] == 0) {
+        if (filterStr &&
+            [[filterStr stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet] length] == 0) {
             filterStr = nil;
         }
         SEL sel = NSSelectorFromString(@"record_NSURL:");
-        if (cls && [cls respondsToSelector:sel])
+        if (cls && [cls respondsToSelector:sel]) {
             ((void (*)(id, SEL, id))objc_msgSend)(cls, sel, filterStr);
+        }
+    }
+
+    // AppInspector
+    NSString *enableInspector = env[@"APPINSPECTOR_ENABLE"];
+    if ([enableInspector isEqualToString:@"1"]) {
+        Class inspectorCls = NSClassFromString(@"AppInspector");
+        SEL showSel = NSSelectorFromString(@"showInspector");
+        if (inspectorCls && [inspectorCls respondsToSelector:showSel]) {
+            ((void (*)(id, SEL))objc_msgSend)(inspectorCls, showSel);
+        }
     }
 }
 + (void)doHack {

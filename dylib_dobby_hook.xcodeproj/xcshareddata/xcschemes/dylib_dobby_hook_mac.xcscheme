@@ -51,6 +51,16 @@
             value = "${BUILT_PRODUCTS_DIR}/libdylib_dobby_hook.dylib"
             isEnabled = "YES">
          </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "URLSESSION_HOOK_ENABLE"
+            value = "0"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "APPINSPECTOR_ENABLE"
+            value = "0"
+            isEnabled = "YES">
+         </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction

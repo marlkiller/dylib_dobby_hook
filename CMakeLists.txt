@@ -69,11 +69,15 @@ endif()
 file(GLOB Main ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/*.m)
 file(GLOB MainHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/*.h)
 
-file(GLOB Utils
-        ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/utils/*.m
-        ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/utils/*.c
+file(GLOB Common
+        ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/common/*.m
+        ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/common/*.c
 )
-file(GLOB UtilsHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/utils/*.h)
+file(GLOB CommonHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/common/*.h)
+
+file(GLOB Utils ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/utils/*.m)
+file(GLOB UtilsHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/utils/*.h)
+
 
 file(GLOB Apps ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/apps/*.m)
 file(GLOB AppsHeader ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/apps/*.h)
@@ -85,13 +89,15 @@ file(GLOB StaticLibs ${CMAKE_SOURCE_DIR}/libs/${TARGET_OS}/*.a)
 
 include_directories(
         ${CMAKE_SOURCE_DIR}/dylib_dobby_hook
-        ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/utils
+        ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/Common
+        ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/utils
         ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/apps
         ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/helpers
 )
 
 add_library(${PROJECT_NAME} SHARED
     ${Main}
+    ${Common}
     ${Utils}
     ${Apps}
     ${Helpers}
@@ -241,6 +247,7 @@ endif ()
 # Explicitly declare header dependencies (for IDE and rebuild tracking)
 target_sources(${PROJECT_NAME} PRIVATE
     ${MainHeader}
+    ${CommonHeader}
     ${UtilsHeader}
     ${AppsHeader}
     ${HelpersHeader}
@@ -250,6 +257,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 # install(
 #     FILES
 #         ${MainHeader}
+#         ${CommonHeader}
 #         ${UtilsHeader}
 #         ${AppsHeader}
 #         ${HelpersHeader}

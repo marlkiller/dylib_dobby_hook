@@ -65,6 +65,7 @@
 		B5105F5F2E6B298500333727 /* DevHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5105F5E2E6B298500333727 /* DevHack.m */; };
 		B513ADD72CB95D0B00F5DC97 /* LocalizationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B513ADD62CB95D0B00F5DC97 /* LocalizationManager.h */; };
 		B513ADD92CB95D4100F5DC97 /* LocalizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B513ADD82CB95D4100F5DC97 /* LocalizationManager.m */; };
+		B518593F2E6EF716004240CD /* AppInspector.m in Sources */ = {isa = PBXBuildFile; fileRef = B518593E2E6EF716004240CD /* AppInspector.m */; };
 		B52BBA842CBFE1CE00F098A9 /* AirBuddyHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B52BBA832CBFE1CE00F098A9 /* AirBuddyHack.m */; };
 		B5369DCE2CC4C1D200A81211 /* irvueHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5369DCD2CC4C1D200A81211 /* irvueHack.m */; };
 		B5369DD02CC4C1DF00A81211 /* VidhubHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5369DCF2CC4C1DF00A81211 /* VidhubHack.m */; };
@@ -161,6 +162,7 @@
 		B5105F5E2E6B298500333727 /* DevHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevHack.m; sourceTree = "<group>"; };
 		B513ADD62CB95D0B00F5DC97 /* LocalizationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalizationManager.h; sourceTree = "<group>"; };
 		B513ADD82CB95D4100F5DC97 /* LocalizationManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalizationManager.m; sourceTree = "<group>"; };
+		B518593E2E6EF716004240CD /* AppInspector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppInspector.m; sourceTree = "<group>"; };
 		B52BBA832CBFE1CE00F098A9 /* AirBuddyHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AirBuddyHack.m; sourceTree = "<group>"; };
 		B5369DCD2CC4C1D200A81211 /* irvueHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = irvueHack.m; sourceTree = "<group>"; };
 		B5369DCF2CC4C1DF00A81211 /* VidhubHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VidhubHack.m; sourceTree = "<group>"; };
@@ -289,7 +291,7 @@
 		38350BF42B53F73A00DD52B3 /* dylib_dobby_hook */ = {
 			isa = PBXGroup;
 			children = (
-				B581601D2BE894A2001DDB9B /* utils */,
+				B581601D2BE894A2001DDB9B /* common */,
 				B5105F4C2E6B277500333727 /* ios */,
 				B5105EE42E6B122700333727 /* mac */,
 				38350BF52B53F73A00DD52B3 /* dylib_dobby_hook.h */,
@@ -339,6 +341,7 @@
 		B5105EE42E6B122700333727 /* mac */ = {
 			isa = PBXGroup;
 			children = (
+				B518593C2E6EF5D4004240CD /* utils */,
 				B5A7D3122C54911C003D4C7F /* helpers */,
 				B581601C2BE8949B001DDB9B /* apps */,
 			);
@@ -348,6 +351,7 @@
 		B5105F4C2E6B277500333727 /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				B518593D2E6EF5DD004240CD /* utils */,
 				B5105F4E2E6B278A00333727 /* helpers */,
 				B5105F4D2E6B278600333727 /* apps */,
 			);
@@ -372,6 +376,21 @@
 				B5105F562E6B27FA00333727 /* HackHelperProtocolDefault.m */,
 			);
 			path = helpers;
+			sourceTree = "<group>";
+		};
+		B518593C2E6EF5D4004240CD /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				B518593E2E6EF716004240CD /* AppInspector.m */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		B518593D2E6EF5DD004240CD /* utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = utils;
 			sourceTree = "<group>";
 		};
 		B581601C2BE8949B001DDB9B /* apps */ = {
@@ -409,7 +428,7 @@
 			path = apps;
 			sourceTree = "<group>";
 		};
-		B581601D2BE894A2001DDB9B /* utils */ = {
+		B581601D2BE894A2001DDB9B /* common */ = {
 			isa = PBXGroup;
 			children = (
 				B59D6A2B2E503F010004D71D /* MockUbiquitousKeyValueStore.m */,
@@ -438,7 +457,7 @@
 				B57584382E0D698A001F7C9E /* MockKeychain.h */,
 				B575843A2E0D69AA001F7C9E /* MockKeychain.m */,
 			);
-			path = utils;
+			path = common;
 			sourceTree = "<group>";
 		};
 		B5A7D3122C54911C003D4C7F /* helpers */ = {
@@ -661,6 +680,7 @@
 				B5D0C0BB2C4B553500881398 /* ForkLiftHack.m in Sources */,
 				B5F06B1D2BEF591E0079E68D /* InfuseHack.m in Sources */,
 				B5EAA9E22C8C3FC3008C4089 /* URLSessionHook.m in Sources */,
+				B518593F2E6EF716004240CD /* AppInspector.m in Sources */,
 				B513ADD92CB95D4100F5DC97 /* LocalizationManager.m in Sources */,
 				B52BBA842CBFE1CE00F098A9 /* AirBuddyHack.m in Sources */,
 				08869D0F2E1AF15900B079A0 /* NotchNook.m in Sources */,
