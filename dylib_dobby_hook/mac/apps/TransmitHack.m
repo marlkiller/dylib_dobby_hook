@@ -78,19 +78,11 @@ int hook_TRTrialStatus(void){
                 swizzledSelector:NSSelectorFromString(@"hk_terminateExpiredTrialTimerDidFire:")
 
     ];
-    
-#if defined(__arm64__) || defined(__aarch64__)
-    NSString *searchMachineCode = @"F6 57 BD A9 F4 4F 01 A9 FD 7B 02 A9 FD 83 00 91 15 0C ?? ?? B5 72 ?? ?? A0 02 40 F9";
-#elif defined(__x86_64__)
-    NSString *searchMachineCode = @"55 48 89 E5 41 57 41 56 41 55 41 54 53 50 4C 8B ?? ?? ?? ?? ?? 49 8B 3E";
-#endif
-        
-    [MemoryUtils hookWithMachineCode:@"/Contents/MacOS/Transmit"
-                             machineCode:searchMachineCode
-                               fake_func:(void *)hook_TRTrialStatus
-                                   count:1
-                            out_orig:(void *)&hook_TRTrialStatus_ori
-    ];
+
+
+    void* _TRTrialStatus = symtbl_solve([MemoryUtils indexForImageWithName:@"Transmit"], "_TRTrialStatus");
+    NSLogger(@"_TRTrialStatus = %p", _TRTrialStatus);
+    tiny_hook(_TRTrialStatus, hook_TRTrialStatus, &hook_TRTrialStatus_ori);
     
     // license info
 //    __text:000000010002FAFB ; void __cdecl -[TransmitDelegate showLicense:](TransmitDelegate *self, SEL, id)
