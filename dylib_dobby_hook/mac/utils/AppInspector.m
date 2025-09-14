@@ -93,7 +93,6 @@
     self.window.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces;
 }
 
-
 - (void)formatSwiftClassName:(id)sender
 {
     NSTableView* activeTableView = [self getActiveTableView];
@@ -104,19 +103,20 @@
 
     NSInteger selectedRow = activeTableView.selectedRow;
     NSString* className = nil;
-    
+
     if (activeTableView == self.windowTableView) {
         if (selectedRow < self.filteredWindowData.count) {
             WindowInfo* info = self.filteredWindowData[selectedRow];
             className = info.windowClass;
         }
-    } else {
+    }
+    if (activeTableView == self.classTableView) {
         if (selectedRow < self.filteredClassData.count) {
             ClassInfo* info = self.filteredClassData[selectedRow];
             className = info.className;
         }
     }
-    
+
     if (!className) {
         [self showAlert:@"错误" message:@"无法获取类名"];
         return;
