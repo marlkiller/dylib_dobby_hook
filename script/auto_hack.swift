@@ -29,7 +29,7 @@ let currentDir = FileManager.default.currentDirectoryPath
 let appsSchemaPath = "\(currentDir)/apps.schema.json"
 let insertDylib = "\(currentDir)/../tools/insert_dylib"
 let macPatchHelper = "\(currentDir)/../tools/mac_patch_helper"
-let releaseDylib = "\(currentDir)/../release/libdylib_dobby_hook.dylib"
+let releaseDylib = "\(currentDir)/../release/mac/libdylib_dobby_hook.dylib"
 
 // MARK: - Logging
 func timestamp() -> String {

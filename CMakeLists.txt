@@ -266,6 +266,6 @@ target_sources(${PROJECT_NAME} PRIVATE
 
 # Install the built library (optional)
 install(TARGETS ${PROJECT_NAME} 
-    DESTINATION ${CMAKE_SOURCE_DIR}/release  # Library output path
+    DESTINATION ${CMAKE_SOURCE_DIR}/release/${TARGET_OS}  # Library output path
     # PUBLIC_HEADER DESTINATION include/${PROJECT_NAME}  # headers
 )

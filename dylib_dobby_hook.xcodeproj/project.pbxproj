@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		08869D0F2E1AF15900B079A0 /* NotchNook.m in Sources */ = {isa = PBXBuildFile; fileRef = 08869D0E2E1AF15900B079A0 /* NotchNook.m */; };
+		08869D112E1AF16B00B079A0 /* ProgressiveDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 08869D102E1AF16B00B079A0 /* ProgressiveDownloader.m */; };
+		08869D152E1D125100B079A0 /* Bartender.m in Sources */ = {isa = PBXBuildFile; fileRef = 08869D142E1D125100B079A0 /* Bartender.m */; };
 		2847DC932E0E792000D72519 /* DeskWidgetHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2847DC922E0E791A00D72519 /* DeskWidgetHack.m */; };
 		2853DED92E17A39E0045A97A /* LiveWallpaperHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2853DED82E17A39E0045A97A /* LiveWallpaperHack.m */; };
 		2853DEDB2E17A41F0045A97A /* SenPlayerHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2853DEDA2E17A41A0045A97A /* SenPlayerHack.m */; };
@@ -67,6 +69,12 @@
 		B513ADD92CB95D4100F5DC97 /* LocalizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B513ADD82CB95D4100F5DC97 /* LocalizationManager.m */; };
 		B518593F2E6EF716004240CD /* AppInspector.m in Sources */ = {isa = PBXBuildFile; fileRef = B518593E2E6EF716004240CD /* AppInspector.m */; };
 		B52BBA842CBFE1CE00F098A9 /* AirBuddyHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B52BBA832CBFE1CE00F098A9 /* AirBuddyHack.m */; };
+		B52FDA772E7E971B006A6E9D /* InstructionDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = B52FDA762E7E971B006A6E9D /* InstructionDecoder.m */; };
+		B52FDA782E7E971B006A6E9D /* InstructionDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = B52FDA752E7E971B006A6E9D /* InstructionDecoder.h */; };
+		B52FDA792E7E971B006A6E9D /* InstructionDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = B52FDA762E7E971B006A6E9D /* InstructionDecoder.m */; };
+		B52FDA7A2E7E971B006A6E9D /* InstructionDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = B52FDA752E7E971B006A6E9D /* InstructionDecoder.h */; };
+		B52FDA7D2E7E978D006A6E9D /* FolderPreviewPro.m in Sources */ = {isa = PBXBuildFile; fileRef = B52FDA7C2E7E978D006A6E9D /* FolderPreviewPro.m */; };
+		B52FDA7E2E7E978D006A6E9D /* Clop.m in Sources */ = {isa = PBXBuildFile; fileRef = B52FDA7B2E7E978D006A6E9D /* Clop.m */; };
 		B5369DCE2CC4C1D200A81211 /* irvueHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5369DCD2CC4C1D200A81211 /* irvueHack.m */; };
 		B5369DD02CC4C1DF00A81211 /* VidhubHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5369DCF2CC4C1DF00A81211 /* VidhubHack.m */; };
 		B53F9DED2C4AA4EC00A6B32D /* CleanShotXHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B53F9DEC2C4AA4EC00A6B32D /* CleanShotXHack.m */; };
@@ -130,6 +138,8 @@
 
 /* Begin PBXFileReference section */
 		08869D0E2E1AF15900B079A0 /* NotchNook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotchNook.m; sourceTree = "<group>"; };
+		08869D102E1AF16B00B079A0 /* ProgressiveDownloader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProgressiveDownloader.m; sourceTree = "<group>"; };
+		08869D142E1D125100B079A0 /* Bartender.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Bartender.m; sourceTree = "<group>"; };
 		2847DC922E0E791A00D72519 /* DeskWidgetHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeskWidgetHack.m; sourceTree = "<group>"; };
 		2853DED82E17A39E0045A97A /* LiveWallpaperHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveWallpaperHack.m; sourceTree = "<group>"; };
 		2853DEDA2E17A41A0045A97A /* SenPlayerHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SenPlayerHack.m; sourceTree = "<group>"; };
@@ -164,6 +174,10 @@
 		B513ADD82CB95D4100F5DC97 /* LocalizationManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalizationManager.m; sourceTree = "<group>"; };
 		B518593E2E6EF716004240CD /* AppInspector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppInspector.m; sourceTree = "<group>"; };
 		B52BBA832CBFE1CE00F098A9 /* AirBuddyHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AirBuddyHack.m; sourceTree = "<group>"; };
+		B52FDA752E7E971B006A6E9D /* InstructionDecoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstructionDecoder.h; sourceTree = "<group>"; };
+		B52FDA762E7E971B006A6E9D /* InstructionDecoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstructionDecoder.m; sourceTree = "<group>"; };
+		B52FDA7B2E7E978D006A6E9D /* Clop.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Clop.m; sourceTree = "<group>"; };
+		B52FDA7C2E7E978D006A6E9D /* FolderPreviewPro.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FolderPreviewPro.m; sourceTree = "<group>"; };
 		B5369DCD2CC4C1D200A81211 /* irvueHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = irvueHack.m; sourceTree = "<group>"; };
 		B5369DCF2CC4C1DF00A81211 /* VidhubHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VidhubHack.m; sourceTree = "<group>"; };
 		B53F9DEC2C4AA4EC00A6B32D /* CleanShotXHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CleanShotXHack.m; sourceTree = "<group>"; };
@@ -172,7 +186,6 @@
 		B552CA372C54AC450095C9B9 /* CommonRetOC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonRetOC.m; sourceTree = "<group>"; };
 		B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavicatPremiumHack.m; sourceTree = "<group>"; };
 		B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DevUtilsHack.m; sourceTree = "<group>"; };
-		B56968C62BEA4E2A0022FAC6 /* libdylib_dobby_hook.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libdylib_dobby_hook.dylib; sourceTree = "<group>"; };
 		B5732BF02C82CD5900EC9E11 /* IDAHack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDAHack.m; sourceTree = "<group>"; };
 		B57584382E0D698A001F7C9E /* MockKeychain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockKeychain.h; sourceTree = "<group>"; };
 		B575843A2E0D69AA001F7C9E /* MockKeychain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockKeychain.m; sourceTree = "<group>"; };
@@ -333,7 +346,6 @@
 		38350C0B2B5407CD00DD52B3 /* release */ = {
 			isa = PBXGroup;
 			children = (
-				B56968C62BEA4E2A0022FAC6 /* libdylib_dobby_hook.dylib */,
 			);
 			path = release;
 			sourceTree = "<group>";
@@ -396,11 +408,14 @@
 		B581601C2BE8949B001DDB9B /* apps */ = {
 			isa = PBXGroup;
 			children = (
+				B52FDA7B2E7E978D006A6E9D /* Clop.m */,
+				B52FDA7C2E7E978D006A6E9D /* FolderPreviewPro.m */,
 				B5938B212DA7E45300FA82B0 /* ishotHack.m */,
 				B5369DCF2CC4C1DF00A81211 /* VidhubHack.m */,
 				B5369DCD2CC4C1D200A81211 /* irvueHack.m */,
 				B52BBA832CBFE1CE00F098A9 /* AirBuddyHack.m */,
 				B5EC63D72CBD39C700D92EEC /* AlfredHack.m */,
+				08869D142E1D125100B079A0 /* Bartender.m */,
 				B5732BF02C82CD5900EC9E11 /* IDAHack.m */,
 				9C99D64A2CB6CEF100B8A6D7 /* iStat7Hack.m */,
 				B5D0C0BA2C4B553500881398 /* ForkLiftHack.m */,
@@ -410,6 +425,7 @@
 				382A25842B6918DF0083F28C /* PasteHack.m */,
 				38B83E302B5505B300919735 /* TablePlusHack.m */,
 				08869D0E2E1AF15900B079A0 /* NotchNook.m */,
+				08869D102E1AF16B00B079A0 /* ProgressiveDownloader.m */,
 				B554D7BB2B63F2A300B7EFEA /* DevUtilsHack.m */,
 				B55407262B653DCB005C08E6 /* NavicatPremiumHack.m */,
 				B50E935D2BBD024F0073FEAA /* PaddleBaseHack.m */,
@@ -431,6 +447,8 @@
 		B581601D2BE894A2001DDB9B /* common */ = {
 			isa = PBXGroup;
 			children = (
+				B52FDA752E7E971B006A6E9D /* InstructionDecoder.h */,
+				B52FDA762E7E971B006A6E9D /* InstructionDecoder.m */,
 				B59D6A2B2E503F010004D71D /* MockUbiquitousKeyValueStore.m */,
 				B59D6A292E503ED90004D71D /* MockUbiquitousKeyValueStore.h */,
 				38D1AC272B54C9C100E6CB9E /* Constant.h */,
@@ -487,6 +505,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B59D6A2A2E503ED90004D71D /* MockUbiquitousKeyValueStore.h in Headers */,
+				B52FDA782E7E971B006A6E9D /* InstructionDecoder.h in Headers */,
 				B5EAA9E02C8C3FAF008C4089 /* URLSessionHook.h in Headers */,
 				B513ADD72CB95D0B00F5DC97 /* LocalizationManager.h in Headers */,
 				B5FECEAD2BC4FC29008916D6 /* common_ret.h in Headers */,
@@ -512,6 +531,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5105F5B2E6B28F900333727 /* HackHelperProtocolDefault.h in Headers */,
+				B52FDA7A2E7E971B006A6E9D /* InstructionDecoder.h in Headers */,
 				B5105F5C2E6B28F900333727 /* HackProtocol.h in Headers */,
 				B5105F5D2E6B28F900333727 /* HackProtocolDefault.h in Headers */,
 				B5105EF32E6B1D7400333727 /* MockUbiquitousKeyValueStore.h in Headers */,
@@ -630,7 +650,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "RELEASE_DIR=\"${PROJECT_DIR}/release\"\ncp -f \"${BUILT_PRODUCTS_DIR}/libdylib_dobby_hook.dylib\" \"$RELEASE_DIR/\"\necho \"✅ Copied ${BUILT_PRODUCTS_DIR}/libdylib_dobby_hook.dylib to $RELEASE_DIR/\"\n";
+			shellScript = "RELEASE_DIR=\"${PROJECT_DIR}/release/mac\"\nmkdir -p $RELEASE_DIR\ncp -f \"${BUILT_PRODUCTS_DIR}/libdylib_dobby_hook.dylib\" \"$RELEASE_DIR/\"\necho \"✅ Copied ${BUILT_PRODUCTS_DIR}/libdylib_dobby_hook.dylib to $RELEASE_DIR/\"\n";
 		};
 		B5105F422E6B1D7400333727 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -649,7 +669,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "RELEASE_DIR=\"${PROJECT_DIR}/release\"\ncp -f \"${BUILT_PRODUCTS_DIR}/libdylib_dobby_hook.dylib\" \"$RELEASE_DIR/\"\necho \"✅ Copied ${BUILT_PRODUCTS_DIR}/libdylib_dobby_hook.dylib to $RELEASE_DIR/\"\n";
+			shellScript = "RELEASE_DIR=\"${PROJECT_DIR}/release/ios\"\nmkdir -p $RELEASE_DIR\ncp -f \"${BUILT_PRODUCTS_DIR}/libdylib_dobby_hook.dylib\" \"$RELEASE_DIR/\"\necho \"✅ Copied ${BUILT_PRODUCTS_DIR}/libdylib_dobby_hook.dylib to $RELEASE_DIR/\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -669,17 +689,22 @@
 				2853DEDB2E17A41F0045A97A /* SenPlayerHack.m in Sources */,
 				B58160172BE88569001DDB9B /* EncryptionUtils.m in Sources */,
 				B5A7D3142C549130003D4C7F /* ForkLiftHelperHack.m in Sources */,
+				08869D152E1D125100B079A0 /* Bartender.m in Sources */,
 				38350BF82B53F73A00DD52B3 /* dylib_dobby_hook.m in Sources */,
 				B5A7D3172C5491A0003D4C7F /* HackHelperProtocolDefault.m in Sources */,
+				B52FDA7D2E7E978D006A6E9D /* FolderPreviewPro.m in Sources */,
+				B52FDA7E2E7E978D006A6E9D /* Clop.m in Sources */,
 				B53F9DED2C4AA4EC00A6B32D /* CleanShotXHack.m in Sources */,
 				B5EC63D82CBD39C700D92EEC /* AlfredHack.m in Sources */,
 				9C99D64B2CB6CEF100B8A6D7 /* iStat7Hack.m in Sources */,
 				B5369DCE2CC4C1D200A81211 /* irvueHack.m in Sources */,
 				382A25862B6918DF0083F28C /* PasteHack.m in Sources */,
+				B52FDA772E7E971B006A6E9D /* InstructionDecoder.m in Sources */,
 				B554D7BC2B63F2A300B7EFEA /* DevUtilsHack.m in Sources */,
 				B5D0C0BB2C4B553500881398 /* ForkLiftHack.m in Sources */,
 				B5F06B1D2BEF591E0079E68D /* InfuseHack.m in Sources */,
 				B5EAA9E22C8C3FC3008C4089 /* URLSessionHook.m in Sources */,
+				08869D112E1AF16B00B079A0 /* ProgressiveDownloader.m in Sources */,
 				B518593F2E6EF716004240CD /* AppInspector.m in Sources */,
 				B513ADD92CB95D4100F5DC97 /* LocalizationManager.m in Sources */,
 				B52BBA842CBFE1CE00F098A9 /* AirBuddyHack.m in Sources */,
@@ -712,6 +737,7 @@
 				B5105F592E6B28E000333727 /* HackHelperProtocolDefault.m in Sources */,
 				B5105F5A2E6B28E000333727 /* HackProtocolDefault.m in Sources */,
 				B5105F062E6B1D7400333727 /* MockCKDatabase.m in Sources */,
+				B52FDA792E7E971B006A6E9D /* InstructionDecoder.m in Sources */,
 				B5105F0A2E6B1D7400333727 /* MockCKContainer.m in Sources */,
 				B5105F0F2E6B1D7400333727 /* EncryptionUtils.m in Sources */,
 				B5105F132E6B1D7400333727 /* dylib_dobby_hook.m in Sources */,

@@ -33,7 +33,8 @@
 | CleanMyMac_5        | 5.1.1   | ✔   | ✔   |                                                             | ON  |             |
 | NotchNook           | 1.*     | ✔   | ✔   | <https://lo.cafe/notchnook>                                 | ON  | NKR00711    |
 |ProgressiveDownloader| *       | ✔   | ✔   | <https://www.macpsd.net/>                                   |     | NKR00711    |
-| Bartender 5         | *.      | ✔   | ✔   | <https://www.macbartender.com/>                             |     | NKR00711    |
+| Bartender 6         | *.      | ✔   | ✔   | <https://www.macbartender.com/>                             |     | NKR00711    |
+| Folder Preview Pro  | *.      | ✔   | ✔   | <https://anybox.ltd/folder-preview-pro>                     | ON  | NKR00711    |
 | DeskWidge           | *       | ✔   | ✔   | App Store                                                   |     | ooooooio    |
 | SenPlayer           | 5.6.3   | ✔   | ✔   | App Store                                                   |     | ooooooio    |
 | LiveWallpaper       | *       | ✔   | ✔   | App Store                                                   |     | ooooooio    |
@@ -46,6 +47,7 @@
 | Screens 5           | 5.*     | ✔   | ✔   | App Store                                                   | ON  |             |
 | iShot               | *       | ✔   | ✔   | App Store                                                   | ON  |             |
 | SwiftServer         | *       | ✔   | ✔   | App Store                                                   | ON  |             |
+| Clop                | *       | ✔   | ✔   | https://lowtechguys.com/clop/                               | ON  |             |
 <details>
   <summary>(TODO) Details</summary>
 </details>

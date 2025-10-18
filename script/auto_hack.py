@@ -39,7 +39,7 @@ apps_json_path = os.path.join(current_dir, "apps.json")
 apps_schema_path = os.path.join(current_dir, "apps.schema.json")
 insert_dylib = f"{current_dir}/../tools/insert_dylib"
 mac_patch_helper = f"{current_dir}/../tools/mac_patch_helper"
-release_dylib = f"{current_dir}/../release/libdylib_dobby_hook.dylib"
+release_dylib = f"{current_dir}/../release/mac/libdylib_dobby_hook.dylib"
 DEFAULT_DYLIB_NAME = "libdylib_dobby_hook.dylib"
 
 

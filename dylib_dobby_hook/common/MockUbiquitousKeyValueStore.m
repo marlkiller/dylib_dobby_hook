@@ -12,7 +12,9 @@
 @implementation MockUbiquitousKeyValueStore {
     NSUserDefaults *_backingStore;
 }
-
+- (id)dictionaryRepresentation{
+    return [_backingStore dictionaryRepresentation];
+};
 + (instancetype)defaultStore {
     static MockUbiquitousKeyValueStore *store;
     static dispatch_once_t onceToken;
@@ -104,5 +106,11 @@
     NSLogger(@"[Mock] synchronize");
     return [_backingStore synchronize];
 }
+
+// 模拟一个 count 方法
+- (NSUInteger)count {
+    return [[_backingStore dictionaryRepresentation] count];
+}
+
 
 @end
