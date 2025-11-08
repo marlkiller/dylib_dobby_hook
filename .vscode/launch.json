@@ -8,7 +8,7 @@
             "args": [],
             "cwd": "${fileDirname}",
             "env": {
-                "DYLD_INSERT_LIBRARIES": "${workspaceFolder}/release/libdylib_dobby_hook.dylib"
+                "DYLD_INSERT_LIBRARIES": "${workspaceFolder}/release/mac/libdylib_dobby_hook.dylib"
             },
             "preLaunchTask": "CMake: install"
         }

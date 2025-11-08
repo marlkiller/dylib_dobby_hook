@@ -167,4 +167,4 @@ for file in "${FILES[@]}"; do
   echo "- $file"
 done
 
-file release/libdylib_dobby_hook.dylib
+file release/$TARGET_OS/libdylib_dobby_hook.dylib

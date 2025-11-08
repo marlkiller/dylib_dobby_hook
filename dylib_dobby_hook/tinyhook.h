@@ -9,9 +9,11 @@ extern "C" {
 #endif
 
 #ifdef __aarch64__
-#define MAX_JUMP_SIZE 12
+    #define MAX_JUMP_SIZE 12
+    #define MAX_HEAD_SIZE 12
 #elif __x86_64__
-#define MAX_JUMP_SIZE 14
+    #define MAX_JUMP_SIZE 14
+    #define MAX_HEAD_SIZE 28
 #endif
 
 typedef struct {
@@ -46,7 +48,7 @@ int read_mem(void *destination, const void *source, size_t len);
 
 int write_mem(void *destination, const void *source, size_t len);
 
-/* solve symbol */
+/* symbol resolve */
 void *symtbl_solve(uint32_t image_index, const char *symbol_name);
 
 void *symexp_solve(uint32_t image_index, const char *symbol_name);

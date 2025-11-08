@@ -72,6 +72,8 @@ cmake-build-debug
 cmake-build-release
 
 release/libdylib_dobby_hook.dylib
+release/mac/libdylib_dobby_hook.dylib
+release/ios/libdylib_dobby_hook.dylib
 .DS_Store
 dylib_dobby_hook.tar.gz
 .cache
