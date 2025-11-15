@@ -17,7 +17,7 @@
 | AnyGo               | 7.*     | ✔   | ✔   | <https://itoolab.com/gps-location-changer/>                 |     |             |
 | Downie              | 4.*     | ✔   | ✔   | <https://software.charliemonroe.net/downie/>                |     |             |
 | Permute             | 3.*     | ✔   | ✔   | <https://software.charliemonroe.net/permute/>               |     |             |
-| ProxyMan            | 5.      | ✔   | ✔   | <https://proxyman.io/>                                      | ON  |             |
+| ProxyMan            | 6.      | ✔   | ✔   | <https://proxyman.io/>                                      | ON  |             |
 | Movist Pro          | 2.*     | ✔   | ✔   | <https://movistprime.com/>                                  |     |             |
 | Surge               | 6.*     | ✔   | ✔   | <https://nssurge.com/>                                      | ON  |             |
 | Infuse              | 8.*     | ✔   | ✔   | App Store                                                   |     |             |
@@ -38,7 +38,7 @@
 | DeskWidge           | *       | ✔   | ✔   | App Store                                                   |     | ooooooio    |
 | SenPlayer           | 5.6.3   | ✔   | ✔   | App Store                                                   |     | ooooooio    |
 | LiveWallpaper       | *       | ✔   | ✔   | App Store                                                   |     | ooooooio    |
-| Hopper Disassembler | 5.*     | ✔   | ✔   | <https://www.hopperapp.com/download.html>                   | ON  |             |
+| Hopper Disassembler | 6.*     | ✔   | ✔   | <https://www.hopperapp.com/download.html>                   | ON  |             |
 | Snipaste            | 2.*     | ✔   | ✔   | <https://www.snipaste.com/>                                 | ON  |             |
 | iMazing             | 3.2.0   | ✔   | ✔   | <https://downloads.imazing.com/com.DigiDNA.iMazing3Mac.xml> | ON  | Antibiotics |
 | DeskWidget          | 2.*     | ✔   | ✔   | App Store                                                   | ON  |             |

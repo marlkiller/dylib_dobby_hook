@@ -31,7 +31,7 @@ static IMP viewDidLoadIMP;
 }
 
 - (NSString *)getSupportAppVersion {
-    return @"5";
+    return @"6";
 }
 
 intptr_t (*getProxyManAppStructOriginalAddress)(void) = NULL;
