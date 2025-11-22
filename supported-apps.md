@@ -48,6 +48,7 @@
 | iShot               | *       | ✔   | ✔   | App Store                                                   | ON  |             |
 | SwiftServer         | *       | ✔   | ✔   | App Store                                                   | ON  |             |
 | Clop                | *       | ✔   | ✔   | https://lowtechguys.com/clop/                               | ON  |             |
+| MDClock             | 2.6.1   | ✔   | ✔   | App Store                                                   | ON  |             |
 <details>
   <summary>(TODO) Details</summary>
 </details>

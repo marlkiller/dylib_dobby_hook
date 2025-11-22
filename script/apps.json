@@ -235,7 +235,7 @@
                 {
                     "service_type": "LaunchServices",
                     "service_name": "com.macpaw.CleanMyMac5.Agent",
-                    "inject_service": false,
+                    "inject_service": true,
                     "fix_helper": true,
                     "service_bin_path": "$app_path/Contents/Library/$service_type/$service_name"
                 }

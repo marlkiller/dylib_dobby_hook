@@ -24,6 +24,7 @@
  
 - (BOOL)hack {
     
+    [self hook_AllSecCode:@"S8EX82NJP6"];
     return YES;
 }
 

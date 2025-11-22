@@ -465,14 +465,15 @@ OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
                 [hex appendFormat:@"%02x", bytes[i]];
             }
             NSLogger(@"[%@] hex = %@", name,hex);
-            id obj = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-            //            Class cls = NSClassFromString(@"RDSignedDataContainer");
-            //            obj = class_createInstance(cls, 0);
-            //            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:obj];
-            if (obj) {
-                // Parsed object: <FIRInstallationsStoredItem: 0x60000076c540>
-                NSLogger(@"[%@]Parsed object: %@", name, obj);
-            }
+//            MAYBE CRASH !!!!
+//            id obj = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+//            //            Class cls = NSClassFromString(@"RDSignedDataContainer");
+//            //            obj = class_createInstance(cls, 0);
+//            //            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:obj];
+//            if (obj) {
+//                // Parsed object: <FIRInstallationsStoredItem: 0x60000076c540>
+//                NSLogger(@"[%@]Parsed object: %@", name, obj);
+//            }
         }
     };
 
