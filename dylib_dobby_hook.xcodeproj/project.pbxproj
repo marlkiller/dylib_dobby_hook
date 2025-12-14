@@ -74,7 +74,6 @@
 		B52FDA792E7E971B006A6E9D /* InstructionDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = B52FDA762E7E971B006A6E9D /* InstructionDecoder.m */; };
 		B52FDA7A2E7E971B006A6E9D /* InstructionDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = B52FDA752E7E971B006A6E9D /* InstructionDecoder.h */; };
 		B52FDA7D2E7E978D006A6E9D /* FolderPreviewPro.m in Sources */ = {isa = PBXBuildFile; fileRef = B52FDA7C2E7E978D006A6E9D /* FolderPreviewPro.m */; };
-		B52FDA7E2E7E978D006A6E9D /* Clop.m in Sources */ = {isa = PBXBuildFile; fileRef = B52FDA7B2E7E978D006A6E9D /* Clop.m */; };
 		B5369DCE2CC4C1D200A81211 /* irvueHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5369DCD2CC4C1D200A81211 /* irvueHack.m */; };
 		B5369DD02CC4C1DF00A81211 /* VidhubHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5369DCF2CC4C1DF00A81211 /* VidhubHack.m */; };
 		B53F9DED2C4AA4EC00A6B32D /* CleanShotXHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B53F9DEC2C4AA4EC00A6B32D /* CleanShotXHack.m */; };
@@ -176,7 +175,6 @@
 		B52BBA832CBFE1CE00F098A9 /* AirBuddyHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AirBuddyHack.m; sourceTree = "<group>"; };
 		B52FDA752E7E971B006A6E9D /* InstructionDecoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstructionDecoder.h; sourceTree = "<group>"; };
 		B52FDA762E7E971B006A6E9D /* InstructionDecoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstructionDecoder.m; sourceTree = "<group>"; };
-		B52FDA7B2E7E978D006A6E9D /* Clop.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Clop.m; sourceTree = "<group>"; };
 		B52FDA7C2E7E978D006A6E9D /* FolderPreviewPro.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FolderPreviewPro.m; sourceTree = "<group>"; };
 		B5369DCD2CC4C1D200A81211 /* irvueHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = irvueHack.m; sourceTree = "<group>"; };
 		B5369DCF2CC4C1DF00A81211 /* VidhubHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VidhubHack.m; sourceTree = "<group>"; };
@@ -408,7 +406,6 @@
 		B581601C2BE8949B001DDB9B /* apps */ = {
 			isa = PBXGroup;
 			children = (
-				B52FDA7B2E7E978D006A6E9D /* Clop.m */,
 				B52FDA7C2E7E978D006A6E9D /* FolderPreviewPro.m */,
 				B5938B212DA7E45300FA82B0 /* ishotHack.m */,
 				B5369DCF2CC4C1DF00A81211 /* VidhubHack.m */,
@@ -693,7 +690,6 @@
 				38350BF82B53F73A00DD52B3 /* dylib_dobby_hook.m in Sources */,
 				B5A7D3172C5491A0003D4C7F /* HackHelperProtocolDefault.m in Sources */,
 				B52FDA7D2E7E978D006A6E9D /* FolderPreviewPro.m in Sources */,
-				B52FDA7E2E7E978D006A6E9D /* Clop.m in Sources */,
 				B53F9DED2C4AA4EC00A6B32D /* CleanShotXHack.m in Sources */,
 				B5EC63D82CBD39C700D92EEC /* AlfredHack.m in Sources */,
 				9C99D64B2CB6CEF100B8A6D7 /* iStat7Hack.m in Sources */,

@@ -47,7 +47,8 @@
 | Screens 5           | 5.*     | ✔   | ✔   | App Store                                                   | ON  |             |
 | iShot               | *       | ✔   | ✔   | App Store                                                   | ON  |             |
 | SwiftServer         | *       | ✔   | ✔   | App Store                                                   | ON  |             |
-| Clop                | *       | ✔   | ✔   | https://lowtechguys.com/clop/                               | ON  |             |
+| Clop                | 2.10.7  | ✔   | ✔   | https://lowtechguys.com/clop/                               | ON  |             |
+| Lunar               | 6.9.5   | ✔   | ✔   | https://lunar.fyi/                                          | ON  |             |
 | MDClock             | 2.6.1   | ✔   | ✔   | App Store                                                   | ON  |             |
 <details>
   <summary>(TODO) Details</summary>

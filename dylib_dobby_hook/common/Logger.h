@@ -15,18 +15,18 @@
 //#endif
 
 #ifdef DEBUG
-#define NSLogger(fmt, ...) \
-    NSLog((@"%s [Line %d] >>>>>> " fmt), \
-          __func__, \
-          __LINE__, ##__VA_ARGS__)
+#define NSLogger(fmt, ...)                      \
+    NSLog((@"🔍 Hack Debug: %s [:%d] " fmt), \
+        __func__,                               \
+        __LINE__, ##__VA_ARGS__)
 #else
 #define NSLogger(fmt, ...) do {} while (0)
 #endif
 
 #ifdef DEBUG
-#define CLogger(fmt, ...)                   \
-    printf("%s [Line %d] >>>>>> " fmt "\n", \
-        __PRETTY_FUNCTION__,                \
+#define CLogger(fmt, ...)                          \
+    printf("🔍 Hack Debug: %s [:%d] " fmt "\n", \
+        __PRETTY_FUNCTION__,                       \
         __LINE__, ##__VA_ARGS__)
 #else
 #define CLogger(fmt, ...) \

@@ -47,9 +47,6 @@ static IMP _dataTaskWithRequestIMP;
     if ([[Constant getCurrentAppName] containsString:@"com.readdle.PDFExpert-Mac"]) {
         return false;
     }
-    if ([[Constant getCurrentAppName] containsString:@"com.lowtechguys.Clop"]) {
-        return false;
-    }
     
     int paddleIndex = [MemoryUtils indexForImageWithName:@"Paddle"];
     if (paddleIndex > 0) {
