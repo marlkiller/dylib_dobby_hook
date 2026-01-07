@@ -1,50 +1,50 @@
-# name: Builder
+name: Builder
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main_bak
 
-# env:
-#   CMAKE_VERSION: 3.5
-#   LLVM_VERSION: 15.0.6  
+env:
+  CMAKE_VERSION: 3.5
+  LLVM_VERSION: 15.0.6  
 
-# jobs:
-#   macos:
-#     runs-on: macos-latest
-#     steps:
-#     - name: checkout main
-#       uses: actions/checkout@master
+jobs:
+  macos:
+    runs-on: macos-latest
+    steps:
+    - name: checkout main
+      uses: actions/checkout@master
       
-#     - name: delete latest release
-#       uses: dev-drprasad/delete-tag-and-release@v0.2.1
-#       with:
-#         delete_release: true
-#         tag_name: latest
-#       env:
-#         GITHUB_TOKEN: ${{ secrets.TOKEN }}  
+    - name: delete latest release
+      uses: dev-drprasad/delete-tag-and-release@v0.2.1
+      with:
+        delete_release: true
+        tag_name: latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}  
 
-#     - name: compile macos
-#       run: |
-#         bash build.sh
+    - name: compile macos
+      run: |
+        bash build.sh
         
-#       shell: bash
+      shell: bash
 
 
-#     - name: print output
-#       run: |
-#         ls -lha .
+    - name: print output
+      run: |
+        ls -lha .
 
-#     - name: update release
-#       uses: ncipollo/release-action@v1
-#       with:
-#         token: ${{ secrets.TOKEN }}
-#         tag: latest
-#         body: |
-#           A macOS dylib project, aimed at enhancing and extending the functionality of target software.
+    - name: update release
+      uses: ncipollo/release-action@v1
+      with:
+        token: ${{ secrets.TOKEN }}
+        tag: latest
+        body: |
+          A macOS dylib project, aimed at enhancing and extending the functionality of target software.
 
-#           ## Latest Commit
-#           ${{ github.event.head_commit.message }}        
-#         artifacts: "dylib_dobby_hook.tar.gz"
-#         allowUpdates: true
-#         replacesArtifacts: true
+          ## Latest Commit
+          ${{ github.event.head_commit.message }}        
+        artifacts: "dylib_dobby_hook.tar.gz"
+        allowUpdates: true
+        replacesArtifacts: true
