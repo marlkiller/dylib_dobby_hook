@@ -25,6 +25,7 @@
 		38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1AC292B54CA4D00E6CB9E /* Constant.m */; };
 		38D1AC2C2B54D03B00E6CB9E /* HackProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */; };
 		38E2ECD32DC48DCA00D76D10 /* ProxymanHelperHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E2ECD22DC48DCA00D76D10 /* ProxymanHelperHack.m */; };
+		6A8CFEF02F18F6EC00FDD9A0 /* loveReadHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8CFEEF2F18F6EC00FDD9A0 /* loveReadHack.m */; };
 		9C99D64B2CB6CEF100B8A6D7 /* iStat7Hack.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C99D64A2CB6CEF100B8A6D7 /* iStat7Hack.m */; };
 		9CE4C5CE2CCA7AC400593C78 /* ShottrHack.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE4C5CD2CCA7AC400593C78 /* ShottrHack.m */; };
 		9CE4C5D12CCA7C3600593C78 /* JSONUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE4C5D02CCA7C3600593C78 /* JSONUtils.m */; };
@@ -157,6 +158,7 @@
 		38D1AC2B2B54D03B00E6CB9E /* HackProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackProtocol.h; sourceTree = "<group>"; };
 		38E2ECD22DC48DCA00D76D10 /* ProxymanHelperHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProxymanHelperHack.m; sourceTree = "<group>"; };
 		38E793642B6C7FB6005677AA /* auto_hack.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = auto_hack.sh; sourceTree = "<group>"; };
+		6A8CFEEF2F18F6EC00FDD9A0 /* loveReadHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = loveReadHack.m; sourceTree = "<group>"; };
 		9C99D64A2CB6CEF100B8A6D7 /* iStat7Hack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iStat7Hack.m; sourceTree = "<group>"; };
 		9CE4C5CD2CCA7AC400593C78 /* ShottrHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShottrHack.m; sourceTree = "<group>"; };
 		9CE4C5CF2CCA7C3600593C78 /* JSONUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSONUtils.h; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 				B5105F4F2E6B27A300333727 /* HackProtocolDefault.h */,
 				B5105F502E6B27A300333727 /* HackProtocolDefault.m */,
 				B5105F5E2E6B298500333727 /* DevHack.m */,
+				6A8CFEEF2F18F6EC00FDD9A0 /* loveReadHack.m */,
 			);
 			path = apps;
 			sourceTree = "<group>";
@@ -746,6 +749,7 @@
 				B5105F362E6B1D7400333727 /* CommonRetOC.m in Sources */,
 				B5105F372E6B1D7400333727 /* common_ret.m in Sources */,
 				B5105F382E6B1D7400333727 /* Constant.m in Sources */,
+				6A8CFEF02F18F6EC00FDD9A0 /* loveReadHack.m in Sources */,
 				B5105F3E2E6B1D7400333727 /* MockKeychain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -919,6 +923,7 @@
 		B5105F442E6B1D7400333727 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = PF34J7Z7XR;
@@ -947,6 +952,7 @@
 		B5105F452E6B1D7400333727 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = PF34J7Z7XR;
