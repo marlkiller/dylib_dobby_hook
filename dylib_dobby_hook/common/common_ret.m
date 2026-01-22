@@ -149,6 +149,7 @@ void unload_self(void)
     }
 }
 void printStackTrace(void) {
+#if DEBUG
     void *buffer[100];
     int size = backtrace(buffer, 100);
     char** symbols = backtrace_symbols(buffer, size);
@@ -164,6 +165,95 @@ void printStackTrace(void) {
         free(symbols);
     }
     NSLogger(@"mainBase: 0x%lx , mainSlide: 0x%lx\n%@", mainBase, mainSlide, stackTrace);
+#endif
+}
+
+void dumpReg(void) {
+    thread_t thread = mach_thread_self();
+    NSMutableString *msg = [NSMutableString string];
+
+#if defined(__x86_64__)
+
+    x86_thread_state64_t state;
+    mach_msg_type_number_t count = x86_THREAD_STATE64_COUNT;
+
+    kern_return_t kr = thread_get_state(
+        thread,
+        x86_THREAD_STATE64,
+        (thread_state_t)&state,
+        &count
+    );
+
+    if (kr != KERN_SUCCESS) {
+        NSLogger(@"❌ thread_get_state failed: %d", kr);
+        return;
+    }
+
+    [msg appendString:@"🧠 ===== x86_64 Register Dump =====\n"];
+    [msg appendFormat:@"RIP = 0x%016llx\n", state.__rip];
+    [msg appendFormat:@"RSP = 0x%016llx\n", state.__rsp];
+    [msg appendFormat:@"RBP = 0x%016llx\n", state.__rbp];
+    [msg appendString:@"\n"];
+
+    [msg appendFormat:@"RAX = 0x%016llx\n", state.__rax];
+    [msg appendFormat:@"RBX = 0x%016llx\n", state.__rbx];
+    [msg appendFormat:@"RCX = 0x%016llx\n", state.__rcx];
+    [msg appendFormat:@"RDX = 0x%016llx\n", state.__rdx];
+    [msg appendFormat:@"RSI = 0x%016llx\n", state.__rsi];
+    [msg appendFormat:@"RDI = 0x%016llx\n", state.__rdi];
+    [msg appendString:@"\n"];
+
+    [msg appendFormat:@"R8  = 0x%016llx\n", state.__r8];
+    [msg appendFormat:@"R9  = 0x%016llx\n", state.__r9];
+    [msg appendFormat:@"R10 = 0x%016llx\n", state.__r10];
+    [msg appendFormat:@"R11 = 0x%016llx\n", state.__r11];
+    [msg appendFormat:@"R12 = 0x%016llx\n", state.__r12];
+    [msg appendFormat:@"R13 = 0x%016llx\n", state.__r13];
+    [msg appendFormat:@"R14 = 0x%016llx\n", state.__r14];
+    [msg appendFormat:@"R15 = 0x%016llx\n", state.__r15];
+
+#elif defined(__arm64__) || defined(__aarch64__)
+
+    arm_thread_state64_t state;
+    mach_msg_type_number_t count = ARM_THREAD_STATE64_COUNT;
+
+    kern_return_t kr = thread_get_state(
+       thread,
+       ARM_THREAD_STATE64,
+       (thread_state_t)&state,
+       &count
+    );
+
+    if (kr != KERN_SUCCESS) {
+       NSLogger(@"❌ thread_get_state failed: %d", kr);
+       return;
+    }
+
+    uint64_t *r = (uint64_t *)&state;
+
+    uint64_t pc = r[32];
+    uint64_t sp = r[31];
+    uint64_t fp = r[29]; // X29
+    uint64_t lr = r[30]; // X30
+
+    [msg appendString:@"🧠 ===== arm64 Register Dump =====\n"];
+    [msg appendFormat:@"PC = 0x%016llx\n", pc];
+    [msg appendFormat:@"SP = 0x%016llx\n", sp];
+    [msg appendFormat:@"FP = 0x%016llx\n", fp];
+    [msg appendFormat:@"LR = 0x%016llx\n", lr];
+    [msg appendString:@"\n"];
+
+    for (int i = 0; i < 29; i++) {
+       [msg appendFormat:@"X%-2d = 0x%016llx\n", i, r[i]];
+    }
+
+#else
+    [msg appendString:@"❌ Unsupported architecture\n"];
+#endif
+
+    mach_port_deallocate(mach_task_self(), thread);
+
+    NSLogger(@"%@", msg);
 }
 
 // hook ptrace

@@ -1,9 +1,5 @@
 # Supported Apps
 
-**WARN：**
-> 由于某种原因，部分应用的 Hook 注入代码未公开，敬请谅解。  
-> Due to certain reasons, the hook injection code for some apps is not publicly available. We appreciate your understanding.
-
 | App                 | version | x86 | arm | Download                                                    | SIP | Author      |
 |---------------------|---------| --- | --- |-------------------------------------------------------------| --- | ----------- |
 | TablePlus           | 6.*     | ✔   | ✔   | <https://tableplus.com/>                                    |     |             |
@@ -29,8 +25,8 @@
 | Irvue               | 2023.   | ✔   | ✔   | App Store                                                   | ON  | weizi       |
 | VidHub              | 1.7.10  | ✔   | ✔   | App Store                                                   | ON  | weizi       |
 | iShot               | 2.5.*   | ✔   | ✔   | App Store                                                   | ON  | weizi       |
-| BoltAI              | 1.*     | ✔   | ✔   | <https://boltai.com/>                                       | ON  |             |
-| CleanMyMac_5        | 5.1.1   | ✔   | ✔   |                                                             | ON  |             |
+| BoltAI 2            | 2.*     | ✔   | ✔   | <https://boltai.com/>                                       | ON  |             |
+| CleanMyMac_5        | 5.*     | ✔   | ✔   | <https://macpaw.com/download/cleanmymac>                    | ON  |             |
 | NotchNook           | 1.*     | ✔   | ✔   | <https://lo.cafe/notchnook>                                 | ON  | NKR00711    |
 |ProgressiveDownloader| *       | ✔   | ✔   | <https://www.macpsd.net/>                                   |     | NKR00711    |
 | Bartender 6         | *.      | ✔   | ✔   | <https://www.macbartender.com/>                             |     | NKR00711    |

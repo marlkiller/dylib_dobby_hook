@@ -230,7 +230,8 @@ BOOL canShowAlert(void) {
 //    NSApplicationActivationPolicyRegular： 普通应用，能在 Dock 中显示，接受用户输入。例如：Safari、Mail。
 //    NSApplicationActivationPolicyAccessory： 辅助应用，不在 Dock 中显示，但可以在菜单栏中显示图标。通常用于后台工具。
 //    NSApplicationActivationPolicyProhibited： 被禁止激活的应用，不显示在 Dock 中，也无法接受输入。常用于后台服务。
-    BOOL isForeground = [NSRunningApplication currentApplication].activationPolicy == NSApplicationActivationPolicyRegular;
+    NSApplicationActivationPolicy policy = [NSRunningApplication currentApplication].activationPolicy;
+    BOOL isForeground = (policy == NSApplicationActivationPolicyRegular || policy == NSApplicationActivationPolicyAccessory);
     NSLogger(@"Is current application canShowAlert: %@", isForeground ? @"YES" : @"NO");
     return isForeground;
 }

@@ -101,15 +101,15 @@ else
     # https://github.com/Aethereux/Hikari-LLVM19/releases/tag/Hikari-LLVM20
     #export hikari_llvm_bin="/Applications/Xcode.app/Contents/Developer/Toolchains/Hikari_LLVM20.1.5.xctoolchain/usr/bin"
     PATH_Hikari_XCODE="/Applications/Xcode.app/Contents/Developer/Toolchains/Hikari_LLVM20.1.5.xctoolchain/usr/bin"
-    PATH_Hikari_USER_LIBRARY="~/Library/Developer/Toolchains/Hikari_LLVM20.1.5.xctoolchain/usr/bin"
+    PATH_Hikari_USER_LIBRARY="$HOME/Library/Developer/Toolchains/Hikari_LLVM20.1.5.xctoolchain/usr/bin"
 
     # Check if the Xcode path exists
     if [ -d "$PATH_Hikari_XCODE" ]; then
         export hikari_llvm_bin="$PATH_Hikari_XCODE"
         echo "Using Hikari LLVM from Xcode path: $hikari_llvm_bin"
     # Otherwise, check if the user's Library path exists
-    elif [ -d "$(eval echo \"$PATH_Hikari_USER_LIBRARY\")" ]; then # 'eval echo' is needed to expand '~'
-        export hikari_llvm_bin="$(eval echo \"$PATH_Hikari_USER_LIBRARY\")"
+    elif [ -d "$PATH_Hikari_USER_LIBRARY" ]; then
+        export hikari_llvm_bin="$PATH_Hikari_USER_LIBRARY"
         echo "Using Hikari LLVM from user Library path: $hikari_llvm_bin"
     else
         echo "Error: No valid path found for Hikari LLVM toolchain."

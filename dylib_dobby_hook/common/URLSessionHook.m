@@ -30,7 +30,7 @@
     // 重写 resume 方法，使其不做任何事情
     NSLogger(@"DummyURLSessionDataTask.resume");
 }
-- (void)set_callCompletionHandlerInline:arg1 {
+- (void)set_callCompletionHandlerInline:(int)arg1 {
     // for downie 4
 }
 

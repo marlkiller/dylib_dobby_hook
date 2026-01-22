@@ -117,13 +117,6 @@
             "inject_type": "static"
         },
         {
-            "app_name": "BoltAI",
-            "app_path": "/Applications/$app_name.app",
-            "app_bin_path": "$app_path/Contents/MacOS/$app_name",
-            "inject_path": "$app_path/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle",
-            "inject_type": "static"
-        },
-        {
             "app_name": "NotchNook",
             "app_path": "/Applications/$app_name.app",
             "app_bin_path": "$app_path/Contents/MacOS/$app_name",

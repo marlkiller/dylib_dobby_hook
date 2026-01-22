@@ -62,6 +62,18 @@
 
 #endif
 
+
+
+#ifdef __arm64__
+    #define SAVE_SWIFT_CONTEXT uint64_t swift_context; \
+                         asm volatile ("mov %0, x8":"=r"(swift_context));
+    #define LOAD_SWIFT_CONTEXT asm volatile ("mov x8, %0"::"r"(swift_context):"x8");
+#elif __x86_64__
+    #define SAVE_SWIFT_CONTEXT uint64_t swift_context; \
+                         asm volatile ("mov %%rax, %0":"=r"(swift_context));
+    #define LOAD_SWIFT_CONTEXT asm volatile ("mov %0, %%rax"::"r"(swift_context):"%rax");
+#endif
+
 int ret2 (void);
 int ret1 (void);
 int ret0 (void);
@@ -80,6 +92,9 @@ void ret(void);
 void unload_self(void);
 
 void printStackTrace(void);
+
+void dumpReg(void);
+
 // AntiAntiDebug 反反调试相关
 typedef int (*PtraceFuncPtr)(int _request, pid_t _pid, caddr_t _addr, int _data);
 int my_ptrace(int _request, pid_t _pid, caddr_t _addr, int _data);

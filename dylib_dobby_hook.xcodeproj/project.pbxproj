@@ -92,7 +92,6 @@
 		B581601B2BE88569001DDB9B /* EncryptionUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = B58160162BE88569001DDB9B /* EncryptionUtils.h */; };
 		B5822CA92CBFFC020062383F /* Logger.h in Headers */ = {isa = PBXBuildFile; fileRef = B5822CA82CBFFC020062383F /* Logger.h */; };
 		B5938B222DA7E45300FA82B0 /* ishotHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5938B212DA7E45300FA82B0 /* ishotHack.m */; };
-		B5938B242DA7E5D100FA82B0 /* BoltAIHack.m in Sources */ = {isa = PBXBuildFile; fileRef = B5938B232DA7E5D100FA82B0 /* BoltAIHack.m */; };
 		B59D6A2A2E503ED90004D71D /* MockUbiquitousKeyValueStore.h in Headers */ = {isa = PBXBuildFile; fileRef = B59D6A292E503ED90004D71D /* MockUbiquitousKeyValueStore.h */; };
 		B59D6A2C2E503F010004D71D /* MockUbiquitousKeyValueStore.m in Sources */ = {isa = PBXBuildFile; fileRef = B59D6A2B2E503F010004D71D /* MockUbiquitousKeyValueStore.m */; };
 		B5A7D30F2C548B71003D4C7F /* HackProtocolDefault.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A7D30E2C548B71003D4C7F /* HackProtocolDefault.h */; };
@@ -198,7 +197,6 @@
 		B58160162BE88569001DDB9B /* EncryptionUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncryptionUtils.h; sourceTree = "<group>"; };
 		B5822CA82CBFFC020062383F /* Logger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
 		B5938B212DA7E45300FA82B0 /* ishotHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ishotHack.m; sourceTree = "<group>"; };
-		B5938B232DA7E5D100FA82B0 /* BoltAIHack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BoltAIHack.m; sourceTree = "<group>"; };
 		B59D6A292E503ED90004D71D /* MockUbiquitousKeyValueStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockUbiquitousKeyValueStore.h; sourceTree = "<group>"; };
 		B59D6A2B2E503F010004D71D /* MockUbiquitousKeyValueStore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockUbiquitousKeyValueStore.m; sourceTree = "<group>"; };
 		B5A7D30E2C548B71003D4C7F /* HackProtocolDefault.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HackProtocolDefault.h; sourceTree = "<group>"; };
@@ -435,7 +433,6 @@
 				B5A7D30E2C548B71003D4C7F /* HackProtocolDefault.h */,
 				B5A7D3102C548BAB003D4C7F /* HackProtocolDefault.m */,
 				9CE4C5CD2CCA7AC400593C78 /* ShottrHack.m */,
-				B5938B232DA7E5D100FA82B0 /* BoltAIHack.m */,
 				B5FD0D722DB20D1100989564 /* CleanMyMacHack.m */,
 				2847DC922E0E791A00D72519 /* DeskWidgetHack.m */,
 				2853DED82E17A39E0045A97A /* LiveWallpaperHack.m */,
@@ -718,7 +715,6 @@
 				B59D6A2C2E503F010004D71D /* MockUbiquitousKeyValueStore.m in Sources */,
 				38E2ECD32DC48DCA00D76D10 /* ProxymanHelperHack.m in Sources */,
 				9CE4C5D12CCA7C3600593C78 /* JSONUtils.m in Sources */,
-				B5938B242DA7E5D100FA82B0 /* BoltAIHack.m in Sources */,
 				B552CA382C54AC450095C9B9 /* CommonRetOC.m in Sources */,
 				B5FECEAE2BC4FC29008916D6 /* common_ret.m in Sources */,
 				38D1AC2A2B54CA4D00E6CB9E /* Constant.m in Sources */,
