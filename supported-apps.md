@@ -50,7 +50,8 @@
 | SwiftServer         | *       | ✔   | ✔   | App Store                                                   | ON  |             |
 | Clop                | 2.10.7  | ✔   | ✔   | https://lowtechguys.com/clop/                               | ON  |             |
 | Lunar               | 6.9.5   | ✔   | ✔   | https://lunar.fyi/                                          | ON  |             |
-| MDClock             | 2.6.1   | ✔   | ✔   | App Store                                                   | ON  |             |
+| MDClock             | 2.*     | ✔   | ✔   | App Store                                                   | ON  |             |
+| Updatest            | 1.*     | ✔   | ✔   | https://updatest.app/                                       | ON  |             |
 <details>
   <summary>(TODO) Details</summary>
 </details>
