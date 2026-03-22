@@ -54,15 +54,15 @@ intptr_t getProxyManAppStruct(void) {
     ((void*(*)(id, SEL))viewDidLoadIMP)(self, _cmd);
     // objc_ivar_offset__TtC8Proxyman25PremiumPlanViewController_registerAtLbl:
     // -[_TtC8Proxyman25PremiumPlanViewController registerAtLbl]:        // -[Proxyman.PremiumPlanViewController registerAtLbl]
-    NSTextField *registerAtLbl =  [MemoryUtils getInstanceIvar:self ivarName:"registerAtLbl"];
-    NSView *expiredLicenseInfoStackView = [MemoryUtils getInstanceIvar:self ivarName:"expiredLicenseInfoStackView"];
-    NSTextField *licenseUntilLbl = [MemoryUtils getInstanceIvar:self ivarName:"licenseUntilLbl"];
+    NSTextField *registerAtLbl = IVAR_OBJ(self, "registerAtLbl");
+    NSView *expiredLicenseInfoStackView = IVAR_OBJ(self, "expiredLicenseInfoStackView");
+    NSTextField *licenseUntilLbl = IVAR_OBJ(self, "licenseUntilLbl");
     [expiredLicenseInfoStackView setHidden:TRUE];
     [licenseUntilLbl setStringValue:@"Saturday, Sep 01, 2050"];
     [registerAtLbl setStringValue:[Constant G_EMAIL_ADDRESS]];
-    NSView *LicenseInfoStackView = [MemoryUtils getInstanceIvar:self ivarName:"licenseInfoStackView"];
+    NSView *LicenseInfoStackView = IVAR_OBJ(self, "licenseInfoStackView");
     [LicenseInfoStackView setHidden:FALSE];
-    NSView *setappStackView = [MemoryUtils getInstanceIvar:self ivarName:"setappStackView"];
+    NSView *setappStackView = IVAR_OBJ(self, "setappStackView");
     [setappStackView setHidden:TRUE];
 }
 - (BOOL)hack {
@@ -74,9 +74,9 @@ intptr_t getProxyManAppStruct(void) {
     ];
 
 #if defined(__arm64__) || defined(__aarch64__)
-    NSString *patch_1Code = @"FF 43 03 D1 FC 6F 07 A9 FA 67 08 A9 F8 5F 09 A9 F6 57 0A A9 F4 4F 0B A9 FD 7B 0C A9 FD 03 03 91 F3 03 14 AA 9F 76 00 F9 00 E4 00 6F 80 82 8B 3C 80 82 8C 3C 9F 6E 00 F9 5B 00 80 52 9B C2 03 39";
+    NSString *patch_1Code = @"FF 43 03 D1 FC 6F 07 A9 FA 67 08 A9 F8 5F 09 A9 F6 57 0A A9 F4 4F 0B A9 FD 7B 0C A9 FD 03 03 91 F3 03 14 AA 9F 7A 00 F9 00 E4 00 6F 80 02 06 AD 9F 72 00 F9 5B 00 80 52 9B E2 03 39";
 #elif defined(__x86_64__)
-    NSString *patch_1Code = @"55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC 98 00 00 00 4C 89 EB 49 C7 85 E8 00 00 00 00 00 00 00 0F 57 C0 41 0F 11 85 B8 00 00 00 41 0F 11 85 C8 00 00 00 49 C7 85 D8 00 00 00 00 00 00 00 41 C6 85 F0 00 00 00 02 31 FF";
+    NSString *patch_1Code = @"55 48 89 E5 41 57 41 56 41 55 41 54 53 48 81 EC 98 00 00 00 4C 89 EB 49 C7 85 F0 00 00 00 00 00 00 00 0F 57 C0 41 0F 11 85 C0 00 00 00 41 0F 11 85 D0 00 00 00 49 C7 85 E0 00 00 00 00 00 00 00 41 C6 85 F8 00 00 00 02 31 FF";
 #endif
     [MemoryUtils hookWithMachineCode:@"/Contents/MacOS/Proxyman"
                              machineCode:patch_1Code

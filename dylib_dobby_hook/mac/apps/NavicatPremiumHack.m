@@ -56,6 +56,33 @@ static IMP subscriptionIsValidIMP;
     //    sudo rm -Rf ~/Library/Application\ Support/PremiumSoft\ CyberTech
     
     [self hook_AllSecItem];
+    
+    NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:[receiptURL path]];
+
+    if (!exists) {
+        NSLogger(@"App 不是 App Store 版本（第三方下载或未上架）");
+        [MemoryUtils hookInstanceMethod:
+                    objc_getClass("RegistrationSubscriptionWindowController")
+                    originalSelector:NSSelectorFromString(@"checkAndSaveKey:activationGraceEndDate:")
+                    swizzledClass:[self class]
+                    swizzledSelector: @selector(ret1)
+        ];
+//        🌐 200 POST https://activate.navicat.com/AA8747009.php?v=2
+//        👤 Delegate: CustomSessionDataDelegate
+//         └─ Module: /Applications/Navicat Premium.app/Contents/Frameworks/libcf.dylib
+//        🧠 Completion Handler Analysis:
+//         ├─ Module: /Applications/Navicat Premium.app/Contents/Frameworks/libcf.dylib
+//         └─ Address: Runtime=0x110b80bb1 | Offset=0x6fbb1 | Static=0x6fbb1
+//        📝 Response Body:
+//        {"error_no":0,"result":"MRWWqRuPJPsE9j\/96AUwfw7s5UAyAzmtrCWGNJWGfFlpRo2brdBbykn+ptwzLXQkbFNBhjsNpw7bfM4lGer2RRe7iazdwUwhx+rz3uKUwQi3ZlYDzlhSB5HAzJLkXpROafnzf3fQC+kL0fB+iUo9m9h7Np9NhkYCEZbC0Ey99iUpZAtMx8iuc3HBfI8NUeMuwDO6CxwSxpSZjo+1OEATGJeSvWWb25qPJhV3uY12bVQxi1AvUvHtCAE5jZvOSTigYrLgmPJ5BYCUzQdbgaqHMWwcQiMN8IXblwjbuvRh6abQYf5JtETsEz3vC7eBNndMmArqWC5pPfMi7tpopvTdjA=="}
+
+
+        
+        return NO;
+    } else {
+        NSLogger(@"App 来自 App Store");
+    }
 
     [MemoryUtils hookInstanceMethod:
                 objc_getClass("_TtC15Navicat_Premium9IAPHelper")
@@ -95,9 +122,8 @@ static IMP subscriptionIsValidIMP;
 }
 - (void)hk_displayRegisteredInfo {
     
-//   TODO: self 有个ivar _extraInfo 的 dict 是 license 信息, 后面这个特征失效就跟一下 这个 dict
     ((void(*)(id, SEL))displayRegisteredInfoIMP)(self, _cmd);
-    id _appExtraInfoLabel = [MemoryUtils getInstanceIvar:self ivarName:"_appExtraInfoLabel"];
+    id _appExtraInfoLabel = IVAR_OBJ(self, "_appExtraInfoLabel");
     if (_appExtraInfoLabel) {
         [_appExtraInfoLabel setStringValue:[Constant G_EMAIL_ADDRESS]];
     }

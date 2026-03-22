@@ -150,21 +150,79 @@ void unload_self(void)
 }
 void printStackTrace(void) {
 #if DEBUG
-    void *buffer[100];
-    int size = backtrace(buffer, 100);
-    char** symbols = backtrace_symbols(buffer, size);
+    void *buffer[128];
+    int frameCount = backtrace(buffer, 128);
+
+    // 主模块信息
     const struct mach_header* mainHeader = _dyld_get_image_header(0);
     intptr_t mainSlide = _dyld_get_image_vmaddr_slide(0);
-    uintptr_t mainBase = (uintptr_t)mainHeader + mainSlide;
+    uintptr_t mainBase = (uintptr_t)mainHeader;
+    const char *mainModuleName = _dyld_get_image_name(0);
+    if (!mainModuleName) mainModuleName = "<unknown>";
+    const char *mainModule = strrchr(mainModuleName, '/') ? strrchr(mainModuleName, '/') + 1 : mainModuleName;
 
-    NSMutableString *stackTrace = [NSMutableString string];
-    if (symbols != NULL) {
-        for (int i = 0; i < size; i++) {
-            [stackTrace appendFormat:@"%s\n", symbols[i]];
+    NSMutableString *stackTrace = [NSMutableString stringWithFormat:
+        @"🧩 StackTrace (%d) mainModule=%s mainBase=0x%016lx slide=0x%016lx\n",
+        frameCount, mainModule, mainBase + mainSlide, mainSlide];
+
+    // 预定义列宽
+    const int moduleWidth = 28;
+    const int symWidth    = 40;
+
+    for (int i = 0; i < frameCount; i++) {
+        uintptr_t pc = (uintptr_t)buffer[i];
+        const char *moduleName = "<unknown>";
+        uintptr_t imageBase = 0;
+        uintptr_t imageSlide = 0;
+        const char *symName = "<unknown>";
+        uintptr_t symOffset = 0;
+        uintptr_t imgOffset = 0;
+        uintptr_t staticAddr = 0;
+
+        Dl_info info;
+        BOOL found = NO;
+
+        if (dladdr(buffer[i], &info) && info.dli_fbase != NULL) {
+            symName = info.dli_sname ? info.dli_sname : "<unknown>";
+            moduleName = info.dli_fname ? (strrchr(info.dli_fname, '/') ? strrchr(info.dli_fname, '/') + 1 : info.dli_fname) : "<unknown>";
+            imageBase = (uintptr_t)info.dli_fbase;
+            for (uint32_t j = 0; j < _dyld_image_count(); j++) {
+                const struct mach_header *hdr = _dyld_get_image_header(j);
+                if (hdr == info.dli_fbase) {
+                    imageSlide = (uintptr_t)_dyld_get_image_vmaddr_slide(j);
+                    break;
+                }
+            }
+            symOffset = pc - (uintptr_t)info.dli_saddr;
+            imgOffset = pc - imageBase;
+            staticAddr = pc - imageSlide;
+            found = YES;
         }
-        free(symbols);
+        // fallback: 检查是否属于主模块
+        if (!found && pc >= mainBase + mainSlide) {
+            moduleName = mainModule;
+            imageBase = mainBase;
+            imageSlide = mainSlide;
+            imgOffset = pc - imageBase;
+            staticAddr = pc - imageSlide;
+            symOffset = 0;
+            found = YES;
+        }
+        char symBuf[256];
+        snprintf(symBuf, sizeof(symBuf), "%s+0x%zx", symName, symOffset);
+        [stackTrace appendFormat:
+            @"%02d | pc=0x%016lx | mod=%-*s | base=0x%016lx | slide=0x%016lx | imgOff=0x%08zx | static=0x%016lx | sym=%s\n",
+            i,
+            pc,
+            moduleWidth, moduleName,
+            imageBase,
+            imageSlide,
+            imgOffset,
+            staticAddr,
+            symBuf];
     }
-    NSLogger(@"mainBase: 0x%lx , mainSlide: 0x%lx\n%@", mainBase, mainSlide, stackTrace);
+
+    NSLogger(@"%@", stackTrace);
 #endif
 }
 

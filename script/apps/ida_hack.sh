@@ -9,7 +9,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 current_path=$PWD
-ida_path="/Applications/IDA Professional 9.1.app"
+ida_path="/Applications/IDA Professional 9.3.app"
 app_name=$(basename "$ida_path" .app)
 
 echo -e "${GREEN}✅ [${app_name}] - Copying license file...${NC}"
@@ -37,6 +37,6 @@ echo -e "${GREEN}✅ [${app_name}] - Overwritten existing plugins with new ones.
 # fi
 
 
-codesign --force --deep --sign - /Applications/IDA\ Professional\ 9.1.app/Contents/MacOS/libida64.dylib
-codesign --force --deep --sign - /Applications/IDA\ Professional\ 9.1.app/Contents/MacOS/libida32.dylib
-codesign --force --deep --sign - /Applications/IDA\ Professional\ 9.1.app/Contents/MacOS/libida.dylib
+codesign --force --deep --sign - /Applications/IDA\ Professional\ 9.3.app/Contents/MacOS/libida64.dylib
+codesign --force --deep --sign - /Applications/IDA\ Professional\ 9.3.app/Contents/MacOS/libida32.dylib
+codesign --force --deep --sign - /Applications/IDA\ Professional\ 9.3.app/Contents/MacOS/libida.dylib

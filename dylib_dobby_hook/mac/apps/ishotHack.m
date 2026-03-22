@@ -59,20 +59,17 @@ void ishot_istrial(void) {
     ((void(*)(id, SEL))displayRegisteredInfoIMP)(self,_cmd);
     
   
-    id _buyButton = [MemoryUtils getInstanceIvar:self ivarName:"_buyButton"];
+    id _buyButton = IVAR_OBJ(self, "_buyButton");
     if (_buyButton) {
         //NSLogger(@"buyButton %@",[buyButton stringValue]);
         [_buyButton setTitle:@"授权给: wawa"];
         //[_buyButton setHidden:YES];
         [_buyButton setEnabled:NO];
-        //[MemoryUtils setInstanceIvar:self ivarName:"expirationTimeValueTextField" value:expirationTimeValueTextField];
     }
     //_version
-    id _version = [MemoryUtils getInstanceIvar:self ivarName:"_version"];
+    id _version = IVAR_OBJ(self, "_version");
     if (_version) {
-        //NSLogger(@"buyButton %@",[buyButton stringValue]);
         [_version setStringValue:@"iShot Pro 2.5.5"];
-        //[MemoryUtils setInstanceIvar:self ivarName:"expirationTimeValueTextField" value:expirationTimeValueTextField];
     }
     return;
 

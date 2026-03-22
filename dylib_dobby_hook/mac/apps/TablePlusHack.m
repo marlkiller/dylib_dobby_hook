@@ -179,10 +179,13 @@ static unsigned char *hk_CC_MD5(const void *data, CC_LONG len, unsigned char *md
                 },
                 @"Code":@200
             });
+        }else if ([URLString containsString:@"v1/plugins/featured"]) {
+            goto brk;
         }
         NSLogger(@"[hk_dataTaskWithHTTPMethod] Intercept url: %@, req params: %@",URLString,parameters);
         return dummyTask;
     }
+brk:
     NSLogger(@"[hk_dataTaskWithHTTPMethod] Allow to pass url: %@",URLString);
     return ((id(*)(id, SEL,NSString *,NSString *,id,id,id,id,id,id))dataTaskWithRequestIMP)(self, _cmd,method,URLString,parameters,headers,uploadProgress,downloadProgress,success,failure);
 }

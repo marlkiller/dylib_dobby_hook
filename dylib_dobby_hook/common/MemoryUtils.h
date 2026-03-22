@@ -6,6 +6,41 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <objc/runtime.h>
+#import <objc/message.h>
+
+// ─────────────────────────────────────────────────────────────────────────
+// objc_ivar 快捷宏
+// ─────────────────────────────────────────────────────────────────────────
+static inline Ivar _ivar(id obj, const char *name) {
+    return class_getInstanceVariable(object_getClass(obj), name);
+}
+
+#define IVAR_OBJ(obj, name) object_getIvar((obj), _ivar((obj), (name)))
+
+#define IVAR_VAL(T, obj, name) \
+    (*((T *)((uint8_t *)(__bridge void *)(obj) + ivar_getOffset(_ivar((obj), (name))))))
+
+// ─────────────────────────────────────────────────────────────────────────
+// objc_msgSend 快捷宏
+// ─────────────────────────────────────────────────────────────────────────
+#ifdef OBJC_MSG_SEND
+#undef OBJC_MSG_SEND
+#endif
+#define OBJC_MSG_SEND(ret_t, obj, sel_name) \
+    ((ret_t (*)(id, SEL))objc_msgSend)((obj), sel_registerName(sel_name))
+
+#ifdef OBJC_MSG_SEND1
+#undef OBJC_MSG_SEND1
+#endif
+#define OBJC_MSG_SEND1(ret_t, obj, sel_name, arg1) \
+    ((ret_t (*)(id, SEL, __typeof__(arg1)))objc_msgSend)((obj), sel_registerName(sel_name), (arg1))
+
+#ifdef OBJC_MSG_SEND2
+#undef OBJC_MSG_SEND2
+#endif
+#define OBJC_MSG_SEND2(ret_t, obj, sel_name, arg1, arg2) \
+    ((ret_t (*)(id, SEL, __typeof__(arg1), __typeof__(arg2)))objc_msgSend)((obj), sel_registerName(sel_name), (arg1), (arg2))
 
 @interface MemoryUtils : NSObject
 

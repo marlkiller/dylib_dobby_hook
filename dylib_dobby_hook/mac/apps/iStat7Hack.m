@@ -4,6 +4,8 @@
 //
 //  Created by Hokkaido on 2024/10/10.
 //
+//  if it is not activated goto Registration page and put this key hank-okay-bail-east-1111-1
+//  inject iStat Menus | iStat Menus Menubar.app
 
 #import <Foundation/Foundation.h>
 #import "tinyhook.h"
@@ -57,13 +59,38 @@ static IMP dataTaskWithRequestIMP2;
     NSString *urlString = [url absoluteString];
 
     // Check if the URL contains specific paths
-    if ([urlString containsString:@"/istatmenus/v3/subscription/"] || [urlString containsString:@"/verify/"]) {
+    if([urlString containsString:@"/api/1/weather/"]) {
+        NSData *bodyData = request.HTTPBody;
+
+        if (bodyData) {
+            NSError *err = nil;
+            id json = [NSJSONSerialization JSONObjectWithData:bodyData options:NSJSONReadingMutableContainers error:&err];
+            if ((json && [json isKindOfClass:[NSMutableDictionary class]]) || [json isKindOfClass:[NSDictionary class]]) {
+                NSMutableDictionary *dict = ([json isKindOfClass:[NSMutableDictionary class]] ? json : [json mutableCopy]);
+
+                // change fields
+                dict[@"setapp"] = @"1"; // e.g. setapp it will bypass api check
+                dict[@"license"] = @"trial";       // e.g. @"trial" it will get expired on Mon Oct 06 22:33:57 +0530 2025
+                dict[@"identifier"] = @""; // e.g. UUID string
+
+                NSData *newBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:&err];
+                if (newBody) {
+                    [request setHTTPBody:newBody];
+                    NSString *lenStr = [NSString stringWithFormat:@"%lu", (unsigned long)newBody.length];
+                    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+                    [request setValue:lenStr forHTTPHeaderField:@"Content-Length"];
+                }
+            }
+        }
+    }
+    
+    if ([urlString containsString:@"/istatmenus/v3/subscription/"] || [urlString containsString:@"/verify/"] || [urlString containsString:@"/api/1/subscription/"]) {
         NSDictionary *respBody;
         NSString *reqBody = [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding];
 
         URLSessionHook *dummyTask = [[URLSessionHook alloc] init];
         // Create the response body based on the URL
-        if ([urlString containsString:@"/istatmenus/v3/subscription/"]) {
+        if ([urlString containsString:@"/istatmenus/v3/subscription/"] || [urlString containsString:@"/api/1/subscription/"]) {
             respBody = @{
                 @"start": @1721215186,
                 @"end": @3100763986,
