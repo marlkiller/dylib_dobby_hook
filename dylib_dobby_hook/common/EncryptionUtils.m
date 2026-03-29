@@ -73,7 +73,7 @@
 //    echo $deviceID
 //    f0:18:98:1b:24:20C02X51AJJG5J > md5 = ee4f1d1890b4eb49a5a4d7f195ca8b67
     NSString *mac = [self runCommand:@"networksetup -getmacaddress en0| grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'" trimWhitespace:YES];
-    NSString *Serial = [self runCommand:@"system_profiler SPHardwareDataType | grep Serial | awk '{print $4}'" trimWhitespace:YES];
+    NSString *Serial = [self runCommand:@"system_profiler SPHardwareDataType 2>/dev/null | grep Serial | awk '{print $4}'" trimWhitespace:YES];
     //    return [self runCommand:[NSString stringWithFormat:@"printf '%%s' \"%@%@\" | md5", mac, Serial] trimWhitespace:YES];
     return [self runCommand:[NSString stringWithFormat:@"echo -n \"%@%@\" | md5", mac, Serial] trimWhitespace:YES];
 }
