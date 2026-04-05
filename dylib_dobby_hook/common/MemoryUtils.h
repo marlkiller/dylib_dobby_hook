@@ -17,7 +17,7 @@ static inline Ivar _ivar(id obj, const char *name) {
 }
 
 #define IVAR_OBJ(obj, name) object_getIvar((obj), _ivar((obj), (name)))
-
+#define IVAR_SET_OBJ(obj, name, value) object_setIvar((obj), _ivar((obj), (name)), (value))
 #define IVAR_VAL(T, obj, name) \
     (*((T *)((uint8_t *)(__bridge void *)(obj) + ivar_getOffset(_ivar((obj), (name))))))
 

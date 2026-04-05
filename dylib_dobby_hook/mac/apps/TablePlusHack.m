@@ -26,7 +26,6 @@
 static IMP urlWithStringSeletorIMP;
 //static IMP NSURLSessionClassIMP;
 static IMP dataTaskWithRequestIMP;
-static NSString* deviceIdOri;
 
 
 - (NSString *)getAppName {
@@ -39,28 +38,19 @@ static NSString* deviceIdOri;
 
 static unsigned char *(*CC_MD5_ori)(const void *data, CC_LONG len, unsigned char *md);
 static unsigned char *hk_CC_MD5(const void *data, CC_LONG len, unsigned char *md) {
-    unsigned char *result = CC_MD5_ori(data, len, md);
-    //    NSString *inputStr = [[NSString alloc] initWithBytes:data length:len encoding:NSUTF8StringEncoding];
-    char md5Ori[CC_MD5_DIGEST_LENGTH * 2 + 1];
-    for (int i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
-        snprintf(md5Ori + i * 2, 3, "%02x", md[i]);
-    }
 
-    if (strcmp(md5Ori, [deviceIdOri UTF8String]) == 0) {
+    const char *buf = (const char *)data;
+    // 2c:ca:16:7e:1b:75DN6W69D75R
+    if (len > 17 && buf[2] == ':' && buf[5] == ':') {
         unsigned char fakeMD5[CC_MD5_DIGEST_LENGTH] = {
             0x12, 0x34, 0x56, 0x78, 0x90, 0x12, 0x34, 0x56,
             0x78, 0x90, 0x12, 0x34, 0x56, 0x78, 0x90, 0x12
         };
         memcpy(md, fakeMD5, CC_MD5_DIGEST_LENGTH);
-        NSMutableString *fakeMD5Str = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
-        for (int i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
-            [fakeMD5Str appendFormat:@"%02x", fakeMD5[i]];
-        }
-        NSLogger(@"[Hooked CC_MD5] Returning Fake MD5: %@", fakeMD5Str);
+        NSLogger(@"[FAKE CC_MD5] in=%s len=%ld", buf, (long)len);
         return md;
     }
-    
-    return result;
+    return CC_MD5_ori(data, len, md);
 }
 
 
@@ -76,8 +66,6 @@ static unsigned char *hk_CC_MD5(const void *data, CC_LONG len, unsigned char *md
 //                   swizzledClass:[self class]
 //                swizzledSelector:NSSelectorFromString(@"hk_URLWithString:")
 //    ];
-    deviceIdOri = [EncryptionUtils generateTablePlusDeviceId];
-    NSLogger(@"deviceIdOri is %@",deviceIdOri);
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     NSString *applicationSupportDirectory = [paths firstObject];
     // 获取当前应用程序的 bundle identifier

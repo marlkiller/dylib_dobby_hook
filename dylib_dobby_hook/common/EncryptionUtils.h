@@ -12,9 +12,7 @@
 @interface EncryptionUtils : NSObject
 
 + (NSString *)runCommand:(NSString *)command trimWhitespace:(BOOL)trim;
-+ (NSString *)generateTablePlusDeviceId;
 
-+ (NSString *)generateSurgeDeviceId;
 + (NSString *)calculateMD5:(NSString *) input;
 
 + (NSString*) calculateSHA1OfFile:(NSString *)filePath;

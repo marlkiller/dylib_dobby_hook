@@ -208,6 +208,5 @@ OSStatus hk_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result);
 
 NSString *love69(NSString *input);
 
-int destory_inject_thread(void);
 
 #endif /* common_ret_h */
