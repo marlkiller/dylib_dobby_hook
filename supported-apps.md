@@ -5,6 +5,7 @@
 > Due to certain reasons, the hook injection code for some apps is not publicly available. We appreciate your understanding.
 
 
+## MacOS
 | App                 | version | x86 | arm | Download                                                    | SIP | Author      |
 |---------------------|---------| --- | --- |-------------------------------------------------------------| --- | ----------- |
 | TablePlus           | 6.*     | ✔   | ✔   | <https://tableplus.com/>                                    |     |             |
@@ -53,6 +54,13 @@
 | MDClock             | 2.*     | ✔   | ✔   | App Store                                                   | ON  |             |
 | Updatest            | 2.*     | ✔   | ✔   | https://updatest.app/                                       | ON  |             |
 | ShareMouse          | 7.*     | ✔   | ✔   | <https://www.sharemouse.com/>                               |     | LOVECHEN    |
+
+## iOS
+| App                 | version | Download                                                    | Author      |
+|---------------------|---------|-------------------------------------------------------------| ----------- |
+| Endel               | *       | App Store                                                   | alicelovestolearn |
+| Hacker News         | *       | App Store                                                   | alicelovestolearn |
+| loveRead            | *       | App Store                                                   | WPF0414     |
 <details>
   <summary>(TODO) Details</summary>
 </details>
