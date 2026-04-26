@@ -44,6 +44,11 @@
             "type": "string",
             "description": "Default is @rpath/{dylib_name}"
           },
+          "inherit_dylib": {
+            "type": "boolean",
+            "default": false,
+            "description": "If true, the injected dylib will be inherited by child processes."
+          },
           "inject_param": {
             "type": "string",
             "default": "--inplace --weak --all-yes --no-strip-codesig",
@@ -117,9 +122,10 @@
                     "LaunchAgents",
                     "LaunchDaemons",
                     "LoginItems",
+                    "XPCServices",
                     "SubApps"
                   ],
-                  "description": "The type of service, e.g., LaunchServices, LaunchAgents, LaunchDaemons, LoginItems or SubApps."
+                  "description": "The type of service, e.g., LaunchServices, LaunchAgents, LaunchDaemons, LoginItems, XPCServices or SubApps."
                 },
                 "service_name": {
                   "type": "string",

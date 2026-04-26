@@ -410,6 +410,40 @@ def export_entitlements(target_bin, entitlements_path=None):
     return temp_entitlements_path
 
 
+def resolve_service_bundle_path(service, app_path):
+    """
+    Resolve the bundle path for a service (.xpc or .app).
+    """
+    base_path = os.path.join(
+        app_path, "Contents", service.get("service_type"), service.get("service_name")
+    )
+    for ext in [".xpc", ".app"]:
+        candidate = base_path + ext
+        if os.path.isdir(candidate):
+            log_info(f"📦 Found service bundle directory: {candidate}")
+            return candidate
+    log_info(f"📄 No bundle directory found under {base_path}, using service_bin_path")
+    return None
+
+
+def resolve_service_resign_target(service, app_path):
+    """
+    Resolve the resign target for a service.
+    If the service bundle directory exists, return that path.
+    Otherwise return None so the binary path can be used.
+    """
+    base_path = os.path.join(
+        app_path, "Contents", service.get("service_type"), service.get("service_name")
+    )
+    for ext in [".xpc", ".app"]:
+        candidate = base_path + ext
+        if os.path.isdir(candidate):
+            log_info(f"📦 Found service resign target directory: {candidate}")
+            return candidate
+    log_info(f"📄 No service bundle directory found for resign target under {base_path}")
+    return None
+
+
 def process_service(service, app_context):
     """
     Process a single service configuration.
@@ -417,7 +451,7 @@ def process_service(service, app_context):
     app_path = app_context.get("app_path")
     app_framework_path = app_context.get("app_framework_path")
     service_name = service.get("service_name")
-    dylib_name = app.get("dylib_name", DEFAULT_DYLIB_NAME)
+    dylib_name = app_context.get("dylib_name", DEFAULT_DYLIB_NAME)
     service_identity = service.get("service_identity", service_name)
     fix_privileged_executables = service.get("fix_privileged_executables", True)
     sm_privileged_executables = service.get(
@@ -426,20 +460,26 @@ def process_service(service, app_context):
     re_sign_flag = app_context.get("re_sign", True)
     service_bin_path = service.get("service_bin_path")
     inject_service = service.get("inject_service", False)
+    inherit_dylib = service.get("inherit_dylib", True)
     fix_helper = service.get("fix_helper", True)
     patches = service.get("patches", [])
     re_sign_param = service.get("re_sign_param", DEFAULT_RE_SIGN_PARAM)
     re_sign_entitlements = service.get("re_sign_entitlements", False)
     re_sign_entitlements_path = service.get("re_sign_entitlements_path")
+    temp_entitlements_path = None
+    need_tmp_entitlements = True
+    if re_sign_entitlements_path:
+        need_tmp_entitlements = False
 
     log_info(f"Processing service: {service_name}")
 
-    temp_entitlements_path = None
     if re_sign_flag and re_sign_entitlements:
-        temp_entitlements_path = export_entitlements(
+        resolved_entitlements_path = export_entitlements(
             service_bin_path, re_sign_entitlements_path
         )
-        re_sign_entitlements_path = temp_entitlements_path
+        re_sign_entitlements_path = resolved_entitlements_path
+        if need_tmp_entitlements:
+            temp_entitlements_path = resolved_entitlements_path
 
     # Kill related processes by service_name
     log_info(f"🔄 Killing processes related to service: {service_name}")
@@ -473,16 +513,43 @@ def process_service(service, app_context):
     # Handle injection
     if inject_service:
         re_sign_flag = True  # Enable re-signing for injected services
-        log_info(f"Injecting dylib into service binary (static): {service_bin_path}")
-        log_info(f"Checking signature before re-signing for: {service_bin_path}")
-        run_cmd_ignore_error(
-            f"sudo codesign -d -vvv --entitlements - '{service_bin_path}'"
-        )
-        if not check_dylib_exist(service_bin_path, dylib_name):
-            inject_param = service.get("inject_param", DEFAULT_INJECT_PARAM)
-            run_cmd_or_raise(
-                f"sudo {insert_dylib} {inject_param} '{app_framework_path}/{dylib_name}' '{service_bin_path}'"
-            )
+        inject_param = service.get("inject_param", DEFAULT_INJECT_PARAM)
+
+        if inherit_dylib:
+            log_info(f"Injecting inherited dylib into service binary: {service_bin_path}")
+            if not check_dylib_exist(service_bin_path, dylib_name):
+                run_cmd_or_raise(
+                    f"sudo {insert_dylib} {inject_param} '{app_framework_path}/{dylib_name}' '{service_bin_path}'"
+                )
+        else:
+            service_bundle_path = resolve_service_bundle_path(service, app_path)
+            if service_bundle_path:
+                service_frameworks_dir = os.path.join(
+                    service_bundle_path, "Contents", "Frameworks"
+                )
+                log_info(f"📂 Creating service Frameworks directory: {service_frameworks_dir}")
+                os.makedirs(service_frameworks_dir, exist_ok=True)
+
+                target_dylib_path = os.path.join(service_frameworks_dir, dylib_name)
+                log_info(f"📂 Copying dylib to: {target_dylib_path}")
+                run_cmd_ignore_output(
+                    f'sudo cp -f "{release_dylib}" "{target_dylib_path}"'
+                )
+
+                log_info(f"🔐 Re-signing service dylib: {target_dylib_path}")
+                re_codesign(target_dylib_path, re_sign_param)
+
+                if not check_dylib_exist(service_bin_path, dylib_name):
+                    # dylib_path = f"@rpath/{dylib_name}"
+                    run_cmd_or_raise(
+                        f"sudo {insert_dylib} {inject_param} '{target_dylib_path}' '{service_bin_path}'"
+                    )
+            else:
+                log_warning(f"⚠️ Could not find bundle for service {service_name}, falling back to inherit dylib.")
+                if not check_dylib_exist(service_bin_path, dylib_name):
+                    run_cmd_or_raise(
+                        f"sudo {insert_dylib} {inject_param} '{app_framework_path}/{dylib_name}' '{service_bin_path}'"
+                    )
 
     # Fix helper or apply patches
     if fix_helper or patches:
@@ -508,13 +575,24 @@ def process_service(service, app_context):
             )
 
         log_info(f"Re-signing service: {service_name}")
-        re_codesign(
-            service_bin_path,
-            re_sign_param,
-            re_sign_entitlements,
-            re_sign_entitlements_path,
-        )
-        if temp_entitlements_path:
+        service_resign_target = resolve_service_resign_target(service, app_path)
+        if service_resign_target:
+            log_info(f"Re-signing service bundle path: {service_resign_target}")
+            re_codesign(
+                service_resign_target,
+                re_sign_param,
+                re_sign_entitlements,
+                re_sign_entitlements_path,
+            )
+        else:
+            log_info(f"Re-signing service binary: {service_bin_path}")
+            re_codesign(
+                service_bin_path,
+                re_sign_param,
+                re_sign_entitlements,
+                re_sign_entitlements_path,
+            )
+        if temp_entitlements_path and need_tmp_entitlements:
             log_info(f"Removing temporary entitlements file: {temp_entitlements_path}")
             os.remove(temp_entitlements_path)
 
@@ -631,8 +709,9 @@ def process_app(app):
     app_re_sign_param = app.get("re_sign_param", DEFAULT_RE_SIGN_PARAM)
     app_re_sign_entitlements = app.get("re_sign_entitlements", False)
     app_re_sign_entitlements_path = app.get("re_sign_entitlements_path")
-    app_temp_entitlements_path = None
-
+    need_tmp_entitlements = True
+    if app_re_sign_entitlements_path:
+        need_tmp_entitlements = False
     app_temp_entitlements_path = None
     if re_sign_flag and app_re_sign_entitlements:
         app_temp_entitlements_path = export_entitlements(
@@ -665,10 +744,14 @@ def process_app(app):
     if inject_type != "none":
         app_bundle_framework = f"{app_path}/Contents/Frameworks"
         os.makedirs(app_bundle_framework, exist_ok=True)
+        target_dylib_path = f"{app_bundle_framework}/{dylib_name}"
         log_info(f"Copying dylib to: {app_bundle_framework}")
         run_cmd_ignore_output(
-            f'sudo cp -f "{release_dylib}" "{app_bundle_framework}/{dylib_name}"'
+            f'sudo cp -f "{release_dylib}" "{target_dylib_path}"'
         )
+
+        log_info(f"🔐 Re-signing copied dylib: {target_dylib_path}")
+        re_codesign(target_dylib_path, app_re_sign_param)
 
     # Handle injection based on inject_type
     if inject_type == "static":
@@ -694,7 +777,7 @@ def process_app(app):
             app_re_sign_entitlements,
             app_re_sign_entitlements_path,
         )
-        if app_temp_entitlements_path:
+        if app_temp_entitlements_path and need_tmp_entitlements:
             log_info(
                 f"Removing temporary entitlements file: {app_temp_entitlements_path}"
             )
