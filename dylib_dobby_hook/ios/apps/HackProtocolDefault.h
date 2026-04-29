@@ -10,7 +10,7 @@
 
 @interface HackProtocolDefault : CommonRetOC
 
-
+void ShowPremiumPopup(NSString *titleText,NSString *messageText,NSString *buttonText);
 
 @end
 #endif 
