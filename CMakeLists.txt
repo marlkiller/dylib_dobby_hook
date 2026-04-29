@@ -231,6 +231,7 @@ else()
         "-framework UIKit"
         "-framework IOKit"
         "-framework CloudKit"
+        "-framework CoreGraphics"
         "-framework Security"
         c++
         c
