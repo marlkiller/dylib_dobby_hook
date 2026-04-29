@@ -61,6 +61,7 @@
 | Endel               | *       | App Store                                                   | alicelovestolearn |
 | Hacker News         | *       | App Store                                                   | alicelovestolearn |
 | loveRead            | *       | App Store                                                   | WPF0414     |
+| DramaBox            | *       | App Store                                                   | jixifydev   |
 <details>
   <summary>(TODO) Details</summary>
 </details>
