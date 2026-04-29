@@ -38,19 +38,16 @@ static IMP didReceiveDataIMP;
     if ([urlString containsString:@"sapi.dramaboxdb.com"] || [urlString containsString:@"sapi.dramaboxvideo.com"]) {
         NSString *body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        //ShowLoggerPopup([NSString stringWithFormat:@"URL: %@", urlString]);
         if ([json isKindOfClass:NSDictionary.class]) {
             NSMutableDictionary *dict = [(NSDictionary *)json mutableCopy];
 
             id dataObj = dict[@"data"];
-            //ShowLoggerPopup([NSString stringWithFormat:@"data: %@", dataObj]);
             if ([dataObj isKindOfClass:NSDictionary.class]) {
                 NSMutableDictionary *dataDict = [(NSDictionary *)dataObj mutableCopy];
                 id subscribeObj = dataDict[@"subscribeInfo"];
                 NSMutableDictionary *subscribeDict = [(NSDictionary *)subscribeObj mutableCopy];
 
                 if (dataDict[@"isVip"]) {
-                    //ShowLoggerPopup([NSString stringWithFormat:@"hooked isVip!"]);
                     if (dataDict[@"subscribeInfo"]) {
                         subscribeDict[@"isVip"] = @1;
                         dataDict[@"subscribeInfo"] = subscribeDict;
@@ -103,7 +100,6 @@ static IMP didReceiveDataIMP;
                     return;
             }
         }
-       // ShowLoggerPopup([NSString stringWithFormat:@"[Delegate didReceiveData] URL: %@", urlString]);
         NSLogger(@"[Delegate didReceiveData] Data: %@", body);
         
     }
