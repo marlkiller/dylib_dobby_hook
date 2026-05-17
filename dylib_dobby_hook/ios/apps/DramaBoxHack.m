@@ -21,11 +21,11 @@
 
 static IMP didReceiveDataIMP;
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.storymatrix.drama";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"";
 }
 

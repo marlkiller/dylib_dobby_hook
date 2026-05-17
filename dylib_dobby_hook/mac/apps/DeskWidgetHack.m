@@ -21,11 +21,11 @@
 @implementation DeskWidgetHack
 static IMP urlWithStringSeletorIMP;
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.byteapp.widget";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"";
 }
 

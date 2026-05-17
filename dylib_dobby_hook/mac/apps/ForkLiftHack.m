@@ -23,12 +23,12 @@
 
 @implementation ForkLiftHack
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     // com.binarynights.ForkLiftHelper
     return @"com.binarynights.ForkLift";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"4.";
 }
 

@@ -24,12 +24,12 @@
 @implementation InfuseHack
 
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     // 2024-05-11 15:45:29.526 Infuse[84842:2247193] >>>>>> AppName is [com.firecore.infuse],Version is [7.7.5], myAppCFBundleVersion is [7.7.4827].
     return @"com.firecore.infuse";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"8";
 }
 

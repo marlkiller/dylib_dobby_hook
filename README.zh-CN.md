@@ -67,11 +67,11 @@ sudo bash auto_hack.sh
 
 @implementation XXXHack
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
 return @"com.dev.xxx";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
 return @"1.0";
 }
 
@@ -140,4 +140,3 @@ TODO
 
 仅供研究学习使用，请勿用于非法用途  
 注：若转载请注明来源（本贴地址）与作者信息。
-

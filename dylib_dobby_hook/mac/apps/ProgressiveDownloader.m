@@ -21,11 +21,11 @@
 @implementation ProgressiveDownloader
 
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.PS.PSD";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"";
 }
 

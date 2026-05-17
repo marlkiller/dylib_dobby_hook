@@ -23,12 +23,12 @@
 
 static IMP updateUIForCustomerIMP;
 
-- (NSString*)getAppName
++ (NSString*)getAppName
 {
     return @"com.macpaw.CleanMyMac5";
 }
 
-- (NSString*)getSupportAppVersion
++ (NSString*)getSupportAppVersion
 {
     // AppName is [com.macpaw.CleanMyMac5],Version is [5.0.7], myAppCFBundleVersion is [50007.0.2503261326].
     return @"5.";

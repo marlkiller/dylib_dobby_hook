@@ -23,13 +23,13 @@
 
 
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     // >>>>>> AppName is [codes.rambo.AirBuddyHelper],Version is [2.7.3], myAppCFBundleVersion is [641].
     // >>>>>> AppName is [codes.rambo.AirBuddy],Version is [2.7.3], myAppCFBundleVersion is [641].
     return @"codes.rambo.AirBuddy";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"2.";
 }
 

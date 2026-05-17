@@ -19,11 +19,11 @@
 
 @implementation DevHack
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.voidm.ios-app-dev-swift";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"";
 }
 

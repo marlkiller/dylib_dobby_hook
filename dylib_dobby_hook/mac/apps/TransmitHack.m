@@ -21,11 +21,11 @@
 
 @implementation TransmitHack
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.panic.Transmit";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     // 5.10.4
     return @"5.";
 }

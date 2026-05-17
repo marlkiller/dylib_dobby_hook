@@ -19,11 +19,11 @@
 
 @implementation LiveWallpaperHack
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"whbalzac.Huajian";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"";
 }
 

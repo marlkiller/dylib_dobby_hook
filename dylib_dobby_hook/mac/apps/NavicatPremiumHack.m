@@ -23,11 +23,11 @@ static IMP displayRegisteredInfoIMP;
 static IMP subscriptionIsValidIMP;
 
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.navicat.NavicatPremium";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"17.";
 }
 

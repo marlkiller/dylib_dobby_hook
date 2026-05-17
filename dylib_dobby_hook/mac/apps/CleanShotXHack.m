@@ -22,11 +22,11 @@ static IMP JSONObjectWithDataIMP;
 
 @implementation CleanShotXHack
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"pl.maketheweb.cleanshotx";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"4.";
 }
 

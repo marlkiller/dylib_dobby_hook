@@ -20,11 +20,11 @@
 
 @implementation SenPlayerHack
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.wuziqi.SenPlayer";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"5.6.3";
 }
 

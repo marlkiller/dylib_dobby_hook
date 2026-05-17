@@ -21,11 +21,11 @@
 @implementation NotchNook
 
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"lo.cafe.NotchNook";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"";
 }
 

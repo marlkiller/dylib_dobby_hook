@@ -25,11 +25,11 @@
 @implementation ishotHack
 static IMP displayRegisteredInfoIMP;
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"cn.better365.ishot";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"2.5";
 }
 

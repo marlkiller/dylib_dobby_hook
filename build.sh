@@ -80,7 +80,7 @@ if [ "$BUILD_SYSTEM" = "xcode" ]; then
   else
     echo "ℹ️ Hikari disabled for Xcode."
   fi
-  rm -rf "$$DERIVED_DATA_PATH"
+  rm -rf "$DERIVED_DATA_PATH"
   xcodebuild clean -target "dylib_dobby_hook_$TARGET_OS" -configuration "$BUILD_TYPE" SYMROOT="$DERIVED_DATA_PATH"
   xcodebuild "${XCODE_ARGS[@]}"
   PRODUCT_DYLIB="$DERIVED_DATA_PATH/Build/Products/$BUILD_TYPE/libdylib_dobby_hook.dylib"

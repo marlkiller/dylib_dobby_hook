@@ -18,7 +18,7 @@
 @implementation CleanMyMacAgentHack
 
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.macpaw.CleanMyMac5.Agent";
 }
  

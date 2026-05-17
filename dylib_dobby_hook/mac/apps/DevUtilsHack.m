@@ -19,11 +19,11 @@
 @implementation DevUtilsHack
 
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"tonyapp.devutils";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"1.";
 }
 
@@ -40,6 +40,9 @@
     NSArray *setAppPatchPtrs =[MemoryUtils getPtrFromMachineCode:(NSString *) @"/Contents/MacOS/DevUtils"
                                                       machineCode:(NSString *) setAppPatchOriginal
                                                             count:(int)1];
+    if (setAppPatchPtrs.count == 0) {
+        return NO;
+    }
     uintptr_t setAppPatchPtr = [setAppPatchPtrs[0] unsignedIntegerValue];
     write_mem((void*)setAppPatchPtr,(uint8_t *)setAppPatchTarget,sizeof(setAppPatchTarget) / sizeof(setAppPatchTarget[0]));
 

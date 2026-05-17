@@ -5,7 +5,7 @@ description: Work on this dylib_dobby_hook_private project. Use when adding or e
 
 # Dylib Dobby Hook
 
-项目入口：`+[dylib_dobby_hook load] -> [Constant doHack]`。扩展方式是新增或修改 `HackProtocolDefault` 子类；`doHack` 会枚举子类，按 `shouldInject:` 和 `getSupportAppVersion` 匹配后调用 `hack`。
+项目入口：`+[dylib_dobby_hook load] -> [Constant doHack]`。扩展方式是新增或修改 `HackProtocolDefault` 子类；`doHack` 会枚举子类，先用类方法 `+shouldInject:` 和 `+getSupportAppVersion` 匹配，命中后才创建实例并调用 `hack`。
 
 常看文件：
 
@@ -31,11 +31,11 @@ macOS app 放 `dylib_dobby_hook/mac/apps/XXXHack.m`，iOS app 放 `dylib_dobby_h
 
 @implementation XXXHack
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.example.app";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"1."; // 用版本前缀；不限制时返回 @""
 }
 
@@ -51,10 +51,10 @@ macOS app 放 `dylib_dobby_hook/mac/apps/XXXHack.m`，iOS app 放 `dylib_dobby_h
 @end
 ```
 
-`shouldInject:` 默认按 bundle id 前缀匹配。框架型/base hook 可重写，例如检测某个 image 是否加载：
+`+shouldInject:` 默认按 bundle id 前缀匹配。框架型/base hook 可重写，例如检测某个 image 是否加载：
 
 ```objective-c
-- (BOOL)shouldInject:(NSString *)target {
++ (BOOL)shouldInject:(NSString *)target {
     return [MemoryUtils indexForImageWithName:@"Paddle"] > 0;
 }
 ```

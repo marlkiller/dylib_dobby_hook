@@ -28,11 +28,11 @@ static IMP urlWithStringSeletorIMP;
 static IMP dataTaskWithRequestIMP;
 
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.tinyapp.TablePlus";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"6.";
 }
 

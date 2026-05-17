@@ -29,7 +29,7 @@
 static IMP dataTaskWithRequestIMP;
 static IMP _dataTaskWithRequestIMP;
 
-- (BOOL)shouldInject:(NSString *)target {
++ (BOOL)shouldInject:(NSString *)target {
     
 //    Movist Pro
 //    Downie 4

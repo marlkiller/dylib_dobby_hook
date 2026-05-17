@@ -28,11 +28,11 @@
 //static IMP listenerIMP;
 
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.binarynights.ForkLiftHelper";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"4.";
 }
 

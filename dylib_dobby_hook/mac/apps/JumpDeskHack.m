@@ -29,11 +29,11 @@ static IMP hook_check_jdlicenseIMP2;
 @implementation JumpDesktopHack
 
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.p5sys.jump.mac.viewer.web";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"9.1.9";
 }
 

@@ -47,17 +47,17 @@
 }
 
 
-- (NSString *)getAppName { 
++ (NSString *)getAppName { 
     return @"";
 }
 
-- (NSString *)getSupportAppVersion { 
++ (NSString *)getSupportAppVersion { 
     return @"";
 }
 
 - (void)firstLaunch {}
 
-- (BOOL)shouldInject:(NSString *)target {
++ (BOOL)shouldInject:(NSString *)target {
     NSString *appName = [self getAppName];
     return [target hasPrefix:appName];
 }

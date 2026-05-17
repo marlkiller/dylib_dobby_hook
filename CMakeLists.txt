@@ -89,7 +89,7 @@ file(GLOB StaticLibs ${CMAKE_SOURCE_DIR}/libs/${TARGET_OS}/*.a)
 
 include_directories(
         ${CMAKE_SOURCE_DIR}/dylib_dobby_hook
-        ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/Common
+        ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/common
         ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/utils
         ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/apps
         ${CMAKE_SOURCE_DIR}/dylib_dobby_hook/${TARGET_OS}/helpers

@@ -19,11 +19,11 @@
 @implementation ProxymanHelperHack
 
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.proxyman.NSProxy.HelperTool";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"1.";
 }
 - (BOOL)hack {

@@ -12,11 +12,11 @@
 
 static IMP originalDataTask = NULL;
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.endel.endel";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"";
 }
 

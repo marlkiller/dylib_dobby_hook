@@ -308,15 +308,15 @@ void initEnv(void){
         
         NSArray<Class> *hackClasses = [Constant getAllHackClasses];
         NSLogger(@"Initiating doHack operation...");
-        for (Class class in hackClasses) {
-            NSLogger(@"Processing class - %@", NSStringFromClass(class));
-            id<HackProtocol> it = [[class alloc] init];
-            if ([it shouldInject:_currentAppName]) {
-                NSString *supportAppVersion = [it getSupportAppVersion];
+        for (Class hackClass in hackClasses) {
+            NSLogger(@"Processing class - %@", NSStringFromClass(hackClass));
+            if ([hackClass shouldInject:_currentAppName]) {
+                NSString *supportAppVersion = [hackClass getSupportAppVersion];
                 if (supportAppVersion==NULL ||
                     supportAppVersion.length==0 ||
                     _currentAppVersion==NULL  ||
                     (_currentAppVersion!=NULL && [_currentAppVersion hasPrefix:supportAppVersion]) ) {
+                    id<HackProtocol> it = [[hackClass alloc] init];
                     if ([Constant isFirstOpen]) {
                     #if TARGET_OS_OSX
                     if (canShowAlert()) {
@@ -337,7 +337,7 @@ void initEnv(void){
 
                 }else{
                     NSLogger(@"[ERROR] Unsupported current appVersion !! Suppert appVersion: [%@] Current appVersion: [%@]",
-                          [it getSupportAppVersion], _currentAppVersion);
+                          [hackClass getSupportAppVersion], _currentAppVersion);
                 }
             }
         }

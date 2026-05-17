@@ -30,13 +30,13 @@
 @implementation AlfredHack
 
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     // >>>>>> AppName is [com.runningwithcrayons.Alfred],Version is [5.5.1], myAppCFBundleVersion is [2273].
     // >>>>>> AppName is [com.runningwithcrayons.Alfred-Preferences],Version is [5], myAppCFBundleVersion is [1].
     return @"com.runningwithcrayons.Alfred";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"5";
 }
 

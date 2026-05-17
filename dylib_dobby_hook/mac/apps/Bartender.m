@@ -21,11 +21,11 @@
 @implementation Bartender
 
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.surteesstudios.Bartender";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"6.";
 }
 

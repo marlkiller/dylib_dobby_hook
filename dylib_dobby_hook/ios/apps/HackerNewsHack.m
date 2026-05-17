@@ -14,11 +14,11 @@
 
 #pragma mark - App Information
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.pranapps.ByteHackerNews";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"";
 }
 

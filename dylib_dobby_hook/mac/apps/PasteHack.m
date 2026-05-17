@@ -13,11 +13,11 @@
 @implementation PasteHack
 
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.wiheads.paste";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"4.";
 }
 

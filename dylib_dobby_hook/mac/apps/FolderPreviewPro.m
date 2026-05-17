@@ -21,11 +21,11 @@
 @implementation FolderPreviewPro
 
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"ltd.anybox.FolderPreview.Pro";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"";
 }
 

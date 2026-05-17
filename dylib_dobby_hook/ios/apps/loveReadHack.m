@@ -21,12 +21,12 @@
 #pragma mark - App Information
 
 /// 返回目标应用的Bundle ID
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.xyStudio.loveRead";
 }
 
 /// 返回支持的应用版本（空字符串表示支持所有版本）
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"";
 }
 

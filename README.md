@@ -67,11 +67,11 @@ The basic code has been completed. To be compatible with more app patches, the a
 
 @implementation XXXHack
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
 return @"com.dev.xxx";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
 return @"1.0";
 }
 
@@ -140,4 +140,3 @@ TODO
 
 For research and learning purposes only. Please do not use for illegal purposes.   
 Note: If reprinted, please indicate the source (link to this post) and author information.
-

@@ -25,12 +25,12 @@
 
 static IMP viewDidLoadIMP;
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     // >>>>>> AppName is [com.proxyman.NSProxy],Version is [5.1.1], myAppCFBundleVersion is [50101].
     return @"com.proxyman.NSProxy";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"6";
 }
 

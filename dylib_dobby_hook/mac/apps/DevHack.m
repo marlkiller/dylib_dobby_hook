@@ -85,13 +85,13 @@ static NSWindow *myWindow = nil;
     
 }
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     // >>>>>> AppName is [com.voidm.mac-app-dev-swift],Version is [1.0], myAppCFBundleVersion is [1].
     // >>>>>> AppName is [com.morecats.Minesweeper],Version is [2.1.2], myAppCFBundleVersion is [9].
     return @"com.voidm.mac-app-dev-swift";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     return @"";
 }
 

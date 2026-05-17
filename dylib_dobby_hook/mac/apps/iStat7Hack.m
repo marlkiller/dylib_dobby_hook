@@ -24,11 +24,11 @@ static IMP dataTaskWithRequestIMP2;
 
 @implementation iStat7Hack
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"com.bjango.istatmenus";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     
     return @"7.";
 }

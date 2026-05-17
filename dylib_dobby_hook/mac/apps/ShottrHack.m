@@ -24,11 +24,11 @@ static IMP dataTaskWithRequestIMP;
 
 @implementation ShottrHack
 
-- (NSString *)getAppName {
++ (NSString *)getAppName {
     return @"cc.ffitch.shottr";
 }
 
-- (NSString *)getSupportAppVersion {
++ (NSString *)getSupportAppVersion {
     
     return @"1.";
 }
