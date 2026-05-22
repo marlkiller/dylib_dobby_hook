@@ -8,6 +8,7 @@ import datetime
 import glob
 import tempfile
 import base64
+import shlex
 
 # ANSI Color
 RESET = "\033[0m"
@@ -31,7 +32,6 @@ DEFAULT_INJECT_PARAM = "--inplace --weak --all-yes --no-strip-codesig"
 # --all-architectures        # 针对所有架构签名（如 arm64 和 x86_64）/ Sign all architectures (e.g., arm64 + x86_64)
 # --deep                     # 递归签名整个 app bundle，包括 frameworks、插件等 / Deep sign the entire bundle recursively
 DEFAULT_RE_SIGN_PARAM = "-f -s - --all-architectures --deep"
-
 DEFAULT_INJECT_TYPE = "static"
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -365,6 +365,59 @@ def remove_quarantine_attribute(target_bin):
     run_cmd_ignore_output(
         f"sudo /usr/bin/xattr -r -d com.apple.quarantine '{target_bin}'"
     )
+
+
+def bundle_identifier_for_app(app):
+    bundle_id = app.get("bundle_id")
+    if bundle_id:
+        return str(bundle_id).strip()
+
+    app_path = app.get("app_path")
+    if not app_path:
+        return None
+
+    result = run_cmd_silent(
+        f"defaults read {shlex.quote(os.path.join(app_path, 'Contents/Info.plist'))} CFBundleIdentifier"
+    )
+    return result.strip() if result else None
+
+
+def reset_tcc_permissions(app):
+    """
+    Reset TCC decisions after injection.
+    Missing "tcc_reset" means do nothing.
+    "main" resets All for the main app bundle ID.
+    Other values are treated as a comma-separated bundle ID list.
+    """
+    if "tcc_reset" not in app:
+        return
+
+    raw_mode = str(app.get("tcc_reset", "")).strip()
+    if not raw_mode:
+        return
+
+    main_bundle_id = bundle_identifier_for_app(app)
+    if raw_mode.lower() == "main":
+        bundle_ids = [main_bundle_id] if main_bundle_id else []
+    else:
+        bundle_ids = [
+            bundle_id.strip()
+            for bundle_id in raw_mode.split(",")
+            if is_valid_bundle_identifier(bundle_id.strip())
+        ]
+
+    if not bundle_ids:
+        return
+
+    log_info(f"🧹 Resetting TCC mode={raw_mode}: {', '.join(bundle_ids)}")
+    for bundle_id in bundle_ids:
+        run_cmd_ignore_output(
+            f"/usr/bin/tccutil reset All {shlex.quote(bundle_id)}"
+        )
+
+
+def is_valid_bundle_identifier(value):
+    return re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]*(\.[A-Za-z0-9][A-Za-z0-9-]*)+", value) is not None
 
 
 def call_mac_patch_helper(fix_helper, bin_path, patches):
@@ -789,6 +842,8 @@ def process_app(app):
     if post_script:
         log_info(f"Running post_script for app: {app_name}")
         run_cmd_or_raise(f"{post_script}")
+
+    reset_tcc_permissions(app)
 
     log_info(f"Finished processing for app: {app_name}")
     log_separator()

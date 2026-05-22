@@ -81,6 +81,13 @@
             "type": "string",
             "description": "Specifies the script content to be executed after running this configuration."
           },
+          "tcc_reset": {
+            "type": "string",
+            "not": {
+              "pattern": "^[Aa][Uu][Tt][Oo]$"
+            },
+            "description": "Optional TCC reset target after injection. Omit to do nothing. Use 'main' to reset All for the main app bundle ID, or provide a comma-separated list of bundle IDs to reset. This only clears existing TCC decisions; it does not grant permissions, so macOS may prompt again on next protected-data access. Command demos: '/usr/bin/tccutil reset All com.example.App' and '/usr/bin/tccutil reset All com.example.App.Helper'."
+          },
           "other_patches": {
             "type": "object",
             "description": "Defines additional binary patches for specific files.",
