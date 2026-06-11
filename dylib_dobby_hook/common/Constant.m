@@ -318,18 +318,17 @@ void initEnv(void){
                     (_currentAppVersion!=NULL && [_currentAppVersion hasPrefix:supportAppVersion]) ) {
                     id<HackProtocol> it = [[hackClass alloc] init];
                     if ([Constant isFirstOpen]) {
-                    #if TARGET_OS_OSX
-                    if (canShowAlert()) {
-                        [it firstLaunch];
-                        }
-                        [it hack];
-                    #else
                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)),
                                        dispatch_get_main_queue(), ^{
-                            [it firstLaunch];
-                            [it hack];
+                            #if TARGET_OS_OSX
+                                if (canShowAlert()) {
+                                    [it firstLaunch];
+                                }
+                            #else
+                                [it firstLaunch];
+                            #endif
+                                [it hack];
                         });
-                    #endif
                     } else {
                         [it hack];
                     }

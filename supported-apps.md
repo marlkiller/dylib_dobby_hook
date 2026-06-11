@@ -1,10 +1,5 @@
 # Supported Apps
 
-**WARN：**
-> 由于某种原因，部分应用的 Hook 注入代码未公开，敬请谅解。  
-> Due to certain reasons, the hook injection code for some apps is not publicly available. We appreciate your understanding.
-
-
 ## MacOS
 | App                 | version | x86 | arm | Download                                                    | SIP | Author      |
 |---------------------|---------| --- | --- |-------------------------------------------------------------| --- | ----------- |
@@ -20,6 +15,7 @@
 | Downie              | 4.*     | ✔   | ✔   | <https://software.charliemonroe.net/downie/>                |     |             |
 | Permute             | 3.*     | ✔   | ✔   | <https://software.charliemonroe.net/permute/>               |     |             |
 | ProxyMan            | 6.      | ✔   | ✔   | <https://proxyman.io/>                                      | ON  |             |
+| TCP Viewer          | 1.      | ✔   | ✔   | <https://tcpviewer.proxyman.com/>                           | ON  |             |
 | Movist Pro          | 2.*     | ✔   | ✔   | <https://movistprime.com/>                                  |     |             |
 | Surge               | 6.*     | ✔   | ✔   | <https://nssurge.com/>                                      | ON  |             |
 | Infuse              | 8.*     | ✔   | ✔   | App Store                                                   |     |             |
@@ -54,6 +50,7 @@
 | MDClock             | 2.*     | ✔   | ✔   | App Store                                                   | ON  |             |
 | Updatest            | 2.*     | ✔   | ✔   | https://updatest.app/                                       | ON  |             |
 | ShareMouse          | 7.*     | ✔   | ✔   | <https://www.sharemouse.com/>                               |     | LOVECHEN    |
+| djay Pro            | 5.*     | ✔   | ✔   | App Store                                                   |     | LOVECHEN    |
 
 ## iOS
 | App                 | version | Download                                                    | Author      |
