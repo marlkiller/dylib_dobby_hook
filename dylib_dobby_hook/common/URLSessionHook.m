@@ -650,27 +650,27 @@ static NSString *const F_RES_NW   = @"⬇️  NW Response";
 static NSMutableDictionary<NSValue *, NSMutableData *> *sslResponseCaches;
 static NSMutableSet<NSValue *> *sslResponseCompleteConnections;
 
-static NSMutableData *cache_for_conn(SSLContextRef conn) {
-    NSValue *key = [NSValue valueWithPointer:conn];
-    @synchronized (sslResponseCaches) {
-        NSMutableData *cache = sslResponseCaches[key];
-        if (!cache) {
-            cache = [NSMutableData data];
-            sslResponseCaches[key] = cache;
-        }
-        return cache;
-    }
-}
-
-static void clear_cache_for_conn(SSLContextRef conn) {
-    NSValue *key = [NSValue valueWithPointer:conn];
-    @synchronized (sslResponseCaches) {
-        [sslResponseCaches removeObjectForKey:key];
-    }
-    @synchronized (sslResponseCompleteConnections) {
-        [sslResponseCompleteConnections removeObject:key];
-    }
-}
+//static NSMutableData *cache_for_conn(SSLContextRef conn) {
+//    NSValue *key = [NSValue valueWithPointer:conn];
+//    @synchronized (sslResponseCaches) {
+//        NSMutableData *cache = sslResponseCaches[key];
+//        if (!cache) {
+//            cache = [NSMutableData data];
+//            sslResponseCaches[key] = cache;
+//        }
+//        return cache;
+//    }
+//}
+//
+//static void clear_cache_for_conn(SSLContextRef conn) {
+//    NSValue *key = [NSValue valueWithPointer:conn];
+//    @synchronized (sslResponseCaches) {
+//        [sslResponseCaches removeObjectForKey:key];
+//    }
+//    @synchronized (sslResponseCompleteConnections) {
+//        [sslResponseCompleteConnections removeObject:key];
+//    }
+//}
 
 
 void log_connection(uintptr_t id, NSString *proto, NSString *flow, const void *data, size_t len) {
@@ -703,44 +703,44 @@ int is_http_data(const void *buf, size_t len) {
     }
     return 0;
 }
-
-// Hook SSLWrite 处理 HTTPS 请求日志
-static OSStatus hk_SSLWrite(SSLContextRef conn, const void *data, size_t len, size_t *processed) {
-    if (is_http_data(data, len)) {
-        log_connection((intptr_t)conn, P_HTTPS,F_REQ, data, len);
-    }
-    return SSLWrite(conn, data, len, processed);
-}
-
-// Hook SSLRead 处理 HTTPS 响应，缓存并打印完整响应头
-static OSStatus hk_SSLRead(SSLContextRef conn, void *data, size_t len, size_t *processed) {
-    OSStatus ret = SSLRead(conn, data, len, processed);
-    if (ret == errSecSuccess && processed && *processed > 0) {
-        NSValue *key = [NSValue valueWithPointer:conn];
-        @synchronized (sslResponseCompleteConnections) {
-            if ([sslResponseCompleteConnections containsObject:key]) {
-                log_connection((uintptr_t)conn, P_HTTPS,F_RES, data, *processed);
-            } else {
-                NSMutableData *cache = cache_for_conn(conn);
-                [cache appendBytes:data length:*processed];
-
-                NSString *cachedStr = [[NSString alloc] initWithData:cache encoding:NSUTF8StringEncoding];
-                if (cachedStr) {
-                    NSRange headerEndRange = [cachedStr rangeOfString:@"\r\n\r\n"];
-                    if (headerEndRange.location != NSNotFound) {
-                        NSData *fullResponse = [cache copy];
-                        log_connection((uintptr_t)conn, P_HTTPS,F_RES,fullResponse.bytes, fullResponse.length);
-                        [cache setLength:0];
-                        [sslResponseCompleteConnections addObject:key];
-                    }
-                }
-            }
-        }
-    } else if (ret != errSecSuccess) {
-        clear_cache_for_conn(conn);
-    }
-    return ret;
-}
+//
+//// Hook SSLWrite 处理 HTTPS 请求日志
+//static OSStatus hk_SSLWrite(SSLContextRef conn, const void *data, size_t len, size_t *processed) {
+//    if (is_http_data(data, len)) {
+//        log_connection((intptr_t)conn, P_HTTPS,F_REQ, data, len);
+//    }
+//    return SSLWrite(conn, data, len, processed);
+//}
+//
+//// Hook SSLRead 处理 HTTPS 响应，缓存并打印完整响应头
+//static OSStatus hk_SSLRead(SSLContextRef conn, void *data, size_t len, size_t *processed) {
+//    OSStatus ret = SSLRead(conn, data, len, processed);
+//    if (ret == errSecSuccess && processed && *processed > 0) {
+//        NSValue *key = [NSValue valueWithPointer:conn];
+//        @synchronized (sslResponseCompleteConnections) {
+//            if ([sslResponseCompleteConnections containsObject:key]) {
+//                log_connection((uintptr_t)conn, P_HTTPS,F_RES, data, *processed);
+//            } else {
+//                NSMutableData *cache = cache_for_conn(conn);
+//                [cache appendBytes:data length:*processed];
+//
+//                NSString *cachedStr = [[NSString alloc] initWithData:cache encoding:NSUTF8StringEncoding];
+//                if (cachedStr) {
+//                    NSRange headerEndRange = [cachedStr rangeOfString:@"\r\n\r\n"];
+//                    if (headerEndRange.location != NSNotFound) {
+//                        NSData *fullResponse = [cache copy];
+//                        log_connection((uintptr_t)conn, P_HTTPS,F_RES,fullResponse.bytes, fullResponse.length);
+//                        [cache setLength:0];
+//                        [sslResponseCompleteConnections addObject:key];
+//                    }
+//                }
+//            }
+//        }
+//    } else if (ret != errSecSuccess) {
+//        clear_cache_for_conn(conn);
+//    }
+//    return ret;
+//}
 
 // Hook send 处理 HTTP 请求日志
 ssize_t hk_send(int sockfd, const void *buf, size_t len, int flags) {

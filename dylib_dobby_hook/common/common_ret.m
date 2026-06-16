@@ -167,7 +167,7 @@ void printStackTrace(void) {
 
     // 预定义列宽
     const int moduleWidth = 28;
-    const int symWidth    = 40;
+//    const int symWidth    = 40;
 
     for (int i = 0; i < frameCount; i++) {
         uintptr_t pc = (uintptr_t)buffer[i];

@@ -82,7 +82,7 @@ int hook_TRTrialStatus(void){
 
     void* _TRTrialStatus = symtbl_solve([MemoryUtils indexForImageWithName:@"Transmit"], "_TRTrialStatus");
     NSLogger(@"_TRTrialStatus = %p", _TRTrialStatus);
-    tiny_hook(_TRTrialStatus, hook_TRTrialStatus, &hook_TRTrialStatus_ori);
+    tiny_hook(_TRTrialStatus, hook_TRTrialStatus,(void **) &hook_TRTrialStatus_ori);
     
     // license info
 //    __text:000000010002FAFB ; void __cdecl -[TransmitDelegate showLicense:](TransmitDelegate *self, SEL, id)
