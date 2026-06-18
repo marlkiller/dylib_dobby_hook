@@ -5,19 +5,24 @@
 #include <stdint.h>
 
 #ifdef NO_EXPORT
-#define TH_VIS __attribute__((visibility("hidden")))
+    #define TH_VIS __attribute__((visibility("hidden")))
 #else
-#define TH_VIS __attribute__((visibility("default")))
+    #define TH_VIS __attribute__((visibility("default")))
 #endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#define RESOLVE_ALL    0u
+#define RESOLVE_EXPORT 1u
+#define RESOLVE_SYMTAB 2u
+#define RESOLVE_STUBS  4u
+
 typedef struct {
     void *address;
     int jump_size;
-    uint8_t head_bak[16];
+    uint8_t head_bak[20];
 } th_bak_t;
 
 /* inline hook */
@@ -47,9 +52,11 @@ TH_VIS int read_mem(void *destination, const void *source, size_t len);
 TH_VIS int write_mem(void *destination, const void *source, size_t len);
 
 /* symbol resolve */
-TH_VIS void *symtbl_solve(uint32_t image_index, const char *symbol_name);
+TH_VIS void *symbol_resolve(uint32_t image_index, const char *symbol_name, uint resolve_type);
 
-TH_VIS void *symexp_solve(uint32_t image_index, const char *symbol_name);
+#define symtbl_solve(image_index, symbol_name)  symbol_resolve(image_index, symbol_name, RESOLVE_SYMTAB)
+#define symexp_solve(image_index, symbol_name)  symbol_resolve(image_index, symbol_name, RESOLVE_EXPORT)
+#define symstub_solve(image_index, symbol_name) symbol_resolve(image_index, symbol_name, RESOLVE_STUBS)
 
 #ifdef __cplusplus
 }

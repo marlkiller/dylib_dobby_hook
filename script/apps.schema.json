@@ -150,8 +150,8 @@
                 },
                 "inject_param": {
                   "type": "string",
-                  "default": "--inplace --weak --all-yes --overwrite",
-                  "description": "Specifies the injection parameter as a string, default is '--weak --all-yes'."
+                  "default": "--inplace --weak --all-yes --no-strip-codesig",
+                  "description": "Specifies the injection parameter as a string, default is '--inplace --weak --all-yes --no-strip-codesig'."
                 },
                 "fix_helper": {
                   "type": "boolean",

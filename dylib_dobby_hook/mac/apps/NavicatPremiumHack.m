@@ -30,7 +30,10 @@ static IMP subscriptionIsValidIMP;
 + (NSString *)getSupportAppVersion {
     return @"17.";
 }
-
+- (void)firstLaunch
+{
+    return;
+}
 
 //- (int)hk_productSubscriptionStillHaveTrialPeriod{
 //    NSLogger(@"Swizzled hk_productSubscriptionStillHaveTrialPeriod method called");
