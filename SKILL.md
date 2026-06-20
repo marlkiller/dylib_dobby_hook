@@ -1,15 +1,15 @@
 ---
 name: dylib-dobby-hook
-description: Work on this dylib_dobby_hook_private project. Use when adding or editing macOS/iOS dylib injection hooks, creating HackProtocolDefault subclasses, patching bytes with write_mem, hooking C functions or raw addresses with tiny_hook, resolving symbols with symtbl_solve/symexp_solve, or hooking Objective-C methods with MemoryUtils hookInstanceMethod/hookClassMethod/replaceInstanceMethod/replaceClassMethod.
+description: Work on this dylib_dobby_hook_private project. Use when adding or editing macOS/iOS dylib injection hooks, creating HackProtocolDefault subclasses, patching bytes with write_mem, hooking C functions or raw addresses with tiny_hook, interposing lazy symbols with tiny_interpose, resolving symbols with symtbl_solve/symexp_solve/symstub_solve, hooking Objective-C methods with MemoryUtils hookInstanceMethod/hookClassMethod/replaceInstanceMethod/replaceClassMethod, or hooking Swift functions with SWIFTCALL/SWIFT_INDIRECT_RESULT/SWIFT_CONTEXT attributes.
 ---
 
 # Dylib Dobby Hook
 
 项目入口：`+[dylib_dobby_hook load] -> [Constant doHack]`。扩展方式是新增或修改 `HackProtocolDefault` 子类；`doHack` 会枚举子类，先用类方法 `+shouldInject:` 和 `+getSupportAppVersion` 匹配，命中后才创建实例并调用 `hack`。
 
-常看文件：
+常用文件：
 
-- `dylib_dobby_hook/tinyhook.h`: `tiny_hook`, `symtbl_solve`, `symexp_solve`, `write_mem`, `ocrt_hook`
+- `dylib_dobby_hook/tinyhook.h`: `tiny_hook`, `tiny_interpose`, `symtbl_solve`, `symexp_solve`, `symstub_solve`, `write_mem`, `ocrt_hook`
 - `dylib_dobby_hook/common/MemoryUtils.h`: OC hook、特征码搜索、偏移换算、ivar/msgSend 工具
 - `dylib_dobby_hook/common/CommonRetOC.m`: `ret0`, `ret1`, `ret` 和通用 CloudKit/Keychain/SecCode hook
 - `dylib_dobby_hook/mac/apps/*.m`, `dylib_dobby_hook/ios/apps/*.m`: 现有 app hook 示例
@@ -139,7 +139,7 @@ tiny_hook((void *)targetAddr, (void *)ret0, NULL);
 
 ## tinyhook: 符号名
 
-已知符号时优先用 `symtbl_solve` 或 `symexp_solve`，少依赖硬编码偏移。
+已知符号时优先用 `symtbl_solve`（符号表）、`symexp_solve`（导出表）或 `symstub_solve`（桩/stub），少依赖硬编码偏移。`symstub_solve` 专用于 lazy bind 的 stub 符号（如 Swift 符号桥接函数），见 BoltAIHack.m。 
 
 ```objective-c
 static int (*orig_status)(void);
@@ -186,6 +186,40 @@ static int hk_status(void) {
                      machineCode:pattern
                         fake_func:(void *)ret
                             count:2];
+```
+
+## tinyhook: interpose 符号
+
+`tiny_interpose` 通过 dyld 的 lazy binding 机制拦截符号，适合 hook Swift 全局变量/getter 或无法直接 inline hook 的目标。原理是在 `__DATA,__interpose` 段替换符号的首次解析结果。
+
+```objective-c
+// Swift 全局变量 getter (Screens5Hack.m)
+typedef void (*OrigAccess)(SWIFT_CONTEXT void *, void *, void *) SWIFTCALL;
+static OrigAccess orig_access;
+
+static SWIFTCALL void hk_access(
+    SWIFT_CONTEXT void *registrar, void *subject, void *keyPath
+) {
+    // ...
+    if (orig_access) orig_access(registrar, subject, keyPath);
+}
+
+- (BOOL)hack {
+    int img = [MemoryUtils indexForImageWithName:@"Target"];
+    tiny_interpose(img,
+        "_$s11Observation0A9RegistrarV6access_7keyPath...",
+        (void *)hk_access, (void **)&orig_access);
+    return YES;
+}
+```
+
+```objective-c
+// Swift 全局变量 raw pointer (RevenueCatBaseHack.m)
+tiny_interpose(
+    [MemoryUtils indexForImageWithName:@"Target"],
+    "_$s10MDClockKit14AppEnvironmentO7currentACvau",
+    (void*)hook_AppEnvironment_current,
+    (void**)&orig_env_current);
 ```
 
 ## OC Method Hook
@@ -240,6 +274,33 @@ static BOOL hk_activated(id self, SEL _cmd) {
     return YES;
 }
 ```
+
+## Swift 函数 Hook
+
+Swift 调用约定与 C/ObjC 不同。hook 时用 `common_ret.h` 的宏标记参数和函数：
+`SWIFTCALL` / `SWIFTASYNCCALL`（函数属性），`SWIFT_INDIRECT_RESULT`（X8）、`SWIFT_CONTEXT`（X20）、`SWIFT_ERROR_RESULT`（X21）、`SWIFT_ASYNC_CONTEXT`（X22）。完整寄存器分配和 ABI 文档见 `common_ret.h`。
+
+```objective-c
+// Published.subscript.getter — indirect result via X8 (BoltAIHack.m)
+typedef void (*OrigPublishedGetter)(
+    SWIFT_INDIRECT_RESULT void *result, void *instance,
+    void *wrapped, void *storage
+) SWIFTCALL;
+
+static SWIFTCALL void hook_sub_get(
+    SWIFT_INDIRECT_RESULT void *result, void *instance,
+    void *wrapped, void *storage
+) {
+    if (orig_sub_get) orig_sub_get(result, instance, wrapped, storage);
+    // override 返回值：写入 X8 所指内存
+    id obj = (__bridge id)instance;
+    if ([obj isKindOfClass:NSClassFromString(@"Target.LicenseManager")]) {
+        *(volatile uint8_t *)result = 1;
+    }
+}
+```
+
+Swift 方法 self 走 X20（`SWIFT_CONTEXT`），throws 多 X21（`SWIFT_ERROR_RESULT`），async 用 `SWIFTASYNCCALL` + X22（`SWIFT_ASYNC_CONTEXT`）。Swift 符号用 `symstub_solve` 找桩地址（见"符号名"章节）。
 
 ## 通用 CloudKit/Keychain/SecCode Hook
 
